@@ -17,7 +17,7 @@ Route::get('/test', function () {
 
 // Dashboard
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified', 'user'])
+    ->middleware(['auth', 'verified', 'user', 'approved'])
     ->name('dashboard');
 
 Route::view('super_admin/dashboard', 'super_admin.dashboard')
@@ -41,7 +41,7 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
 });
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'approved'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', Profile::class)->name('settings.profile');

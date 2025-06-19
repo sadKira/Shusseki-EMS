@@ -20,7 +20,10 @@ class SuperAdminSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',
             'role' => UserRole::Super_Admin,
-            'password' => Hash::make("password")
+            'password' => Hash::make("password"),
+            'status' => 'approved',
+            'year_level' => 'null',
+            'course' => 'null'
         ]);
     }
 }

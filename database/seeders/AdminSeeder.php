@@ -19,7 +19,10 @@ class AdminSeeder extends Seeder
             'name' => 'view_1',
             'email' => 'admin@example.com',
             'role' => UserRole::Admin,
-            'password' => Hash::make("password")
+            'password' => Hash::make("password"),
+            'status' => 'approved',
+            'year_level' => 'null',
+            'course' => 'null'
         ]);
     }
 }

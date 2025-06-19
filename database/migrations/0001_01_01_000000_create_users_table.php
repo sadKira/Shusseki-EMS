@@ -15,9 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->enum('role', ['user', 'admin', 'super_admin', 'tsuushin'])->default('user');
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('year_level')->nullable();
+            $table->string('course');
+            $table->enum('role', ['user', 'admin', 'super_admin', 'tsuushin'])->default('user');
+            $table->enum('status', ['pending', 'approved'])->default('pending');
+            // $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
