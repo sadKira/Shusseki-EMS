@@ -21,15 +21,21 @@ class Register extends Component
 
     public string $password_confirmation = '';
 
+    public string $year_level = '';
+
+    public string $course = '';
+
     /**
      * Handle an incoming registration request.
      */
     public function register(): void
     {
         $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'min:5','max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'year_level' => ['required', 'string'],
+            'course' => ['required', 'string'],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);

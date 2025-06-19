@@ -19,7 +19,10 @@ class TsuushinSeeder extends Seeder
             'name' => 'MKD Tsuushin',
             'email' => 'tsuushin@example.com',
             'role' => UserRole::Tsuushin,
-            'password' => Hash::make("password")
+            'password' => Hash::make("password"),
+            'status' => 'approved',
+            'year_level' => 'null',
+            'course' => 'null'
         ]);
     }
 }

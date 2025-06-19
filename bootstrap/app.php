@@ -5,6 +5,7 @@ use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Middleware\TsuushinMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Middleware\UserApprovalMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -21,7 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
             'tsuushin' => TsuushinMiddleware::class,
             'user' => UserMiddleware::class,
-            'role' => RoleMiddleware::class
+            'role' => RoleMiddleware::class,
+            'approved' => UserApprovalMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
