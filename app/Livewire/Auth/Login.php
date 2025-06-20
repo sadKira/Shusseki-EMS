@@ -45,11 +45,11 @@ class Login extends Component
         Session::regenerate();
 
         if(Auth::User()->role == UserRole::Super_Admin){
-            return redirect()->route("super_admin.dashboard")->with("success", "Logged in successfully!");
+            return redirect()->route("manage_dashboard")->with("success", "Logged in successfully!");
         }
 
         if(Auth::User()->role == UserRole::Admin){
-            return redirect()->route("admin.dashboard")->with("success", "Logged in successfully!");
+            return redirect()->route("manage_dashboard")->with("success", "Logged in successfully!");
         }
 
         if(Auth::User()->role == UserRole::Tsuushin){

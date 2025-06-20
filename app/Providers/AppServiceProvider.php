@@ -22,10 +22,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('super_admin.dashboard', fn(User $user) => $user->role == UserRole::Super_Admin);
-        Gate::define('admin.dashboard', fn(User $user) => $user->role ==  UserRole::Admin);
         Gate::define('tsuushin.dashboard', fn(User $user) => $user->role == UserRole::Tsuushin);
         Gate::define('dashboard', fn(User $user) => $user->role == UserRole::User);
+
+        Gate::define(
+            'manage_dashboard',
+            fn(User $user) =>
+            $user->role === UserRole::Super_Admin || $user->role === UserRole::Admin
+        );
 
         Gate::define(
             'manage_events',
@@ -40,14 +44,14 @@ class AppServiceProvider extends ServiceProvider
         );
 
         // Dark Mode
-         Gate::define(
+        Gate::define(
             'dark_mode',
             fn(User $user) =>
             $user->role === UserRole::Super_Admin || $user->role === UserRole::Admin
         );
 
         // No Dark Mode
-         Gate::define(
+        Gate::define(
             'no_dark_mode',
             fn(User $user) =>
             $user->role === UserRole::Tsuushin || $user->role === UserRole::User

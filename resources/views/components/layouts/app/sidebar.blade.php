@@ -27,14 +27,9 @@
                 <flux:navlist.group :heading="__('Platform')" class="grid">
 
                     {{-- Dashboard --}}
-                    @can('super_admin.dashboard')
-                        <flux:navlist.item icon="home" :href="route('super_admin.dashboard')"
-                            :current="request()->routeIs(['super_admin.dashboard'])" wire:navigate>{{ __('Dashboard') }}
-                        </flux:navlist.item>
-                    @endcan
-                    @can('admin.dashboard')
-                        <flux:navlist.item icon="home" :href="route('admin.dashboard')"
-                            :current="request()->routeIs(['admin.dashboard'])" wire:navigate>{{ __('Dashboard') }}
+                    @can('manage_dashboard')
+                        <flux:navlist.item icon="home" :href="route('manage_dashboard')"
+                            :current="request()->routeIs(['manage_dashboard'])" wire:navigate>{{ __('Dashboard') }}
                         </flux:navlist.item>
                     @endcan
                     @can('tsuushin.dashboard')
@@ -50,20 +45,21 @@
                     {{-- Events --}}
                     @can('manage_events')
                         <flux:navlist.group heading="Events" expandable>
-                            <flux:navlist.item icon="calendar" :href="route('management.manage_events')"
-                                :current="request()->routeIs(['management.manage_events'])" wire:navigate>
+                            <flux:navlist.item icon="calendar" :href="route('manage_events')"
+                                :current="request()->routeIs(['manage_events'])" wire:navigate>
                                 {{ __('Manage Events') }}
                             </flux:navlist.item>
-                            <flux:navlist.item icon="envelope" :href="route('management.coverage_events')"
-                                :current="request()->routeIs(['management.coverage_events'])" wire:navigate>
+                            <flux:navlist.item icon="envelope" :href="route('coverage_events')"
+                                :current="request()->routeIs(['coverage_events'])" wire:navigate>
                                 {{ __('Event Coverage') }}
                             </flux:navlist.item>
                         </flux:navlist.group>
                     @endcan
+                    
                     {{-- Students --}}
                     @can('manage_students')
-                        <flux:navlist.item icon="user" :href="route('management.manage_students')"
-                            :current="request()->routeIs(['management.manage_students'])" wire:navigate>
+                        <flux:navlist.item icon="user" :href="route('manage_students')"
+                            :current="request()->routeIs(['manage_students'])" wire:navigate>
                             {{ __('Students') }}
                         </flux:navlist.item>
                     @endcan
