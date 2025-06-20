@@ -53,7 +53,7 @@ class Login extends Component
         }
 
         if(Auth::User()->role == UserRole::Tsuushin){
-            return redirect()->route("tsuushin.dashboard")->with("success", "Logged in successfully!");
+            return redirect()->route("tsuushin_dashboard")->with("success", "Logged in successfully!");
         }
 
 

@@ -71,8 +71,8 @@ class User extends Authenticatable
     }
 
     // For user routing (Route model binding)
-    public function getRouteKeyName()
-    {
-        return 'name';
-    }
+    // public function getRouteKeyName(): string
+    // {
+    //     return 'name';
+    // }
 }

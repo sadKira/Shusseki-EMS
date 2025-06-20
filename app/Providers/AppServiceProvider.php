@@ -28,23 +28,13 @@ class AppServiceProvider extends ServiceProvider
          * Shusseki Gates
          */
 
-        Gate::define('tsuushin.dashboard', fn(User $user) => $user->role == UserRole::Tsuushin);
+        Gate::define('tsuushin_dashboard', fn(User $user) => $user->role == UserRole::Tsuushin);
         Gate::define('dashboard', fn(User $user) => $user->role == UserRole::User);
 
-        Gate::define(
-            'manage_dashboard',
-            fn(User $user) =>
-            $user->role === UserRole::Super_Admin || $user->role === UserRole::Admin
-        );
+
 
         Gate::define(
-            'manage_events',
-            fn(User $user) =>
-            $user->role === UserRole::Super_Admin || $user->role === UserRole::Admin
-        );
-
-        Gate::define(
-            'manage_students',
+            'manage',
             fn(User $user) =>
             $user->role === UserRole::Super_Admin || $user->role === UserRole::Admin
         );
@@ -70,16 +60,23 @@ class AppServiceProvider extends ServiceProvider
          */
         View::composer('*', function ($view) {
             $user = Auth::user();
-            $titles = match ($user->role ?? null) {
-                UserRole::Admin, UserRole::Super_Admin => [
-                    'admin_dashboard' => 'Admin Dashboard',
-                    'manage_events' => 'Manage Events',
-                    'manage_students' => 'Manage Students',
-                    'coverage_events' => 'Events Coverage',
-                ],
-                default => [
-                    'dashboard' => "Welcome {$user->name}!",
-                ],
+            $titles = match (true) {
+            $user && in_array($user->role, [UserRole::Admin, UserRole::Super_Admin]) => [
+                'admin_dashboard' => 'Admin Dashboard',
+                'manage_events' => 'Manage Events',
+                'manage_students' => 'Manage Students',
+                'coverage_events' => 'Events Coverage',
+                'tsuushin_dashboard' => 'Tsuushin Dashboard',
+            ],
+            $user && in_array($user->role, [UserRole::Tsuushin]) => [
+                'tsuushin_dashboard' => 'Tsuushin Dashboard'
+            ],
+            $user && in_array($user->role, [UserRole::User]) => [
+                'dashboard' => 'User Dashboard'
+            ],
+            default => [
+                'dashboard' => 'Dashboard',
+            ],
             };
 
             $title = collect($titles)
@@ -87,5 +84,34 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('title', $title);
         });
+        // View::composer('*', function ($view) {
+        //     $user = Auth::user();
+
+        //     if (!$user) {
+        //         $view->with('title', config('app.name'));
+        //         return;
+        //     }
+
+        //     $titles = match (true) {
+        //         in_array($user->role, [UserRole::Admin, UserRole::Super_Admin]) => [
+        //             'admin_dashboard' => 'Admin Dashboard',
+        //             'manage_events' => 'Manage Events',
+        //             'manage_students' => 'Manage Students',
+        //             'coverage_events' => 'Events Coverage',
+        //             'tsuushin_dashboard' => 'Tsuushin Dashboard',
+        //         ],
+        //         $user->role === UserRole::Tsuushin => [
+        //             'tsuushin_dashboard' => 'Tsuushin Dashboard',
+        //         ],
+        //         default => [
+        //             'dashboard' => "Welcome {$user->name}!",
+        //         ],
+        //     };
+
+        //     $currentRoute = request()->route()?->getName();
+        //     $title = collect($titles)->get($currentRoute) ?? config('app.name');
+
+        //     $view->with('title', $title);
+        // });
     }
 }
