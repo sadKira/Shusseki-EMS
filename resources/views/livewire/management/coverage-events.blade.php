@@ -1,6 +1,6 @@
-<x-layouts.app :title="__('Student Management')">
-    <div class="relative mb-6 w-full rounded-2xl">
-        <flux:heading size="xl" level="1">{{ __('Manage Students') }}</flux:heading>
+<div :title="__('Super & Admin Dashboard')">
+    <div class="relative mb-6 w-full">
+        <flux:heading size="xl" level="1">{{ __('Events Coverage') }}</flux:heading>
         <flux:subheading size="lg" class="mb-6">{{ __('Shusseki Events Management System') }}</flux:subheading>
         <flux:separator variant="subtle" />
     </div>
@@ -27,4 +27,4 @@
             <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
         </div>
     </div>
-</x-layouts.app>
+</div>

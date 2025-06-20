@@ -1,6 +1,12 @@
 <?php
 
+namespace App\Livewire;
+
 use App\Enums\UserRole;
+use App\Livewire\Management\AdminDashboard;
+use App\Livewire\Management\ManageEvents;
+use App\Livewire\Management\ManageStudents;
+use App\Livewire\Management\CoverageEvents;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -15,30 +21,24 @@ Route::get('/test', function () {
     return view('buffer');
 });
 
+// Management
+Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
+    // Protected routes
+    Route::get('admin/dashboard', AdminDashboard::class)->name('manage_dashboard');
+    Route::get('admin/events', ManageEvents::class)->name('manage_events');
+    Route::get('admin/students', ManageStudents::class)->name('manage_students');
+    Route::get('admin/events/coverage', CoverageEvents::class)->name('coverage_events');
+});
+
 // Dashboard
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified', 'user', 'approved'])
     ->name('dashboard');
 
-Route::view('super_admin/dashboard', 'super_admin.dashboard')
-    ->middleware(['auth', 'verified', 'super_admin'])
-    ->name('super_admin.dashboard');
-
-Route::view('admin/dashboard', 'admin.dashboard')
-    ->middleware(['auth', 'verified', 'admin'])
-    ->name('admin.dashboard');
-
 Route::view('tsuushin/dashboard', 'tsuushin.dashboard')
     ->middleware(['auth', 'verified', 'tsuushin'])
     ->name('tsuushin.dashboard');
 
-// Management
-Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
-    // Protected routes
-    Route::view('/events', 'management.manage_events')->name('management.manage_events');
-    Route::view('/students', 'management.manage_students')->name('management.manage_students');
-    Route::view('/event-coverage', 'management.coverage_events')->name('management.coverage_events');
-});
 
 
 Route::middleware(['auth', 'approved'])->group(function () {
