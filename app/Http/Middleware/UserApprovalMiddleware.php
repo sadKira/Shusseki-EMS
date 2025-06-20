@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Enums\UserApproval;
 
 class UserApprovalMiddleware
 {
@@ -16,9 +17,9 @@ class UserApprovalMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->status !== 'approved') {
-        Auth::logout();
-        return redirect()->route('login')->withErrors(['Your account is pending approval.']);
+        if (Auth::check() && Auth::user()->status !== UserApproval::Approved) {
+            Auth::logout();
+            return redirect()->route('home')->withErrors(['Your account is pending approval.']);
         }
         return $next($request);
     }
