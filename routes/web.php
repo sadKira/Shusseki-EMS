@@ -24,7 +24,7 @@ Route::get('/test', function () {
 // Management
 Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
     // Protected routes
-    Route::get('admin/dashboard', AdminDashboard::class)->name('manage_dashboard');
+    Route::get('admin/dashboard', AdminDashboard::class)->name('admin_dashboard');
     Route::get('admin/events', ManageEvents::class)->name('manage_events');
     Route::get('admin/students', ManageStudents::class)->name('manage_students');
     Route::get('admin/events/coverage', CoverageEvents::class)->name('coverage_events');

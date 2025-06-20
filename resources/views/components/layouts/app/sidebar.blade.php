@@ -28,8 +28,8 @@
 
                     {{-- Dashboard --}}
                     @can('manage_dashboard')
-                        <flux:navlist.item icon="home" :href="route('manage_dashboard')"
-                            :current="request()->routeIs(['manage_dashboard'])" wire:navigate>{{ __('Dashboard') }}
+                        <flux:navlist.item icon="home" :href="route('admin_dashboard')"
+                            :current="request()->routeIs(['admin_dashboard'])" wire:navigate>{{ __('Dashboard') }}
                         </flux:navlist.item>
                     @endcan
                     @can('tsuushin.dashboard')
