@@ -1,4 +1,4 @@
-<div :title="__('Super & Admin Dashboard')">
+<div>
     <div class="relative mb-6 w-full">
         <flux:heading size="xl" level="1">{{ __('Events Coverage') }}</flux:heading>
         <flux:subheading size="lg" class="mb-6">{{ __('Shusseki Events Management System') }}</flux:subheading>
