@@ -1,4 +1,3 @@
-{{-- <x-layouts.app :title="__('Super & Admin Dashboard')"> --}}
 <div>
     <div class="relative mb-6 w-full">
         <flux:heading size="xl" level="1">{{ __('Super and Admin Dashboard') }}</flux:heading>
