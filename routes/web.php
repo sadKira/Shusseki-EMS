@@ -7,6 +7,7 @@ use App\Livewire\Management\AdminDashboard;
 use App\Livewire\Management\ManageEvents;
 use App\Livewire\Management\ManageStudents;
 use App\Livewire\Management\CoverageEvents;
+use App\Livewire\User\Dashboard;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -30,10 +31,17 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/events/coverage', CoverageEvents::class)->name('coverage_events');
 });
 
-// Dashboard
+// User
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified', 'user', 'approved'])
     ->name('dashboard');
+
+Route::middleware(['auth', 'verified', 'user'])->group(function () {
+    // Protected routes
+    Route::get('user/{user}/dashboard', Dashboard::class)->name('dashboard');
+   
+});
+
 
 Route::view('tsuushin/dashboard', 'tsuushin.dashboard')
     ->middleware(['auth', 'verified', 'tsuushin'])

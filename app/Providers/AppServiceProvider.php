@@ -6,6 +6,8 @@ use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        /**
+         * Shusseki Gates
+         */
+
         Gate::define('tsuushin.dashboard', fn(User $user) => $user->role == UserRole::Tsuushin);
         Gate::define('dashboard', fn(User $user) => $user->role == UserRole::User);
 
@@ -56,5 +62,30 @@ class AppServiceProvider extends ServiceProvider
             fn(User $user) =>
             $user->role === UserRole::Tsuushin || $user->role === UserRole::User
         );
+
+
+
+        /**
+         * Dynamic Titles
+         */
+        View::composer('*', function ($view) {
+            $user = Auth::user();
+            $titles = match ($user->role ?? null) {
+                UserRole::Admin, UserRole::Super_Admin => [
+                    'admin_dashboard' => 'Admin Dashboard',
+                    'manage_events' => 'Manage Events',
+                    'manage_students' => 'Manage Students',
+                    'coverage_events' => 'Events Coverage',
+                ],
+                default => [
+                    'dashboard' => "Welcome {$user->name}!",
+                ],
+            };
+
+            $title = collect($titles)
+                ->first(fn($label, $route) => request()->routeIs($route)) ?? 'Dashboard';
+
+            $view->with('title', $title);
+        });
     }
 }

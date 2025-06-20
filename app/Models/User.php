@@ -69,4 +69,10 @@ class User extends Authenticatable
             ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    // For user routing (Route model binding)
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
 }
