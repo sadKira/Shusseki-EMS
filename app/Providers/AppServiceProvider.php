@@ -60,25 +60,26 @@ class AppServiceProvider extends ServiceProvider
          */
         View::composer('*', function ($view) {
             $user = Auth::user();
-            $titles = match (true) {
-            $user && in_array($user->role, [UserRole::Admin, UserRole::Super_Admin]) => [
-                'admin_dashboard' => 'Admin Dashboard',
-                'manage_events' => 'Manage Events',
-                'manage_students' => 'Manage Students',
-                'coverage_events' => 'Events Coverage',
-                'tsuushin_dashboard' => 'Tsuushin Dashboard',
-            ],
-            $user && in_array($user->role, [UserRole::Tsuushin]) => [
-                'tsuushin_dashboard' => 'Tsuushin Dashboard'
-            ],
-            $user && in_array($user->role, [UserRole::User]) => [
-                'dashboard' => 'User Dashboard'
-            ],
-            default => [
-                'dashboard' => 'Dashboard',
-            ],
+            
+            // Handle case when user is not authenticated
+            if (!$user) {
+                $view->with('title', config('app.name'));
+                return;
+            }
+                
+            $titles = match ($user->role) {
+                UserRole::Admin, UserRole::Super_Admin, UserRole::Tsuushin => [
+                    'admin_dashboard' => 'Admin Dashboard',
+                    'manage_events' => 'Manage Events',
+                    'manage_students' => 'Manage Students',
+                    'coverage_events' => 'Events Coverage',
+                    'tsuushin_dashboard' => 'Tsuushin Dashboard',
+                ],
+                default => [
+                    'dashboard' => "Welcome!",
+                ],
             };
-
+            
             $title = collect($titles)
                 ->first(fn($label, $route) => request()->routeIs($route)) ?? 'Dashboard';
 

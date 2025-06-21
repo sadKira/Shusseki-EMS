@@ -17,10 +17,12 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::User()->role != UserRole::User) {
-
+        $user = Auth::user();
+        
+        if (!$user || $user->role != UserRole::User) {
             return back();
         }
+        
         return $next($request);
     }
 }

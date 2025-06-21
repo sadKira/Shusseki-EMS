@@ -18,10 +18,12 @@ class SuperAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::User()->role != UserRole::Super_Admin) {
-  
+        $user = Auth::user();
+        
+        if (!$user || $user->role != UserRole::Super_Admin) {
             return back();
         }
+        
         return $next($request);
     }
 }

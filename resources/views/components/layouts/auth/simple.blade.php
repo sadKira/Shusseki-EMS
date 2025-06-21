@@ -2,8 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    @include('partials.head_nod')
-    {{-- {{ $title ?? config('app.name') }} --}}
+    @include('partials.head_auth')
     @if (request()->routeIs('login'))
         <title>Shusseki Login</title>
     @else

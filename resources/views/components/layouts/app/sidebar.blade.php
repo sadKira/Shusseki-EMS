@@ -48,7 +48,6 @@
                     </flux:navlist.group>
                 @endcan
 
-
                 @can('tsuushin_dashboard')
                     <flux:navlist.item icon="home" :href="route('tsuushin_dashboard')"
                         :current="request()->routeIs(['tsuushin_dashboard'])" wire:navigate>{{ __('Dashboard') }}

@@ -8,7 +8,7 @@ use App\Livewire\Management\ManageEvents;
 use App\Livewire\Management\ManageStudents;
 use App\Livewire\Management\CoverageEvents;
 use App\Livewire\User\Dashboard;
-use App\Livewire\Tsuushin\Dashboard as TsuushinDashboard;
+use App\Livewire\Tsuushin\TsuushinDashboard;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;

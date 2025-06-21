@@ -17,10 +17,12 @@ class TsuushinMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::User()->role != UserRole::Tsuushin) {
-            
+        $user = Auth::user();
+        
+        if (!$user || $user->role != UserRole::Tsuushin) {
             return back();
         }
+        
         return $next($request);
     }
 }

@@ -18,10 +18,12 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::User()->role != UserRole::Admin) {
-            
+        $user = Auth::user();
+        
+        if (!$user || $user->role != UserRole::Admin) {
             return back();
         }
+        
         return $next($request);
     }
 }
