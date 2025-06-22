@@ -55,7 +55,9 @@
     </flux:sidebar>
 
     <flux:main container>
-       
+        <flux:heading size="xl" level="1">_Number_ Students</flux:heading>
+
+
     </flux:main>
 
 

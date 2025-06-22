@@ -14,7 +14,7 @@
     </head>
 @endcan
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body class="min-h-screen bg-white dark:bg-zinc-800 font-display">
     <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
@@ -39,13 +39,13 @@
                         </flux:navlist.item>
                         <flux:navlist.item icon="envelope" :href="route('coverage_events')"
                             :current="request()->routeIs(['coverage_events'])" wire:navigate>
-                            {{ __('Event Coverage') }}
-                        </flux:navlist.item>
-                        <flux:navlist.item icon="user" :href="route('manage_students')"
-                            :current="request()->routeIs(['manage_students'])" wire:navigate>
-                            {{ __('Students') }}
+                            {{ __('Events Coverage') }}
                         </flux:navlist.item>
                     </flux:navlist.group>
+                    <flux:navlist.item icon="user" :href="route('manage_students')"
+                        :current="request()->routeIs(['manage_students', 'manage_approval'])" wire:navigate>
+                        {{ __('Students') }}
+                    </flux:navlist.item>
                 @endcan
 
                 @can('tsuushin_dashboard')

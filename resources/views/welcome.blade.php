@@ -23,7 +23,7 @@
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
-<body class="min-h-screen bg-zinc-50 dark:bg-zinc-800">
+<body class="min-h-screen bg-zinc-50 dark:bg-zinc-800 font-display">
     {{-- border-b border-zinc-200 dark:border-zinc-700 --}}
     <flux:header container class="bg-zinc-50 dark:bg-zinc-900">
 
