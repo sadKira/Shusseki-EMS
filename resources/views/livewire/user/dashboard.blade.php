@@ -1,6 +1,6 @@
 <div>
     <div class="relative mb-6 w-full">
-        <flux:heading size="xl" level="1">FUCK YOU {{ $user->name }}</flux:heading>
+        <flux:heading size="xl" level="1">Hello {{ $user->name }}</flux:heading>
         <flux:subheading size="lg" class="mb-6">{{ __('Shusseki Events Management System') }}</flux:subheading>
         <flux:separator variant="subtle" />
     </div>
@@ -28,4 +28,3 @@
         </div>
     </div>
 </div>
-

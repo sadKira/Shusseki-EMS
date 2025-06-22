@@ -68,15 +68,23 @@ class AppServiceProvider extends ServiceProvider
             }
                 
             $titles = match ($user->role) {
-                UserRole::Admin, UserRole::Super_Admin, UserRole::Tsuushin => [
+                UserRole::Admin, UserRole::Super_Admin, UserRole::Tsuushin, UserRole::User  => [
+                    // Management
                     'admin_dashboard' => 'Admin Dashboard',
-                    'manage_events' => 'Manage Events',
-                    'manage_students' => 'Manage Students',
+                    'manage_events' => 'Events',
+                    'manage_students' => 'Students',
+                    'manage_approval' => 'Students',
                     'coverage_events' => 'Events Coverage',
+
+                    //Tsuushin
                     'tsuushin_dashboard' => 'Tsuushin Dashboard',
+
+                    //User
+                    'dashboard' => 'Dashboard',
+                    'events' => 'Events',
                 ],
                 default => [
-                    'dashboard' => "Welcome!",
+                    'error' => "error",
                 ],
             };
             
