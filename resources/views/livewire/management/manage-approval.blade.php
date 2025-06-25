@@ -60,7 +60,7 @@
             {{-- Bulk Buttons Container --}}
             <div class="transition-opacity duration-300 {{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
                 <flux:button variant="primary" color="Amber" wire:click="bulkApprove">Bulk Approve</flux:button>
-                <flux:button variant="danger" wire:click="bulkReject">Bulk Reject</flux:button>
+                <flux:button variant="danger" wire:confirm="Confirm account rejection" wire:click="bulkReject" >Bulk Reject</flux:button>
             </div>
         </div>
         
@@ -129,7 +129,7 @@
                                         <flux:button variant="primary" color="Amber" wire:click="approve({{ $user->id }})">
                                             Approve</flux:button>
                                     </span>
-                                    <flux:button variant="danger" wire:confirm="Are you sure you want to delete this post?"
+                                    <flux:button variant="danger" wire:confirm="Confirm account rejection"
                                         wire:click="reject({{ $user->id }})">Reject</flux:button>
                                 </td>
                             </tr>
