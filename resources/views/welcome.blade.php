@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 <head>
     <meta charset="utf-8">
@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('build/assets/app-2KYTgWL1.css') }}"> --}}
 
     @vite(['resources/js/app.js', 'resources/css/app.css'])
+    {{-- @fluxAppearance() --}}
 </head>
 
 <body class="min-h-screen bg-zinc-50 dark:bg-zinc-800 font-display">
