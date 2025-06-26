@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-@can('dark_mode')
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
-    <head>
-        @include('partials.head')
-    </head>
-@endcan
-@can('no_dark_mode')
+{{-- @can('no_dark_mode')
     <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
     <head>
         @include('partials.head_nod')
     </head>
-@endcan
+@endcan --}}
+
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+
+<head>
+    @include('partials.head')
+</head>
 
 
 <body class="min-h-screen bg-white dark:bg-zinc-800 font-display">
@@ -58,7 +58,7 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs(['dashboard'])"
                         wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 @endcan
-                
+
             </flux:navlist.group>
         </flux:navlist>
 
@@ -80,7 +80,7 @@
                                 </span>
                             </span>
 
-                            <div class="grid flex-1 text-start text-sm leading-tight">
+                            <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight">
                                 <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
                                 <span class="truncate text-xs">{{ auth()->user()->email }}</span>
                             </div>
@@ -155,7 +155,8 @@
             </flux:dropdown>
         </flux:navbar>
     </flux:header>
-    {{-- <flux:header class="block! bg-white lg:bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
+    {{-- <flux:header
+        class="block! bg-white lg:bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
         <flux:navbar class="lg:hidden w-full">
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
@@ -170,9 +171,9 @@
             <flux:navbar.item href="#">Configuration</flux:navbar.item>
         </flux:navbar>
     </flux:header> --}}
-    
+
     {{ $slot }}
-    
+
 
     @fluxScripts
 </body>

@@ -23,7 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'tsuushin' => TsuushinMiddleware::class,
             'user' => UserMiddleware::class,
             'role' => RoleMiddleware::class,
-            'approved' => UserApprovalMiddleware::class
+            'approved' => UserApprovalMiddleware::class,
+            'pending' => UserApprovalMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

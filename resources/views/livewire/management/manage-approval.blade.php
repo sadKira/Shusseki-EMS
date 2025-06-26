@@ -125,10 +125,8 @@
                                     {{ $user->course }}
                                 </td>
                                 <td class="flex items-center space-between gap-4 px-6 py-4">
-                                    <span wire:click="$refresh">
-                                        <flux:button variant="primary" color="Amber" wire:click="approve({{ $user->id }})">
-                                            Approve</flux:button>
-                                    </span>
+                                    <flux:button variant="primary" color="Amber" wire:click="approve({{ $user->id }})">
+                                        Approve</flux:button>
                                     <flux:button variant="danger" wire:confirm="Confirm account rejection"
                                         wire:click="reject({{ $user->id }})">Reject</flux:button>
                                 </td>

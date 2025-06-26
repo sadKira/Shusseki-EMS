@@ -18,3 +18,5 @@
 <link rel="stylesheet" href="{{ asset('build/assets/app-2KYTgWL1.css') }}">
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+{{-- @fluxAppearance --}}

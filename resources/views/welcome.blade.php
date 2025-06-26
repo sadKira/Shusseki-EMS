@@ -24,28 +24,41 @@
     {{-- @fluxAppearance() --}}
 </head>
 
-<body class="min-h-screen bg-zinc-50 dark:bg-zinc-800 font-display">
+<body class="min-h-screen bg-zinc-50 antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 font-display">
     {{-- border-b border-zinc-200 dark:border-zinc-700 --}}
-    <flux:header container class="bg-zinc-50 dark:bg-zinc-900">
+    {{-- class="bg-zinc-50 dark:bg-zinc-800" --}}
+    <flux:header container >
 
         <div>
-            <img src="{{ asset('images/MKDSide.svg') }}" alt="MKD Logo" class="h-12 w-auto sm:h-16 md:h-20">
+            <img src="{{ asset('images/MKDSide_White.svg') }}" alt="MKD Logo" class="h-12 w-auto sm:h-16 md:h-20">
         </div>
-
-        {{--
-        <flux:brand class="h-12 w-auto sm:h-16 md:h-20" href="#" logo="{{ asset('images/MKDSide_White.svg') }}" /> --}}
 
         <flux:spacer />
 
         <flux:sidebar.toggle class="lg:hidden " icon="bars-2" inset="left" />
 
         <flux:navbar class="-mb-px max-lg:hidden">
-
             <flux:separator vertical variant="subtle" class="my-2" />
 
-            <flux:navbar.item href="#">Events</flux:navbar.item>
-            <flux:navbar.item href="#">About us</flux:navbar.item>
-            <flux:navbar.item href="{{ route('login') }}" current>Login</flux:navbar.item>
+            @php
+                $user = auth()->user();
+                $dashboardRoute = route('login'); // default for guests
+                if ($user) {
+                    $dashboardRoute = match($user->role) {
+                        \App\Enums\UserRole::Super_Admin, \App\Enums\UserRole::Admin => route('admin_dashboard'),
+                        \App\Enums\UserRole::Tsuushin => route('tsuushin_dashboard'),
+                        default => route('dashboard'),
+                    };
+                }
+            @endphp
+
+            @auth
+                <flux:navlist.item href="{{ $dashboardRoute }}" current>Return to Dashboard</flux:navlist.item>
+            @else
+                <flux:navbar.item href="#">Events</flux:navbar.item>
+                <flux:navbar.item href="#">About us</flux:navbar.item>
+                <flux:navbar.item href="{{ $dashboardRoute }}" current>Login</flux:navbar.item>
+            @endauth
 
             <flux:separator vertical class="my-2" />
         </flux:navbar>
@@ -61,9 +74,14 @@
         </div>
 
         <flux:navlist>
-            <flux:navlist.item href="#" current>Events</flux:navlist.item>
-            <flux:navlist.item href="#">About us</flux:navlist.item>
-            <flux:navlist.item href="#">Login</flux:navlist.item>
+            @auth
+                <flux:navlist.item href="#">Login</flux:navlist.item>
+            @else
+                <flux:navlist.item href="#" current>Events</flux:navlist.item>
+                <flux:navlist.item href="#">About us</flux:navlist.item>
+                <flux:navlist.item href="#">Login</flux:navlist.item>
+            @endauth
+            
             {{-- <flux:navlist.item icon="information-circle" href="#">Help</flux:navlist.item> --}}
         </flux:navlist>
 
@@ -75,10 +93,10 @@
         <div class="flex flex-col justify-center p-6 mx-auto lg:flex-row lg:justify-between">
             <div class="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-none whitespace-nowrap">
-                    <span class="block text-zinc-950">Manage smarter,</span>
-                    <span class="block text-gold mt-2">Join seamlessly</span>
+                    <span class="block text-zinc-50">Manage smarter,</span>
+                    <span class="block text-zinc-50 mt-2">Join seamlessly</span>
                 </h1>
-                <p class="mt-6 mb-8 text-base sm:text-lg lg:text-xl sm:mb-12 text-zinc-950 max-w-2xl">
+                <p class="mt-6 mb-8 text-base sm:text-lg lg:text-xl sm:mb-12 text-zinc-50 max-w-2xl">
                     Empowering organizers and students through modern, intuitive tools. With—SHUSSEKI
                 </p>
                 <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
@@ -87,7 +105,7 @@
                 </div>
             </div>
             <div class="flex items-center justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128">
-                <img src="{{ asset('images/MKDWSeal.svg') }}" alt="MKD Logo"
+                <img src="{{ asset('images/MKDWSeal_White.svg') }}" alt="MKD Logo"
                     class="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128">
             </div>
         </div>
