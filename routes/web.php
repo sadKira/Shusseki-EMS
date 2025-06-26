@@ -3,7 +3,8 @@
 namespace App\Livewire;
 
 use App\Enums\UserRole;
-
+use App\Livewire\Actions\Logout;
+use App\Livewire\Auth\Approval;
 use App\Livewire\landing\Welcome;
 
 use App\Livewire\Management\AdminDashboard;
@@ -36,6 +37,13 @@ Route::get('/error', function () {
     return view('error');
 });
 
+// User Approval
+Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
+    // Protected routes
+    Route::get('user/approval-pending', Approval::class)->name('approval_pending'); 
+    Route::post('logout', Logout::class)->name('logout');  
+});
+
 // Management
 Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
     // Protected routes
@@ -51,7 +59,7 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
 Route::middleware(['auth', 'verified', 'user', 'approved'])->group(function () {
     // Protected routes
     Route::get('user/dashboard', Dashboard::class)->name('dashboard');
-     Route::get('user/events', Events::class)->name('events');
+    Route::get('user/events', Events::class)->name('events');
    
 });
 

@@ -40,18 +40,18 @@ class AppServiceProvider extends ServiceProvider
         );
 
         // Dark Mode
-        Gate::define(
-            'dark_mode',
-            fn(User $user) =>
-            $user->role === UserRole::Super_Admin || $user->role === UserRole::Admin
-        );
+        // Gate::define(
+        //     'dark_mode',
+        //     fn(User $user) =>
+        //     $user->role === UserRole::Super_Admin || $user->role === UserRole::Admin
+        // );
 
-        // No Dark Mode
-        Gate::define(
-            'no_dark_mode',
-            fn(User $user) =>
-            $user->role === UserRole::Tsuushin || $user->role === UserRole::User
-        );
+        // // No Dark Mode
+        // Gate::define(
+        //     'no_dark_mode',
+        //     fn(User $user) =>
+        //     $user->role === UserRole::Tsuushin || $user->role === UserRole::User
+        // );
 
 
 
@@ -93,34 +93,6 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('title', $title);
         });
-        // View::composer('*', function ($view) {
-        //     $user = Auth::user();
 
-        //     if (!$user) {
-        //         $view->with('title', config('app.name'));
-        //         return;
-        //     }
-
-        //     $titles = match (true) {
-        //         in_array($user->role, [UserRole::Admin, UserRole::Super_Admin]) => [
-        //             'admin_dashboard' => 'Admin Dashboard',
-        //             'manage_events' => 'Manage Events',
-        //             'manage_students' => 'Manage Students',
-        //             'coverage_events' => 'Events Coverage',
-        //             'tsuushin_dashboard' => 'Tsuushin Dashboard',
-        //         ],
-        //         $user->role === UserRole::Tsuushin => [
-        //             'tsuushin_dashboard' => 'Tsuushin Dashboard',
-        //         ],
-        //         default => [
-        //             'dashboard' => "Welcome {$user->name}!",
-        //         ],
-        //     };
-
-        //     $currentRoute = request()->route()?->getName();
-        //     $title = collect($titles)->get($currentRoute) ?? config('app.name');
-
-        //     $view->with('title', $title);
-        // });
     }
 }

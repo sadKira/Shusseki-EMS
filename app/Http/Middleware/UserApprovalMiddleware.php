@@ -17,9 +17,14 @@ class UserApprovalMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Allow access to the approval_pending route
+        if ($request->routeIs('approval_pending')) {
+            return $next($request);
+        }
+
+        // Checks if user is approved
         if (Auth::check() && Auth::user()->status !== UserApproval::Approved) {
-            Auth::logout();
-            return redirect()->route('home')->withErrors(['Your account is pending approval.']);
+            return redirect()->route('approval_pending');
         }
         return $next($request);
     }

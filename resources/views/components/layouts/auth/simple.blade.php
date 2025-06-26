@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 <head>
     @include('partials.head_auth')
     @if (request()->routeIs('login'))
         <title>Shusseki Login</title>
-    @else
+    @elseif ((request()->routeIs('register')))
         <title>Shusseki Register</title>
+    @else
+        <title>Pending Approval</title>
     @endif
 </head>
 
@@ -17,7 +19,7 @@
             <a href="{{ route('home') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
                 <span class="flex h-15 w-15 mb-1 items-center justify-center rounded-md">
                     {{-- <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" /> --}}
-                    <img src="{{ asset('images/Seal.svg') }}" alt="Shusseki Seal">
+                    <img src="{{ asset('images/Seal_White.svg') }}" alt="Shusseki Seal">
                 </span>
                 <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
             </a>
