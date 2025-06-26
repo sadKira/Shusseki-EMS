@@ -71,6 +71,7 @@ class ManageApproval extends Component
             $this->selected[] = $id;
         }
     }
+    
     public function render()
     {
         $users = User::where('status', 'pending')->get();

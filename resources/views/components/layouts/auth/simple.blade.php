@@ -17,15 +17,18 @@
     <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
         <div class="flex w-full max-w-sm flex-col gap-2">
             <div class="flex flex-col items-center gap-2 font-medium">
-                <span class="flex h-20 w-auto mb-1 items-center justify-center rounded-md">
+                
+                @auth
+                    <span class="flex h-20 w-auto mb-1 items-center justify-center rounded-md">
                     {{-- <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" /> --}}
-                    @auth
                         <img src="{{ asset('Images/Side_White.svg') }}" class="h-20 w-auto" alt="Shusseki Seal Approval">
-                    @else
+                    </span>
+                @else
+                    <span class="flex h-15 w-15 mb-1 items-center justify-center rounded-md">
+                    {{-- <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" /> --}}
                         <img src="{{ asset('images/Seal_White.svg') }}" alt="Shusseki Seal">
-                    @endauth
-                    
-                </span>
+                    </span>
+                @endauth
             </div>
             <div class="flex flex-col gap-6 mt-5">
                 {{ $slot }}

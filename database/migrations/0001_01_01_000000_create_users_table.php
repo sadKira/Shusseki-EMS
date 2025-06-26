@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('course');
             $table->enum('role', ['user', 'admin', 'super_admin', 'tsuushin'])->default('user');
             $table->enum('status', ['pending', 'approved'])->default('pending');
+            $table->enum('account_status', ['active', 'inactive'])->default('active');
             // $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

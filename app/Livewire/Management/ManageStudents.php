@@ -11,10 +11,6 @@ class ManageStudents extends Component
 {
     public function render()
     {
-        $users = User::all();
-
-        return view('livewire.management.manage-students', [
-            'users' => $users,
-        ]);
+        return view('livewire.management.manage-students');
     }
 }

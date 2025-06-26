@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\UserApproval;
 use App\Enums\UserRole;
+use App\Enums\AccountStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -29,7 +30,8 @@ class User extends Authenticatable
         'year_level',
         'course',
         'role',
-        'status'
+        'status',
+        'account_status'
 
     ];
 
@@ -54,7 +56,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role' => UserRole::class,
-            'status' => UserApproval::class
+            'status' => UserApproval::class,
+            'account_status' => AccountStatus::class
         ];
     }
 

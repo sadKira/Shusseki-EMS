@@ -23,7 +23,8 @@ class SuperAdminSeeder extends Seeder
             'password' => Hash::make("password"),
             'status' => 'approved',
             'year_level' => 'null',
-            'course' => 'null'
+            'course' => 'null',
+            'account_status' => 'active'
         ]);
     }
 }
