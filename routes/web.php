@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Enums\UserRole;
 use App\Livewire\Actions\Logout;
 use App\Livewire\Auth\Approval;
+use App\Livewire\Auth\Denied;
 use App\Livewire\landing\Welcome;
 
 use App\Livewire\Management\AdminDashboard;
@@ -55,12 +56,19 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
 });
 
 
-// User
-Route::middleware(['auth', 'verified', 'user', 'approved'])->group(function () {
+// User (Active)
+Route::middleware(['auth', 'verified', 'user', 'approved', 'active'])->group(function () {
     // Protected routes
     Route::get('user/dashboard', Dashboard::class)->name('dashboard');
     Route::get('user/events', Events::class)->name('events');
    
+});
+
+// User (Inactve)
+Route::middleware(['auth', 'verified', 'user', 'approved', 'inactive'])->group(function () {
+    // Protected routes
+    Route::get('user/access-denied', Denied::class)->name('access_denied'); 
+    Route::post('logout', Logout::class)->name('logout'); 
 });
 
 
