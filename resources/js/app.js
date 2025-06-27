@@ -1,30 +1,30 @@
-import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
+// import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
 
 
-import anchor from "@alpinejs/anchor";
-import collapse from "@alpinejs/collapse";
+// import anchor from "@alpinejs/anchor";
+// import collapse from "@alpinejs/collapse";
  
-Alpine.plugin(anchor);
-Alpine.plugin(collapse);
+// Alpine.plugin(anchor);
+// Alpine.plugin(collapse);
  
-const modules = import.meta.glob("./plugins/**/*.js", { eager: true });
+// const modules = import.meta.glob("./plugins/**/*.js", { eager: true });
  
-for (const path in modules) {
-    Alpine.plugin(modules[path].default);
-}
+// for (const path in modules) {
+//     Alpine.plugin(modules[path].default);
+// }
  
-Alpine.start();
+// Alpine.start();
 
-document.addEventListener(
-    "alpine:init",
-    () => {
-        const modules = import.meta.glob("./plugins/**/*.js", { eager: true });
+// document.addEventListener(
+//     "alpine:init",
+//     () => {
+//         const modules = import.meta.glob("./plugins/**/*.js", { eager: true });
  
-        for (const path in modules) {
-            window.Alpine.plugin(modules[path].default);
-        }
-        window.Alpine.plugin(collapse);
-        window.Alpine.plugin(anchor);
-    },
-    { once: true },
-);
+//         for (const path in modules) {
+//             window.Alpine.plugin(modules[path].default);
+//         }
+//         window.Alpine.plugin(collapse);
+//         window.Alpine.plugin(anchor);
+//     },
+//     { once: true },
+// );

@@ -176,7 +176,7 @@
 
 
     @fluxScripts
-    @livewireScripts
+    {{-- @livewireScripts --}}
 </body>
 
 </html>

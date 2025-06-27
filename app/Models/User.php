@@ -78,4 +78,9 @@ class User extends Authenticatable
     // {
     //     return 'name';
     // }
+
+    public function scopeSearch($query, $value)
+    {
+        $query->where('name', 'like', "%{$value}%")->orWhere('year_level', 'like', "%{$value}%");
+    }
 }

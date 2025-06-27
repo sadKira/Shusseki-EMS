@@ -6,10 +6,10 @@
             <flux:dropdown>
                 <flux:button variant="filled" icon:trailing="chevron-down">{{ $selectedStatus }}</flux:button>
                 <flux:menu>
-                    <flux:menu.radio.group>
-                        <flux:menu.radio checked wire:click="$set('selectedStatus', 'Active Students')">Active Students
+                    <flux:menu.radio.group wire:model.live="selectedStatus">
+                        <flux:menu.radio checked value="Active Students">Active Students
                         </flux:menu.radio>
-                        <flux:menu.radio wire:click="$set('selectedStatus', 'Inactive Students')">Inactive Students
+                        <flux:menu.radio value="Inactive Students">Inactive Students
                         </flux:menu.radio>
                     </flux:menu.radio.group>
                 </flux:menu>
@@ -18,7 +18,7 @@
         </div>
 
         <div class="flex items-cent gap-2">
-            <flux:input icon="magnifying-glass" placeholder="Search..." />
+            <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search" />
         </div>
     </div>
 
@@ -60,13 +60,12 @@
                             Course
                         </th>
                         <th scope="col" class="px- py-3 pl-16.5">
-                            Action
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($users as $user)
-                        <tr wire:key="user-{{ $user->id }} "
+                        <tr wire:key="{{ $user->id }} "
                             class="bg-white border-b dark:bg-zinc-900 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
                             <th scope="row" class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
                                 {{ $user->name }}
@@ -108,9 +107,14 @@
     </div>
     
     
+
+        
     <div class="mt-4">
+        
         {{ $users->links('pagination::tailwind') }}
-    </div>
+    </div>   
+
+    
     
     
     
