@@ -74,7 +74,7 @@ class ManageApproval extends Component
     
     public function render()
     {
-        $users = User::where('status', 'pending')->get();
+        $users = User::where('status', 'pending')->paginate(10);
         return view('livewire.management.manage-approval', ['users' => $users]);
     }
     

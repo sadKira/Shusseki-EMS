@@ -23,7 +23,7 @@ class AccountStatusMiddleware
         }
 
         // Checks if user is active
-        if (Auth::check() && Auth::user()->status !== AccountStatus::Active) {
+        if (Auth::check() && Auth::user()->account_status !== AccountStatus::Active) {
             return redirect()->route('access_denied');
         }
         return $next($request);
