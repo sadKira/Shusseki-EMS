@@ -54,6 +54,13 @@
     --color-secondary-foreground: #1E1E1E;
 }
 
+.pagination {
+  @apply flex justify-center mt-4 text-sm text-gray-700;
+}
+.pagination .active {
+  @apply bg-blue-600 text-white px-3 py-1 rounded;
+}
+
 @layer theme {
     .dark {
         --color-accent: var(--color-amber-400);

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -52,6 +53,11 @@ class AppServiceProvider extends ServiceProvider
         //     fn(User $user) =>
         //     $user->role === UserRole::Tsuushin || $user->role === UserRole::User
         // );
+
+        // Default CSS Paginator
+        Paginator::useTailwind();
+
+        // Paginator::useBootstrapFour();
 
 
 

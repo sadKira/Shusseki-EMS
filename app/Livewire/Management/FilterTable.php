@@ -12,16 +12,109 @@ class FilterTable extends Component
 {
     use WithPagination;
 
-    #[Url]
-    public int $page = 1;
+    // #[Url]
+    // public int $page = 1;
 
-    public string $sortField = 'name'; // default sort field
+    // public string $sortField = 'name'; // default sort field
     
   
-    public string $sortDirection = 'asc'; // or 'desc'
+    // public string $sortDirection = 'asc'; // or 'desc'
 
    
     protected $paginationTheme = 'tailwind';
+
+
+
+    
+
+
+    // // Active students table
+    // // Mark as inactive
+    // public function markInactive($userId)
+    // {
+    //     $user = User::find($userId);
+    //     $user->update(['account_status' => 'inactive']);
+    //     session()->flash('message', "{$user->name} has been marked inactive.");
+
+    //     // return redirect(request()->route('manage_approval')); 
+    // }
+
+    // // Remove account
+    // public function removeAccount($userId)
+    // {
+    //     $user = User::findOrFail($userId);
+    //     $user->delete(); // This permanently deletes the account
+       
+    // }
+
+    // //Inactive Students table
+    // //Mark as active
+    //  public function markActive($userId)
+    // {
+    //     $user = User::find($userId);
+    //     $user->update(['account_status' => 'active']);
+    //     session()->flash('message', "{$user->name} has been marked active.");
+
+    //     // return redirect(request()->route('manage_approval')); 
+    // }
+
+    // // #[Url]
+    // public $selectedStatus = 'Active Students';
+   
+
+    // // #[Url]
+    // // public $selectedStatus_level = 'All';
+
+    // // #[Url]
+    // // public $selectedStatus_course = 'All';
+
+
+    // // Set active dropdown for active & inactive
+
+    // // public function selectStatus($status)
+    // // {
+    // //     $this->selectedStatus = $status;
+    // // }
+    // public function render()
+    // {
+    //     // Query builder
+    //     $users = User::query();
+
+    //     // Base filters: role and status
+    //     $users->where('status', 'approved')
+    //         ->where('role', 'user');
+
+    //     // Active/Inactive conditions
+    //     if ($this->selectedStatus == 'Active Students') {
+    //         $users->where('account_status', 'active');
+    //     } else {
+    //         $users->where('account_status', 'inactive');
+    //     }
+
+    //     // // Year level filter
+    //     // if ($this->selectedStatus_level !== 'All') {
+    //     //     $users->where('year_level', $this->selectedStatus_level);
+    //     // } 
+
+    //     // // Course filter
+    //     // if ($this->selectedStatus_course !== 'All') {
+    //     //     $users->where('course', $this->selectedStatus_course);
+    //     // }
+
+    //     // Execute query
+    //     $users = $users
+    //         ->orderBy($this->sortField, $this->sortDirection)
+    //         ->paginate(10); // you can change the number per page
+
+    //     return view('livewire.management.filter-table', ['users' => $users]);
+    // }
+
+    public $perPage = 10;
+    public $search = '';
+    public $year = '';
+    public $selectedStatus = 'Active Students'; // default
+    public $sortField = 'name'; // or whatever your default is
+    public $sortDirection = 'asc'; // or 'desc'
 
     // Reset pagination when filters change
     public function updating($field)
@@ -42,86 +135,29 @@ class FilterTable extends Component
         }
     }
 
-
-    // Active students table
-    // Mark as inactive
-    public function markInactive($userId)
-    {
-        $user = User::find($userId);
-        $user->update(['account_status' => 'inactive']);
-        session()->flash('message', "{$user->name} has been marked inactive.");
-
-        // return redirect(request()->route('manage_approval')); 
-    }
-
-    // Remove account
-    public function removeAccount($userId)
-    {
-        $user = User::findOrFail($userId);
-        $user->delete(); // This permanently deletes the account
-       
-    }
-
-    //Inactive Students table
-    //Mark as active
-     public function markActive($userId)
-    {
-        $user = User::find($userId);
-        $user->update(['account_status' => 'active']);
-        session()->flash('message', "{$user->name} has been marked active.");
-
-        // return redirect(request()->route('manage_approval')); 
-    }
-
-    #[Url]
-    public $selectedStatus = 'Active Students';
-   
-
-    // #[Url]
-    // public $selectedStatus_level = 'All';
-
-    // #[Url]
-    // public $selectedStatus_course = 'All';
-
-
-    // Set active dropdown for active & inactive
-
-    // public function selectStatus($status)
-    // {
-    //     $this->selectedStatus = $status;
-    // }
     public function render()
     {
-        // Query builder
-        $users = User::query();
+        // $users = User::query()
+        //     ->where('status', 'approved')
+        //     ->where('role', 'user')
+        //     ->when($this->selectedStatus != 'Active Students', function($query) {
+        //         $query->where('account_status', $this->selectedStatus);
+        //     })
+        //     ->orderBy($this->sortField, $this->sortDirection)
+        //     ->paginate(5); 
+        //     // $this->perPage
 
-        // Base filters: role and status
-        $users->where('status', 'approved')
-            ->where('role', 'user');
-
-        // Active/Inactive conditions
-        if ($this->selectedStatus == 'Active Students') {
-            $users->where('account_status', 'active');
-        } else {
-            $users->where('account_status', 'inactive');
-        }
-
-        // // Year level filter
-        // if ($this->selectedStatus_level !== 'All') {
-        //     $users->where('year_level', $this->selectedStatus_level);
-        // } 
-
-        // // Course filter
-        // if ($this->selectedStatus_course !== 'All') {
-        //     $users->where('course', $this->selectedStatus_course);
-        // }
-
-        // Execute query
-        $users = $users
+        return view('livewire.management.filter-table', [
+            'users' => User::search($this->search)
+            ->where('status', 'approved')
+            ->where('role', 'user')
+            ->when($this->selectedStatus === 'Active Students', function ($query) {
+                $query->where('account_status', 'active');
+            }, function ($query) {
+                $query->where('account_status', 'inactive');
+            })
             ->orderBy($this->sortField, $this->sortDirection)
-            ->paginate(10); // you can change the number per page
-
-        return view('livewire.management.filter-table', ['users' => $users]);
+            ->paginate(5)
+        ]);
     }
-
 }
