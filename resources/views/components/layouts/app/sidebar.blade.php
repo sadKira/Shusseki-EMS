@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
 {{-- @can('no_dark_mode')
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    <head>
-        @include('partials.head_nod')
-    </head>
+<head>
+    @include('partials.head_nod')
+</head>
 @endcan --}}
 
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
@@ -14,9 +14,11 @@
     @include('partials.head')
 </head>
 
-
 <body class="min-h-screen bg-white dark:bg-zinc-800 font-display">
-    <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+
+    {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
+    {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
+    <flux:sidebar sticky stashable class=" border-zinc-200 bg-zinc-50 dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         {{-- <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"
@@ -26,6 +28,7 @@
         <x-app-logo />
 
         <flux:navlist variant="outline">
+
             <flux:navlist.group :heading="__('Platform')" class="grid">
 
                 {{-- Dashboard --}}
@@ -43,10 +46,17 @@
                             {{ __('Events Coverage') }}
                         </flux:navlist.item>
                     </flux:navlist.group>
-                    <flux:navlist.item icon="user" :href="route('manage_students')"
-                        :current="request()->routeIs(['manage_students', 'manage_approval'])" wire:navigate>
-                        {{ __('Students') }}
-                    </flux:navlist.item>
+                    <flux:navlist.group heading="Students" expandable>
+                        <flux:navlist.item icon="user" :href="route('manage_students')"
+                            :current="request()->routeIs(['manage_students'])" wire:navigate>
+                            {{ __('Manage Students') }}
+                        </flux:navlist.item>
+                        <flux:navlist.item icon="shield-check" :href="route('manage_approval')"
+                            :current="request()->routeIs(['manage_approval'])" wire:navigate>
+                            {{ __('Student Approval') }}
+                        </flux:navlist.item>
+                    </flux:navlist.group>
+
                 @endcan
 
                 @can('tsuushin_dashboard')
@@ -60,6 +70,7 @@
                 @endcan
 
             </flux:navlist.group>
+
         </flux:navlist>
 
         <flux:spacer />
@@ -155,25 +166,9 @@
             </flux:dropdown>
         </flux:navbar>
     </flux:header>
-    {{-- <flux:header
-        class="block! bg-white lg:bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
-        <flux:navbar class="lg:hidden w-full">
-            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
-            <flux:spacer />
-
-        </flux:navbar>
-
-        <flux:navbar scrollable>
-            <flux:navbar.item href="#" current>Dashboard</flux:navbar.item>
-            <flux:navbar.item badge="32" href="#">Orders</flux:navbar.item>
-            <flux:navbar.item href="#">Catalog</flux:navbar.item>
-            <flux:navbar.item href="#">Configuration</flux:navbar.item>
-        </flux:navbar>
-    </flux:header> --}}
-
+    {{-- Main content --}}
     {{ $slot }}
-
 
     @fluxScripts
     {{-- @livewireScripts --}}
