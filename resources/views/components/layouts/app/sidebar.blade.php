@@ -51,7 +51,7 @@
                             :current="request()->routeIs(['manage_students'])" wire:navigate>
                             {{ __('Manage Students') }}
                         </flux:navlist.item>
-                        <flux:navlist.item icon="shield-check" :href="route('manage_approval')"
+                        <flux:navlist.item icon="shield-check" badge="{{ $pendingCount }}" :href="route('manage_approval')"
                             :current="request()->routeIs(['manage_approval'])" wire:navigate>
                             {{ __('Student Approval') }}
                         </flux:navlist.item>

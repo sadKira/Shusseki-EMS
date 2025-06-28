@@ -1,4 +1,6 @@
 <div>
+
+    {{-- App Header --}}
     <div class="relative mb-6 w-full">
         <flux:heading size="xl" level="1">Manage Students</flux:heading>
         {{-- Breadcrumbs --}}
