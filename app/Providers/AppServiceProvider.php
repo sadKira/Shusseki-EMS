@@ -60,19 +60,29 @@ class AppServiceProvider extends ServiceProvider
         // Paginator::useBootstrapFour();
 
 
+        /**
+         * Notification badges
+         */
+
+        View::composer(['components.layouts.app.sidebar', 'livewire.management.manage-approval'], function ($view) {
+            $pendingCount = User::where('status', 'pending')->count();
+            $view->with('pendingCount', $pendingCount);
+        });
+
+
 
         /**
          * Dynamic Titles
          */
         View::composer('*', function ($view) {
             $user = Auth::user();
-            
+
             // Handle case when user is not authenticated
             if (!$user) {
                 $view->with('title', config('app.name'));
                 return;
             }
-                
+
             $titles = match ($user->role) {
                 UserRole::Admin, UserRole::Super_Admin, UserRole::Tsuushin, UserRole::User  => [
                     // Management
@@ -93,12 +103,11 @@ class AppServiceProvider extends ServiceProvider
                     'error' => "error",
                 ],
             };
-            
+
             $title = collect($titles)
                 ->first(fn($label, $route) => request()->routeIs($route)) ?? 'Dashboard';
 
             $view->with('title', $title);
         });
-
     }
 }

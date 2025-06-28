@@ -16,6 +16,17 @@
         </div>
     </div>
 
+    {{-- Sub Headings --}}
+    <div class="relative items-center mt-10">
+        <flux:heading size="xl" level="1">Pending Approval</flux:heading>
+        @if ($pendingCount > 1)
+            <flux:heading size="l" level="1" class="mt-2"> {{ $pendingCount }} Accounts Pending *</flux:heading>
+        @elseif ($pendingCount == 0)
+            <flux:heading size="l" level="1" class="mt-2"> No Accounts Pending *</flux:heading>
+        @else
+            <flux:heading size="l" level="1" class="mt-2"> {{ $pendingCount }} Account Pending *</flux:heading>
+        @endif
+    </div>
 
     {{-- Main text --}}
     <div class="flex items-center space-x-5">
@@ -50,11 +61,11 @@
             <table class="w-full text-sm text-left rtl:text-right text-zinc-600 dark:text-zinc-400 ">
                 <thead class="text-xs text-zinc-700 uppercase bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-300">
                     <tr>
-                        <th scope="col" class="p-4">
+                        {{-- <th scope="col" class="p-4">
                             <div class="flex items-center">
                                 <flux:checkbox.all wire:model="selectPage" />
                             </div>
-                        </th>
+                        </th> --}}
                         <th scope="col" class="px-6 py-3 whitespace-nowrap">
                             Student Name
                         </th>
@@ -73,12 +84,12 @@
                 <tbody>
                     @forelse ($users as $user)
                         <tr wire:key="user-{{ $user->id }} "
-                            class="bg-white border-b dark:bg-zinc-900 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800  {{ in_array((string) $user->id, $selected) ? 'bg-amber-100 dark:bg-amber-900' : 'bg-white dark:bg-zinc-900' }}">
-                            <td class="w-4 p-4">
+                            class="bg-white border-b dark:bg-zinc-900 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+                            {{-- <td class="w-4 p-4">
                                 <div class="flex items-center">
                                     <flux:checkbox value="{{ $user->id }}" wire:click="toggleSelect({{ $user->id }})" />
                                 </div>
-                            </td>
+                            </td> --}}
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
                                 {{ $user->name }}
@@ -93,17 +104,13 @@
                                 {{ $user->course }}
                             </td>
                             <td class="flex items-center space-between gap-4 px-6 py-4">
-                                {{-- <flux:button variant="primary" color="Amber" wire:click="approve({{ $user->id }})">
-                                    Approve</flux:button>
-                                <flux:button variant="danger" wire:confirm="Confirm account rejection."
-                                    wire:click="reject({{ $user->id }})">Reject</flux:button> --}}
-
                                 <flux:dropdown position="left" align="end">
                                     <flux:button icon="ellipsis-horizontal"></flux:button>
                                     <flux:menu>
                                         <flux:menu.item icon="check" wire:click="approve({{ $user->id }})">
                                             Approve</flux:menu.item>
-                                        <flux:menu.item icon="x-mark" variant="danger"  wire:confirm="Confirm account rejection." wire:click="reject({{ $user->id }})">
+                                        <flux:menu.item icon="x-mark" variant="danger"
+                                            wire:confirm="Confirm account rejection." wire:click="reject({{ $user->id }})">
                                             Reject</flux:menu.item>
                                     </flux:menu>
                                 </flux:dropdown>
@@ -120,7 +127,7 @@
             </table>
         </flux:checkbox.group>
     </div>
-    
+
     <div class="mt-4">
         {{ $users->links('pagination::tailwind') }}
     </div>

@@ -22,7 +22,7 @@ class ManageApproval extends Component
     {
         $user = User::findOrFail($userId);
         $user->delete(); // This permanently deletes the account
-       
+
     }
 
     // Multi select functionality
@@ -71,11 +71,20 @@ class ManageApproval extends Component
             $this->selected[] = $id;
         }
     }
-    
+
+    // public function render()
+    // {
+    //     $users = User::where('status', 'pending')->paginate(10);
+    //     return view('livewire.management.manage-approval', ['users' => $users]);
+    // }
+
     public function render()
     {
-        $users = User::where('status', 'pending')->paginate(10);
-        return view('livewire.management.manage-approval', ['users' => $users]);
+        $users = User::query()
+            ->where('status', 'pending')
+            ->latest()
+            ->paginate(10);
+
+        return view('livewire.management.manage-approval', compact('users'));
     }
-    
 }
