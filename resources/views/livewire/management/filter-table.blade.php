@@ -1,80 +1,118 @@
 <div>
-    <div class="mt-5 flex items-center justify-between max-lg:hidden">
-        <div class="flex items-center space-x-1">
+    <div class="flex flex-col">
 
-            {{-- Active and inactive students filter --}}
-            <flux:dropdown>
-                <flux:button variant="primary" color="amber" icon:trailing="chevron-down">{{ $selectedStatus }}
-                </flux:button>
-                <flux:menu>
-                    <flux:menu.radio.group wire:model.live="selectedStatus">
-                        <flux:menu.radio checked value="Active Students">Active Students
-                        </flux:menu.radio>
-                        <flux:menu.radio value="Inactive Students">Inactive Students
-                        </flux:menu.radio>
-                    </flux:menu.radio.group>
-                </flux:menu>
-            </flux:dropdown>
+        {{-- Sub Headings --}}
+        <div class="relative items-center">
+            <flux:heading size="xl" level="1">{{ $totalApproved }} {{$totalApproved > 1 ? "Users" : "User"}}</flux:heading>
+            <div class="flex items-center gap-2 mt-2">
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-4 text-green-500">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                    </svg>
+                    <flux:heading size="l" level="1">{{ $activeCount }} Active</flux:heading>
+                </div>
 
-            @if ($selectedStatus == 'Active Students')
+                <flux:separator vertical />
 
-                <flux:text class="text-xs ml-3 mr-2" variant="strong">Year Level:</flux:text>
-                {{-- Year level filter --}}
-                <flux:dropdown>
-                    <flux:button variant="ghost" icon:trailing="chevron-down">{{ $selectedStatus_level }}</flux:button>
-                    <flux:menu>
-                        <flux:menu.radio.group wire:model.live="selectedStatus_level">
-                            <flux:menu.radio checked value="">{{ $selectedStatus_level }}</flux:menu.radio>
-                            <flux:menu.radio value="1st Year">1st Year</flux:menu.radio>
-                            <flux:menu.radio value="2nd Year">2nd Year</flux:menu.radio>
-                            <flux:menu.radio value="3rd Year">3rd Year</flux:menu.radio>
-                            <flux:menu.radio value="4th Year">4th Year</flux:menu.radio>
-                        </flux:menu.radio.group>
-                    </flux:menu>
-                </flux:dropdown>
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-4 text-red-500">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                    </svg>
+                    <flux:heading size="l" level="1">{{ $inactiveCount }} Inactive</flux:heading>
+                </div>
+            </div>
+        </div>
 
-                <flux:text class="text-xs ml-3 mr-2" variant="strong">Course:</flux:text>
-                {{-- Course filter --}}
-                <flux:dropdown>
-                    <flux:button variant="ghost" icon:trailing="chevron-down">{{ $selectedStatus_course }}</flux:button>
-                    <flux:menu>
-                        <flux:menu.radio.group wire:model.live="selectedStatus_course">
-                            <flux:menu.radio checked value="">{{ $selectedStatus_course }}</flux:menu.radio>
-                            <flux:menu.radio value="Bachelor of Arts in International Studies">
-                                Bachelor of Arts in International Studies</flux:menu.radio>
-                            <flux:menu.radio value="Bachelor of Science in Information Systems">
-                                Bachelor of Science in Information Systems</flux:menu.radio>
-                            <flux:menu.radio value="Bachelor of Human Services">
-                                Bachelor of Human Services</flux:menu.radio>
-                            <flux:menu.radio value="Bachelor of Secondary Education">
-                                Bachelor of Secondary Education</flux:menu.radio>
-                        </flux:menu.radio.group>
-                    </flux:menu>
-                </flux:dropdown>
+        {{-- Filters --}}
+        <div class="mt-5 flex items-center justify-between max-lg:hidden">
+            <div class="flex items-center space-x-1">
 
-                {{-- Clear filter --}}
-                @if ($selectedStatus_level !== 'All' || $selectedStatus_course !== 'All' || $search !== '')
-                    <flux:button variant="primary" icon="x-mark" wire:click="clearFilters" color="red">
-                        Clear Filters
+                {{-- Active and inactive students filter --}}
+                <flux:radio.group color="amber" wire:model.live="selectedStatus" variant="segmented">
+                    <flux:radio value="Active Students" label="Active Students" />
+                    <flux:radio value="Inactive Students" label="Inactive Students" />
+                </flux:radio.group>
+
+                {{-- <flux:dropdown>
+                    <flux:button variant="primary" color="amber" icon:trailing="chevron-down" size="sm">{{
+                        $selectedStatus }}
                     </flux:button>
+                    <flux:menu>
+                        <flux:menu.radio.group wire:model.live="selectedStatus">
+                            <flux:menu.radio checked value="Active Students">Active Students
+                            </flux:menu.radio>
+                            <flux:menu.radio value="Inactive Students">Inactive Students
+                            </flux:menu.radio>
+                        </flux:menu.radio.group>
+                    </flux:menu>
+                </flux:dropdown> --}}
+
+                @if ($selectedStatus == 'Active Students')
+                    <flux:dropdown>
+                        <flux:button icon:trailing="chevron-down" variant="ghost">Filter</flux:button>
+
+                        <flux:menu>
+                            <flux:menu.submenu heading="Year Level">
+                                <flux:menu.radio.group wire:model.live="selectedStatus_level">
+                                    <flux:menu.radio checked value="All">All</flux:menu.radio>
+                                    <flux:menu.radio value="1st Year">1st Year</flux:menu.radio>
+                                    <flux:menu.radio value="2nd Year">2nd Year</flux:menu.radio>
+                                    <flux:menu.radio value="3rd Year">3rd Year</flux:menu.radio>
+                                    <flux:menu.radio value="4th Year">4th Year</flux:menu.radio>
+                                </flux:menu.radio.group>
+                            </flux:menu.submenu>
+
+                            <flux:menu.submenu heading="Course" wire:model.live="selectedStatus_course">
+                                <flux:menu.radio.group wire:model.live="selectedStatus_course">
+                                    <flux:menu.radio checked value="All">All</flux:menu.radio>
+                                    <flux:menu.radio value="Bachelor of Arts in International Studies">
+                                        Bachelor of Arts in International Studies</flux:menu.radio>
+                                    <flux:menu.radio value="Bachelor of Science in Information Systems">
+                                        Bachelor of Science in Information Systems</flux:menu.radio>
+                                    <flux:menu.radio value="Bachelor of Human Services">
+                                        Bachelor of Human Services</flux:menu.radio>
+                                    <flux:menu.radio value="Bachelor of Secondary Education">
+                                        Bachelor of Secondary Education</flux:menu.radio>
+                                </flux:menu.radio.group>
+                            </flux:menu.submenu>
+
+                            {{-- Clear filter --}}
+                            @if ($selectedStatus_level !== 'All' || $selectedStatus_course !== 'All' || $search !== '')
+                                <flux:menu.separator />
+                                <flux:menu.item icon="x-mark" wire:click="clearFilters" variant="danger">
+                                    Clear Filters
+                                </flux:menu.item>
+                            @endif
+
+                        </flux:menu>
+                    </flux:dropdown>
                 @endif
 
-            @endif
+            </div>
+
+            <div class="flex items-center gap-2">
+                @if ($search !== '')
+                    <flux:button variant="danger" icon="x-mark" wire:click="clearFilters" />
+                @endif
+                <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search" />
+            </div>
         </div>
 
-        <div class="flex items-cent gap-2">
-            <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search" />
-        </div>
     </div>
 
     {{-- Mobile view (A and I filter) --}}
-    <div class="mt-5 relative justify-between lg:hidden">
+    <div class="mt-5 relative justify-between lg:hidden">`
         <div class="relative space-x-1">
 
             <div class="flex items-center gap-2">
                 {{-- Active and inactive students filter --}}
                 <flux:dropdown>
-                    <flux:button variant="primary" color="amber" size="sm" icon:trailing="chevron-down">{{ $selectedStatus }}
+                    <flux:button variant="primary" color="amber" size="sm" icon:trailing="chevron-down">
+                        {{ $selectedStatus }}
                     </flux:button>
                     <flux:menu>
                         <flux:menu.radio.group wire:model.live="selectedStatus">
@@ -100,10 +138,11 @@
                         <flux:text class="text-xs ml-3 mr-2" variant="strong">Year Level:</flux:text>
                         {{-- Year level filter --}}
                         <flux:dropdown>
-                            <flux:button variant="ghost" icon:trailing="chevron-down">{{ $selectedStatus_level }}</flux:button>
+                            <flux:button variant="ghost" icon:trailing="chevron-down">{{ $selectedStatus_level }}
+                            </flux:button>
                             <flux:menu>
                                 <flux:menu.radio.group wire:model.live="selectedStatus_level">
-                                    <flux:menu.radio checked value="">{{ $selectedStatus_level }}</flux:menu.radio>
+                                    <flux:menu.radio checked value="All">All</flux:menu.radio>
                                     <flux:menu.radio value="1st Year">1st Year</flux:menu.radio>
                                     <flux:menu.radio value="2nd Year">2nd Year</flux:menu.radio>
                                     <flux:menu.radio value="3rd Year">3rd Year</flux:menu.radio>
@@ -117,10 +156,11 @@
                         <flux:text class="text-xs ml-3 mr-2" variant="strong">Course:</flux:text>
                         {{-- Course filter --}}
                         <flux:dropdown>
-                            <flux:button variant="ghost" icon:trailing="chevron-down">{{ $selectedStatus_course }}</flux:button>
+                            <flux:button variant="ghost" icon:trailing="chevron-down">{{ $selectedStatus_course }}
+                            </flux:button>
                             <flux:menu>
                                 <flux:menu.radio.group wire:model.live="selectedStatus_course">
-                                    <flux:menu.radio checked value="">{{ $selectedStatus_course }}</flux:menu.radio>
+                                    <flux:menu.radio checked value="All">All</flux:menu.radio>
                                     <flux:menu.radio value="Bachelor of Arts in International Studies">
                                         Bachelor of Arts in International Studies</flux:menu.radio>
                                     <flux:menu.radio value="Bachelor of Science in Information Systems">
@@ -134,10 +174,10 @@
                         </flux:dropdown>
                     </div>
 
-                @endif   
-            </div>         
+                @endif
+            </div>
         </div>
-        <div class="mt-5"> 
+        <div class="mt-5">
             <flux:input icon="magnifying-glass" placeholder="Search..." />
         </div>
     </div>
@@ -179,7 +219,7 @@
                             Email
                         </th>
                         <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                            Year Level
+                            Year
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Course
@@ -200,17 +240,17 @@
                                 {{ $user->email }}
                             </td>
                             <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
-                                {{ $user->year_level }}
+                                <span class="{{ $selectedStatus_level != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->year_level }}</span>
                             </td>
                             <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
-                                {{ $user->course }}
+                                <span class="{{ $selectedStatus_course != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->course }}</span>
                             </td>
                             <td class="flex items-center space-between gap-4 px-6 py-4">
                                 @if ($selectedStatus == 'Active Students')
                                     <flux:dropdown position="left" align="end">
                                         <flux:button icon="ellipsis-horizontal"></flux:button>
                                         <flux:menu>
-                                            <flux:menu.item icon="user-minus" wire:click="markInactive({{ $user->id }})">Mark as
+                                            <flux:menu.item variant="danger" icon="user-minus" wire:click="markInactive({{ $user->id }})">Mark as
                                                 Inactive</flux:menu.item>
                                         </flux:menu>
                                     </flux:dropdown>
