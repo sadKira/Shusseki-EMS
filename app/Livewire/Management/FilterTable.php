@@ -41,7 +41,6 @@ class FilterTable extends Component
         $user = User::find($userId);
         $user->update(['account_status' => 'active']);
         session()->flash('message', "{$user->name} has been marked active.");
-
     }
 
     // // Set active dropdown for active & inactive
@@ -94,26 +93,68 @@ class FilterTable extends Component
         }
     }
 
+    // public function render()
+    // {
+    //     return view('livewire.management.filter-table', [
+    //         'users' => User::search($this->search)
+    //             ->where('status', 'approved')
+    //             ->where('role', 'user')
+    //             ->when($this->selectedStatus === 'Active Students', function ($query) {
+    //                 $query->where('account_status', 'active');
+    //             }, function ($query) {
+    //                 $query->where('account_status', 'inactive');
+    //             })
+    //             ->when($this->selectedStatus_level != 'All' && $this->selectedStatus_level !== null,function ($query) {
+    //                 $query->where('year_level', $this->selectedStatus_level);
+    //             }) 
+    //             ->when($this->selectedStatus_course != 'All'  && $this->selectedStatus_course !== null, function ($query) {
+    //                 $query->where('course', $this->selectedStatus_course);
+    //             })
+
+    //             ->orderBy($this->sortField, $this->sortDirection)
+    //             ->paginate(5)
+    //     ]);
+    // }
+
     public function render()
     {
-        return view('livewire.management.filter-table', [
-            'users' => User::search($this->search)
-                ->where('status', 'approved')
-                ->where('role', 'user')
-                ->when($this->selectedStatus === 'Active Students', function ($query) {
-                    $query->where('account_status', 'active');
-                }, function ($query) {
-                    $query->where('account_status', 'inactive');
-                })
-                ->when($this->selectedStatus_level != 'All' && $this->selectedStatus_level !== null,function ($query) {
-                    $query->where('year_level', $this->selectedStatus_level);
-                }) 
-                ->when($this->selectedStatus_course != 'All'  && $this->selectedStatus_course !== null, function ($query) {
-                    $query->where('course', $this->selectedStatus_course);
-                })
+        // Base query: approved users with role = user
+        $baseQuery = User::where('status', 'approved')
+            ->where('role', 'user');
 
-                ->orderBy($this->sortField, $this->sortDirection)
-                ->paginate(5)
+        // Get total approved users count
+        $totalApproved = (clone $baseQuery)->count();
+
+        // Count of active and inactive users among approved users
+        $activeCount = (clone $baseQuery)
+            ->where('account_status', 'active')
+            ->count();
+
+        $inactiveCount = (clone $baseQuery)
+            ->where('account_status', 'inactive')
+            ->count();
+
+        // Build the filtered query for display
+        $filteredQuery = (clone $baseQuery)
+            ->when($this->selectedStatus === 'Active Students', function ($query) {
+                $query->where('account_status', 'active');
+            }, function ($query) {
+                $query->where('account_status', 'inactive');
+            })
+            ->when($this->selectedStatus_level !== 'All' && $this->selectedStatus_level !== null, function ($query) {
+                $query->where('year_level', $this->selectedStatus_level);
+            })
+            ->when($this->selectedStatus_course !== 'All' && $this->selectedStatus_course !== null, function ($query) {
+                $query->where('course', $this->selectedStatus_course);
+            })
+            ->search($this->search)
+            ->orderBy($this->sortField, $this->sortDirection);
+
+        return view('livewire.management.filter-table', [
+            'users' => $filteredQuery->paginate(10),
+            'totalApproved' => $totalApproved,
+            'activeCount' => $activeCount,
+            'inactiveCount' => $inactiveCount,
         ]);
     }
 }
