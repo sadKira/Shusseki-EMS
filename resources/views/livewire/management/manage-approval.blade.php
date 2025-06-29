@@ -16,6 +16,7 @@
         </div>
     </div>
 
+    {{-- Sub Headings --}}
     <div class="flex items-center mt-10 justify-between">
 
         {{-- Sub Headings --}}
@@ -36,7 +37,7 @@
         </div>
 
         {{-- Selection --}}
-        <div class="flex items-center space-x-5">
+        <div class="flex items-center">
 
             {{-- Selection Count Button --}}
             <flux:button icon="x-mark" variant="filled" wire:click="cancelSelection"
@@ -45,28 +46,28 @@
             </flux:button>
 
             {{-- Bulk Buttons Container --}}
-            <div class="{{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
-                <flux:button variant="primary" color="Amber" wire:click="bulkApprove">Approve</flux:button>
-                <flux:button variant="danger" wire:confirm="Confirm account rejection" wire:click="bulkReject">
-                    Reject</flux:button>
+            <div class="pl-3 {{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                <flux:dropdown position="bottom" align="end">
+                    <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions</flux:button>
+                    <flux:menu>
+                        <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected</flux:menu.item>
+                        <flux:menu.item icon="x-mark" variant="danger" wire:confirm="Confirm bulk account rejection"
+                            wire:click="bulkReject">
+                            Reject Selected</flux:menu.item>
+                        <flux:menu.separator />
+                        <flux:menu.item variant="danger" wire:confirm="Delete all existing accounts?"
+                            wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
+                    </flux:menu>
+                </flux:dropdown>
             </div>
 
         </div>
 
     </div>
 
-    {{-- @if ($selectPage && !$selectAll)
-    <div class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
-        You have selected {{ count($selected) }} users on this page.
-        <button wire:click="selectAll" class="text-blue-600 underline hover:text-blue-800">
-            Select all {{ $pendingCount }} users
-        </button>?
-    </div>
-    @endif --}}
-
-
-    <div
-        class="flex items-center justify-end mt-1 {{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+    {{-- Select All --}}
+    {{-- <div
+        class="flex items-center justify-end mt-1 {{ count($selected) >= 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
 
         <flux:text> You selected
             <strong>{{ count($selected) }}</strong> items, click to:
@@ -75,7 +76,7 @@
                 class="text-[var(--color-accent)] underline decoration-[var(--color-accent)]">Select All</span>
         </flux:button>
 
-    </div>
+    </div> --}}
 
 
     @script
