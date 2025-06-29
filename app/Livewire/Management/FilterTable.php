@@ -43,13 +43,6 @@ class FilterTable extends Component
         session()->flash('message', "{$user->name} has been marked active.");
     }
 
-    // // Set active dropdown for active & inactive
-
-    // // public function selectStatus($status)
-    // // {
-    // //     $this->selectedStatus = $status;
-    // // }
-
 
     // Clear filters
     public function clearFilters()
@@ -59,8 +52,6 @@ class FilterTable extends Component
         $this->search = '';
         $this->resetPage();
     }
-
-
 
     public $perPage = 10;
     public $search = '';
@@ -92,29 +83,6 @@ class FilterTable extends Component
             $this->sortDirection = 'asc';
         }
     }
-
-    // public function render()
-    // {
-    //     return view('livewire.management.filter-table', [
-    //         'users' => User::search($this->search)
-    //             ->where('status', 'approved')
-    //             ->where('role', 'user')
-    //             ->when($this->selectedStatus === 'Active Students', function ($query) {
-    //                 $query->where('account_status', 'active');
-    //             }, function ($query) {
-    //                 $query->where('account_status', 'inactive');
-    //             })
-    //             ->when($this->selectedStatus_level != 'All' && $this->selectedStatus_level !== null,function ($query) {
-    //                 $query->where('year_level', $this->selectedStatus_level);
-    //             }) 
-    //             ->when($this->selectedStatus_course != 'All'  && $this->selectedStatus_course !== null, function ($query) {
-    //                 $query->where('course', $this->selectedStatus_course);
-    //             })
-
-    //             ->orderBy($this->sortField, $this->sortDirection)
-    //             ->paginate(5)
-    //     ]);
-    // }
 
     public function render()
     {

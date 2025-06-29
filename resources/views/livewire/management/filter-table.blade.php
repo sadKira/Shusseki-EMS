@@ -3,7 +3,8 @@
 
         {{-- Sub Headings --}}
         <div class="relative items-center">
-            <flux:heading size="xl" level="1">{{ $totalApproved }} {{$totalApproved > 1 ? "Users" : "User"}}</flux:heading>
+            <flux:heading size="xl" level="1">{{ $totalApproved }} {{$totalApproved > 1 ? "Users" : "User"}}
+            </flux:heading>
             <div class="flex items-center gap-2 mt-2">
                 <div class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -185,8 +186,12 @@
                             </div>
 
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Email
+                        <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                            @if ($selectedStatus == 'Active Students')
+                                Email
+                            @else
+                                Status
+                            @endif
                         </th>
                         <th scope="col" class="px-6 py-3 whitespace-nowrap">
                             Year
@@ -206,21 +211,29 @@
                                 class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
                                 {{ $user->name }}
                             </th>
-                            <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
-                                {{ $user->email }}
+                            {{-- text-zinc-600 --}}
+                            <td class="px-6 py-4  dark:text-zinc-400">
+                                @if ($selectedStatus == 'Active Students')
+                                    {{ $user->email }}
+                                @else
+                                    <span class="text-[var(--color-amber-400)]">{{ $user->account_status }}</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
-                                <span class="{{ $selectedStatus_level != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->year_level }}</span>
+                                <span
+                                    class="{{ $selectedStatus_level != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->year_level }}</span>
                             </td>
                             <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
-                                <span class="{{ $selectedStatus_course != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->course }}</span>
+                                <span
+                                    class="{{ $selectedStatus_course != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->course }}</span>
                             </td>
                             <td class="flex items-center space-between gap-4 px-6 py-4">
                                 @if ($selectedStatus == 'Active Students')
                                     <flux:dropdown position="left" align="end">
                                         <flux:button icon="ellipsis-horizontal"></flux:button>
                                         <flux:menu>
-                                            <flux:menu.item variant="danger" icon="user-minus" wire:click="markInactive({{ $user->id }})">Mark as
+                                            <flux:menu.item variant="danger" icon="user-minus"
+                                                wire:click="markInactive({{ $user->id }})">Mark as
                                                 Inactive</flux:menu.item>
                                         </flux:menu>
                                     </flux:dropdown>

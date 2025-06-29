@@ -50,6 +50,7 @@ class ManageApproval extends Component
 
     public function selectAll()
     {
+
         $this->selectAll = true;
         $this->selected = $this->usersQuery->pluck('id')->map(fn($id) => (string) $id)->toArray();
 
@@ -74,6 +75,13 @@ class ManageApproval extends Component
         User::whereIn('id', $this->selected)->delete();
         $this->cancelSelection();
         session()->flash('message', 'Selected users rejected and deleted.');
+    }
+
+    public function totalbulkReject()
+    {
+        User::where('status', 'pending')->delete();
+        session()->flash('message', 'All pending users rejected and deleted.');
+        
     }
 
 
