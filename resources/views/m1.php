@@ -42,7 +42,7 @@ class ManageApproval extends Component
     public function updatedSelectPage($value)
     {
         if ($value) {
-            $this->selected = $this->users->pluck('id')->map(fn($id) => (string) $id)->toArray();
+            $this->selected = $this->users->pluck('id')->map(fn ($id) => (string) $id)->toArray();
         } else {
             $this->selected = [];
         }
@@ -51,8 +51,7 @@ class ManageApproval extends Component
     public function selectAll()
     {
         $this->selectAll = true;
-        $this->selected = $this->usersQuery->pluck('id')->map(fn($id) => (string) $id)->toArray();
-
+        $this->selected = $this->usersQuery->pluck('id')->map(fn ($id) => (string) $id)->toArray();
     }
 
     public function cancelSelection()
@@ -67,6 +66,7 @@ class ManageApproval extends Component
         User::whereIn('id', $this->selected)->update(['status' => 'approved']);
         $this->cancelSelection();
         session()->flash('message', 'Selected users approved successfully.');
+        $this->redirectRoute('manage_approval');
     }
 
     public function bulkReject()
@@ -74,8 +74,8 @@ class ManageApproval extends Component
         User::whereIn('id', $this->selected)->delete();
         $this->cancelSelection();
         session()->flash('message', 'Selected users rejected and deleted.');
+        $this->redirectRoute('manage_approval');
     }
-
 
     public function render()
     {

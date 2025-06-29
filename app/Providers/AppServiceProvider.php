@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Enums\UserRole;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
@@ -56,8 +57,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Default CSS Paginator
         Paginator::useTailwind();
-
         // Paginator::useBootstrapFour();
+
+        // Prevent lazy loading
+        Model::preventLazyLoading();
 
 
         /**
@@ -67,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['components.layouts.app.sidebar', 'livewire.management.manage-approval'], function ($view) {
             $pendingCount = User::where('status', 'pending')->count();
             $view->with('pendingCount', $pendingCount);
+            
         });
 
 

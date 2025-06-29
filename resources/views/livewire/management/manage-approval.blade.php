@@ -16,33 +16,64 @@
         </div>
     </div>
 
-    {{-- Sub Headings --}}
-    <div class="relative items-center mt-10">
-        <flux:heading size="xl" level="1">Pending Approval</flux:heading>
-        @if ($pendingCount > 1)
-            <flux:heading size="l" level="1" class="mt-2"> {{ $pendingCount }} Accounts Pending *</flux:heading>
-        @elseif ($pendingCount == 0)
-            <flux:heading size="l" level="1" class="mt-2"> No Accounts Pending *</flux:heading>
-        @else
-            <flux:heading size="l" level="1" class="mt-2"> {{ $pendingCount }} Account Pending *</flux:heading>
-        @endif
+    <div class="flex items-center mt-10 justify-between">
+
+        {{-- Sub Headings --}}
+        <div class="flex items-center gap-2">
+            <flux:heading size="xl" level="1">Pending Approval:</flux:heading>
+            @if ($pendingCount > 1)
+                <flux:heading size="xl" level="1" class="ml-2 underline decoration-[var(--color-accent)]">
+                    {{ $pendingCount }} Accounts Pending
+                </flux:heading>
+            @elseif ($pendingCount == 0)
+                <flux:heading size="xl" level="1" class="ml-2 underline decoration-[var(--color-accent)]"> No Accounts
+                    Pending</flux:heading>
+            @else
+                <flux:heading size="xl" level="1" class="ml-2 underline decoration-[var(--color-accent)]">
+                    {{ $pendingCount }} Account Pending
+                </flux:heading>
+            @endif
+        </div>
+
+        {{-- Selection --}}
+        <div class="flex items-center space-x-5">
+
+            {{-- Selection Count Button --}}
+            <flux:button icon="x-mark" variant="filled" wire:click="cancelSelection"
+                class="{{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                {{ count($selected) }} selected
+            </flux:button>
+
+            {{-- Bulk Buttons Container --}}
+            <div class="{{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                <flux:button variant="primary" color="Amber" wire:click="bulkApprove">Approve</flux:button>
+                <flux:button variant="danger" wire:confirm="Confirm account rejection" wire:click="bulkReject">
+                    Reject</flux:button>
+            </div>
+
+        </div>
+
     </div>
 
-    {{-- Main text --}}
-    <div class="flex items-center space-x-5">
-        {{-- Selection Count Button --}}
-        <flux:button {{-- icon="x-mark" --}} variant="filled" {{-- wire:click="cancelSelection" --}}
-            class="transition-opacity duration-300 {{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
-            {{ count($selected) }} selected
-        </flux:button>
+    {{-- @if ($selectPage && !$selectAll)
+    <div class="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
+        You have selected {{ count($selected) }} users on this page.
+        <button wire:click="selectAll" class="text-blue-600 underline hover:text-blue-800">
+            Select all {{ $pendingCount }} users
+        </button>?
+    </div>
+    @endif --}}
 
-        {{-- Bulk Buttons Container --}}
-        <div
-            class="transition-opacity duration-300 {{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
-            <flux:button variant="primary" color="Amber" wire:click="bulkApprove">Bulk Approve</flux:button>
-            <flux:button variant="danger" wire:confirm="Confirm account rejection" wire:click="bulkReject">Bulk
-                Reject</flux:button>
-        </div>
+
+    <div
+        class="flex items-center justify-end mt-1 {{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+
+        <flux:text> You selected
+            <strong>{{ count($selected) }}</strong> items, click to:
+        </flux:text>
+        <flux:button variant="ghost" wire:click="selectAll"><span
+                class="text-[var(--color-accent)] underline decoration-[var(--color-accent)]">Select All</span>
+        </flux:button>
 
     </div>
 
@@ -61,11 +92,11 @@
             <table class="w-full text-sm text-left rtl:text-right text-zinc-600 dark:text-zinc-400 ">
                 <thead class="text-xs text-zinc-700 uppercase bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-300">
                     <tr>
-                        {{-- <th scope="col" class="p-4">
+                        <th scope="col" class="p-4">
                             <div class="flex items-center">
-                                <flux:checkbox.all wire:model="selectPage" />
+                                <flux:checkbox.all wire:model.live="selectPage" />
                             </div>
-                        </th> --}}
+                        </th>
                         <th scope="col" class="px-6 py-3 whitespace-nowrap">
                             Student Name
                         </th>
@@ -85,11 +116,11 @@
                     @forelse ($users as $user)
                         <tr wire:key="user-{{ $user->id }} "
                             class="bg-white border-b dark:bg-zinc-900 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                            {{-- <td class="w-4 p-4">
+                            <td class="w-4 p-4">
                                 <div class="flex items-center">
-                                    <flux:checkbox value="{{ $user->id }}" wire:click="toggleSelect({{ $user->id }})" />
+                                    <flux:checkbox value="{{ $user->id }}" wire:model.live="selected" />
                                 </div>
-                            </td> --}}
+                            </td>
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
                                 {{ $user->name }}
