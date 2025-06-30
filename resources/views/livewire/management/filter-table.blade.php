@@ -32,58 +32,77 @@
         <div class="mt-10 flex items-center justify-between max-lg:hidden">
             <div class="flex items-center space-x-1">
 
-                {{-- Active and inactive students filter --}}
-                <flux:radio.group color="amber" wire:model.live="selectedStatus" variant="segmented">
-                    <flux:radio value="Active Students" label="Active Students" />
-                    <flux:radio value="Inactive Students" label="Inactive Students" />
-                </flux:radio.group>
+                @if ($selection)
 
-                @if ($selectedStatus == 'Active Students')
-                    <flux:dropdown>
-                        <flux:button icon:trailing="chevron-down" variant="ghost">Filter</flux:button>
+                    {{-- Active and inactive students filter --}}
+                    <flux:radio.group color="amber" wire:model.live="selectedStatus" variant="segmented">
+                        <flux:radio value="Active Students" label="Active Students" />
+                        <flux:radio value="Inactive Students" label="Inactive Students" />
+                    </flux:radio.group>
+                    
+                    @if ($selectedStatus == 'Active Students')
+                        <flux:dropdown>
+                            <flux:button icon:trailing="chevron-down" variant="ghost">Filter</flux:button>
 
-                        <flux:menu>
-                            <flux:menu.submenu heading="Year Level">
-                                <flux:menu.radio.group wire:model.live="selectedStatus_level">
-                                    <flux:menu.radio checked value="All">All</flux:menu.radio>
-                                    <flux:menu.radio value="1st Year">1st Year</flux:menu.radio>
-                                    <flux:menu.radio value="2nd Year">2nd Year</flux:menu.radio>
-                                    <flux:menu.radio value="3rd Year">3rd Year</flux:menu.radio>
-                                    <flux:menu.radio value="4th Year">4th Year</flux:menu.radio>
-                                </flux:menu.radio.group>
-                            </flux:menu.submenu>
+                            <flux:menu>
+                                <flux:menu.submenu heading="Year Level">
+                                    <flux:menu.radio.group wire:model.live="selectedStatus_level">
+                                        <flux:menu.radio checked value="All">All</flux:menu.radio>
+                                        <flux:menu.radio value="1st Year">1st Year</flux:menu.radio>
+                                        <flux:menu.radio value="2nd Year">2nd Year</flux:menu.radio>
+                                        <flux:menu.radio value="3rd Year">3rd Year</flux:menu.radio>
+                                        <flux:menu.radio value="4th Year">4th Year</flux:menu.radio>
+                                    </flux:menu.radio.group>
+                                </flux:menu.submenu>
 
-                            <flux:menu.submenu heading="Course" wire:model.live="selectedStatus_course">
-                                <flux:menu.radio.group wire:model.live="selectedStatus_course">
-                                    <flux:menu.radio checked value="All">All</flux:menu.radio>
-                                    <flux:menu.radio value="Bachelor of Arts in International Studies">
-                                        Bachelor of Arts in International Studies</flux:menu.radio>
-                                    <flux:menu.radio value="Bachelor of Science in Information Systems">
-                                        Bachelor of Science in Information Systems</flux:menu.radio>
-                                    <flux:menu.radio value="Bachelor of Human Services">
-                                        Bachelor of Human Services</flux:menu.radio>
-                                    <flux:menu.radio value="Bachelor of Secondary Education">
-                                        Bachelor of Secondary Education</flux:menu.radio>
-                                </flux:menu.radio.group>
-                            </flux:menu.submenu>
+                                <flux:menu.submenu heading="Course" wire:model.live="selectedStatus_course">
+                                    <flux:menu.radio.group wire:model.live="selectedStatus_course">
+                                        <flux:menu.radio checked value="All">All</flux:menu.radio>
+                                        <flux:menu.radio value="Bachelor of Arts in International Studies">
+                                            Bachelor of Arts in International Studies</flux:menu.radio>
+                                        <flux:menu.radio value="Bachelor of Science in Information Systems">
+                                            Bachelor of Science in Information Systems</flux:menu.radio>
+                                        <flux:menu.radio value="Bachelor of Human Services">
+                                            Bachelor of Human Services</flux:menu.radio>
+                                        <flux:menu.radio value="Bachelor of Secondary Education">
+                                            Bachelor of Secondary Education</flux:menu.radio>
+                                    </flux:menu.radio.group>
+                                </flux:menu.submenu>
 
-                            {{-- Clear filter --}}
-                            @if ($selectedStatus_level !== 'All' || $selectedStatus_course !== 'All' || $search !== '')
-                                <flux:menu.separator />
-                                <flux:menu.item icon="x-mark" wire:click="clearFilters" variant="danger">
-                                    Clear Filters
-                                </flux:menu.item>
-                            @endif
+                                {{-- Clear filter --}}
+                                @if ($selectedStatus_level !== 'All' || $selectedStatus_course !== 'All' || $search !== '')
+                                    <flux:menu.separator />
+                                    <flux:menu.item icon="x-mark" wire:click="clearFilters" variant="danger">
+                                        Clear Filters
+                                    </flux:menu.item>
+                                @endif
 
-                        </flux:menu>
-                    </flux:dropdown>
+                            </flux:menu>
+                        </flux:dropdown>
+
+                    @endif
+
+                    <flux:button variant="ghost" wire:click="toggleSelection">Select All</flux:button>
+
+                @else
+
+                    <flux:button variant="danger" icon="x-mark" wire:click="toggleSelection">Cancel</flux:button>
+
                 @endif
 
+
+
+                {{-- @if ($selection)
+                <flux:button variant="ghost" wire:click="toggleSelection">Select All</flux:button>
+                @else
+                <flux:button variant="danger" icon="x-mark" wire:click="toggleSelection">Cancel</flux:button>
+                @endif --}}
             </div>
 
             <div class="flex items-center gap-2">
                 @if ($search !== '')
-                    <flux:button variant="danger" icon="x-mark" wire:click="clearFilters" />
+                    <flux:button variant="danger" icon="x-mark" wire:click="clearFilters"
+                        class="{{ $search !== '' ? 'opacity-100' : 'opacity-0 pointer-events-none' }}" />
                 @endif
                 <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search" />
             </div>
@@ -265,6 +284,14 @@
 
         </flux:checkbox.group>
     </div>
+    {{-- @script
+    <script>
+        setInterval(() => {
+            $wire.$refresh()
+        }, 5000)
+    </script>
+    @endscript --}}
+
 
     <div class="mt-4">
         {{ $users->links('pagination::tailwind') }}

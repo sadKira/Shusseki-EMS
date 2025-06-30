@@ -55,7 +55,6 @@ class ManageApproval extends Component
 
         $this->selectAll = true;
         $this->selected = $this->usersQuery->pluck('id')->map(fn($id) => (string) $id)->toArray();
-
     }
 
     public function cancelSelection()
