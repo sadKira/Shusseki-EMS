@@ -50,11 +50,13 @@
                 <flux:dropdown position="bottom" align="end">
                     <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions</flux:button>
                     <flux:menu>
-                        <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected</flux:menu.item>
+                        <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected Accounts</flux:menu.item>
                         <flux:menu.item icon="x-mark" variant="danger" wire:confirm="Confirm bulk account rejection"
                             wire:click="bulkReject">
-                            Reject Selected</flux:menu.item>
+                            Reject Selected Accounts</flux:menu.item>
                         <flux:menu.separator />
+                        <flux:menu.item icon="check-badge"  wire:confirm="Approve all existing accounts?"
+                            wire:click="totalbulkApprove">Approve All Pending Accounts</flux:menu.item>
                         <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
                             wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
                     </flux:menu>
@@ -141,9 +143,9 @@
                 <thead class="text-xs text-zinc-700 uppercase bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-300">
                     <tr>
                         <th scope="col" class="p-4">
-                            <div class="flex items-center">
+                            {{-- <div class="flex items-center">
                                 <flux:checkbox.all wire:model.live="selectPage" />
-                            </div>
+                            </div> --}}
                         </th>
                         <th scope="col" class="px-6 py-3 whitespace-nowrap">
                             Student Name
