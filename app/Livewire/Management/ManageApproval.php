@@ -20,6 +20,7 @@ class ManageApproval extends Component
         $user = User::find($userId);
         $user->update(['status' => 'approved']);
         session()->flash('message', "{$user->name} has been approved.");
+        $this->dispatch('refreshPendingCount');
     }
 
     // Rejection
@@ -27,6 +28,7 @@ class ManageApproval extends Component
     {
         $user = User::findOrFail($userId);
         $user->delete();
+        $this->dispatch('refreshPendingCount');
     }
 
     public function getUsersProperty()
@@ -68,6 +70,7 @@ class ManageApproval extends Component
         User::whereIn('id', $this->selected)->update(['status' => 'approved']);
         $this->cancelSelection();
         session()->flash('message', 'Selected users approved successfully.');
+        $this->dispatch('refreshPendingCount');
     }
 
     public function bulkReject()
@@ -75,12 +78,19 @@ class ManageApproval extends Component
         User::whereIn('id', $this->selected)->delete();
         $this->cancelSelection();
         session()->flash('message', 'Selected users rejected and deleted.');
+        $this->dispatch('refreshPendingCount');
     }
 
     public function totalbulkReject()
     {
         User::where('status', 'pending')->delete();
         session()->flash('message', 'All pending users rejected and deleted.');
+
+        $this->selected = [];
+        $this->selectPage = false;
+        $this->selectAll = false;
+        
+        $this->dispatch('refreshPendingCount');
         
     }
 
