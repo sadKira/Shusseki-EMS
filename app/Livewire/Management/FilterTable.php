@@ -12,8 +12,17 @@ class FilterTable extends Component
 {
     use WithPagination;
 
-    // #[Url]
-    // public int $page = 1;
+    public $perPage = 10;
+    public $search = '';
+    public $year = '';
+    public $selection = true;
+    public $selectedStatus = 'Active Students';
+    public $selectedStatus_level = 'All';
+    public $selectedStatus_course = 'All';
+
+    public $sortField = 'name'; // default 
+    public $sortDirection = 'asc'; // 'desc'
+
 
     // Active students table
     // Mark as inactive
@@ -47,26 +56,27 @@ class FilterTable extends Component
     // Clear filters
     public function clearFilters()
     {
+        $this->selection = true;
         $this->selectedStatus_level = 'All';
         $this->selectedStatus_course = 'All';
         $this->search = '';
         $this->resetPage();
     }
 
-    public $perPage = 10;
-    public $search = '';
-    public $year = '';
-    public $selectedStatus = 'Active Students';
-
-    public $selectedStatus_level = 'All';
-    public $selectedStatus_course = 'All';
-
-    public $sortField = 'name'; // default 
-    public $sortDirection = 'asc'; // 'desc'
-
-    // Reset pagination when filters change
+    // Filters logic
     public function updating($field)
     {
+        // Reset filters when switching to active and inactive
+        if ($field === 'selectedStatus') {
+            $this->clearFilters();
+        }
+
+        // // Reset filters when switching to active and inactive
+        // if ($field === 'selectedStatus') {
+        //     $this->clearFilters();
+        // }
+
+        // Reset page (pagination) when filters added
         if (in_array($field, ['selectedStatus', 'selectedStatus_level', 'selectedStatus_course'])) {
             $this->resetPage();
         }
@@ -82,6 +92,17 @@ class FilterTable extends Component
             $this->sortField = $field;
             $this->sortDirection = 'asc';
         }
+    }
+
+    // Multi select
+    public function mount()
+    {
+        $this->selection = true;
+    }
+
+    public function toggleSelection()
+    {
+        $this->selection = !$this->selection;
     }
 
     public function render()
