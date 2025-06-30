@@ -18,7 +18,8 @@
 
     {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
     {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
-    <flux:sidebar sticky stashable class=" border-zinc-200 bg-zinc-50 dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
+    <flux:sidebar sticky stashable
+        class=" border-zinc-200 bg-zinc-50 dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         {{-- <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"
@@ -46,16 +47,26 @@
                             {{ __('Events Coverage') }}
                         </flux:navlist.item>
                     </flux:navlist.group>
-                    <flux:navlist.group heading="Students" expandable>
+                    @can('SA')
+                        <flux:navlist.group heading="Students" expandable>
+                            <flux:navlist.item icon="user" :href="route('manage_students')"
+                                :current="request()->routeIs(['manage_students'])" wire:navigate>
+                                {{ __('Manage Students') }}
+                            </flux:navlist.item>
+                            @livewire('management.manage-approval-badge')
+                            {{-- <flux:navlist.item icon="shield-check" badge="{{ $pendingCount }}"
+                                :href="route('manage_approval')" :current="request()->routeIs(['manage_approval'])" wire:poll.2s
+                                wire:navigate>
+                                {{ __('Student Approval') }}
+                            </flux:navlist.item> --}}
+                        </flux:navlist.group>
+                    @endcan
+                    @can('A')
                         <flux:navlist.item icon="user" :href="route('manage_students')"
                             :current="request()->routeIs(['manage_students'])" wire:navigate>
                             {{ __('Manage Students') }}
                         </flux:navlist.item>
-                        <flux:navlist.item icon="shield-check" badge="{{ $pendingCount }}" :href="route('manage_approval')"
-                            :current="request()->routeIs(['manage_approval'])" wire:navigate>
-                            {{ __('Student Approval') }}
-                        </flux:navlist.item>
-                    </flux:navlist.group>
+                    @endcan
 
                 @endcan
 
@@ -171,7 +182,29 @@
     {{ $slot }}
 
     @fluxScripts
-    {{-- @livewireScripts --}}
+    @livewireScripts
+
+    <script>
+        function refreshCsrfToken() {
+            fetch("{{ route('refresh-csrf') }}")
+                .then(response => response.json())
+                .then(data => {
+                    const token = data.token;
+                    document.querySelector('meta[name="csrf-token"]').setAttribute('content', token);
+
+                    // Also update Axios if you're using it
+                    if (window.axios) {
+                        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
+                    }
+
+                    // Livewire also uses the CSRF token from the meta tag
+                });
+        }
+
+        // Refresh CSRF token every 10 minutes (600,000 ms)
+        setInterval(refreshCsrfToken, 10 * 60 * 1000);
+    </script>
+
 </body>
 
 </html>

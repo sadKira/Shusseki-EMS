@@ -30,16 +30,28 @@ class AppServiceProvider extends ServiceProvider
          * Shusseki Gates
          */
 
-        Gate::define('tsuushin_dashboard', fn(User $user) => $user->role == UserRole::Tsuushin);
-        Gate::define('dashboard', fn(User $user) => $user->role == UserRole::User);
-
-
-
+        // Management
         Gate::define(
             'manage',
             fn(User $user) =>
             $user->role === UserRole::Super_Admin || $user->role === UserRole::Admin
         );
+
+        // Management Specific
+        // Super admin capabilities
+        Gate::define('SA', fn(User $user) => $user->role == UserRole::Super_Admin);
+
+        // Admin capabilities
+        Gate::define('A', fn(User $user) => $user->role == UserRole::Admin);
+
+
+        // Tsuushin & User
+        Gate::define('tsuushin_dashboard', fn(User $user) => $user->role == UserRole::Tsuushin);
+        Gate::define('dashboard', fn(User $user) => $user->role == UserRole::User);
+
+
+
+
 
         // Dark Mode
         // Gate::define(
@@ -70,9 +82,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['components.layouts.app.sidebar', 'livewire.management.manage-approval'], function ($view) {
             $pendingCount = User::where('status', 'pending')->count();
             $view->with('pendingCount', $pendingCount);
-            
         });
-
 
 
         /**

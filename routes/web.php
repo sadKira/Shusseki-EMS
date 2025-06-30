@@ -38,6 +38,11 @@ Route::get('/error', function () {
     return view('error');
 });
 
+// Token refreshing
+Route::get('/refresh-csrf', function () {
+    return response()->json(['token' => csrf_token()]);
+})->name('refresh-csrf');
+
 // User Approval
 Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
     // Protected routes
@@ -46,6 +51,7 @@ Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
 });
 
 // Management
+// Super Admin
 Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
     // Protected routes
     Route::get('admin/dashboard', AdminDashboard::class)->name('admin_dashboard');
@@ -54,7 +60,6 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/students-approval', ManageApproval::class)->name('manage_approval');
     Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
 });
-
 
 // User (Active)
 Route::middleware(['auth', 'verified', 'user', 'approved', 'active'])->group(function () {

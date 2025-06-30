@@ -17,7 +17,7 @@
     </div>
 
     {{-- Sub Headings --}}
-    <div class="flex items-center mt-10 justify-between">
+    <div class="flex items-center mt-10 justify-between max-lg:hidden">
 
         {{-- Sub Headings --}}
         <div class="flex items-center gap-2">
@@ -41,12 +41,12 @@
 
             {{-- Selection Count Button --}}
             <flux:button icon="x-mark" variant="filled" wire:click="cancelSelection"
-                class="{{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                class="{{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
                 {{ count($selected) }} selected
             </flux:button>
 
             {{-- Bulk Buttons Container --}}
-            <div class="pl-3 {{ count($selected) > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+            <div class="pl-3 {{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
                 <flux:dropdown position="bottom" align="end">
                     <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions</flux:button>
                     <flux:menu>
@@ -55,7 +55,7 @@
                             wire:click="bulkReject">
                             Reject Selected</flux:menu.item>
                         <flux:menu.separator />
-                        <flux:menu.item variant="danger" wire:confirm="Delete all existing accounts?"
+                        <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
                             wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
                     </flux:menu>
                 </flux:dropdown>
@@ -63,6 +63,53 @@
 
         </div>
 
+    </div>
+
+    {{-- Mobile view --}}
+    <div class="flex items-center mt-10 justify-between lg:hidden">
+        {{-- Sub Headings --}}
+        <div class="relative ">
+            <flux:heading size="xl" level="1">Pending Approval:</flux:heading>
+            @if ($pendingCount > 1)
+                <flux:heading size="xl" level="1" class="underline decoration-[var(--color-accent)]">
+                    {{ $pendingCount }} Pending
+                </flux:heading>
+            @elseif ($pendingCount == 0)
+                <flux:heading size="xl" level="1" class="underline decoration-[var(--color-accent)]"> No 
+                    Pending</flux:heading>
+            @else
+                <flux:heading size="xl" level="1" class="underline decoration-[var(--color-accent)]">
+                    {{ $pendingCount }} Pending
+                </flux:heading>
+            @endif
+        </div>
+
+        {{-- Selection --}}
+        <div class="flex flex-col justify-end">
+
+            {{-- Selection Count Button --}}
+            <flux:button icon="x-mark" variant="filled" size="sm" wire:click="cancelSelection"
+                class="{{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                {{ count($selected) }} selected
+            </flux:button>
+
+            {{-- Bulk Buttons Container --}}
+            <div class="mt-1 {{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                <flux:dropdown position="bottom" align="end">
+                    <flux:button size="sm" icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions</flux:button>
+                    <flux:menu>
+                        <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected</flux:menu.item>
+                        <flux:menu.item icon="x-mark" variant="danger" wire:confirm="Confirm bulk account rejection"
+                            wire:click="bulkReject">
+                            Reject Selected</flux:menu.item>
+                        <flux:menu.separator />
+                        <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
+                            wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
+                    </flux:menu>
+                </flux:dropdown>
+            </div>
+
+        </div>
     </div>
 
     {{-- Select All --}}

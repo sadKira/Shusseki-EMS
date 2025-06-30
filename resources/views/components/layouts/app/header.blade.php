@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
 {{-- @can('no_dark_mode')
-    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    <head>
-        @include('partials.head_nod')
-    </head>
+<head>
+    @include('partials.head_nod')
+</head>
 @endcan --}}
 
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
@@ -121,6 +121,29 @@
     {{ $slot }}
 
     @fluxScripts
+    @livewireScripts
+    
+    <script>
+        function refreshCsrfToken() {
+            fetch("{{ route('refresh-csrf') }}")
+                .then(response => response.json())
+                .then(data => {
+                    const token = data.token;
+                    document.querySelector('meta[name="csrf-token"]').setAttribute('content', token);
+
+                    // Also update Axios if you're using it
+                    if (window.axios) {
+                        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
+                    }
+
+                    // Livewire also uses the CSRF token from the meta tag
+                });
+        }
+
+        // Refresh CSRF token every 10 minutes (600,000 ms)
+        setInterval(refreshCsrfToken, 10 * 60 * 1000);
+    </script>
+
 </body>
 
 </html>
