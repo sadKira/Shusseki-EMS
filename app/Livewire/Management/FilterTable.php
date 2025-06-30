@@ -12,16 +12,38 @@ class FilterTable extends Component
 {
     use WithPagination;
 
-    public $perPage = 10;
+    // Filtering
     public $search = '';
-    public $year = '';
     public $selection = true;
     public $selectedStatus = 'Active Students';
     public $selectedStatus_level = 'All';
     public $selectedStatus_course = 'All';
 
+    // Sorting
     public $sortField = 'name'; // default 
     public $sortDirection = 'asc'; // 'desc'
+
+    // Multi select
+    public $selected = [];
+    public $selectAll = false;
+    public $selectPage = false;
+
+    // Multi selection
+    public function updatedSelectPage($value)
+    {
+        if ($value) {
+            $this->selected = $this->users->pluck('id')->map(fn($id) => (string) $id)->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+
+    public function cancelSelection()
+    {
+        $this->selected = [];
+        $this->selectPage = false;
+        $this->selectAll = false;
+    }
 
 
     // Active students table
@@ -32,31 +54,110 @@ class FilterTable extends Component
         $user->update(['account_status' => 'inactive']);
         session()->flash('message', "{$user->name} has been marked inactive.");
 
-        // return redirect(request()->route('manage_approval')); 
+
     }
 
+    // Mark selected as inactive
+    public function bulkmarkInactive()
+    {
+        User::whereIn('id', $this->selected)->update(['account_status' => 'inactive']);
+        $this->cancelSelection();
+        session()->flash('message', 'Selected users marked inactive.');
+
+        $this->toggleSelection();
+      
+    }
+
+    // Mark ALL existing as inactive
+    public function totalbulkmarkInactive()
+    {
+        User::where('account_status', 'active')
+        ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
+        ->whereNotIn('status', ['pending'])
+        ->update(['account_status' => 'inactive']);
+        session()->flash('message', 'All pending users rejected and deleted.');
+
+        $this->toggleSelection();
+        $this->cancelSelection();
+
+    }
+
+    // Inactive Students table
     // Remove account
     public function removeAccount($userId)
     {
         $user = User::findOrFail($userId);
-        $user->delete(); // This permanently deletes the account
+        $user->delete(); 
 
     }
 
-    //Inactive Students table
-    //Mark as active
+    // Remove selected account
+    public function bulkremoveAccount()
+    {
+        User::whereIn('id', $this->selected)->delete();
+        $this->cancelSelection();
+        session()->flash('message', 'Selected users removed.');
+
+        $this->toggleSelection();
+
+    }
+
+    // Remove ALL existing inactive accounts
+    public function totalbulkremoveAccount()
+    {
+        User::where('account_status', 'inactive')
+        ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
+        ->whereNotIn('status', ['pending'])
+        ->delete();
+        session()->flash('message', 'All exisitng users removed.');
+
+        // dd(User::where('account_status', 'inactive')->toSql());
+
+        $this->toggleSelection();
+        $this->cancelSelection();
+
+    }
+
+    // Mark as active
     public function markActive($userId)
     {
         $user = User::find($userId);
         $user->update(['account_status' => 'active']);
         session()->flash('message', "{$user->name} has been marked active.");
+
     }
 
+    // Mark selected as active
+    public function bulkmarkActive()
+    {
+        User::whereIn('id', $this->selected)->update(['account_status' => 'active']);
+        $this->cancelSelection();
+        session()->flash('message', 'Selected users marked active.');
 
+        $this->toggleSelection();
+      
+    }
+
+    // Mark ALL existing as active
+    public function totalbulkmarkActive()
+    {
+        User::where('account_status', 'inactive')
+        ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
+        ->whereNotIn('status', ['pending'])
+        ->update(['account_status' => 'active']);
+        session()->flash('message', 'All users marked as active.');
+
+        $this->toggleSelection();
+        $this->cancelSelection();
+                
+    }
+    
     // Clear filters
     public function clearFilters()
     {
-        $this->selection = true;
+        $this->selected = [];
+        $this->selectPage = false;
+        $this->selectAll = false;
         $this->selectedStatus_level = 'All';
         $this->selectedStatus_course = 'All';
         $this->search = '';
@@ -70,11 +171,6 @@ class FilterTable extends Component
         if ($field === 'selectedStatus') {
             $this->clearFilters();
         }
-
-        // // Reset filters when switching to active and inactive
-        // if ($field === 'selectedStatus') {
-        //     $this->clearFilters();
-        // }
 
         // Reset page (pagination) when filters added
         if (in_array($field, ['selectedStatus', 'selectedStatus_level', 'selectedStatus_course'])) {
@@ -103,6 +199,9 @@ class FilterTable extends Component
     public function toggleSelection()
     {
         $this->selection = !$this->selection;
+        $this->selected = [];
+        $this->selectPage = false;
+        $this->selectAll = false;
     }
 
     public function render()

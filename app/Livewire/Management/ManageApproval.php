@@ -10,6 +10,7 @@ class ManageApproval extends Component
 {
     use WithPagination;
 
+    // Multi select
     public $selected = [];
     public $selectAll = false;
     public $selectPage = false;
@@ -41,6 +42,7 @@ class ManageApproval extends Component
         return User::query()->where('status', 'pending')->latest();
     }
 
+    // Update selection
     public function updatedSelectPage($value)
     {
         if ($value) {
@@ -64,6 +66,7 @@ class ManageApproval extends Component
         $this->selectAll = false;
     }
 
+    // Approve selected
     public function bulkApprove()
     {
         User::whereIn('id', $this->selected)->update(['status' => 'approved']);
@@ -72,6 +75,7 @@ class ManageApproval extends Component
         $this->dispatch('refreshPendingCount');
     }
 
+    // Reject selected
     public function bulkReject()
     {
         User::whereIn('id', $this->selected)->delete();
@@ -80,19 +84,33 @@ class ManageApproval extends Component
         $this->dispatch('refreshPendingCount');
     }
 
+    // Bulk appprove
+    public function totalbulkApprove()
+    {
+        User::where('status', 'pending')
+        ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
+        ->update(['status' => 'approved']);
+        session()->flash('message', 'All pending users approved.');
+
+        $this->cancelSelection();
+
+        $this->dispatch('refreshPendingCount');
+
+    }
+
+    // Bulk reject
     public function totalbulkReject()
     {
-        User::where('status', 'pending')->delete();
+        User::where('status', 'pending')
+        ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
+        ->delete();
         session()->flash('message', 'All pending users rejected and deleted.');
 
-        $this->selected = [];
-        $this->selectPage = false;
-        $this->selectAll = false;
-        
+        $this->cancelSelection();
+
         $this->dispatch('refreshPendingCount');
         
     }
-
 
     public function render()
     {
