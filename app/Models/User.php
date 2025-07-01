@@ -24,6 +24,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+
         'name',
         'email',
         'password',
@@ -79,11 +80,24 @@ class User extends Authenticatable
     //     return 'name';
     // }
 
+    // Search function
     public function scopeSearch($query, $value)
     {
         $query->where('name', 'like', "%{$value}%")
-        ->orWhere('email', 'like', "%{$value}%")
-        ->orWhere('year_level', 'like', "%{$value}%")
-        ->orWhere('course', 'like', "%{$value}%");
+            ->orWhere('email', 'like', "%{$value}%")
+            ->orWhere('year_level', 'like', "%{$value}%")
+            ->orWhere('course', 'like', "%{$value}%");
+    }
+
+    // pivot table relationship
+    public function attendedEvents()
+    {
+        return $this->belongsToMany(Event::class, 'event_attendance_logs')
+            ->withPivot('time_in', 'time_out', 'attendance_status');
+    }
+
+    public function attendanceLogs()
+    {
+        return $this->hasMany(EventAttendanceLog::class);
     }
 }
