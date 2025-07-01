@@ -64,7 +64,7 @@
                     @can('A')
                         <flux:navlist.item icon="user" :href="route('manage_students')"
                             :current="request()->routeIs(['manage_students'])" wire:navigate>
-                            {{ __('Manage Students') }}
+                            {{ __('Student List') }}
                         </flux:navlist.item>
                     @endcan
 
