@@ -453,7 +453,7 @@
                                 @if ($selectedStatus == 'Active Students')
                                     {{ $user->email }}
                                 @else
-                                    <span class="text-[var(--color-amber-400)]">{{ $user->account_status }}</span>
+                                    <span class="text-[var(--color-amber-400)]">{{ $user->account_status->label() }}</span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">

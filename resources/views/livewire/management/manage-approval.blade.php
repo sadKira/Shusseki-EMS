@@ -71,7 +71,7 @@
     <div class="flex items-center mt-10 justify-between lg:hidden">
         {{-- Sub Headings --}}
         <div class="relative ">
-            <flux:heading size="xl" level="1">Pending Approval:</flux:heading>
+            <flux:heading size="xl" level="1" class="text-nowrap">Pending Approval:</flux:heading>
             @if ($pendingCount > 1)
                 <flux:heading size="xl" level="1" class="underline decoration-[var(--color-accent)]">
                     {{ $pendingCount }} Pending
