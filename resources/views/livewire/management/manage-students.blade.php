@@ -2,7 +2,13 @@
 
     {{-- App Header --}}
     <div class="relative mb-6 w-full">
-        <flux:heading size="xl" level="1">Manage Students</flux:heading>
+        @can('SA')
+            <flux:heading size="xl" level="1">Manage Students</flux:heading>
+        @endcan
+        @can('A')
+            <flux:heading size="xl" level="1">Student List</flux:heading>
+        @endcan
+        
         {{-- Breadcrumbs --}}
         <div class="mt-2 flex">
             <flux:breadcrumbs>
