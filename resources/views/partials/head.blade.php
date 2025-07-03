@@ -18,6 +18,11 @@
     rel="stylesheet">
 {{-- <link rel="stylesheet" href="{{ asset('build/assets/app-2KYTgWL1.css') }}"> --}}
 
+{{-- Carousel --}}
+<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 {{-- @fluxAppearance --}}
 {{-- @livewireStyles --}}

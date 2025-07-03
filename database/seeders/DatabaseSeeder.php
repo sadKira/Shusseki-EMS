@@ -3,9 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Tag;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,12 +17,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            SuperAdminSeeder::class,
+            AdminSeeder::class,
+            TsuushinSeeder::class
+        ]);
+
         User::factory(30)->create();
 
-        // $this->call([
-        //     SuperAdminSeeder::class,
-        //     AdminSeeder::class,
-        //     TsuushinSeeder::class
-        // ]);
+        $tags = collect([
+            Tag::create(['tag' => 'required']),
+            Tag::create(['tag' => 'not_required']),
+        ]);
+
+        Event::factory(10)
+            ->hasAttached($tags) 
+            ->create();
+
+       
+
     }
 }
+

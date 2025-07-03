@@ -100,7 +100,7 @@
                     Empowering organizers and students through modern, intuitive tools. With—SHUSSEKI
                 </p>
                 <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-                    <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-gold text-white hover:bg-gold/90 transition-colors duration-200">
+                    <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-[var(--color-accent)] text-white hover:bg-gold/90 transition-colors duration-200">
                         Get Started</a>
                 </div>
             </div>

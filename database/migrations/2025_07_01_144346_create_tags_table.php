@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->enum('tag', ['required', 'not_required'])->nullable();
             $table->timestamps();
         });
     }

@@ -1,30 +1,24 @@
-// import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
-
-
-// import anchor from "@alpinejs/anchor";
-// import collapse from "@alpinejs/collapse";
- 
-// Alpine.plugin(anchor);
-// Alpine.plugin(collapse);
- 
-// const modules = import.meta.glob("./plugins/**/*.js", { eager: true });
- 
-// for (const path in modules) {
-//     Alpine.plugin(modules[path].default);
-// }
- 
-// Alpine.start();
-
-// document.addEventListener(
-//     "alpine:init",
-//     () => {
-//         const modules = import.meta.glob("./plugins/**/*.js", { eager: true });
- 
-//         for (const path in modules) {
-//             window.Alpine.plugin(modules[path].default);
-//         }
-//         window.Alpine.plugin(collapse);
-//         window.Alpine.plugin(anchor);
-//     },
-//     { once: true },
-// );
+// Carousel
+var swiper = new Swiper(".multiple-slide-carousel", {
+    loop: true,
+    slidesPerView: 3,
+    spaceBetween: 20,
+    navigation: {
+        nextEl: ".multiple-slide-carousel .swiper-button-next",
+        prevEl: ".multiple-slide-carousel .swiper-button-prev",
+    },
+    breakpoints: {
+        1920: {
+            slidesPerView: 3,
+            spaceBetween: 30
+        },
+        1028: {
+            slidesPerView: 2,
+            spaceBetween: 30
+        },
+        990: {
+            slidesPerView: 1,
+            spaceBetween: 0
+        }
+    }
+});
