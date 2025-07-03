@@ -42,16 +42,17 @@
 
     --color-pg-accent :var(--color-amber-400) */
 
-    /* Shusseki */
+    
+    /* Shusseki
     --color-blue: #1E2939;
     --color-gold: #C88C00;
     /* --color-white: #FDFDFD; */
 
-    --color-primary: var(--color-blue);
+    /* --color-primary: var(--color-blue);
     /* --color-primary-foreground: var(--color-white); */
 
-    --color-secondary: var(--color-gold);
-    --color-secondary-foreground: #1E1E1E;
+    /* --color-secondary: var(--color-gold);
+    --color-secondary-foreground: #1E1E1E;   */
 }
 
 .pagination {
@@ -97,3 +98,20 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+
+
+/* CSS Code */
+.swiper-wrapper {
+    width: 150%;
+    height: max-content !important;
+    padding-bottom: 64px !important;
+    -webkit-transition-timing-function: linear !important;
+    transition-timing-function: linear !important;
+    position: relative;
+}
+
+.swiper-pagination-bullet {
+    background: #4f46e5;
+}
+ 

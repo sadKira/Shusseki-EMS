@@ -15,5 +15,22 @@
         </div>
     </div>
 
+    <div class="flex items-center justify-between">
+        {{-- Month--}}
+        <div class="mt-10">
+             <flux:heading size="xl" level="1">School Year: A.Y. 2024-2025</flux:heading>
+             <flux:heading size="l" level="2">Date: July 12, 2000 (Monday)</flux:heading>
+        </div>
+        {{-- Upcoming events --}}
+        <div>
+            <flux:heading size="xl" level="1">No Upcoming Events</flux:heading>
+        </div>
+    </div>
+
+    {{-- Events --}}
+    <div class="">
+        
+    </div>
+
 
 </div>

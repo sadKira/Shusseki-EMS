@@ -26,8 +26,20 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'year_level' => '2nd Year',
-            'course' => 'BSIS',
+            'year_level' => fake()->randomElement([
+                '1st Year',
+                '2nd Year',
+                '3rd Year',
+                '4th year',
+            ]),
+
+            'course' => fake()->randomElement([
+                'Bachelor of Arts in International Studies',
+                'Bachelor of Science in Information Systems',
+                'Bachelor of Human Services',
+                'Bachelor of Secondary Education',
+            ]),
+
             'role' => 'user',
             'status' => 'pending',
             'account_status' => 'active',

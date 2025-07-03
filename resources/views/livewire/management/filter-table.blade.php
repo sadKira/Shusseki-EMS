@@ -43,7 +43,7 @@
                 @if ($selection)
 
                     {{-- Active and inactive students filter --}}
-                    <flux:radio.group color="amber" wire:model.live="selectedStatus" variant="segmented">
+                    <flux:radio.group wire:model.live="selectedStatus" variant="segmented">
                         <flux:radio value="Active Students" label="Active Students" />
                         <flux:radio value="Inactive Students" label="Inactive Students" />
                     </flux:radio.group>
@@ -376,8 +376,6 @@
 
 
     </div>
-
-
 
 
     {{-- Table --}}

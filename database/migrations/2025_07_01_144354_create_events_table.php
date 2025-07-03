@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->timestamp('start_time');
-            $table->timestamp('end_time');
+            $table->string('location');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->string('school_year');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

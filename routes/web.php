@@ -32,7 +32,7 @@ Route::get('/', function () {
 
 // Testing
 Route::get('/test', function () {
-    return view('buffer');
+    return view('buffer_2');
 });
 Route::get('/error', function () {
     return view('error');
