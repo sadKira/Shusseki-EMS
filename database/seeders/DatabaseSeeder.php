@@ -17,24 +17,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            SuperAdminSeeder::class,
-            AdminSeeder::class,
-            TsuushinSeeder::class
-        ]);
+        // $this->call([
+        //     SuperAdminSeeder::class,
+        //     AdminSeeder::class,
+        //     TsuushinSeeder::class
+        // ]);
 
-        User::factory(30)->create();
+        User::factory(2)->create();
 
-        $tags = collect([
-            Tag::create(['tag' => 'required']),
-            Tag::create(['tag' => 'not_required']),
-        ]);
+        // $tags = collect([
+        //     Tag::create(['tag' => 'required']),
+        //     Tag::create(['tag' => 'not_required']),
+        // ]);
 
-        Event::factory(10)
-            ->hasAttached($tags) 
-            ->create();
-
-       
+        // Event::factory(10)
+        //     ->hasAttached($tags) 
+        //     ->create();
 
     }
 }
