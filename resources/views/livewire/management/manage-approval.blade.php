@@ -46,19 +46,24 @@
             </flux:button>
 
             {{-- Bulk Buttons Container --}}
-            <div class="pl-3 {{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+            <div class="ml-3 {{ $pendingCount > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
                 <flux:dropdown position="bottom" align="end">
                     <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions</flux:button>
                     <flux:menu>
-                        <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected Accounts</flux:menu.item>
-                        <flux:menu.item icon="x-mark" variant="danger" wire:confirm="Confirm bulk account rejection"
-                            wire:click="bulkReject">
-                            Reject Selected Accounts</flux:menu.item>
-                        <flux:menu.separator />
-                        <flux:menu.item icon="check-badge"  wire:confirm="Approve all existing accounts?"
-                            wire:click="totalbulkApprove">Approve All Pending Accounts</flux:menu.item>
-                        <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
-                            wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
+                        @if (count($selected) > 0)
+                            <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected Accounts</flux:menu.item>
+                            <flux:menu.item icon="x-mark" variant="danger" wire:confirm="Confirm bulk account rejection"
+                                wire:click="bulkReject">
+                                Reject Selected Accounts</flux:menu.item>
+                            
+                        @endif
+                        @if (count($selected) > 0)
+                        @else
+                            <flux:menu.item icon="check-badge"  wire:confirm="Approve all existing accounts?"
+                                wire:click="totalbulkApprove">Approve All Pending Accounts</flux:menu.item>
+                            <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
+                                wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
+                        @endif
                     </flux:menu>
                 </flux:dropdown>
             </div>
@@ -68,7 +73,7 @@
     </div>
 
     {{-- Mobile view --}}
-    <div class="flex items-center mt-10 justify-between lg:hidden">
+    <div class="relative mt-10 justify-between lg:hidden">
         {{-- Sub Headings --}}
         <div class="relative ">
             <flux:heading size="xl" level="1" class="text-nowrap">Pending Approval:</flux:heading>
@@ -87,29 +92,36 @@
         </div>
 
         {{-- Selection --}}
-        <div class="flex flex-col justify-end">
-
-            {{-- Selection Count Button --}}
-            <flux:button icon="x-mark" variant="filled" size="sm" wire:click="cancelSelection"
-                class="{{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
-                {{ count($selected) }} selected
-            </flux:button>
+        <div class="mt-10 flex items-center ">
 
             {{-- Bulk Buttons Container --}}
-            <div class="mt-1 {{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+            <div class="{{ $pendingCount > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
                 <flux:dropdown position="bottom" align="end">
                     <flux:button size="sm" icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions</flux:button>
                     <flux:menu>
-                        <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected</flux:menu.item>
-                        <flux:menu.item icon="x-mark" variant="danger" wire:confirm="Confirm bulk account rejection"
-                            wire:click="bulkReject">
-                            Reject Selected</flux:menu.item>
-                        <flux:menu.separator />
-                        <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
-                            wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
+                        @if (count($selected) > 0)
+                            <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected Accounts</flux:menu.item>
+                            <flux:menu.item icon="x-mark" variant="danger" wire:confirm="Confirm bulk account rejection"
+                                wire:click="bulkReject">
+                                Reject Selected Accounts</flux:menu.item>
+                            
+                        @endif
+                        @if (count($selected) > 0)
+                        @else
+                            <flux:menu.item icon="check-badge"  wire:confirm="Approve all existing accounts?"
+                                wire:click="totalbulkApprove">Approve All Pending Accounts</flux:menu.item>
+                            <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
+                                wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
+                        @endif
                     </flux:menu>
                 </flux:dropdown>
             </div>
+
+            {{-- Selection Count Button --}}
+            <flux:button icon="x-mark" variant="filled" size="sm" wire:click="cancelSelection"
+                class="ml-3 {{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                {{ count($selected) }} selected
+            </flux:button>
 
         </div>
     </div>
@@ -167,9 +179,11 @@
                         <tr wire:key="user-{{ $user->id }} "
                             class="bg-white border-b dark:bg-zinc-900 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
                             <td class="w-4 p-4">
-                                <div class="flex items-center">
-                                    <flux:checkbox value="{{ $user->id }}" wire:model.live="selected" />
-                                </div>
+                                @if ($pendingCount > 1)
+                                    <div class="flex items-center">
+                                        <flux:checkbox value="{{ $user->id }}" wire:model.live="selected" />
+                                    </div>
+                                @endif
                             </td>
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">

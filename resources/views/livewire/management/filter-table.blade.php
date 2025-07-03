@@ -118,22 +118,6 @@
                             {{ count($selected) }} selected
                         </flux:button>
 
-                        {{-- Bulk Buttons Container --}}
-                        <div class="gap-1 {{ count($selected) != 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
-                            <flux:dropdown position="bottom" align="end">
-                                <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
-                                </flux:button>
-                                <flux:menu>
-                                    <flux:menu.item icon="check" wire:click="bulkmarkInactive">Mark selected as inactive
-                                    </flux:menu.item>
-                                    <flux:menu.separator />
-                                    <flux:menu.item icon="user-minus" variant="danger"
-                                        wire:confirm="Mark all accounts as inactive?" wire:click="totalbulkmarkInactive">Mark
-                                        all existing accounts as inactive</flux:menu.item>
-                                </flux:menu>
-                            </flux:dropdown>
-                        </div>
-
                         {{-- if inactive students --}}
                     @else
                         {{-- Selection Count Button --}}
@@ -142,25 +126,6 @@
                             {{ count($selected) }} selected
                         </flux:button>
 
-                        {{-- Bulk Buttons Container --}}
-                        <div class="gap-1 {{ count($selected) != 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
-                            <flux:dropdown position="bottom" align="end">
-                                <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
-                                </flux:button>
-                                <flux:menu>
-                                    <flux:menu.item icon="check" wire:click="bulkmarkActive">Mark selected as active
-                                    </flux:menu.item>
-                                    <flux:menu.item icon="x-mark" wire:click="bulkremoveAccount">Remove selected account
-                                    </flux:menu.item>
-                                    <flux:menu.separator />
-                                    <flux:menu.item icon="user-plus" wire:confirm="Mark all existing accounts as active?"
-                                        wire:click="totalbulkmarkActive">Mark all accounts as active</flux:menu.item>
-                                    <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
-                                        wire:click="totalbulkremoveAccount">Remove all existing accounts
-                                    </flux:menu.item>
-                                </flux:menu>
-                            </flux:dropdown>
-                        </div>
                     @endif
 
                 @endif
@@ -168,13 +133,38 @@
             </div>
 
             {{-- Search --}}
-            <div class="flex items-center gap-2">
-                @if ($search !== '')
-                    <flux:button variant="danger" icon="x-mark" wire:click="clearFilters"
-                        class="{{ $search !== '' ? 'opacity-100' : 'opacity-0 pointer-events-none' }}" />
-                @endif
-                <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search" />
-            </div>
+            @if ($selection)
+                <div class="flex items-center gap-2">
+                    @if ($search !== '')
+                        <flux:button variant="danger" icon="x-mark" wire:click="clearFilters"
+                            class="{{ $search !== '' ? 'opacity-100' : 'opacity-0 pointer-events-none' }}" />
+                    @endif
+                    <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search" />
+                </div>
+            @else
+                {{-- Bulk Buttons Container --}}
+                <div>
+                    <flux:dropdown position="bottom" align="end">
+                        <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
+                        </flux:button>
+                        <flux:menu>
+                            @if (count($selected) > 0)
+                                <flux:menu.item icon="check" wire:click="bulkmarkActive">Mark selected as active
+                                </flux:menu.item>
+                                <flux:menu.item icon="x-mark" wire:click="bulkremoveAccount">Remove selected account
+                                </flux:menu.item>
+                            @else
+                                <flux:menu.item icon="user-plus" wire:confirm="Mark all existing accounts as active?"
+                                    wire:click="totalbulkmarkActive">Mark all accounts as active</flux:menu.item>
+                                <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
+                                    wire:click="totalbulkremoveAccount">
+                                    Remove all existing accounts
+                                </flux:menu.item>
+                            @endif
+                        </flux:menu>
+                    </flux:dropdown>
+                </div>
+            @endif
         </div>
 
     </div>
@@ -319,18 +309,19 @@
                             </flux:button>
 
                             {{-- Bulk Buttons Container --}}
-                            <div class="gap-1 {{ count($selected) != 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                            <div class="ml-3">
                                 <flux:dropdown position="bottom" align="end">
-                                    <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
-                                    </flux:button>
+                                    <flux:button icon="ellipsis-horizontal" variant="ghost"></flux:button>
                                     <flux:menu>
-                                        <flux:menu.item icon="check" wire:click="bulkmarkInactive">Mark selected as inactive
-                                        </flux:menu.item>
-                                        <flux:menu.separator />
-                                        <flux:menu.item icon="user-minus" variant="danger"
-                                            wire:confirm="Mark all accounts as inactive?" wire:click="totalbulkmarkInactive">
-                                            Mark
-                                            all existing accounts as inactive</flux:menu.item>
+                                        @if (count($selected) > 0)
+                                            <flux:menu.item icon="check" wire:click="bulkmarkInactive">Mark selected as inactive
+                                            </flux:menu.item>
+                                        @else
+                                            <flux:menu.item icon="user-minus" variant="danger"
+                                                wire:confirm="Mark all accounts as inactive?" wire:click="totalbulkmarkInactive">
+                                                Mark
+                                                all existing accounts as inactive</flux:menu.item>
+                                        @endif
                                     </flux:menu>
                                 </flux:dropdown>
                             </div>
@@ -345,22 +336,24 @@
                             </flux:button>
 
                             {{-- Bulk Buttons Container --}}
-                            <div class="gap-1 {{ count($selected) != 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                            <div class="ml-3">
                                 <flux:dropdown position="bottom" align="end">
-                                    <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
+                                    <flux:button icon="ellipsis-horizontal" variant="ghost">
                                     </flux:button>
                                     <flux:menu>
-                                        <flux:menu.item icon="check" wire:click="bulkmarkActive">Mark selected as active
-                                        </flux:menu.item>
-                                        <flux:menu.item icon="x-mark" wire:click="bulkremoveAccount">Remove selected account
-                                        </flux:menu.item>
-                                        <flux:menu.separator />
-                                        <flux:menu.item icon="user-plus" wire:confirm="Mark all existing accounts as active?"
-                                            wire:click="totalbulkmarkActive">Mark all accounts as active</flux:menu.item>
-                                        <flux:menu.item icon="trash" variant="danger"
-                                            wire:confirm="Delete all existing accounts?" wire:click="totalbulkremoveAccount">
-                                            Remove all existing accounts
-                                        </flux:menu.item>
+                                        @if (count($selected) > 0)
+                                            <flux:menu.item icon="check" wire:click="bulkmarkActive">Mark selected as active
+                                            </flux:menu.item>
+                                            <flux:menu.item icon="x-mark" wire:click="bulkremoveAccount">Remove selected account
+                                            </flux:menu.item>
+                                        @else
+                                            <flux:menu.item icon="user-plus" wire:confirm="Mark all existing accounts as active?"
+                                                wire:click="totalbulkmarkActive">Mark all accounts as active</flux:menu.item>
+                                            <flux:menu.item icon="trash" variant="danger"
+                                                wire:confirm="Delete all existing accounts?" wire:click="totalbulkremoveAccount">
+                                                Remove all existing accounts
+                                            </flux:menu.item>
+                                        @endif
                                     </flux:menu>
                                 </flux:dropdown>
                             </div>
@@ -510,7 +503,7 @@
 
         </flux:checkbox.group>
     </div>
-    
+
     {{-- @script
     <script>
         setInterval(() => {
