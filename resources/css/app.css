@@ -1,3 +1,7 @@
+@import './tallcraftui.css';
+@plugin '@tailwindcss/forms';
+@source '../../vendor/developermithu/tallcraftui/src/**/*.php';
+
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
@@ -28,7 +32,8 @@
     --color-accent-content: var(--color-amber-600);
     --color-accent-foreground: var(--color-amber-950);
 
-
+    --color-primary: #6d28d9;
+    --color-secondary: #a21caf
 }
 
 .pagination {
