@@ -1,6 +1,4 @@
-@import './tallcraftui.css';
-@plugin '@tailwindcss/forms';
-@source '../../vendor/developermithu/tallcraftui/src/**/*.php';
+
 
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
