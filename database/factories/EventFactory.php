@@ -30,6 +30,8 @@ class EventFactory extends Factory
             ]),
 
             'description' => fake()->paragraph(),
+            'date' => fake()->dateTimeBetween('2024-01-01', '2025-06-30')->format('Y-m-d'),
+
             'location' => fake()->randomElement([
                 'MKD AVR',
                 'MKD Sky Hall',
