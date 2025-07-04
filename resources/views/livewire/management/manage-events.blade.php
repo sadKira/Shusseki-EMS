@@ -18,8 +18,10 @@
     <div class="flex items-center justify-between">
         {{-- Month--}}
         <div class="mt-10">
-             <flux:heading size="xl" level="1">School Year: A.Y. 2024-2025</flux:heading>
-             <flux:heading size="l" level="2">Date: July 12, 2000 (Monday)</flux:heading>
+            <flux:heading size="xl" level="1">Monday, July 12</flux:heading>
+            <flux:heading size="lg" level="1">A.Y. 2024-25</flux:heading>
+
+
         </div>
         {{-- Upcoming events --}}
         <div>
@@ -28,9 +30,30 @@
     </div>
 
     {{-- Events --}}
-    <div class="">
-        
-    </div>
+
+    <section class="mt-10">
+        <flux:dropdown>
+            <flux:button variant="filled" icon:trailing="chevron-down">July</flux:button>
+            <flux:menu>
+                <flux:menu.radio.group>
+                    <flux:menu.radio checked>January</flux:menu.radio>
+                    <flux:menu.radio>February</flux:menu.radio>
+                    <flux:menu.radio>March</flux:menu.radio>
+                    <flux:menu.radio>April</flux:menu.radio>
+                    <flux:menu.radio>May</flux:menu.radio>
+                    <flux:menu.radio>June</flux:menu.radio>
+                    <flux:menu.radio>July</flux:menu.radio>
+                    <flux:menu.radio>August</flux:menu.radio>
+                    <flux:menu.radio>September</flux:menu.radio>
+                    <flux:menu.radio>October</flux:menu.radio>
+                    <flux:menu.radio>November</flux:menu.radio>
+                    <flux:menu.radio>December</flux:menu.radio>
+                </flux:menu.radio.group>
+            </flux:menu>
+        </flux:dropdown>
+        <flux:button variant="ghost">Filter</flux:button>
+    </section>
+    
 
 
 </div>
