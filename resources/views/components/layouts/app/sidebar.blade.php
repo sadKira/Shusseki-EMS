@@ -18,8 +18,7 @@
 
     {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
     {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
-    <flux:sidebar sticky stashable
-        class=" border-zinc-200 bg-zinc-50 dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
+    <flux:sidebar sticky stashable class=" border-zinc-900 bg-zinc-50 dark:bg-zinc-950 border-r">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         {{-- <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"
