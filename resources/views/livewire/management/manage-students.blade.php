@@ -1,4 +1,4 @@
-<div>
+<div class="h-full rounded-lg p-10 dark:bg-zinc-800">
 
     {{-- App Header --}}
     <div class="relative mb-6 w-full">
@@ -23,11 +23,11 @@
     </div>
 
     @script
-    <script>
-        setInterval(() => {
-            $wire.$refresh()
-        }, 10000)
-    </script>
+        <script>
+            setInterval(() => {
+                $wire.$refresh()
+            }, 10000)
+        </script>
     @endscript
 
     {{-- Table --}}
