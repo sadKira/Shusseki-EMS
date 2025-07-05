@@ -180,9 +180,6 @@
     {{-- Main content --}}
     {{ $slot }}
 
-    @fluxScripts
-    @livewireScripts
-
     <script>
         function refreshCsrfToken() {
             fetch("{{ route('refresh-csrf') }}")
@@ -202,7 +199,13 @@
 
         // Refresh CSRF token every 10 minutes (600,000 ms)
         setInterval(refreshCsrfToken, 10 * 60 * 1000);
+
+        
     </script>
+
+    @fluxScripts
+    @livewireScripts
+
 
 </body>
 

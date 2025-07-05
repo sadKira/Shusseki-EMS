@@ -35,4 +35,14 @@ class Event extends Model
         return $this->belongsToMany(User::class, 'event_attendance_logs')
                         ->withPivot('time_in', 'time_out', 'attendance_status');
     }
+
+
+
+    // Search function
+    public function scopeSearch($query, $value)
+    {
+        $query->where('title', 'like', "%{$value}%")
+            ->orWhere('location', 'like', "%{$value}%");
+
+    }
 }

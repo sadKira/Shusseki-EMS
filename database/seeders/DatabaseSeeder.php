@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\Tag;
+use App\Models\Setting;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,7 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SuperAdminSeeder::class,
             AdminSeeder::class,
-            TsuushinSeeder::class
+            TsuushinSeeder::class,
+            SchoolYearSeeder::class,
         ]);
 
         User::factory(2)->create();
@@ -34,6 +36,9 @@ class DatabaseSeeder extends Seeder
             ->hasAttached($tags) 
             ->create();
 
+        Setting::create([
+            'key' => 'current_school_year',
+            'value' => '2024-2025',
+        ]);
     }
 }
-
