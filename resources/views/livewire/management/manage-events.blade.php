@@ -19,7 +19,20 @@
         {{-- Month--}}
         <div class="mt-10">
             <flux:heading size="xl" level="1">Monday, July 12</flux:heading>
-            <flux:heading size="lg" level="1">A.Y. 2024-25</flux:heading>
+            {{-- <flux:heading size="lg" level="1">A.Y. 2024-25</flux:heading> --}}
+            <flux:dropdown>
+                <flux:button variant="filled" icon:trailing="chevron-down">A.Y. {{ $selectedSchoolYear }}</flux:button>
+                <flux:menu>
+                    <flux:menu.radio.group wire:model.live="selectedSchoolYear" livewire:navigated>
+                        @foreach ($schoolYears as $year)
+                            {{-- <div wire:key="{{ $year->id }}"> --}}
+                                <flux:menu.radio value="{{ $year }}">{{ $year }}</flux:menu.radio>
+                                {{--
+                            </div> --}}
+                        @endforeach
+                    </flux:menu.radio.group>
+                </flux:menu>
+            </flux:dropdown>
 
 
         </div>
@@ -39,23 +52,27 @@
 
                 {{-- Events this month --}}
                 <section class="w-full flex items-center justify-start mt-10 gap-2">
-                    <flux:heading size="lg" level="1">Events for the month of: JUNE</flux:heading>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-white inline-block"></span>
+                        <flux:heading size="lg" level="1">Events for the month of: {{ $selectedMonth }}</flux:heading>
+                    </div>
+
                     <flux:dropdown>
                         <flux:button variant="filled" icon="chevron-down" size="sm"></flux:button>
                         <flux:menu>
                             <flux:menu.radio.group>
-                                <flux:menu.radio checked>January</flux:menu.radio>
-                                <flux:menu.radio>February</flux:menu.radio>
-                                <flux:menu.radio>March</flux:menu.radio>
-                                <flux:menu.radio>April</flux:menu.radio>
-                                <flux:menu.radio>May</flux:menu.radio>
-                                <flux:menu.radio>June</flux:menu.radio>
-                                <flux:menu.radio>July</flux:menu.radio>
-                                <flux:menu.radio>August</flux:menu.radio>
-                                <flux:menu.radio>September</flux:menu.radio>
-                                <flux:menu.radio>October</flux:menu.radio>
-                                <flux:menu.radio>November</flux:menu.radio>
-                                <flux:menu.radio>December</flux:menu.radio>
+                                <flux:menu.radio checked value="January">January</flux:menu.radio>
+                                <flux:menu.radio value="February">February</flux:menu.radio>
+                                <flux:menu.radio value="March">March</flux:menu.radio>
+                                <flux:menu.radio value="April">April</flux:menu.radio>
+                                <flux:menu.radio value="May">May</flux:menu.radio>
+                                <flux:menu.radio value="June">June</flux:menu.radio>
+                                <flux:menu.radio value="July">July</flux:menu.radio>
+                                <flux:menu.radio value="August">August</flux:menu.radio>
+                                <flux:menu.radio value="September">September</flux:menu.radio>
+                                <flux:menu.radio value="October">October</flux:menu.radio>
+                                <flux:menu.radio value="November">November</flux:menu.radio>
+                                <flux:menu.radio value="December">December</flux:menu.radio>
                             </flux:menu.radio.group>
                         </flux:menu>
                     </flux:dropdown>
@@ -76,27 +93,31 @@
                             <!-- transition-transform duration-700 -->
                             <div
                                 class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap opacity-0 transition-transform duration-700">
-                                <div class="hs-carousel-slide px-3">
-                                    <div
-                                        class="flex flex-col bg-white shadow-2xs rounded-lg hover:shadow-lg hover:shadow-amber-400/20 focus:outline-hidden focus:shadow-lg focus:shadow-amber-400/20 transition dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-zinc-700/70 dark:hover:shadow-amber-400/20 dark:focus:shadow-amber-400/20">
-                                        <img class="w-full h-auto rounded-t-xl"
-                                            src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=320&q=80"
-                                            alt="Card Image">
-                                        <div class="p-4 md:p-5">
-                                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">
-                                                Card title
-                                            </h3>
-                                            <p class="mt-1 text-gray-500 dark:text-neutral-400">
-                                                Some quick example text to build on the card title and make up the
-                                                bulk of the card's content.
-                                            </p>
-                                            <p class="mt-5 text-xs text-gray-500 dark:text-neutral-500">
-                                                Last updated 5 mins ago
-                                            </p>
+
+                                {{-- Card --}}
+                                @foreach ($events as $event )
+                                    <div class="hs-carousel-slide px-3">
+                                        <div
+                                            class="flex flex-col bg-white shadow-2xs rounded-lg hover:shadow-lg hover:shadow-amber-400/20 focus:outline-hidden focus:shadow-lg focus:shadow-amber-400/20 transition dark:bg-zinc-950 dark:border-zinc-700 dark:shadow-zinc-700/70 dark:hover:shadow-amber-400/20 dark:focus:shadow-amber-400/20">
+                                            <img class="w-full h-auto rounded-t-xl"
+                                                src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=320&q=80"
+                                                alt="Card Image">
+                                            <div class="p-4 md:p-5">
+                                                <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+                                                    {{ $event->title }}
+                                                </h3>
+                                                <p class="mt-1 text-gray-500 dark:text-neutral-400">
+                                                    Some quick example text to build on the card title and make up the
+                                                    bulk of the card's content.
+                                                </p>
+                                                <p class="mt-5 text-xs text-gray-500 dark:text-neutral-500">
+                                                    Last updated 5 mins ago
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                               
+                                @endforeach
+
                             </div>
                         </div>
                     </div>
@@ -138,7 +159,11 @@
 
                 {{-- Events next month --}}
                 <section class="w-full flex items-center justify-start mt-10 gap-2">
-                    <flux:heading size="lg" level="1">Upcoming Events: AUGUST</flux:heading>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 bg-white inline-block"></span>
+                        <flux:heading size="lg" level="1">Upcoming Events: AUGUST</flux:heading>
+                    </div>
+
                     <flux:dropdown>
                         <flux:button variant="filled" icon="chevron-down" size="sm" class="gap-2"></flux:button>
                         <flux:menu>
@@ -168,10 +193,9 @@
 
                     <!-- Image section with fixed height -->
                     <div class="shrink-0 relative w-full sm:w-60 md:w-72 h-full">
-                    <img
-                        class="w-full h-full object-cover rounded-l-xl"
-                        src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80"
-                        alt="Card Image">
+                        <img class="w-full h-full object-cover rounded-l-xl"
+                            src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80"
+                            alt="Card Image">
                     </div>
 
 
@@ -201,7 +225,7 @@
         <flux:separator vertical variant="subtle" />
 
         {{-- Right side --}}
-        <div class="p-6 flex items-start"  style="flex: 30 1 0px;">
+        <div class="p-6 flex items-start" style="flex: 30 1 0px;">
             <div class="flex items-center justify-center h-full p-3 text-gray-800 dark:text-neutral-200">
                 <!-- Timeline -->
                 <div>
@@ -228,8 +252,8 @@
                         <div class="grow pt-0.5 pb-8">
                             <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
                                 <svg class="shrink-0 size-4 mt-1" xmlns="http://www.w3.org/2000/svg" width="24"
-                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z">
                                     </path>
                                     <polyline points="14 2 14 8 20 8"></polyline>
@@ -353,7 +377,9 @@
     </div>
 
     @script
-    <script>window.HSStaticMethods.autoInit();</script>
+    <script>
+        window.HSStaticMethods.autoInit();
+    </script>
     @endscript
 
 </div>
