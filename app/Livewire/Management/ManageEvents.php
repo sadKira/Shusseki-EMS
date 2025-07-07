@@ -4,6 +4,7 @@ namespace App\Livewire\Management;
 
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 use App\Models\Event;
 use App\Models\Setting;
 use App\Models\SchoolYear;
@@ -25,6 +26,7 @@ class ManageEvents extends Component
 
     public $selection = true;
 
+    // Mounting data
     public function mount()
     {
         // Get current month as a full capitalized string, e.g., "June"
@@ -36,14 +38,25 @@ class ManageEvents extends Component
 
     }
 
-    public function sortBy($field)
+    // Obtaining events for the next month
+    public function getNextMonthEventsProperty()
     {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
+        $startOfNextMonth = Carbon::parse($this->selectedMonth)->addMonth()->startOfMonth();
+        $endOfNextMonth = Carbon::parse($this->selectedMonth)->addMonth()->endOfMonth();
+
+        return Event::whereBetween('date', [$startOfNextMonth, $endOfNextMonth])->get();
+    }
+
+    // Timeline logic
+    public function getGroupedEventsProperty()
+    {
+        return Event::whereMonth('date', now()->month)
+            ->where('school_year', $this->selectedSchoolYear)
+            ->orderBy('date')
+            ->get()
+            ->groupBy(function ($event) {
+                return Carbon::parse($event->date)->format('Y-m-d');
+            });
     }
 
     // Setting school year
@@ -69,6 +82,16 @@ class ManageEvents extends Component
         $this->loadSchoolYears();
     }
 
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    }
+
     public function render()
     {
         $baseQuery = Event::with('tags');
@@ -80,13 +103,22 @@ class ManageEvents extends Component
             ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
                 $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month; // converts month to integer
                 $query->whereMonth('date', $monthNumber);
-            })
-            ->search($this->search)
-            ->orderBy($this->sortField, $this->sortDirection);
+            });
 
-            // dd($filteredQuery->toSql(), $filteredQuery->getBindings());
+        // Count of filtered events for the selected month/year
+        $filteredEventCount = (clone $filteredQuery)->count();
+
+        // Get the actual events (with tags, etc.)
+        $events = $filteredQuery
+            ->with('tags')
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->get();
+
+
+        // dd($filteredQuery->toSql(), $filteredQuery->getBindings());
         return view('livewire.management.manage-events', [
-            'events' => $filteredQuery->get(),
+            'events' => $events,
+            'eventCount' => $filteredEventCount
         ]);
     }
 }

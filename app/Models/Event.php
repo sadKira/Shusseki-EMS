@@ -17,6 +17,7 @@ class Event extends Model
         'end_time',
         'school_year',
         'image',
+        'status',
 
     ];
     

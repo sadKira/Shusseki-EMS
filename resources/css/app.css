@@ -36,6 +36,9 @@
     --color-zinc-900: var(--color-stone-900);
     --color-zinc-950: var(--color-stone-950);
 
+    --import: #11100e;
+    --card: #151411;
+
     --color-accent: var(--color-amber-400);
     --color-accent-content: var(--color-amber-600);
     --color-accent-foreground: var(--color-amber-950);
