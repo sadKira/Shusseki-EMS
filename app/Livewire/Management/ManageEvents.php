@@ -44,7 +44,9 @@ class ManageEvents extends Component
         $startOfNextMonth = Carbon::parse($this->selectedMonth)->addMonth()->startOfMonth();
         $endOfNextMonth = Carbon::parse($this->selectedMonth)->addMonth()->endOfMonth();
 
-        return Event::whereBetween('date', [$startOfNextMonth, $endOfNextMonth])->get();
+        return Event::where('school_year', $this->selectedSchoolYear)
+            ->whereBetween('date', [$startOfNextMonth, $endOfNextMonth])
+            ->get();
     }
 
     // Timeline logic

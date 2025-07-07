@@ -14,7 +14,7 @@
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-9500 font-display">
+<body class="min-h-screen bg-white dark:bg-zinc-950 font-display">
 
     {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
     {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
