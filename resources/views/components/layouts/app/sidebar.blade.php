@@ -14,11 +14,11 @@
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800 font-display">
+<body class="min-h-screen bg-white dark:bg-zinc-9500 font-display">
 
     {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
     {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
-    <flux:sidebar sticky stashable class=" border-zinc-900 bg-zinc-50 dark:bg-zinc-950 border-r">
+    <flux:sidebar sticky stashable class=" border-zinc-900 bg-zinc-50 dark:bg-(--import) border-r">
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         {{-- <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"
@@ -180,7 +180,10 @@
     {{-- Main content --}}
     {{ $slot }}
 
-    <script>
+
+
+
+    {{-- <script>
         function refreshCsrfToken() {
             fetch("{{ route('refresh-csrf') }}")
                 .then(response => response.json())
@@ -200,12 +203,30 @@
         // Refresh CSRF token every 10 minutes (600,000 ms)
         setInterval(refreshCsrfToken, 10 * 60 * 1000);
 
-        
-    </script>
+        // Initialize carousel on first load
+        document.addEventListener('livewire:load', function() {
+            if (window.HSStaticMethods) {
+                window.HSStaticMethods.autoInit();
+            }
+        });
+
+        // Re-initialize carousel after each Livewire update
+        document.addEventListener('livewire:update', function() {
+            if (window.HSStaticMethods) {
+                window.HSStaticMethods.autoInit();
+            }
+        });
+
+        // Also re-initialize on navigation
+        document.addEventListener('livewire:navigate', function() {
+            if (window.HSStaticMethods) {
+                window.HSStaticMethods.autoInit();
+            }
+        });
+    </script> --}}
 
     @fluxScripts
     @livewireScripts
-
 
 </body>
 

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->time('end_time');
             $table->string('school_year');
             $table->string('image')->nullable();
+            $table->enum('status', ['not_finished', 'finished'])->default('not_finished');
             $table->timestamps();
         });
     }

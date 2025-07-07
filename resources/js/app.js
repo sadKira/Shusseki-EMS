@@ -1,26 +1,17 @@
 import 'preline'
 
-// // Carousel
-// var swiper = new Swiper(".multiple-slide-carousel", {
-//     loop: true,
-//     slidesPerView: 3,
-//     spaceBetween: 20,
-//     navigation: {
-//         nextEl: ".multiple-slide-carousel .swiper-button-next",
-//         prevEl: ".multiple-slide-carousel .swiper-button-prev",
-//     },
-//     breakpoints: {
-//         1920: {
-//             slidesPerView: 3,
-//             spaceBetween: 30
-//         },
-//         1028: {
-//             slidesPerView: 2,
-//             spaceBetween: 30
-//         },
-//         990: {
-//             slidesPerView: 1,
-//             spaceBetween: 0
-//         }
-//     }
-// });
+// document.addEventListener('livewire:init', () => {
+//     // Runs after Livewire is loaded but before it's initialized
+//     // on the page...
+//     window.HSStaticMethods.autoInit();
+//     console.log('working')
+// })
+
+// document.addEventListener('livewire:initialized', () => {
+//     // Runs immediately after Livewire has finished initializing
+//     // on the page...
+//     window.HSStaticMethods.autoInit();
+//     console.log('work')
+// })
+
+

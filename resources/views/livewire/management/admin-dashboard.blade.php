@@ -3,28 +3,20 @@
         <flux:heading size="xl" level="1">{{ __('Super and Admin Dashboard') }}</flux:heading>
         <flux:subheading size="lg" class="mb-6">{{ __('Shusseki Events Management System') }}</flux:subheading>
         <flux:separator variant="subtle" />
+
+        <flux:dropdown>
+            <flux:button variant="filled" icon:trailing="chevron-down">A.Y. {{ $selectedSchoolYear }}</flux:button>
+            <flux:menu>
+                <flux:menu.radio.group wire:model.live="selectedSchoolYear">
+                    @foreach ($schoolYears as $year)
+                        {{-- <div wire:key="{{ $year->id }}"> --}}
+                            <flux:menu.radio value="{{ $year }}">{{ $year }}</flux:menu.radio>
+                            {{--
+                        </div> --}}
+                    @endforeach
+                </flux:menu.radio.group>
+            </flux:menu>
+        </flux:dropdown>
     </div>
-    <div class="flex w-full flex-1 flex-col gap-4 rounded-xl">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div
-                class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern
-                    class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
-            <div
-                class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern
-                    class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
-            <div
-                class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern
-                    class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
-        </div>
-        <div
-            class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-        </div>
-    </div>
+
 </div>
