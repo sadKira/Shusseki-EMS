@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Enums\EventStatus;
 
 class Event extends Model
 {
@@ -20,7 +21,11 @@ class Event extends Model
         'status',
 
     ];
-    
+
+    protected $casts = [
+        'status' => EventStatus::class,
+    ];
+
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
@@ -29,12 +34,12 @@ class Event extends Model
     public function attendanceLogs()
     {
         return $this->hasMany(EventAttendanceLog::class);
-    }  
+    }
 
-    public function attendees() 
+    public function attendees()
     {
         return $this->belongsToMany(User::class, 'event_attendance_logs')
-                        ->withPivot('time_in', 'time_out', 'attendance_status');
+            ->withPivot('time_in', 'time_out', 'attendance_status');
     }
 
 
@@ -44,6 +49,5 @@ class Event extends Model
     {
         $query->where('title', 'like', "%{$value}%")
             ->orWhere('location', 'like', "%{$value}%");
-
     }
 }

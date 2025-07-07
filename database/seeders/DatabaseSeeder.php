@@ -18,27 +18,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([
-        //     SuperAdminSeeder::class,
-        //     AdminSeeder::class,
-        //     TsuushinSeeder::class,
-        //     SchoolYearSeeder::class,
-        // ]);
+        $this->call([
+            SuperAdminSeeder::class,
+            AdminSeeder::class,
+            TsuushinSeeder::class,
+            SchoolYearSeeder::class,
+        ]);
 
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
         $tags = collect([
             Tag::updateOrCreate(['tag' => 'required']),
             Tag::updateOrCreate(['tag' => 'not_required']),
         ]);
 
-        Event::factory(4)
+        Event::factory(20)
             ->hasAttached($tags) 
             ->create();
 
-        // Setting::create([
-        //     'key' => 'current_school_year',
-        //     'value' => '2024-2025',
-        // ]);
+        Setting::create([
+            'key' => 'current_school_year',
+            'value' => '2024-2025',
+        ]);
     }
 }

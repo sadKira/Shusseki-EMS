@@ -30,7 +30,7 @@ class EventFactory extends Factory
             ]),
 
             'description' => fake()->paragraph(),
-            'date' => fake()->dateTimeBetween('2025-07-01','2025-07-30'),
+            'date' => fake()->dateTimeBetween('2025-07-01','2025-08-30'),
 
             'location' => fake()->randomElement([
                 'MKD AVR',
@@ -39,13 +39,13 @@ class EventFactory extends Factory
                 'PNJK-IS Sports Complex',
             ]),
 
-            // 'start_time' =>  Carbon::createFromTime(rand(8, 11), [0, 30][rand(0, 1)])
-            // ->format('H:i:s'),
-            // 'end_time' => Carbon::createFromTime(rand(13, 17), [0, 30][rand(0, 1)])
-            // ->format('H:i:s'),
+            'start_time' =>  Carbon::createFromTime(rand(8, 11), [0, 30][rand(0, 1)])
+            ->format('H:i:s'),
+            'end_time' => Carbon::createFromTime(rand(13, 17), [0, 30][rand(0, 1)])
+            ->format('H:i:s'),
 
-            'start_time' =>  '16:00:00',
-            'end_time' => '17:00:00',
+            // 'start_time' =>  '16:00:00',
+            // 'end_time' => '17:00:00',
 
             // 'school_year' => fake()->randomElement(['2023-2024', '2024-2025', '2025-2026']),
             'school_year' => fake()->randomElement(['2025-2026']),
