@@ -1,4 +1,4 @@
-<div class="h-full rounded-lg ">
+<div>
     {{-- App Header --}}
     <div class=" relative mb-10 w-full">
         {{-- Breadcrumbs --}}
@@ -30,6 +30,7 @@
                         <flux:heading size="xl" level="1">Events this <span
                                 class="text-[var(--color-accent)]">{{ $selectedMonth }}</span></flux:heading>
                     </div>
+                    <flux:button variant="ghost" href="{{route('create_event')}}" wire:navigate>Create Event</flux:button>
 
                     {{-- <flux:dropdown>
                         <flux:button variant="filled" icon="chevron-down" size="sm"></flux:button>
@@ -77,8 +78,10 @@
                                     @php
                                         $timezone = 'Asia/Manila';
                                         $now = now()->timezone($timezone);
-                                        $start = \Carbon\Carbon::today($timezone)->setTimeFromTimeString($event->start_time);
-                                        $end = \Carbon\Carbon::today($timezone)->setTimeFromTimeString($event->end_time);
+                                        
+                                        // Combine the actual date with the time strings
+                                        $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
+                                        $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                                     @endphp
                                     @if ($now->between($start, $end))
                                         <flux:badge color="amber" class="mr-10" variant="solid"><span class="text-black">In
@@ -139,8 +142,10 @@
                                     @php
                                         $timezone = 'Asia/Manila';
                                         $now = now()->timezone($timezone);
-                                        $start = \Carbon\Carbon::today($timezone)->setTimeFromTimeString($event->start_time);
-                                        $end = \Carbon\Carbon::today($timezone)->setTimeFromTimeString($event->end_time);
+                                        
+                                        // Combine the actual date with the time strings
+                                        $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
+                                        $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                                     @endphp
                                     @if ($now->between($start, $end))
                                         <flux:badge color="amber" class="mr-10" variant="solid"><span class="text-black">In
@@ -194,7 +199,7 @@
 
             <!-- Timeline -->
             <div class="bg-(--import) rounded-xl px-10 py-6 h-full">
-                <div class="h-147 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
+                <div class="h-149.5 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
                     <div class="mr-3">
                         @forelse ($this->groupedEvents as $date => $events)
                             <!-- Heading -->
@@ -226,6 +231,14 @@
                                             {{  \Carbon\Carbon::parse($event->start_time)->format('g:i A') }} -
                                             {{ \Carbon\Carbon::parse($event->end_time)->format('g:i A') }}
                                         </p>
+                                        @php
+                                            $timezone = 'Asia/Manila';
+                                            $now = \Carbon\Carbon::now()->timezone($timezone);
+                                           
+                                            // Combine the actual date with the time strings
+                                            $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
+                                            $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
+                                        @endphp
                                         @if ($now->between($start, $end))
                                             <flux:badge color="amber" class="mt-3" variant="solid"><span class="text-black">In
                                                     Progress</span></flux:badge>
@@ -309,30 +322,10 @@
 
     </div>
 
-
+    @section('scripts')
     <script>
-        // // Initialize carousel on first load
-        // document.addEventListener('livewire:load', function () {
-        //     if (window.HSStaticMethods) {
-        //         window.HSStaticMethods.autoInit();
-        //     }
-        // });
-
-        // // Re-initialize carousel after each Livewire update
-        // document.addEventListener('livewire:update', function () {
-        //     if (window.HSStaticMethods) {
-        //         window.HSStaticMethods.autoInit();
-        //     }
-        // });
-
-        // // Also re-initialize on navigation
-        // document.addEventListener('livewire:navigate', function () {
-        //     if (window.HSStaticMethods) {
-        //         window.HSStaticMethods.autoInit();
-        //     }
-        // });
-
         window.HSStaticMethods.autoInit();
     </script>
+    @endsection
 
 </div>

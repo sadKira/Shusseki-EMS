@@ -1,10 +1,13 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
+@import './pikaday-custom.css';
+
 /* Preline UI */
-@source "./node_modules/preline/dist/*.js";
-/* @import "./node_modules/preline/variants.css"; */
+@source "./node_modules/preline/dist.js";
+
 @import 'preline/variants.css';
+/* @import 'pikaday/css/pikaday.css'; */
 
 /* Plugins */
 @plugin "@tailwindcss/forms";
