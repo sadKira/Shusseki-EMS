@@ -38,7 +38,7 @@
                     </flux:navlist.item>
                     <flux:navlist.group heading="Events" expandable>
                         <flux:navlist.item icon="calendar" :href="route('manage_events')"
-                            :current="request()->routeIs(['manage_events'])" wire:navigate>
+                            :current="request()->routeIs(['manage_events', 'create_event'])" wire:navigate>
                             {{ __('Manage Events') }}
                         </flux:navlist.item>
                         <flux:navlist.item icon="envelope" :href="route('coverage_events')"
@@ -183,7 +183,7 @@
 
 
 
-    {{-- <script>
+    <script>
         function refreshCsrfToken() {
             fetch("{{ route('refresh-csrf') }}")
                 .then(response => response.json())
@@ -203,27 +203,48 @@
         // Refresh CSRF token every 10 minutes (600,000 ms)
         setInterval(refreshCsrfToken, 10 * 60 * 1000);
 
-        // Initialize carousel on first load
-        document.addEventListener('livewire:load', function() {
-            if (window.HSStaticMethods) {
-                window.HSStaticMethods.autoInit();
-            }
-        });
+    </script> 
 
-        // Re-initialize carousel after each Livewire update
-        document.addEventListener('livewire:update', function() {
-            if (window.HSStaticMethods) {
-                window.HSStaticMethods.autoInit();
-            }
-        });
+    <!-- Lodash -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
-        // Also re-initialize on navigation
-        document.addEventListener('livewire:navigate', function() {
-            if (window.HSStaticMethods) {
-                window.HSStaticMethods.autoInit();
+    <!-- Dropzone -->
+    <script src="https://cdn.jsdelivr.net/npm/dropzone@6.0.0-beta.2/dist/dropzone-min.js"></script>
+
+    {{-- Luxon --}}
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js"></script>
+
+    {{-- Pikaday --}}
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+
+
+    <!-- Preline -->
+    <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
+
+
+
+    @yield('scripts')
+    <script>
+        // DateTime is globally accessible only once
+        if (!window.DateTime) {
+            window.DateTime = luxon.DateTime;
+        }
+    </script>
+
+    <script>
+        document.addEventListener('livewire:navigated', () => {
+            console.log('Livewire navigated — reinitializing scripts');
+
+            // Re-run Pikaday initialization
+            initDatePicker();
+
+            // File Upload
+            if (window.HSFileUpload && typeof window.HSFileUpload.autoInit === 'function') {
+                window.HSFileUpload.autoInit();
             }
         });
-    </script> --}}
+    </script>
+
 
     @fluxScripts
     @livewireScripts

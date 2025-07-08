@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Models\Setting;
 use App\Models\SchoolYear;
 use Carbon\Carbon;
+use App\Enums\EventStatus;
 
 class ManageEvents extends Component
 {
@@ -46,6 +47,7 @@ class ManageEvents extends Component
 
         return Event::where('school_year', $this->selectedSchoolYear)
             ->whereBetween('date', [$startOfNextMonth, $endOfNextMonth])
+            ->orderBy('date')
             ->get();
     }
 
@@ -113,7 +115,9 @@ class ManageEvents extends Component
         // Get the actual events (with tags, etc.)
         $events = $filteredQuery
             ->with('tags')
-            ->orderBy($this->sortField, $this->sortDirection)
+            // ->orderBy($this->sortField, $this->sortDirection)
+            ->orderByRaw("CASE WHEN status = ? THEN 1 ELSE 0 END", [EventStatus::Finished->value]) // finished goes to bottom
+            ->orderBy('date', $this->sortDirection ?? 'asc')
             ->get();
 
 

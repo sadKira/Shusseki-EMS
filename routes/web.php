@@ -13,6 +13,7 @@ use App\Livewire\Management\ManageEvents;
 use App\Livewire\Management\ManageStudents;
 use App\Livewire\Management\ManageApproval;
 use App\Livewire\Management\CoverageEvents;
+use App\Livewire\Management\CreateEvent;
 
 use App\Livewire\User\Dashboard;
 use App\Livewire\User\Events;
@@ -32,7 +33,7 @@ Route::get('/', function () {
 
 // Testing
 Route::get('/test', function () {
-    return view('buffer_2');
+    return view('buffer');
 });
 Route::get('/error', function () {
     return view('error');
@@ -51,7 +52,7 @@ Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
 });
 
 // Management
-// Super Admin
+// Super // Admin
 Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
     // Protected routes
     Route::get('admin/dashboard', AdminDashboard::class)->name('admin_dashboard');
@@ -59,6 +60,8 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/students', ManageStudents::class)->name('manage_students');
     Route::get('admin/students-approval', ManageApproval::class)->name('manage_approval');
     Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
+
+    Route::get('admin/create-event', CreateEvent::class)->name('create_event');
 });
 
 // User (Active)

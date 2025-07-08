@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             Tag::updateOrCreate(['tag' => 'not_required']),
         ]);
 
-        Event::factory(20)
+        Event::factory(10)
             ->hasAttached($tags) 
             ->create();
 
