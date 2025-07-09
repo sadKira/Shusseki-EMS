@@ -98,30 +98,25 @@ class ManageEvents extends Component
 
     public function render()
     {
-        $baseQuery = Event::with('tags');
+        $baseQuery = Event::query(); 
 
         $filteredQuery = (clone $baseQuery)
             ->when($this->selectedSchoolYear !== 'All' && $this->selectedSchoolYear !== null, function ($query) {
                 $query->where('school_year', $this->selectedSchoolYear);
             })
             ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
-                $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month; // converts month to integer
+                $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
                 $query->whereMonth('date', $monthNumber);
             });
 
-        // Count of filtered events for the selected month/year
+        // Count of filtered events
         $filteredEventCount = (clone $filteredQuery)->count();
 
-        // Get the actual events (with tags, etc.)
         $events = $filteredQuery
-            ->with('tags')
-            // ->orderBy($this->sortField, $this->sortDirection)
-            ->orderByRaw("CASE WHEN status = ? THEN 1 ELSE 0 END", [EventStatus::Finished->value]) // finished goes to bottom
+            ->orderByRaw("CASE WHEN status = ? THEN 1 ELSE 0 END", [EventStatus::Finished->value])
             ->orderBy('date', $this->sortDirection ?? 'asc')
             ->get();
 
-
-        // dd($filteredQuery->toSql(), $filteredQuery->getBindings());
         return view('livewire.management.manage-events', [
             'events' => $events,
             'eventCount' => $filteredEventCount

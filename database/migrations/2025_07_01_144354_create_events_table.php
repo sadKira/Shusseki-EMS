@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('school_year');
             $table->string('image')->nullable();
             $table->enum('status', ['not_finished', 'finished', 'postponed'])->default('not_finished');
+            $table->enum('tag', ['not_required', 'required']);
             $table->timestamps();
         });
     }
