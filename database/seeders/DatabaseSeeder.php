@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Event;
-use App\Models\Tag;
 use App\Models\Setting;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,15 +25,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(10)->create();
-
-        $tags = collect([
-            Tag::updateOrCreate(['tag' => 'required']),
-            Tag::updateOrCreate(['tag' => 'not_required']),
-        ]);
-
-        Event::factory(10)
-            ->hasAttached($tags) 
-            ->create();
+    
+        Event::factory(10)->create();
 
         Setting::create([
             'key' => 'current_school_year',

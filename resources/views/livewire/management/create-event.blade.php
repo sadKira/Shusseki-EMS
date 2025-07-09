@@ -15,39 +15,83 @@
     </div>
 
     {{-- Form --}}
-    <div class=" px-50 flex flex-col justify-center">
+    <div class="w-full rounded-xl bg-white dark:bg-(--import) dark:border-stone-800 text-stone-800 shadow-xs">
+        <div class="px-20 py-8">
+            <form wire:submit="createEvent">
+                @csrf
+                <flux:fieldset>
+                    <flux:legend>Create an Event</flux:legend>
 
-        <div class="rounded-xl bg-white dark:bg-(--import) dark:border-stone-800 text-stone-800 shadow-xs">
-            <div class="px-20 py-8">
-                <form class="flex items-center gap-6">
-                    @csrf
+                    <div class="space-y-6">
+                        <div class="flex items-start space gap-x-6">
+                            <div class="grid grid-cols-6 gap-x-5 gap-y-6 w-full">
 
-                    <div class="flex flex-col justify-center gap-6 w-full">
-                        <!-- Event title -->
-                        <flux:input label="Event Title" type="text" required autofocus placeholder="Event title" />
+                                <div class="col-span-3">
+                                    <!-- Event title -->
+                                    <flux:input wire:model="title" label="Title" type="text" required autofocus placeholder="Event title" clearable />
+                                </div>
 
-                        <!-- Description -->
-                        <flux:textarea label="Event Description" required placeholder="Say something about the event"
-                            resize="none" rows="auto" />
+                                <div class="col-span-3">
+                                    {{-- Location --}}
+                                    <flux:input wire:model="location" label="Location" icon="map-pin" type="text" required placeholder="Event location" />
+                                </div>
 
-                        {{-- Date --}}
-                        <flux:input label="Event Date" type="text" id="datepicker" required autofocus placeholder="" />
+                                <div class="col-span-3">
+                                    {{-- Date --}}
+                                    <flux:input wire:model.lazy="date" label="Event Date" type="text" id="datepicker" required placeholder="" />
+                                </div>
 
+                                <div class="col-span-3">
+                                    {{-- Tag --}}
+                                    <flux:select wire:model="tag" label="Select school year" placeholder="Select tag">
+                                        @foreach ($tags as $tag )
+                                            <flux:select.option value="{{ $tag->value }}">{{ $tag->label() }}</flux:select.option>
+                                        @endforeach
+                                    </flux:select>
+                                </div>
 
+                                <div class="col-span-3">
+                                    {{-- Start time --}}
+                                    <flux:input wire:model="start_time" label="Start Time" icon="clock" type="time" required placeholder="Event location" />
+                                </div>
 
-                        <div class="flex items-center justify-end">
+                                <div class="col-span-3">
+                                    {{-- End time --}}
+                                    <flux:input wire:model="end_time" label="End Time" icon="clock" type="time" required placeholder="Event location" />
+                                </div>
+
+                                <div class="col-span-6">
+                                    {{-- Event image --}}
+                                    <flux:input type="file" wire:model="image" badge="Required" label="Upload Event Image"/>
+                                </div>
+                            </div>
+                            <!-- Separator -->
+                            <flux:separator vertical />
+
+                            <!-- Right column -->
+                            <div class="w-full gap-y-6 grid grid-cols-6">
+                                <div class="col-span-6">
+                                    <flux:textarea label="Description" wire:mdoel="description" required placeholder="Say something about the event"
+                                    resize="none" rows="auto" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex items-center">
                             <flux:button type="submit" variant="primary" class="w-full">
                                 {{ __('Create account') }}
                             </flux:button>
                         </div>
                     </div>
 
-                </form>
+                    
+                </flux:fieldset>
+                    
+            </form>
 
-            </div>
         </div>
-
     </div>
+
+    
 
 
     @section('scripts')
@@ -69,6 +113,9 @@
                 field.dataset.pikaday = 'initialized';
             }
 
+        </script>
+        <script>
+            window.HSStaticMethods.autoInit();
         </script>
     @endsection
 

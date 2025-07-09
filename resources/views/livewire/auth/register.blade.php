@@ -21,17 +21,17 @@
         <div class="grid grid-cols-2 gap-x-4 gap-y-6">
             <flux:select wire:model="year_level" :label="__('Year level')" :placeholder="__('Your year level')"
                 required>
-                <option>1st Year</option>
-                <option>2nd Year</option>
-                <option>3rd Year</option>
-                <option>4th Year</option>
+                <flux:select.option>1st Year</flux:select.option>
+                <flux:select.option>2nd Year</flux:select.option>
+                <flux:select.option>3rd Year</flux:select.option>
+                <flux:select.option>4th Year</flux:select.option>
             </flux:select>
 
             <flux:select wire:model="course" :label="__('Course')" :placeholder="__('Your course')" required>
-                <option>Bachelor of Arts in International Studies</option>
-                <option>Bachelor of Science in Information Systems</option>
-                <option>Bachelor of Human Services</option>
-                <option>Bachelor of Secondary Education</option>
+                <flux:select.option>Bachelor of Arts in International Studies</flux:select.option>
+                <flux:select.option>Bachelor of Science in Information Systems</flux:select.option>
+                <flux:select.option>Bachelor of Human Services</flux:select.option>
+                <flux:select.option>Bachelor of Secondary Education</flux:select.option>
             </flux:select>
         </div>
 

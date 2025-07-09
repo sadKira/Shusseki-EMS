@@ -52,6 +52,10 @@ class EventFactory extends Factory
             'school_year' => fake()->randomElement(['2025-2026']),
             'image' => 'null',
             'status' => 'not_finished',
+            'tag' => fake()->randomElement([
+                'required',
+                'not_required',
+            ]),
 
         ];
     }
