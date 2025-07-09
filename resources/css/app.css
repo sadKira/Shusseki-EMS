@@ -1,7 +1,12 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
+/* Pikadaday date picker */
 @import './pikaday-custom.css';
+
+/* Flatpckr time picker */
+@import './flatpickr-custom.css'
+/* @import 'flatpickr/dist/themes/dark.css'; */
 
 /* Preline UI */
 @source "./node_modules/preline/dist.js";
@@ -89,3 +94,4 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
