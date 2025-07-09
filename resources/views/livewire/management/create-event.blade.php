@@ -17,7 +17,7 @@
     {{-- Form --}}
     <div class="w-full rounded-xl bg-white dark:bg-(--import) dark:border-stone-800 text-stone-800 shadow-xs">
         <div class="px-20 py-8">
-            <form wire:submit="createEvent">
+            <form wire:submit.prevent="createEvent">
                 @csrf
                 <flux:fieldset>
                     <flux:legend>Create an Event</flux:legend>
@@ -28,41 +28,64 @@
 
                                 <div class="col-span-3">
                                     <!-- Event title -->
-                                    <flux:input wire:model="title" label="Title" type="text" required autofocus placeholder="Event title" clearable />
+                                    <flux:input wire:model="title" label="Title" type="text" required autofocus
+                                        placeholder="Event title" clearable />
                                 </div>
 
                                 <div class="col-span-3">
                                     {{-- Location --}}
-                                    <flux:input wire:model="location" label="Location" icon="map-pin" type="text" required placeholder="Event location" />
+                                    <flux:input wire:model="location" label="Location" icon="map-pin" type="text"
+                                        required placeholder="Event location" />
                                 </div>
 
                                 <div class="col-span-3">
                                     {{-- Date --}}
-                                    <flux:input wire:model.lazy="date" label="Event Date" type="text" id="datepicker" required placeholder="" />
+                                    <flux:input wire:model="date" label="Event Date" type="text" id="datepicker"
+                                        required placeholder="" />
                                 </div>
 
                                 <div class="col-span-3">
                                     {{-- Tag --}}
-                                    <flux:select wire:model="tag" label="Select school year" placeholder="Select tag">
-                                        @foreach ($tags as $tag )
-                                            <flux:select.option value="{{ $tag->value }}">{{ $tag->label() }}</flux:select.option>
+                                    <flux:select wire:model.lazy="tag" label="Select Event Tag"
+                                        placeholder="Select tag">
+                                        <flux:select.option value="">Select Event Tag</flux:select.option>
+                                        @foreach($tags as $tag)
+                                            <flux:select.option value="{{ $tag->value }}">{{ $tag->label() }}
+                                            </flux:select.option>
                                         @endforeach
                                     </flux:select>
                                 </div>
 
                                 <div class="col-span-3">
                                     {{-- Start time --}}
-                                    <flux:input wire:model="start_time" label="Start Time" icon="clock" type="time" required placeholder="Event location" />
+                                    {{--
+                                    <flux:input wire:model="start_time" label="Start Time" icon="clock" type="text"
+                                        required mask="99:99 aa" placeholder="HH:MM AM/PM" /> --}}
+                                    
+                                    <flux:input wire:model="start_time" label="Start Time" type="text" required
+                                        placeholder="Select time" x-data x-init="
+                                            flatpickr($el, {
+                                                enableTime: true,
+                                                noCalendar: true,
+                                                dateFormat: 'h:i K',
+                                                time_24hr: false,
+                                                onChange: function(selectedDates, dateStr) {
+                                                    $wire.set('start_time', dateStr);
+                                                }
+                                            });
+                                        " />
                                 </div>
 
                                 <div class="col-span-3">
                                     {{-- End time --}}
-                                    <flux:input wire:model="end_time" label="End Time" icon="clock" type="time" required placeholder="Event location" />
+                                    <flux:input wire:model="end_time" label="End Time" icon="clock" type="text" required
+                                        mask="99:99 aa" placeholder="HH:MM AM/PM" />
                                 </div>
 
                                 <div class="col-span-6">
                                     {{-- Event image --}}
-                                    <flux:input type="file" wire:model="image" badge="Required" label="Upload Event Image"/>
+                                    <flux:input type="file" wire:model="image" badge="Required"
+                                        label="Upload Event Image" />
                                 </div>
                             </div>
                             <!-- Separator -->
@@ -71,8 +94,8 @@
                             <!-- Right column -->
                             <div class="w-full gap-y-6 grid grid-cols-6">
                                 <div class="col-span-6">
-                                    <flux:textarea label="Description" wire:mdoel="description" required placeholder="Say something about the event"
-                                    resize="none" rows="auto" />
+                                    <flux:textarea label="Description" wire:model="description" required
+                                        placeholder="Say something about the event" resize="none" rows="auto" />
                                 </div>
                             </div>
                         </div>
@@ -83,15 +106,15 @@
                         </div>
                     </div>
 
-                    
+
                 </flux:fieldset>
-                    
+
             </form>
 
         </div>
     </div>
 
-    
+
 
 
     @section('scripts')
@@ -114,9 +137,9 @@
             }
 
         </script>
-        <script>
+        {{-- <script>
             window.HSStaticMethods.autoInit();
-        </script>
+        </script> --}}
     @endsection
 
 
