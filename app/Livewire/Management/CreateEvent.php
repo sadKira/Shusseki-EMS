@@ -26,7 +26,7 @@ class CreateEvent extends Component
     {
         // dd($this->tag);
         return [
-            'title' => 'required|string|max:155',
+            'title' => 'required|string|unique:events,title|max:155',
             'description' => 'required|string|min:40|max:2000',
             'date' => 'required|string',
             'location' => 'required|string|max:255',
@@ -41,35 +41,6 @@ class CreateEvent extends Component
     {
         $this->selectedSchoolYear = Setting::getSchoolYear(); // Get current school year from settings
     }
-    // {
-    //     // dd('called');
-    //     $this->validate();
-
-    //     // Convert date and time to correct format
-    //     $formattedDate = Carbon::createFromFormat('F d, Y', $this->date)->format('Y-m-d');
-    //     $formattedStart = Carbon::createFromFormat('h:i A', $this->start_time)->format('H:i:s');
-    //     $formattedEnd = Carbon::createFromFormat('h:i A', $this->end_time)->format('H:i:s');
-
-    //     // Handle image upload
-    //     $imagePath = $this->image ? $this->image->store('events', 'public') : null;
-
-    //     $event = Event::create([
-    //         'title' => $this->title,
-    //         'description' => $this->description,
-    //         'date' => $formattedDate,
-    //         'location' => $this->location,
-    //         'start_time' => $formattedStart,
-    //         'end_time' => $formattedEnd,
-    //         'school_year' => $this->selectedSchoolYear,
-    //         'image' => $imagePath,
-    //         'tag' => $this->tag, 
-    //     ]);
-
-    //     session()->flash('success', 'Event created successfully!');
-
-    //     return redirect()->route('manage_events');
-    // }
-
 
     public function createEvent()
     {
@@ -106,7 +77,7 @@ class CreateEvent extends Component
             session()->flash('success', 'Event created successfully!');
             return redirect()->route('manage_events');
         // } catch (\Exception $e) {
-            // dd($e->getMessage());
+        //     dd($e->getMessage());
         // }
     }
 

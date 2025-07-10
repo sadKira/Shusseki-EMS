@@ -24,13 +24,10 @@
 
             {{-- Events for the month --}}
             <div class="px-10 py-6 bg-(--import) rounded-xl">
-                <section class="w-full flex items-center justify-start gap-2">
-                    <div class="flex items-center gap-2">
-                        {{-- <span class="w-2 h-2 bg-white inline-block"></span> --}}
-                        <flux:heading size="xl" level="1">Events this <span
+                <section class="w-full flex items-center justify-between gap-2">
+                    <flux:heading size="xl" level="1">Events this <span
                                 class="text-[var(--color-accent)]">{{ $selectedMonth }}</span></flux:heading>
-                    </div>
-                    <flux:button variant="ghost" href="{{route('create_event')}}" wire:navigate>Create Event</flux:button>
+                    <flux:button variant="ghost" href="{{route('create_event')}}" icon="plus" wire:navigate>Create Event</flux:button>
 
                     {{-- <flux:dropdown>
                         <flux:button variant="filled" icon="chevron-down" size="sm"></flux:button>
@@ -110,7 +107,6 @@
             <div class="px-10 py-6 bg-(--import) rounded-xl">
                 <section class="w-full flex items-center justify-start gap-2">
                     <div class="flex items-center gap-2">
-                        {{-- <span class="w-2 h-2 bg-white inline-block"></span> --}}
                         <flux:heading size="xl" level="1">Events next month: <span
                                 class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($selectedMonth)->addMonth()->format('F') }}</span>
                         </flux:heading>

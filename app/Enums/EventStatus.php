@@ -14,7 +14,7 @@ enum EventStatus: String
         return match($this) {
             self::NotFinished => 'Upcoming',
             self::Finished => 'Finished',
-            self::Postponed => 'postponed',
+            self::Postponed => 'Postponed',
         };
     }
 }
