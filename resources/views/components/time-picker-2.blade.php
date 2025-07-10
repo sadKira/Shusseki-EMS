@@ -12,7 +12,7 @@
                 <!-- Hours -->
                 <div class="p-1 max-h-56 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-800 dark:hover:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
                     <!-- Checkbox -->
-                    @for ($i = 0; $i < 24; $i++)
+                    @for ($i = 0; $i < 13; $i++)
                     <label for="hs-cbchlhh{{ sprintf('%02d', $i) }}-2" class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200
                     has-checked:text-white dark:has-checked:text-white
                     has-checked:bg-[var(--color-accent)] dark:has-checked:bg-[var(--color-accent)]
@@ -33,7 +33,7 @@
 
                 <!-- Minutes -->
                 <div class="p-1 max-h-56 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-800 dark:hover:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-                    @for ($i = 0; $i < 24; $i++)
+                    @for ($i = 0; $i < 60; $i++)
                     <label for="hs-cbchlmm{{ sprintf('%02d', $i) }}-2" class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200
                     has-checked:text-white dark:has-checked:text-white
                     has-checked:bg-[var(--color-accent)] dark:has-checked:bg-[var(--color-accent)]

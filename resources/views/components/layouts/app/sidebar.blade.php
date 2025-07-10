@@ -229,6 +229,25 @@
             window.DateTime = luxon.DateTime;
         }
     </script>
+    <script>
+        window.initDatePicker = function() {
+            const field = document.getElementById('datepicker');
+            if (!field || field.dataset.pikaday === 'initialized') return;
+
+            const { DateTime } = luxon;
+
+            const picker = new Pikaday({
+                field,
+                onSelect: function (date) {
+                    const luxonDate = DateTime.fromJSDate(date);
+                    field.value = luxonDate.toFormat('LLLL dd, yyyy');
+                    field.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            });
+
+            field.dataset.pikaday = 'initialized';
+        }
+    </script>
 
     <script>
         document.addEventListener('livewire:navigated', () => {
@@ -243,6 +262,10 @@
 
             if (typeof window.attachTimePickerListeners === 'function') {
                 window.attachTimePickerListeners();
+            }
+
+            if (typeof window.attachTimePickerListeners2 === 'function') {
+                window.attachTimePickerListeners2();
             }
 
             // File Upload

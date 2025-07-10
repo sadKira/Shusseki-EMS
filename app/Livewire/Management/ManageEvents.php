@@ -113,7 +113,12 @@ class ManageEvents extends Component
         $filteredEventCount = (clone $filteredQuery)->count();
 
         $events = $filteredQuery
-            ->orderByRaw("CASE WHEN status = ? THEN 1 ELSE 0 END", [EventStatus::Finished->value])
+            ->orderByRaw("
+                CASE 
+                    WHEN status = ? THEN 2
+                    WHEN status = ? THEN 1
+                    ELSE 0
+                END", [EventStatus::Postponed->value, EventStatus::Finished->value])
             ->orderBy('date', $this->sortDirection ?? 'asc')
             ->get();
 
