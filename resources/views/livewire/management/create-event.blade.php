@@ -58,28 +58,19 @@
 
                                 <div class="col-span-3">
                                     {{-- Start time --}}
-                                    {{--
-                                    <flux:input wire:model="start_time" label="Start Time" icon="clock" type="text"
-                                        required mask="99:99 aa" placeholder="HH:MM AM/PM" /> --}}
-                                    
-                                    <flux:input wire:model="start_time" label="Start Time" type="text" required
-                                        placeholder="Select time" x-data x-init="
-                                            flatpickr($el, {
-                                                enableTime: true,
-                                                noCalendar: true,
-                                                dateFormat: 'h:i K',
-                                                time_24hr: false,
-                                                onChange: function(selectedDates, dateStr) {
-                                                    $wire.set('start_time', dateStr);
-                                                }
-                                            });
-                                        " />
+                                    <div class="flex items-center gap-1">
+                                        <flux:input id="tp_input" wire:model="start_time" label="Start Time" type="text" required placeholder="hh:mm aa" />
+                                        <x-time-picker/>
+                                    </div>
+                                      
                                 </div>
 
                                 <div class="col-span-3">
                                     {{-- End time --}}
-                                    <flux:input wire:model="end_time" label="End Time" icon="clock" type="text" required
-                                        mask="99:99 aa" placeholder="HH:MM AM/PM" />
+                                    <div class="flex items-center gap-1">
+                                        <flux:input id="tp_input_2" wire:model="end_time" label="End Time" type="text" required placeholder="Select time"/>
+                                        <x-time-picker-2 />
+                                    </div>
                                 </div>
 
                                 <div class="col-span-6">

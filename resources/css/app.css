@@ -4,10 +4,6 @@
 /* Pikadaday date picker */
 @import './pikaday-custom.css';
 
-/* Flatpckr time picker */
-@import './flatpickr-custom.css'
-/* @import 'flatpickr/dist/themes/dark.css'; */
-
 /* Preline UI */
 @source "./node_modules/preline/dist.js";
 
@@ -48,12 +44,12 @@
     --color-accent-content: var(--color-amber-600);
     --color-accent-foreground: var(--color-amber-950);
 
-   
 }
 
 .pagination {
   @apply flex justify-center mt-4 text-sm text-gray-700;
 }
+
 .pagination .active {
   @apply bg-blue-600 text-white px-3 py-1 rounded;
 }
