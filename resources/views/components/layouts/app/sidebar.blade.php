@@ -203,7 +203,7 @@
         // Refresh CSRF token every 10 minutes (600,000 ms)
         setInterval(refreshCsrfToken, 10 * 60 * 1000);
 
-    </script> 
+    </script>
 
     <!-- Lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
@@ -221,8 +221,6 @@
     <!-- Preline -->
     <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 
     @yield('scripts')
     <script>
@@ -239,10 +237,19 @@
             // Re-run Pikaday initialization
             initDatePicker();
 
+            if (window.HSDropdown && typeof window.HSDropdown.autoInit === 'function') {
+                window.HSDropdown.autoInit();
+            }
+
+            if (typeof window.attachTimePickerListeners === 'function') {
+                window.attachTimePickerListeners();
+            }
+
             // File Upload
             if (window.HSFileUpload && typeof window.HSFileUpload.autoInit === 'function') {
                 window.HSFileUpload.autoInit();
             }
+
         });
     </script>
 

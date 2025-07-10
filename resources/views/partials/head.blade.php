@@ -14,12 +14,8 @@
     rel="stylesheet">
 {{-- <link rel="stylesheet" href="{{ asset('build/assets/app-2KYTgWL1.css') }}"> --}}
 
-{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> --}}
 
-<!-- Then: Load your custom CSS that will override it -->
-{{-- <link rel="stylesheet" href="{{ asset('css/flatpickr-custom.css') }}"> --}}
-
-{{-- <script src="https://unpkg.com/preline@latest/dist/preline.js"></script> --}}
+<script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
 
 {{-- @fluxAppearance --}}
 @livewireStyles
