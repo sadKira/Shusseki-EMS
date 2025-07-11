@@ -6,11 +6,19 @@ use Livewire\Component;
 use App\Models\User;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use App\Models\Setting;
 
 
 class FilterTable extends Component
 {
     use WithPagination;
+
+    // Global schoolyear
+    public $selectedSchoolYear;
+
+    // Percentage display
+    // public  $activePercentage;
+    // public $inactivePercentage;
 
     // Filtering
     public $search = '';
@@ -194,6 +202,9 @@ class FilterTable extends Component
     public function mount()
     {
         $this->selection = true;
+
+        // Retrieve the globally set school year from session
+        $this->selectedSchoolYear = Setting::getSchoolYear();
     }
 
     public function toggleSelection()
@@ -238,11 +249,18 @@ class FilterTable extends Component
             ->search($this->search)
             ->orderBy($this->sortField, $this->sortDirection);
 
+        // Percentage display
+        $activePercentage = $totalApproved > 0 ? round(($activeCount / $totalApproved) * 100, 1) : 0;
+        $inactivePercentage = $totalApproved > 0 ? round(($inactiveCount / $totalApproved) * 100, 1) : 0;
+
         return view('livewire.management.filter-table', [
             'users' => $filteredQuery->paginate(10),
             'totalApproved' => $totalApproved,
             'activeCount' => $activeCount,
             'inactiveCount' => $inactiveCount,
+            'schoolYear' => $this->selectedSchoolYear,
+            'activePercentage' => $activePercentage,
+            'inactivePercentage' => $inactivePercentage,
         ]);
     }
 }
