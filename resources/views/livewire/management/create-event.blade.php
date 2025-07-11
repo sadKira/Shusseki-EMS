@@ -125,7 +125,7 @@
                             <flux:button type="submit" variant="primary" class="w-full">
                                 {{ __('Create Event') }}
                             </flux:button>
-                            <flux:button variant="filled" href="{{ route('manage_events') }}" class="w-full">
+                            <flux:button variant="filled" wire:navigate href="{{ route('manage_events') }}" class="w-full">
                                 {{ __('Cancel') }}
                             </flux:button>
                         </div>

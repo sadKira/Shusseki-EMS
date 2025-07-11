@@ -1,14 +1,7 @@
-<div class="h-full rounded-lg p-10 dark:bg-zinc-800">
+<div>
 
     {{-- App Header --}}
-    <div class="relative mb-6 w-full">
-        @can('SA')
-            <flux:heading size="xl" level="1">Manage Students</flux:heading>
-        @endcan
-        @can('A')
-            <flux:heading size="xl" level="1">Student List</flux:heading>
-        @endcan
-        
+    <div class="relative mb-10 w-full">
         {{-- Breadcrumbs --}}
         <div class="mt-2 flex">
             <flux:breadcrumbs>
@@ -20,6 +13,12 @@
                 </flux:breadcrumbs.item>
             </flux:breadcrumbs>
         </div>
+        @can('SA')
+            <flux:heading size="xl" level="1">Manage Students</flux:heading>
+        @endcan
+        @can('A')
+            <flux:heading size="xl" level="1">Student List</flux:heading>
+        @endcan
     </div>
 
     @script
@@ -31,7 +30,7 @@
     @endscript
 
     {{-- Table --}}
-    <div class="mt-10">
+    <div>
         <livewire:management.filter-table />
     </div>
 

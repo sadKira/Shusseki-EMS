@@ -29,44 +29,14 @@
 
         <flux:navlist variant="outline">
 
-            <flux:navlist.group :heading="__('Platform')" class="grid">
+            {{-- Home navlist --}}
+            <flux:navlist.group :heading="__('Home')" class="grid">
 
                 {{-- Dashboard --}}
                 @can('manage')
                     <flux:navlist.item icon="home" :href="route('admin_dashboard')"
                         :current="request()->routeIs(['admin_dashboard'])" wire:navigate>{{ __('Dashboard') }}
                     </flux:navlist.item>
-                    <flux:navlist.group heading="Events" expandable>
-                        <flux:navlist.item icon="calendar" :href="route('manage_events')"
-                            :current="request()->routeIs(['manage_events', 'create_event'])" wire:navigate>
-                            {{ __('Manage Events') }}
-                        </flux:navlist.item>
-                        <flux:navlist.item icon="envelope" :href="route('coverage_events')"
-                            :current="request()->routeIs(['coverage_events'])" wire:navigate>
-                            {{ __('Events Coverage') }}
-                        </flux:navlist.item>
-                    </flux:navlist.group>
-                    @can('SA')
-                        <flux:navlist.group heading="Students" expandable>
-                            <flux:navlist.item icon="user" :href="route('manage_students')"
-                                :current="request()->routeIs(['manage_students'])" wire:navigate>
-                                {{ __('Manage Students') }}
-                            </flux:navlist.item>
-                            @livewire('management.manage-approval-badge')
-                            {{-- <flux:navlist.item icon="shield-check" badge="{{ $pendingCount }}"
-                                :href="route('manage_approval')" :current="request()->routeIs(['manage_approval'])" wire:poll.2s
-                                wire:navigate>
-                                {{ __('Student Approval') }}
-                            </flux:navlist.item> --}}
-                        </flux:navlist.group>
-                    @endcan
-                    @can('A')
-                        <flux:navlist.item icon="user" :href="route('manage_students')"
-                            :current="request()->routeIs(['manage_students'])" wire:navigate>
-                            {{ __('Student List') }}
-                        </flux:navlist.item>
-                    @endcan
-
                 @endcan
 
                 @can('tsuushin_dashboard')
@@ -79,6 +49,41 @@
                         wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 @endcan
 
+            </flux:navlist.group>
+
+            {{-- Events navlist --}}
+            <flux:navlist.group :heading="__('Events')" class="grid">
+                @can('manage')
+                    <flux:navlist.item icon="calendar" :href="route('manage_events')"
+                        :current="request()->routeIs(['manage_events', 'create_event'])" wire:navigate>
+                        {{ __('Manage Events') }}
+                    </flux:navlist.item>
+                    <flux:navlist.item icon="envelope" :href="route('coverage_events')"
+                        :current="request()->routeIs(['coverage_events'])" wire:navigate>
+                        {{ __('Events Coverage') }}
+                    </flux:navlist.item>
+                @endcan
+            </flux:navlist.group>
+
+            {{-- Students navlist --}}
+            <flux:navlist.group :heading="__('Students')" class="grid">
+                @can('manage')
+                    @can('SA')
+                        <flux:navlist.item icon="user" :href="route('manage_students')"
+                            :current="request()->routeIs(['manage_students'])" wire:navigate>
+                            {{ __('Manage Students') }}
+                        </flux:navlist.item>
+
+                        {{-- Dynamic badge --}}
+                        @livewire('management.manage-approval-badge')
+                    @endcan
+                    @can('A')
+                        <flux:navlist.item icon="user" :href="route('manage_students')"
+                            :current="request()->routeIs(['manage_students'])" wire:navigate>
+                            {{ __('Student List') }}
+                        </flux:navlist.item>
+                    @endcan
+                @endcan
             </flux:navlist.group>
 
         </flux:navlist>
