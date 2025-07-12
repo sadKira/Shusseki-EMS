@@ -55,7 +55,7 @@
             <flux:navlist.group :heading="__('Events')" class="grid">
                 @can('manage')
                     <flux:navlist.item icon="calendar" :href="route('manage_events')"
-                        :current="request()->routeIs(['manage_events', 'create_event', 'all_events'])" wire:navigate>
+                        :current="request()->routeIs(['manage_events', 'create_event'])" wire:navigate>
                         {{ __('Manage Events') }}
                     </flux:navlist.item>
                     <flux:navlist.item icon="envelope" :href="route('coverage_events')"
