@@ -63,7 +63,6 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
 
     Route::get('admin/create-event', CreateEvent::class)->name('create_event');
-    Route::get('admin/all-events', AllEvent::class)->name('all_events');
 });
 
 // User (Active)

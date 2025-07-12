@@ -22,9 +22,6 @@ class ManageEvents extends Component
     public $newSchoolYear = '';
     public $schoolYears = [];
 
-    public $sortField = 'title';
-    public $sortDirection = 'asc';
-
     public $selection = true;
 
     // Mounting data
@@ -84,16 +81,6 @@ class ManageEvents extends Component
 
         $this->newSchoolYear = '';
         $this->loadSchoolYears();
-    }
-
-    public function sortBy($field)
-    {
-        if ($this->sortField === $field) {
-            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortField = $field;
-            $this->sortDirection = 'asc';
-        }
     }
 
     public function render()

@@ -16,7 +16,6 @@
                 </div>
                 <flux:heading size="xl" level="1">Manage Events</flux:heading>
             </div>
-            <flux:button :href="route('all_events')" wire:navigate variant="filled" icon:trailing="arrow-up-right"> View all Events</flux:button>
         </div>
     </div>
 
@@ -327,7 +326,6 @@
                     </div>
                 </div>
             </div>
-            
             <!-- End Timeline -->
         </div>
 
