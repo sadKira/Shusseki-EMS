@@ -7,7 +7,7 @@ use App\Models\User;
 
 class ManageApprovalBadge extends Component
 {
-     public $count;
+    public $count;
 
     public function mount()
     {

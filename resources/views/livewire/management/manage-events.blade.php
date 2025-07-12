@@ -2,17 +2,22 @@
     {{-- App Header --}}
     <div class=" relative mb-10 w-full">
         {{-- Breadcrumbs --}}
-        <div class="mt-2 flex">
-            <flux:breadcrumbs>
-                <flux:breadcrumbs.item :href="route('admin_dashboard')" wire:navigate>Home</flux:breadcrumbs.item>
-                <flux:breadcrumbs.item :href="route('manage_events')" wire:navigate>Events
-                </flux:breadcrumbs.item>
-                <flux:breadcrumbs.item :href="route('manage_events')" :accent="true" wire:navigate>
-                    <span class="text-[var(--color-accent)]">Manage Events<span>
-                </flux:breadcrumbs.item>
-            </flux:breadcrumbs>
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="mt-2">
+                    <flux:breadcrumbs>
+                        <flux:breadcrumbs.item :href="route('admin_dashboard')" wire:navigate>Home</flux:breadcrumbs.item>
+                        <flux:breadcrumbs.item :href="route('manage_events')" wire:navigate>Events
+                        </flux:breadcrumbs.item>
+                        <flux:breadcrumbs.item :href="route('manage_events')" :accent="true" wire:navigate>
+                            <span class="text-[var(--color-accent)]">Manage Events<span>
+                        </flux:breadcrumbs.item>
+                    </flux:breadcrumbs>
+                </div>
+                <flux:heading size="xl" level="1">Manage Events</flux:heading>
+            </div>
+            <flux:button :href="route('all_events')" wire:navigate variant="filled" icon:trailing="arrow-up-right"> View all Events</flux:button>
         </div>
-        <flux:heading size="xl" level="1">Manage Events</flux:heading>
     </div>
 
 
@@ -52,7 +57,7 @@
 
                 {{-- Events content --}}
                 <div
-                    class="h-80 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
+                    class="mt-1 h-80 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
                     <div class="mt-5 flex flex-col gap-2 w-full">
                         @forelse ($events as $event)
                             <div
@@ -80,9 +85,13 @@
                                         $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
                                         $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                                     @endphp
-                                    @if ($now->between($start, $end))
-                                        <flux:badge color="amber" class="mr-10" variant="solid"><span class="text-black">In
-                                                Progress</span></flux:badge>
+
+                                    {{-- Event status --}}
+                                    @if ($event->status != \App\Enums\EventStatus::Postponed)
+                                        @if ($now->between($start, $end))
+                                            <flux:badge color="amber" class="mr-10" variant="solid"><span class="text-black">In
+                                                    Progress</span></flux:badge>
+                                        @endif
                                     @endif
                                     @if ($event->status == \App\Enums\EventStatus::Finished)
                                         <flux:badge color="green" class="mr-10" variant="solid"><span
@@ -92,7 +101,7 @@
                                         <flux:badge color="red" class="mr-10" variant="solid"><span
                                                 class="text-white">Postponed</span></flux:badge>
                                     @endif
-                                    <flux:button variant="ghost" icon="ellipsis-horizontal"></flux:button>
+                                    <flux:button variant="ghost" icon="arrow-top-right-on-square"></flux:button>
                                 </div>
 
                             </div>
@@ -143,14 +152,16 @@
                                         $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
                                         $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                                     @endphp
-                                    @if ($now->between($start, $end))
+
+                                    {{-- Event status --}}
+                                    {{-- @if ($now->between($start, $end))
                                         <flux:badge color="amber" class="mr-10" variant="solid"><span class="text-black">In
                                                 Progress</span></flux:badge>
                                     @endif
                                     @if ($event->status == \App\Enums\EventStatus::Finished)
                                         <flux:badge color="green" class="mr-10" variant="solid"><span
                                                 class="text-black">Ended</span></flux:badge>
-                                    @endif
+                                    @endif --}}
                                     @if ($event->status == \App\Enums\EventStatus::Postponed)
                                         <flux:badge color="red" class="mr-10" variant="solid"><span
                                                 class="text-white">Postponed</span></flux:badge>
@@ -175,7 +186,7 @@
 
             {{-- Date --}}
             <div class="bg-(--import) rounded-xl px-10 py-6 flex flex-col gap-3">
-                <div class="flex flex-col  whitespace-nowrap">
+                <div class="flex flex-col whitespace-nowrap">
                     <flux:text>Date:</flux:text>
                     <div class="flex items-center gap-2">
                         <flux:icon.calendar class="text-zinc-50" variant="solid" />
@@ -235,16 +246,20 @@
                                             $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
                                             $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                                         @endphp
-                                        @if ($now->between($start, $end))
-                                            <flux:badge color="amber" class="mt-3" variant="solid"><span class="text-black">In
-                                                    Progress</span></flux:badge>
+
+                                        {{-- Event status --}}
+                                        @if ($event->status != \App\Enums\EventStatus::Postponed)
+                                            @if ($now->between($start, $end))
+                                                <flux:badge color="amber" class="mr-10" variant="solid"><span class="text-black">In
+                                                        Progress</span></flux:badge>
+                                            @endif
                                         @endif
                                         @if ($event->status == \App\Enums\EventStatus::Finished)
-                                            <flux:badge color="green" size="sm" class="mt-3" variant="solid"><span
+                                            <flux:badge color="green" class="mr-10" variant="solid"><span
                                                     class="text-black">Ended</span></flux:badge>
                                         @endif
                                         @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                            <flux:badge color="red" class="mt-3" size="sm" variant="solid"><span
+                                            <flux:badge color="red" class="mr-10" variant="solid"><span
                                                     class="text-white">Postponed</span></flux:badge>
                                         @endif
                                     </div>

@@ -3,7 +3,7 @@
     {{-- App Header --}}
     <div class="relative mb-10 w-full">
         {{-- Breadcrumbs --}}
-        <div class="mt-2 flex">
+        <div class="mt-2    ">
             <flux:breadcrumbs>
                 <flux:breadcrumbs.item :href="route('admin_dashboard')" wire:navigate>Home</flux:breadcrumbs.item>
                 <flux:breadcrumbs.item :href="route('manage_students')" wire:navigate>Students

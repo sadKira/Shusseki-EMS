@@ -79,7 +79,7 @@
                                 ($selectedStatus === 'Active Students' && $activeCount > 1) ||
                                 ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
                             )
-                            <flux:button variant="subtle" wire:click="toggleSelection">Select Multiple</flux:button>
+                            <flux:button variant="subtle" wire:click.live="toggleSelection">Select Multiple</flux:button>
                         @endif
 
                     @endcan
