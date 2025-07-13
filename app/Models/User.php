@@ -30,9 +30,10 @@ class User extends Authenticatable
         'password',
         'year_level',
         'course',
+        'qrcode',
         'role',
         'status',
-        'account_status'
+        'account_status',
 
     ];
 

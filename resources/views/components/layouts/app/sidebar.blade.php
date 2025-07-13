@@ -226,8 +226,6 @@
     <!-- Preline -->
     <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
 
-
-    @yield('scripts')
     <script>
         // DateTime is globally accessible only once
         if (!window.DateTime) {

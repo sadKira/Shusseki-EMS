@@ -16,6 +16,7 @@ use App\Livewire\Management\CoverageEvents;
 use App\Livewire\Management\CreateEvent;
 use App\Livewire\Management\ViewEvent;
 use App\Livewire\Management\EditEvent;
+use App\Livewire\Management\AttendanceBin;
 
 use App\Livewire\User\Dashboard;
 use App\Livewire\User\Events;
@@ -63,9 +64,11 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/students', ManageStudents::class)->name('manage_students');
     Route::get('admin/students-approval', ManageApproval::class)->name('manage_approval');
     Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
+    Route::get('admin/attendance-bin/{event}', AttendanceBin::class)->name('attendance_bin');
 
     Route::get('admin/create-event', CreateEvent::class)->name('create_event');
     Route::get('admin/edit-event/{event}', EditEvent::class)->name('edit_event');
+
 });
 
 // User (Active)
