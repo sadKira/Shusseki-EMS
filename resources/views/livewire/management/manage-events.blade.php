@@ -250,16 +250,16 @@
                                         {{-- Event status --}}
                                         @if ($event->status != \App\Enums\EventStatus::Postponed)
                                             @if ($now->between($start, $end))
-                                                <flux:badge color="amber" class="mr-10" variant="solid"><span class="text-black">In
+                                                <flux:badge color="amber" class="mt-5" variant="solid"><span class="text-black">In
                                                         Progress</span></flux:badge>
                                             @endif
                                         @endif
                                         @if ($event->status == \App\Enums\EventStatus::Finished)
-                                            <flux:badge color="green" class="mr-10" variant="solid"><span
+                                            <flux:badge color="green" class="mt-5" variant="solid"><span
                                                     class="text-black">Ended</span></flux:badge>
                                         @endif
                                         @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                            <flux:badge color="red" class="mr-10" variant="solid"><span
+                                            <flux:badge color="red" class="mt-5" variant="solid"><span
                                                     class="text-white">Postponed</span></flux:badge>
                                         @endif
                                     </div>

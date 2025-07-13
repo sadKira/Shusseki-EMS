@@ -107,6 +107,7 @@ class AppServiceProvider extends ServiceProvider
                     'coverage_events' => 'Events Coverage',
                     'create_event' => 'Create Event',
                     'view_event' => 'View Event',
+                    'edit_event' => 'Edit Event',
 
                     //Tsuushin
                     'tsuushin_dashboard' => 'Tsuushin Dashboard',

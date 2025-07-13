@@ -10,15 +10,14 @@ use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Flux\Flux;
 
-class ViewEvent extends Component
+class EditEvent extends Component
 {
-
     use WithFileUploads;
 
     public $event;
     public $title, $description, $date, $location;
     public $time_in, $start_time, $end_time, $image;
-    
+
     // Mounting data
     public function mount(Event $event)
     {
@@ -75,13 +74,13 @@ class ViewEvent extends Component
             'end_time' => $formattedEnd,
         ]);
 
+        Flux::modals()->close();
         return redirect()->route('view_event', $this->event);
     }
 
 
-
     public function render()
     {
-        return view('livewire.management.view-event');
+        return view('livewire.management.edit-event');
     }
 }

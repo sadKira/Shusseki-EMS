@@ -15,6 +15,7 @@ use App\Livewire\Management\ManageApproval;
 use App\Livewire\Management\CoverageEvents;
 use App\Livewire\Management\CreateEvent;
 use App\Livewire\Management\ViewEvent;
+use App\Livewire\Management\EditEvent;
 
 use App\Livewire\User\Dashboard;
 use App\Livewire\User\Events;
@@ -64,6 +65,7 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
 
     Route::get('admin/create-event', CreateEvent::class)->name('create_event');
+    Route::get('admin/edit-event/{event}', EditEvent::class)->name('edit_event');
 });
 
 // User (Active)
