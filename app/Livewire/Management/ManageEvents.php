@@ -14,15 +14,11 @@ use App\Enums\EventStatus;
 class ManageEvents extends Component
 {
     use WithPagination;
-
-    public $search = '';
     public $selectedSchoolYear = 'All';
     public $selectedMonth;
 
     public $newSchoolYear = '';
     public $schoolYears = [];
-
-    public $selection = true;
 
     // Mounting data
     public function mount()

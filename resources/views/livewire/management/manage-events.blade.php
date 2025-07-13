@@ -100,7 +100,7 @@
                                         <flux:badge color="red" class="mr-10" variant="solid"><span
                                                 class="text-white">Postponed</span></flux:badge>
                                     @endif
-                                    <flux:button variant="ghost" icon="arrow-top-right-on-square"></flux:button>
+                                    <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square" :href="route('view_event', $event)" wire:navigate></flux:button>
                                 </div>
 
                             </div>
@@ -165,7 +165,7 @@
                                         <flux:badge color="red" class="mr-10" variant="solid"><span
                                                 class="text-white">Postponed</span></flux:badge>
                                     @endif
-                                    <flux:button variant="ghost" icon="ellipsis-horizontal"></flux:button>
+                                    <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square" :href="route('view_event', $event)" wire:navigate></flux:button>
                                 </div>
 
                             </div>
@@ -210,9 +210,10 @@
                         @forelse ($this->groupedEvents as $date => $events)
                             <!-- Heading -->
                             <div class="ps-2 my-2 first:mt-0">
-                                <h3 class="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">
+                                {{-- <h3 class="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">
                                     {{ \Carbon\Carbon::parse($date)->format('F j') }}
-                                </h3>
+                                </h3> --}}
+                                <flux:text class="font-medium uppercase" variant="strong">{{ \Carbon\Carbon::parse($date)->format('F j') }}</flux:text>
                             </div>
                             <!-- End Heading -->
 

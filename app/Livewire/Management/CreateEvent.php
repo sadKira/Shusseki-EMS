@@ -8,7 +8,6 @@ use App\Models\Event;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-use App\Enums\Tags;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Rule;
 
@@ -17,8 +16,7 @@ class CreateEvent extends Component
     use WithFileUploads;
 
     public $title, $description, $date, $location;
-    public $start_time, $end_time, $image;
-    public $tag = null;
+    public $time_in, $start_time, $end_time, $image;
 
     public $selectedSchoolYear; // This will be bound to the global school year
 
@@ -30,9 +28,9 @@ class CreateEvent extends Component
             'description' => 'required|string|min:40|max:2000',
             'date' => 'required|string',
             'location' => 'required|string|max:255',
+            'time_in' => 'required|date_format:h:i A',
             'start_time' => 'required|date_format:h:i A',
             'end_time' => 'required|date_format:h:i A|after:start_time',
-            'tag' => ['required', new Enum(Tags::class)],
             'image' => 'required|image|max:2048',
         ];
     }
@@ -44,7 +42,7 @@ class CreateEvent extends Component
 
     public function createEvent()
     {
-        // try {
+        try {
             $this->validate();
 
             // Debug: see what value is coming in
@@ -57,6 +55,7 @@ class CreateEvent extends Component
             $formattedDate = $formattedDate->format('Y-m-d');
             
 
+            $formattedIn =  Carbon::createFromFormat('h:i A', $this->time_in)->format('H:i:s');
             $formattedStart = Carbon::createFromFormat('h:i A', $this->start_time)->format('H:i:s');
             $formattedEnd = Carbon::createFromFormat('h:i A', $this->end_time)->format('H:i:s');
 
@@ -67,25 +66,23 @@ class CreateEvent extends Component
                 'description' => $this->description,
                 'date' => $formattedDate,
                 'location' => $this->location,
+                'time_in' => $formattedIn,
                 'start_time' => $formattedStart,
                 'end_time' => $formattedEnd,
                 'school_year' => $this->selectedSchoolYear,
                 'image' => $imagePath,
-                'tag' => $this->tag,
             ]);
 
             session()->flash('success', 'Event created successfully!');
             return redirect()->route('manage_events');
-        // } catch (\Exception $e) {
-        //     dd($e->getMessage());
-        // }
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
     }
 
 
     public function render()
     {
-        return view('livewire.management.create-event', [
-            'tags' => Tags::cases(),
-        ]);
+        return view('livewire.management.create-event');
     }
 }

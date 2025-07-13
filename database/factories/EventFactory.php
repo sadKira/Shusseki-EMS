@@ -30,7 +30,7 @@ class EventFactory extends Factory
             ]),
 
             'description' => fake()->paragraph(),
-            'date' => fake()->dateTimeBetween('2025-07-11','2025-07-13')->format('Y-m-d'),
+            'date' => fake()->dateTimeBetween('2025-07-12','2025-07-15')->format('Y-m-d'),
             // 'date' => '2025-07-14',
 
             'location' => fake()->randomElement([
@@ -40,6 +40,8 @@ class EventFactory extends Factory
                 'PNJK-IS Sports Complex',
             ]),
 
+            'time_in' =>  Carbon::createFromTime(rand(8, 11), [0, 30][rand(0, 1)])
+            ->format('H:i:s'),
             'start_time' =>  Carbon::createFromTime(rand(8, 11), [0, 30][rand(0, 1)])
             ->format('H:i:s'),
             'end_time' => Carbon::createFromTime(rand(13, 17), [0, 30][rand(0, 1)])
@@ -50,13 +52,8 @@ class EventFactory extends Factory
 
             // 'school_year' => fake()->randomElement(['2023-2024', '2024-2025', '2025-2026']),
             'school_year' => fake()->randomElement(['2025-2026']),
-            'image' => 'null',
+            'image' => 'events/References_5.png', 
             'status' => 'not_finished',
-            'tag' => fake()->randomElement([
-                'required',
-                'not_required',
-            ]),
-
         ];
     }
 }

@@ -48,15 +48,24 @@
                                 </div>
 
                                 <div class="col-span-3">
-                                    {{-- Tag --}}
-                                    <flux:select wire:model.lazy="tag" label="Tag"
-                                        placeholder="">
-                                        <flux:select.option value="">Select Event Tag</flux:select.option>
-                                        @foreach($tags as $tag)
-                                            <flux:select.option value="{{ $tag->value }}">{{ $tag->label() }}
-                                            </flux:select.option>
-                                        @endforeach
-                                    </flux:select>
+                                    {{-- Time in --}}
+                                    <div class="flex items-center gap-1">
+                                        <flux:input    
+                                            id="tp_input_time_in"
+                                            wire:model="time_in"
+                                            placeholder="Select Time In"
+                                            label="Time In"
+                                            type="text" 
+                                            mask="99:99 aa"
+                                            required
+                                            autocomplete="off"
+                                            readonly
+                                        />
+
+                                        {{-- Time picker --}}
+                                        <x-time-picker-time-in/>
+                                    </div>
+                                      
                                 </div>
 
                                 <div class="col-span-3">

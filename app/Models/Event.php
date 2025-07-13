@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Enums\EventStatus;
-use App\Enums\Tags;
 
 class Event extends Model
 {
@@ -16,18 +15,19 @@ class Event extends Model
         'description',
         'date',
         'location',
+        'time_in',
         'start_time',
         'end_time',
         'school_year',
         'image',
         'status',
-        'tag',
 
     ];
 
     protected $casts = [
+        
         'status' => EventStatus::class,
-        'tag' => Tags::class, 
+
     ];
 
     public function attendanceLogs()
@@ -46,5 +46,15 @@ class Event extends Model
     {
         $query->where('title', 'like', "%{$value}%")
             ->orWhere('location', 'like', "%{$value}%");
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'title';
     }
 }
