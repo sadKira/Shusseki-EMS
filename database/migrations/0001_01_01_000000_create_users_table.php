@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('year_level')->nullable();
             $table->string('course');
+            $table->string('qrcode')->nullable();
             $table->enum('role', ['user', 'admin', 'super_admin', 'tsuushin'])->default('user');
             $table->enum('status', ['pending', 'approved'])->default('pending');
             $table->enum('account_status', ['active', 'inactive'])->default('active');

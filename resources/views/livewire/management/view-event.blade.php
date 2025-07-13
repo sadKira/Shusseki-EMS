@@ -77,7 +77,7 @@
         <!-- Admin Tools -->
         <div class="lg:col-span-2 px-10 py-4 justify-content">
             <div class="flex flex-col gap-2">
-                <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber">View Attendance Bin</flux:button>
+                <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber" :href="route('attendance_bin', $event)" wire:navigate>View Attendance Bin</flux:button>
                 <flux:button variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
             </div>
         </div>
