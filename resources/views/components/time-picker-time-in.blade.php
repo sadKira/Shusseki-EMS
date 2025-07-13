@@ -1,21 +1,21 @@
-<!-- Time Picker -->
+<!-- Time Picker for Time In -->
 
 <div class="mt-7">
     <!-- Dropdown -->
     <div class="hs-dropdown [--auto-close:inside] relative inline-flex">
-        <button id="hs-custom-style-time-picker" type="button"
+        <button id="hs-custom-style-time-picker-time-in" type="button"
             class="hs-dropdown-toggle size-8 shrink-0 inline-flex justify-center items-center rounded-full  text-gray-500 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
             aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
             <flux:icon.clock class="size-6 text-[var(--color-zinc-400)]" />
         </button>
 
         <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-30 bg-white border border-gray-200 shadow-xl rounded-lg mt-2 dark:bg-neutral-800 dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
-            role="menu" aria-orientation="vertical" aria-labelledby="hs-custom-style-time-picker">
+            role="menu" aria-orientation="vertical" aria-labelledby="hs-custom-style-time-picker-time-in">
             <div class="flex flex-row divide-x divide-gray-200 dark:divide-neutral-700">
                 <!-- Hours -->
                 <div class="p-1 max-h-56 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-800 dark:hover:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
                     @for ($i = 0; $i < 13; $i++)
-                    <label for="hs-cbchlhh{{ sprintf('%02d', $i) }}" class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200
+                    <label for="hs-cbchlhh{{ sprintf('%02d', $i) }}-time-in" class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200
             has-checked:text-white dark:has-checked:text-white
             has-checked:bg-[var(--color-accent)] dark:has-checked:bg-[var(--color-accent)]
             has-disabled:pointer-events-none
@@ -24,9 +24,9 @@
             has-disabled:after:inset-0
             has-disabled:after:bg-[linear-gradient(to_right_bottom,transparent_calc(50%-1px),var(--color-gray-200)_calc(50%-1px),var(--color-gray-200)_50%,transparent_50%)]
             dark:has-disabled:after:bg-[linear-gradient(to_right_bottom,transparent_calc(50%-1px),var(--color-neutral-700)_calc(50%-1px),var(--color-neutral-700)_50%,transparent_50%)] ">
-                        <input type="radio" id="hs-cbchlhh{{ sprintf('%02d', $i) }}"
+                        <input type="radio" id="hs-cbchlhh{{ sprintf('%02d', $i) }}-time-in"
                             class="hidden bg-transparent border-gray-200 text-blue-600 focus:ring-white focus:ring-offset-0 dark:text-blue-500 dark:border-neutral-700 dark:focus:ring-neutral-900"
-                            name="tp_hour">
+                            name="tp_hour_time_in">
                         <span class="block">
                             {{ sprintf('%02d', $i) }}
                         </span>
@@ -38,7 +38,7 @@
                 <!-- Minutes -->
                 <div class="p-1 max-h-56 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-800 dark:hover:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
                     @for ($i = 0; $i < 60; $i++)
-                    <label for="hs-cbchlmm{{ sprintf('%02d', $i) }}" class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200
+                    <label for="hs-cbchlmm{{ sprintf('%02d', $i) }}-time-in" class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200
             has-checked:text-white dark:has-checked:text-white
             has-checked:bg-[var(--color-accent)] dark:has-checked:bg-[var(--color-accent)]
             has-disabled:pointer-events-none
@@ -47,9 +47,9 @@
             has-disabled:after:inset-0
             has-disabled:after:bg-[linear-gradient(to_right_bottom,transparent_calc(50%-1px),var(--color-gray-200)_calc(50%-1px),var(--color-gray-200)_50%,transparent_50%)]
             dark:has-disabled:after:bg-[linear-gradient(to_right_bottom,transparent_calc(50%-1px),var(--color-neutral-700)_calc(50%-1px),var(--color-neutral-700)_50%,transparent_50%)] ">
-                        <input type="radio" id="hs-cbchlmm{{ sprintf('%02d', $i) }}"
+                        <input type="radio" id="hs-cbchlmm{{ sprintf('%02d', $i) }}-time-in"
                             class="hidden bg-transparent border-gray-200 text-blue-600 focus:ring-white focus:ring-offset-0 dark:text-blue-500 dark:border-neutral-700 dark:focus:ring-neutral-900"
-                            name="tp_minute">
+                            name="tp_minute_time_in">
                         <span class="block">
                             {{ sprintf('%02d', $i) }}
                         </span>
@@ -60,7 +60,7 @@
 
                 <!-- 12-Hour Clock System -->
                 <div class="p-1 max-h-56 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-white [&::-webkit-scrollbar-thumb]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-800 dark:hover:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-                    @foreach ([['id' => 'hs-cbchlcsam', 'label' => 'AM'], ['id' => 'hs-cbchlcspm', 'label' => 'PM']] as $ampm)
+                    @foreach ([['id' => 'hs-cbchlcsam-time-in', 'label' => 'AM'], ['id' => 'hs-cbchlcspm-time-in', 'label' => 'PM']] as $ampm)
                     <label for="{{ $ampm['id'] }}" class="group relative flex justify-center items-center p-1.5 w-10 text-center text-sm text-gray-800 cursor-pointer rounded-md hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-200
                     has-checked:text-white dark:has-checked:text-white
                     has-checked:bg-[var(--color-accent)] dark:has-checked:bg-[var(--color-accent)]
@@ -72,7 +72,7 @@
                     dark:has-disabled:after:bg-[linear-gradient(to_right_bottom,transparent_calc(50%-1px),var(--color-neutral-700)_calc(50%-1px),var(--color-neutral-700)_50%,transparent_50%)] ">
                         <input type="radio" id="{{ $ampm['id'] }}"
                             class="hidden bg-transparent border-gray-200 text-blue-600 focus:ring-white focus:ring-offset-0 dark:text-blue-500 dark:border-neutral-700 dark:focus:ring-neutral-900"
-                            name="tp_ampm">
+                            name="tp_ampm_time_in">
                         <span class="block">
                             {{ $ampm['label'] }}
                         </span>
@@ -86,19 +86,19 @@
     <!-- End Dropdown -->
 </div>
 
-<!-- End Time Picker -->
+<!-- End Time Picker for Time In -->
 
 <script>
-    window.attachTimePickerListeners = function () {
-        const hourRadios = document.querySelectorAll('input[name="tp_hour"]');
-        const minuteRadios = document.querySelectorAll('input[name="tp_minute"]');
-        const ampmRadios = document.querySelectorAll('input[name="tp_ampm"]');
-        const input = document.getElementById('tp_input');
+    window.attachTimePickerTimeInListeners = function () {
+        const hourRadios = document.querySelectorAll('input[name="tp_hour_time_in"]');
+        const minuteRadios = document.querySelectorAll('input[name="tp_minute_time_in"]');
+        const ampmRadios = document.querySelectorAll('input[name="tp_ampm_time_in"]');
+        const input = document.getElementById('tp_input_time_in');
 
         function updateTime() {
-            const hour = document.querySelector('input[name="tp_hour"]:checked')?.nextElementSibling.textContent.trim();
-            const minute = document.querySelector('input[name="tp_minute"]:checked')?.nextElementSibling.textContent.trim();
-            const ampm = document.querySelector('input[name="tp_ampm"]:checked')?.nextElementSibling.textContent.trim();
+            const hour = document.querySelector('input[name="tp_hour_time_in"]:checked')?.nextElementSibling.textContent.trim();
+            const minute = document.querySelector('input[name="tp_minute_time_in"]:checked')?.nextElementSibling.textContent.trim();
+            const ampm = document.querySelector('input[name="tp_ampm_time_in"]:checked')?.nextElementSibling.textContent.trim();
             if (hour && minute && ampm) {
                 input.value = `${hour}:${minute} ${ampm}`;
                 input.dispatchEvent(new Event('input', { bubbles: true }));
@@ -113,9 +113,9 @@
         ampmRadios.forEach(r => r.addEventListener('change', updateTime));
     };
 
-    document.addEventListener('DOMContentLoaded', window.attachTimePickerListeners);
-    document.addEventListener('livewire:load', window.attachTimePickerListeners);
-    document.addEventListener('livewire:update', window.attachTimePickerListeners);
+    document.addEventListener('DOMContentLoaded', window.attachTimePickerTimeInListeners);
+    document.addEventListener('livewire:load', window.attachTimePickerTimeInListeners);
+    document.addEventListener('livewire:update', window.attachTimePickerTimeInListeners);
 </script>
 
 <style>
@@ -172,4 +172,4 @@
         background: var(--color-accent, #fbbf24) !important;
         color: var(--accent-top-text-color, #fff) !important;
     }
-</style>
+</style> 

@@ -123,11 +123,14 @@ document.addEventListener('livewire:update', window.attachTimePickerListeners2);
 <style>
 /* Custom Time Picker Styling inspired by pikaday-custom.css */
 .hs-dropdown-menu {
-  background: var(--main-bg-color, #292827);
+  background: var(--main-bg-color, #292827) !important;
   border: 1px solid var(--color-zinc-700, #3f3f46);
   border-radius: 0.5rem;
   box-shadow: 0 4px 8px -2px rgba(0,0,0,0.10), 0 2px 4px -2px rgba(0,0,0,0.06);
   color: var(--color-zinc-50, #fafafa);
+  z-index: 9999 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 .hs-dropdown-menu label {
   border-radius: 0.25rem;

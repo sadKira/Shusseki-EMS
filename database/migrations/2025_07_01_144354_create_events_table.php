@@ -17,12 +17,12 @@ return new class extends Migration
             $table->text('description');
             $table->date('date');
             $table->string('location');
+            $table->time('time_in');
             $table->time('start_time');
             $table->time('end_time');
             $table->string('school_year');
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->enum('status', ['not_finished', 'finished', 'postponed'])->default('not_finished');
-            $table->enum('tag', ['not_required', 'required']);
             $table->timestamps();
         });
     }

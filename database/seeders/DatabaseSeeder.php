@@ -17,20 +17,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([
-        //     SuperAdminSeeder::class,
-        //     AdminSeeder::class,
-        //     TsuushinSeeder::class,
-        //     SchoolYearSeeder::class,
-        // ]);
+        $this->call([
+            SuperAdminSeeder::class,
+            AdminSeeder::class,
+            TsuushinSeeder::class,
+            SchoolYearSeeder::class,
+        ]);
 
         User::factory(10)->create();
     
-        // Event::factory(10)->create();
+        Event::factory(10)->create();
 
-        // Setting::create([
-        //     'key' => 'current_school_year',
-        //     'value' => '2024-2025',
-        // ]);
+        Setting::create([
+            'key' => 'current_school_year',
+            'value' => '2024-2025',
+        ]);
     }
 }

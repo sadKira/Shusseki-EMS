@@ -14,7 +14,7 @@ use App\Livewire\Management\ManageStudents;
 use App\Livewire\Management\ManageApproval;
 use App\Livewire\Management\CoverageEvents;
 use App\Livewire\Management\CreateEvent;
-use App\Livewire\Management\AllEvent;
+use App\Livewire\Management\ViewEvent;
 
 use App\Livewire\User\Dashboard;
 use App\Livewire\User\Events;
@@ -58,6 +58,7 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     // Protected routes
     Route::get('admin/dashboard', AdminDashboard::class)->name('admin_dashboard');
     Route::get('admin/events', ManageEvents::class)->name('manage_events');
+    Route::get('admin/events/{event}', ViewEvent::class)->name('view_event');
     Route::get('admin/students', ManageStudents::class)->name('manage_students');
     Route::get('admin/students-approval', ManageApproval::class)->name('manage_approval');
     Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
