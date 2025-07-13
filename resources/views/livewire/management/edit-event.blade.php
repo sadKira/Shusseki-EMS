@@ -6,12 +6,12 @@
             <flux:breadcrumbs>
                 <flux:breadcrumbs.item :href="route('admin_dashboard')" wire:navigate>Home</flux:breadcrumbs.item>
                 <flux:breadcrumbs.item icon="ellipsis-horizontal" />
-                <flux:breadcrumbs.item :href="route('create_event')" :accent="true" wire:navigate>
-                    <span class="text-[var(--color-accent)]">Create Event<span>
+                <flux:breadcrumbs.item :href="route('edit_event', $event)" :accent="true" wire:navigate>
+                    <span class="text-[var(--color-accent)]">Edit Event<span>
                 </flux:breadcrumbs.item>
             </flux:breadcrumbs>
         </div>
-        <flux:heading size="xl" level="1">Create an Event</flux:heading>
+        <flux:heading size="xl" level="1">Edit Event</flux:heading>
     </div>
 
     {{-- Form --}}
@@ -19,10 +19,10 @@
         <div class="px-20 py-8">
 
             {{-- Create event form --}}
-            <form wire:submit.prevent="createEvent">
+            <form wire:submit.prevent="updateEvent">
                 @csrf
                 <flux:fieldset>
-                    <flux:legend>Create an Event</flux:legend>
+                    <flux:legend>Update Event Details</flux:legend>
 
                     <div class="space-y-6">
                         <div class="flex items-start space gap-x-6">
@@ -113,7 +113,7 @@
 
                                 <div class="col-span-6">
                                     {{-- Event image --}}
-                                    <flux:input type="file" wire:model="image" badge="Required"
+                                    <flux:input type="file" wire:model="image" badge="Optional"
                                         label="Upload Event Image" />
                                 </div>
                             </div>
@@ -135,9 +135,9 @@
                         </div>
                         <div class="mt-6 flex items-center gap-5">
                             <flux:button type="submit" variant="primary" class="w-full">
-                                {{ __('Create Event') }}
+                                {{ __('Update Event') }}
                             </flux:button>
-                            <flux:button variant="filled" wire:navigate href="{{ route('manage_events') }}" class="w-full">
+                            <flux:button variant="filled" :href="route('view_event', $event)" wire:navigate class="w-full">
                                 {{ __('Cancel') }}
                             </flux:button>
                         </div>
@@ -148,16 +148,5 @@
 
         </div>
     </div>
-
-
-
-
-    @section('scripts')
-    
-        {{-- <script>
-            window.HSStaticMethods.autoInit();
-        </script> --}}
-    @endsection
-
 
 </div>

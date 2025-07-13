@@ -8,8 +8,7 @@ use App\Models\Event;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\Rule;
+
 
 class CreateEvent extends Component
 {
@@ -18,7 +17,7 @@ class CreateEvent extends Component
     public $title, $description, $date, $location;
     public $time_in, $start_time, $end_time, $image;
 
-    public $selectedSchoolYear; // This will be bound to the global school year
+    public $selectedSchoolYear; // Bound to the global school year
 
     protected function rules()
     {
