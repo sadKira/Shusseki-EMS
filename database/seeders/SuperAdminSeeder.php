@@ -17,6 +17,7 @@ class SuperAdminSeeder extends Seeder
     public function run(): void
     {
         User::create([
+            'student_id' => '0000001',
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',
             'role' => UserRole::Super_Admin,

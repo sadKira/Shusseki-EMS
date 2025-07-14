@@ -16,6 +16,7 @@ class TsuushinSeeder extends Seeder
     public function run(): void
     {
         User::create([
+            'student_id' => '0000005',
             'name' => 'MKD Tsuushin',
             'email' => 'tsuushin@example.com',
             'role' => UserRole::Tsuushin,

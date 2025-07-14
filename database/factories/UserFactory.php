@@ -24,6 +24,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'student_id' => str_pad(mt_rand(0, 9999999), 7, '0', STR_PAD_LEFT),
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'year_level' => fake()->randomElement([

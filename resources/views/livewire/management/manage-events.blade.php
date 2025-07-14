@@ -332,10 +332,4 @@
 
     </div>
 
-    @section('scripts')
-    <script>
-        window.HSStaticMethods.autoInit();
-    </script>
-    @endsection
-
 </div>

@@ -275,7 +275,7 @@
                                         <span class="text-[var(--color-amber-400)]">{{ $user->account_status->label() }}</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
+                                <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400 whitespace-nowrap">
                                     <span
                                         class="{{ $selectedStatus_level != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->year_level }}</span>
                                 </td>
@@ -297,7 +297,7 @@
                                                 </flux:dropdown>
                                             @else
                                                 <flux:dropdown position="left" align="end">
-                                                    <flux:button icon="ellipsis-horizontal"></flux:button>
+                                                    <flux:button icon="ellipsis-horizontal" variant="subtle"></flux:button>
                                                     <flux:menu>
                                                         <flux:menu.item icon="user-plus" wire:click="markActive({{ $user->id }})">
                                                             Mark as Active</flux:menu.item>
