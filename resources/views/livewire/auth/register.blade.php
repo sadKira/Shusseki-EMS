@@ -17,6 +17,9 @@
         <flux:input wire:model="email" :label="__('Email address')" type="email" required autocomplete="email"
             placeholder="email@example.com" />
 
+        <!-- Student ID -->
+        <flux:input wire:model="student_id" :label="__('Student ID')" type="text" required :placeholder="__('Student ID')" />
+
         {{-- Year Level & Course --}}
         <div class="grid grid-cols-2 gap-x-4 gap-y-6">
             <flux:select wire:model="year_level" :label="__('Year level')" :placeholder="__('Your year level')"

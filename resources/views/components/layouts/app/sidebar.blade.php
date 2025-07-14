@@ -187,7 +187,7 @@
 
 
 
-
+    {{-- Refresh Token --}}
     <script>
         function refreshCsrfToken() {
             fetch("{{ route('refresh-csrf') }}")
@@ -210,11 +210,9 @@
 
     </script>
 
+    {{-- Reinitialization --}}
     <!-- Lodash -->
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-
-    <!-- Dropzone -->
-    <script src="https://cdn.jsdelivr.net/npm/dropzone@6.0.0-beta.2/dist/dropzone-min.js"></script>
 
     {{-- Luxon --}}
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js"></script>
@@ -222,16 +220,27 @@
     {{-- Pikaday --}}
     <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 
-
     <!-- Preline -->
     <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
 
+    <!-- WebRTC -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/9.0.3/adapter.min.js"></script>
+
+    <!-- Vue -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.17/vue.global.prod.min.js"></script>
+
+    <!-- Instascan JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js"></script>
+
+    {{-- Date time converter --}}
     <script>
         // DateTime is globally accessible only once
         if (!window.DateTime) {
             window.DateTime = luxon.DateTime;
         }
     </script>
+
+    {{-- Initiate Date picker --}}
     <script>
         window.initDatePicker = function() {
             const field = document.getElementById('datepicker');
@@ -252,6 +261,7 @@
         }
     </script>
 
+    {{-- Navigation Initialization --}}
     <script>
         document.addEventListener('livewire:navigated', () => {
             console.log('Livewire navigated — reinitializing scripts');
