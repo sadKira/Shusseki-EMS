@@ -26,13 +26,12 @@
             <video id="preview" width="400" height="300"
                 style="width:400px; height:300px; object-fit:cover; background:#111; display:block; margin:0 auto;"
                 autoplay muted playsinline></video>
-            <div id="camera-error" class="hidden text-red-600 mt-2">
-                <p>Camera access denied or not available. Please check your camera permissions.</p>
-            </div>
-            <div class="flex items-center mt-4 gap-3">
+           
+            <div wire:ignore class="flex items-center mt-4 gap-3">
                 <flux:select id="camera-select" placeholder="Select Camera"></flux:select>
                 {{-- <flux:button id="toggle-scanner" variant="primary">Enable Scanner</flux:button> --}}
             </div>
+            
             <flux:input type="text" id="text" name="text" label="" readonly></flux:input>
         </div>
 
@@ -152,10 +151,7 @@
         function startQRScanner() {
             const videoElement = document.getElementById('preview');
             const select = document.getElementById('camera-select');
-            if (!videoElement) return;
-
-            // Prevent double init
-            if (window.currentScanner) return;
+            if (!videoElement || window.currentScanner) return;
 
             window.currentScanner = new Instascan.Scanner({ video: videoElement, mirror: false });
 
@@ -165,7 +161,7 @@
                     return;
                 }
 
-                // Fill dropdown
+                // Populate dropdown
                 select.innerHTML = '';
                 cameras.forEach((camera, idx) => {
                     const option = document.createElement('option');
@@ -174,14 +170,16 @@
                     select.appendChild(option);
                 });
 
-                // Choose back cam if available
+                // Select preferred or first
                 let preferred = cameras.find(c => /back|rear|environment/i.test(c.name));
                 let selectedCamera = preferred || cameras[0];
 
-                // Start camera
-                window.currentScanner.start(selectedCamera);
+                // Start scanner safely
+                if (!window.currentScanner._scanner || window.currentScanner._scanner.state !== 'started') {
+                    window.currentScanner.start(selectedCamera);
+                }
 
-                // Dropdown switch
+                // Allow camera switch
                 select.onchange = () => {
                     const cam = cameras.find(c => c.id === select.value);
                     if (cam) {
@@ -192,6 +190,7 @@
                 };
             });
 
+            // On successful scan
             window.currentScanner.addListener('scan', content => {
                 document.getElementById('text').value = content;
 
@@ -216,19 +215,32 @@
             }
         }
 
-        // Init on first load
-        document.addEventListener('DOMContentLoaded', startQRScanner);
+        // Load safely even if Instascan loads late
+        function tryInitScanner() {
+            if (typeof Instascan !== 'undefined') {
+                startQRScanner();
+            } else {
+                const fallback = setInterval(() => {
+                    if (typeof Instascan !== 'undefined') {
+                        clearInterval(fallback);
+                        startQRScanner();
+                    }
+                }, 100);
+            }
+        }
 
-        // Re-init on Livewire SPA nav
+        // Init on first load
+        document.addEventListener('DOMContentLoaded', tryInitScanner);
+
+        // Reinit on Livewire SPA nav
         document.addEventListener('livewire:navigated', () => {
-            stopQRScanner();       // Clean up if navigating *to* a new page
-            startQRScanner();      // Reinit on this new page
+            stopQRScanner();
+            tryInitScanner();
         });
 
-        // Stop on hard page leave
+        // Stop on full page leave
         window.addEventListener('beforeunload', stopQRScanner);
     </script>
-
 
 
 
