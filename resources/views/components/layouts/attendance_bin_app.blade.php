@@ -9,7 +9,6 @@
 
 <body class="min-h-screen bg-white dark:bg-zinc-950 font-display">
 
-    @livewireScripts
     {{-- Main content --}}
     {{ $slot }}
 
@@ -59,7 +58,7 @@
 
     <!-- Instascan JS -->
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js"></script> --}}
-    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    {{-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> --}}
 
     {{-- Date time converter --}}
     <script>
@@ -126,7 +125,7 @@
 
 
     @fluxScripts
-    
+    @livewireScripts
 
 
 </body>
