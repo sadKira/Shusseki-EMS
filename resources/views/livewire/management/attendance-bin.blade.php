@@ -31,7 +31,7 @@
             </div>
             <div class="flex items-center mt-4 gap-3">
                 <flux:select id="camera-select" placeholder="Select Camera"></flux:select>
-                <flux:button id="toggle-scanner" variant="primary">Enable Scanner</flux:button>
+                {{-- <flux:button id="toggle-scanner" variant="primary">Enable Scanner</flux:button> --}}
             </div>
             <flux:input type="text" id="text" name="text" label="" readonly></flux:input>
         </div>
@@ -144,177 +144,90 @@
     </div>
 
     {{-- Attendance bin functionality --}}
-   <script>
-    if (!window.scannerApp) {
-        window.scannerApp = {
-            scanner: null,
-            scannerInitialized: false,
-            availableCameras: [],
-            selectedCameraId: null,
 
-            init() {
-                document.addEventListener('DOMContentLoaded', () => this.waitForInstascan());
-                document.addEventListener('livewire:navigated', () => {
-                    this.stopScanner();
-                    this.waitForInstascan();
+    <!-- Instascan CDN -->
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
+    <script>
+        function startQRScanner() {
+            const videoElement = document.getElementById('preview');
+            const select = document.getElementById('camera-select');
+            if (!videoElement) return;
+
+            // Prevent double init
+            if (window.currentScanner) return;
+
+            window.currentScanner = new Instascan.Scanner({ video: videoElement, mirror: false });
+
+            Instascan.Camera.getCameras().then(cameras => {
+                if (cameras.length === 0) {
+                    alert("No cameras found.");
+                    return;
+                }
+
+                // Fill dropdown
+                select.innerHTML = '';
+                cameras.forEach((camera, idx) => {
+                    const option = document.createElement('option');
+                    option.textContent = camera.name || `Camera ${idx + 1}`;
+                    option.value = camera.id;
+                    select.appendChild(option);
                 });
 
-                if (window.Livewire && typeof window.Livewire.hook === 'function') {
-                    Livewire.hook('message.processed', () => {
-                        setTimeout(() => {
-                            this.setupToggleButton();
-                        }, 100);
-                    });
-                }
+                // Choose back cam if available
+                let preferred = cameras.find(c => /back|rear|environment/i.test(c.name));
+                let selectedCamera = preferred || cameras[0];
 
-                window.addEventListener('beforeunload', () => this.stopScanner());
-            },
+                // Start camera
+                window.currentScanner.start(selectedCamera);
 
-            waitForInstascan() {
-                if (typeof Instascan !== 'undefined') {
-                    this.setupToggleButton();
-                    this.populateCameraDropdown();
-                } else {
-                    setTimeout(() => this.waitForInstascan(), 100);
-                }
-            },
-
-            populateCameraDropdown() {
-                Instascan.Camera.getCameras().then((cameras) => {
-                    this.availableCameras = cameras;
-                    const select = document.getElementById('camera-select');
-                    if (!select) return;
-                    select.innerHTML = '';
-                    if (cameras.length === 0) {
-                        select.innerHTML = '<option value="">No cameras found</option>';
-                        select.disabled = true;
-                    } else {
-                        cameras.forEach((camera, idx) => {
-                            const option = document.createElement('option');
-                            option.textContent = camera.name || `Camera ${idx + 1}`;
-                            option.value = camera.id;
-                            select.appendChild(option);
+                // Dropdown switch
+                select.onchange = () => {
+                    const cam = cameras.find(c => c.id === select.value);
+                    if (cam) {
+                        window.currentScanner.stop().then(() => {
+                            window.currentScanner.start(cam);
                         });
-                        select.disabled = false;
-                        if (!this.selectedCameraId) {
-                            let preferred = cameras.find(cam => cam.name && /(back|rear|environment)/i.test(cam.name));
-                            this.selectedCameraId = preferred ? preferred.id : cameras[0].id;
-                        }
-                        select.value = this.selectedCameraId;
                     }
-                });
-            },
-
-            setupToggleButton() {
-                const toggleBtn = document.getElementById('toggle-scanner');
-                const select = document.getElementById('camera-select');
-                if (!toggleBtn) return;
-
-                toggleBtn.onclick = () => {
-                    if (this.scanner) {
-                        this.stopScanner();
-                    } else {
-                        this.initializeScanner();
-                    }
-                    this.updateToggleButton();
                 };
+            });
 
-                if (select) {
-                    select.onchange = () => {
-                        this.selectedCameraId = select.value;
-                        if (this.scanner) {
-                            this.stopScanner();
-                            this.initializeScanner();
-                        }
-                    };
+            window.currentScanner.addListener('scan', content => {
+                document.getElementById('text').value = content;
+
+                const root = document.querySelector('[wire\\:id]');
+                const component = Livewire.find(root?.getAttribute('wire:id'));
+                if (component && typeof component.scanStudent === 'function') {
+                    component.scanStudent(content);
                 }
+            });
+        }
 
-                this.updateToggleButton();
-            },
-
-            updateToggleButton() {
-                const toggleBtn = document.getElementById('toggle-scanner');
-                if (toggleBtn) {
-                    toggleBtn.textContent = this.scanner ? 'Disable Scanner' : 'Enable Scanner';
-                }
-            },
-
-            initializeScanner() {
-                const videoElement = document.getElementById('preview');
-                const errorDiv = document.getElementById('camera-error');
-                if (!videoElement || this.scannerInitialized) return;
-
-                try {
-                    if (this.scanner) {
-                        this.scanner.stop();
-                        this.scanner = null;
-                    }
-
-                    this.scanner = new Instascan.Scanner({ video: videoElement, mirror: false });
-
-                    Instascan.Camera.getCameras().then((cameras) => {
-                        this.availableCameras = cameras;
-                        let selectedCamera = cameras.find(cam => cam.id === this.selectedCameraId) || cameras[0];
-                        this.selectedCameraId = selectedCamera ? selectedCamera.id : null;
-
-                        if (selectedCamera) {
-                            this.scanner.start(selectedCamera);
-                            this.scannerInitialized = true;
-                            if (errorDiv) errorDiv.classList.add('hidden');
-                        } else if (errorDiv) {
-                            errorDiv.classList.remove('hidden');
-                            errorDiv.innerHTML = '<p>No cameras found. Please connect a camera and try again.</p>';
-                        }
-                    });
-
-                    this.scanner.addListener('scan', (content) => {
-                        document.getElementById('text').value = content;
-                        if (window.Livewire) {
-                            if (window.$wire && typeof $wire.scanStudent === 'function') {
-                                $wire.scanStudent(content);
-                            } else {
-                                const roots = document.querySelectorAll('[wire\\:id]');
-                                if (roots.length > 0) {
-                                    const id = roots[0].getAttribute('wire:id');
-                                    const component = Livewire.find(id);
-                                    if (component && typeof component.scanStudent === 'function') {
-                                        component.scanStudent(content);
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                } catch (error) {
-                    if (errorDiv) {
-                        errorDiv.classList.remove('hidden');
-                        errorDiv.innerHTML = '<p>Error initializing QR scanner: ' + error.message + '</p>';
-                    }
-                }
-
-                this.updateToggleButton();
-            },
-
-            stopScanner() {
-                if (this.scanner) {
-                    this.scanner.stop();
-                    this.scanner = null;
-                }
-
-                const videoElement = document.getElementById('preview');
-                if (videoElement && videoElement.srcObject) {
-                    videoElement.srcObject.getTracks().forEach(track => track.stop());
-                    videoElement.srcObject = null;
-                }
-
-                this.scannerInitialized = false;
-                this.updateToggleButton();
+        function stopQRScanner() {
+            if (window.currentScanner) {
+                window.currentScanner.stop();
+                window.currentScanner = null;
             }
-        };
 
-        window.scannerApp.init();
-    }
-</script>
+            const video = document.getElementById('preview');
+            if (video && video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        }
+
+        // Init on first load
+        document.addEventListener('DOMContentLoaded', startQRScanner);
+
+        // Re-init on Livewire SPA nav
+        document.addEventListener('livewire:navigated', () => {
+            stopQRScanner();       // Clean up if navigating *to* a new page
+            startQRScanner();      // Reinit on this new page
+        });
+
+        // Stop on hard page leave
+        window.addEventListener('beforeunload', stopQRScanner);
+    </script>
 
 
 
