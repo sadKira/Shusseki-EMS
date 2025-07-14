@@ -14,6 +14,13 @@ use Livewire\Component;
 class Register extends Component
 {
 
+    public $name;
+    public $email;
+    public $student_id;
+    public $year_level;
+    public $course;
+    public $password;
+    public $password_confirmation;
     /**
      * Handle an incoming registration request.
      */

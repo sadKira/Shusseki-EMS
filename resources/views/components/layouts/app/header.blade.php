@@ -18,10 +18,12 @@
     <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
-        <a href="{{ route('dashboard') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0"
+        {{-- <a href="{{ route('dashboard') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0"
             wire:navigate>
             <x-app-logo />
-        </a>
+        </a> --}}
+
+        <flux:brand href="#" logo="{{ asset('images/Seal_White.svg') }}" name="SHUSSEKI" class="font-logo" />
 
         <flux:navbar class="-mb-px max-lg:hidden">
             <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
@@ -45,7 +47,7 @@
 
         <!-- Desktop User Menu -->
         <flux:dropdown position="top" align="end">
-            <flux:profile class="cursor-pointer" :initials="auth()->user()->initials()" />
+            <flux:profile class="cursor-pointer uppercase" :initials="auth()->user()->initials()" />
 
             <flux:menu>
                 <flux:menu.radio.group>
@@ -120,8 +122,7 @@
 
     {{ $slot }}
 
-    @fluxScripts
-    @livewireScripts
+    
     
     <script>
         function refreshCsrfToken() {
@@ -143,6 +144,9 @@
         // Refresh CSRF token every 10 minutes (600,000 ms)
         setInterval(refreshCsrfToken, 10 * 60 * 1000);
     </script>
+
+    @fluxScripts
+    @livewireScripts
 
 </body>
 

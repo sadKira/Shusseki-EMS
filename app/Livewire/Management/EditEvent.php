@@ -9,6 +9,7 @@ use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Flux\Flux;
+use Illuminate\Validation\Rule;
 
 class EditEvent extends Component
 {
@@ -35,7 +36,13 @@ class EditEvent extends Component
     protected function rules()
     {
         return [
-            'title' => 'required|string|max:155|unique:events,title,' . $this->event->id,
+            'title' => [
+            'required',
+            'string',
+            'max:155',
+            // Rule::unique('events', 'title')->ignore($this->event->id)
+            ],
+
             'description' => 'required|string|min:40|max:2000',
             'date' => 'required|string',
             'location' => 'required|string|max:255',

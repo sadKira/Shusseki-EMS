@@ -9,6 +9,7 @@
 
 <body class="min-h-screen bg-white dark:bg-zinc-950 font-display">
 
+    @livewireScripts
     {{-- Main content --}}
     {{ $slot }}
 
@@ -125,7 +126,7 @@
 
 
     @fluxScripts
-    @livewireScripts
+    
 
 
 </body>
