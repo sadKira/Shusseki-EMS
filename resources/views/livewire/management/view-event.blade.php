@@ -32,6 +32,7 @@
 
                 <flux:separator class="my-4" vertical />
 
+                {{-- Event details content --}}
                 <div class="space-y-3 text-balance">
                     <flux:text class="mb-4" variant="strong">Academic Year <span class="text-[var(--color-accent)]">{{ $event->school_year }}</span></flux:text>
                     <flux:heading size="xl">{{ $event->title }}</flux:heading>
