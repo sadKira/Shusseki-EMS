@@ -9,7 +9,9 @@ use App\Models\EventAttendanceLog;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Enums\AttendanceStatus;
-use Flux\Flux;
+use App\Enums\EventStatus;
+use App\Enums\AccountStatus;
+use App\Enums\UserApproval;
 
 
 #[Layout('components.layouts.attendance_bin_app')]
@@ -194,6 +196,41 @@ class AttendanceBin extends Component
         $this->modal('remove-record')->close();
     }
 
+    public function markEventAsFinished()
+    {
+        //  Mark event as finished
+        $this->event->status = EventStatus::Finished; 
+        $this->event->save();
+
+        // Get all active users
+        $activeUsers = User::where('role', 'user')
+        ->where('status', UserApproval::Approved) // or 'approved'
+        ->where('account_status', AccountStatus::Active) // or 'active'
+        ->get();
+        // dd($activeUsers->pluck('id')->toArray());
+
+        // Get IDs of users who already have an attendance log for this event
+        $loggedUserIds = $this->event->attendanceLogs()->pluck('user_id')->toArray();
+        // dd($loggedUserIds);
+        // dd($loggedUserIds, $activeUsers->pluck('id')->toArray());
+
+        // Filter active users who are not yet logged
+        $missingUsers = $activeUsers->whereNotIn('id', $loggedUserIds);
+        // dd($missingUsers->pluck('id')->toArray());
+
+        // Create absent logs for missing users
+        foreach ($missingUsers as $user) {
+            $this->event->attendanceLogs()->create([
+                'user_id' => $user->id,
+                'attendance_status' => AttendanceStatus::Absent,
+                'time_in' => null,
+                'time_out' => null,
+            ]);
+        }
+
+        return redirect()->route('view_event', $this->event);
+  
+    }
     public function render()
     {
         $logs = EventAttendanceLog::where('event_id', $this->event->id)

@@ -81,7 +81,6 @@ class EditEvent extends Component
             'end_time' => $formattedEnd,
         ]);
 
-        Flux::modals()->close();
         return redirect()->route('view_event', $this->event);
     }
 

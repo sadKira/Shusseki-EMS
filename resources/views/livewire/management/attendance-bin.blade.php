@@ -115,11 +115,34 @@
                     </div>
                 </div>
 
+                {{-- Close attendance bin --}}
                 <div class="grid justify-items-end">
-                    <flux:button variant="primary" color="amber"  icon:trailing="shield-check">Close Attendance Bin</flux:button>
+                    <flux:modal.trigger name="close-AB">
+                        <flux:button variant="primary" color="amber" icon:trailing="shield-check">Close Attendance Bin</flux:button>
+                    </flux:modal.trigger>
+
+                    {{-- Close AB modal --}}
+                    <flux:modal name="close-AB" class="min-w-[22rem]">
+                        <div class="space-y-6">
+                            <div>
+                                <flux:heading size="lg">Close Attendance Bin?</flux:heading>
+                                <flux:text class="mt-2">
+                                    <p>You're about to close the attendance bin.</p>
+                                    <p>Only the Moderator can re-open the bin.</p>
+                                </flux:text>
+                            </div>
+                            <div class="flex gap-2">
+                                <flux:spacer />
+                                <flux:modal.close>
+                                    <flux:button variant="ghost">Cancel</flux:button>
+                                </flux:modal.close>
+                                <flux:button variant="danger" wire:click="markEventAsFinished">Close Bin</flux:button>
+                            </div>
+                        </div>
+                    </flux:modal>
                     <div class="flex items-center gap-1 mt-3">
                         <flux:icon.information-circle class="text-zinc-400" variant="micro" />
-                        <flux:text class="text-xs">Closing the Bin cannot be undone.</flux:text>
+                        <flux:text class="text-xs">Closing the bin logs all absentees.</flux:text>
                     </div>
                 </div>
             </div>
@@ -254,7 +277,7 @@
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button  variant="primary" color="amber" wire:click="markScanned({{ $scannedUserId }})">Mark Scanned</flux:button>
+                <flux:button variant="primary" color="amber" wire:click="markScanned({{ $scannedUserId }})">Mark Scanned</flux:button>
             </div>
         </div>
     </flux:modal>
