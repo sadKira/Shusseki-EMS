@@ -17,6 +17,11 @@ class AttendanceBin extends Component
     public $event;
     public $student_id;
     public $name;
+    public ?int $scannedUserId = null;
+    public ?int $lateUserId = null;
+    public ?int $presentUserId = null;
+    public ?int $absentUserId = null;
+    public ?int $removeUserId = null;
 
     public function mount(Event $event)
     {
@@ -35,10 +40,6 @@ class AttendanceBin extends Component
             'name' => $user->name,
         ]);
 
-        // $this->dispatch('scanned-student', [
-        //     'student_id' => '20241234',
-        //     'name' => 'Test Student',
-        // ]);
         
         // Set for dynamic label
         $this->student_id = $user->student_id;
@@ -73,6 +74,44 @@ class AttendanceBin extends Component
                 'attendance_status' => $newStatus,
             ]);
         }
+    }
+
+    // Obtaining sutdent name
+    // public function getSelectedUserProperty(): ?User
+    // {
+    //     return User::find($this->selectedUserId);
+    // }
+
+
+    // Modal functionality
+    public function markAsScanned(int $userId): void
+    {
+        $this->scannedUserId = $userId;
+        $this->modal('mark-scanned')->show(); // Flux modal
+    }
+
+    public function markAsLate(int $userId): void
+    {
+        $this->lateUserId = $userId;
+        $this->modal('mark-late')->show(); // Flux modal
+    }
+
+    public function markAsPresent(int $userId): void
+    {
+        $this->presentUserId = $userId;
+        $this->modal('mark-present')->show(); // Flux modal
+    }
+
+    public function markAsAbsent(int $userId): void
+    {
+        $this->absentUserId = $userId;
+        $this->modal('mark-absent')->show(); // Flux modal
+    }
+
+    public function removeRecord(int $userId): void
+    {
+        $this->removeUserId = $userId;
+        $this->modal('remove-record')->show(); // Flux modal
     }
 
     public function render()

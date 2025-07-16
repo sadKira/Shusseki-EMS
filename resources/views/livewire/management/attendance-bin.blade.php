@@ -144,6 +144,8 @@
                             <th scope="col" class="px-6 py-3">
                                 Status
                             </th>
+                            <th scope="col" class="px-6 py-3">
+                            </th>
                         </tr>
                     </thead>
 
@@ -222,6 +224,41 @@
                                     @endphp
                                     <flux:badge variant="solid" color="{{ $color }}">{{ $status }}</flux:badge>
                                 </td>
+
+                                {{-- Override --}}
+                                <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
+                                    
+                                    <flux:dropdown position="left" align="end">
+
+                                        <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal" tooltip="Override Status"></flux:button>
+
+                                        <flux:menu>
+                                            
+                                            <flux:menu.item wire:click="markAsScanned({{ $user->user_id }})">
+                                                    Scanned
+                                            </flux:menu.item>
+
+                                            <flux:menu.item wire:click="markAsLate({{ $user->user_id }})">
+                                                    Late
+                                            </flux:menu.item>
+
+                                            <flux:menu.item wire:click="markAsPresent({{ $user->user_id }})">
+                                                    Present
+                                            </flux:menu.item>
+
+                                            <flux:menu.item wire:click="markAsAbsent({{ $user->user_id }})">
+                                                    Absent
+                                            </flux:menu.item>
+
+                                            <flux:menu.separator />
+
+                                            <flux:menu.item wire:click="removeRecord({{ $user->user_id }})" variant="danger">
+                                                    Scanned
+                                            </flux:menu.item>
+                                        </flux:menu>
+
+                                    </flux:dropdown>
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -237,6 +274,103 @@
 
         </div>
     </div>
+
+    {{-- Mark scanned modal --}}
+    <flux:modal name="mark-scanned" class="min-w-[22rem]" :dismissible="false" wire:model.self="selectedUserId">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark Student as Scanned?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to mark {{ \App\Models\User::find($scannedUserId)?->name ?? 'Student' }} as Scanned.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button type="submit" variant="primary" color="amber" wire:click="confirmMarkScanned">Mark Scanned</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Mark late modal --}}
+    <flux:modal name="mark-late" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark Student as Late?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to mark {{ \App\Models\User::find($lateUserId)?->name ?? 'Student' }} as Late.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button type="submit" variant="primary" color="amber">Mark Late</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Mark present modal --}}
+    <flux:modal name="mark-present" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark Student as Present?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to mark {{ \App\Models\User::find($presentUserId)?->name ?? 'Student' }} as Present.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button type="submit" variant="primary" color="amber">Mark Present</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Mark absent modal --}}
+    <flux:modal name="mark-absent" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark Student as Absent?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to mark {{ \App\Models\User::find($absentUserId)?->name ?? 'Student' }} as Absent.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button type="submit" variant="primary" color="amber">Mark Absent</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Remove record modal --}}
+    <flux:modal name="remove-record" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Remove Attendance Record?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to remove {{ \App\Models\User::find($removeUserId)?->name ?? 'Student' }}'s attendance record.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button type="submit" variant="danger" color="amber">Remove Record</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+   
 
     {{-- Attendance bin functionality --}}
 
