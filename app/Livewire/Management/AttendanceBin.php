@@ -9,7 +9,8 @@ use App\Models\EventAttendanceLog;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Enums\AttendanceStatus;
-use Livewire\Livewire;
+use Flux\Flux;
+
 
 #[Layout('components.layouts.attendance_bin_app')]
 class AttendanceBin extends Component
@@ -76,13 +77,6 @@ class AttendanceBin extends Component
         }
     }
 
-    // Obtaining sutdent name
-    // public function getSelectedUserProperty(): ?User
-    // {
-    //     return User::find($this->selectedUserId);
-    // }
-
-
     // Modal functionality
     public function markAsScanned(int $userId): void
     {
@@ -112,6 +106,92 @@ class AttendanceBin extends Component
     {
         $this->removeUserId = $userId;
         $this->modal('remove-record')->show(); // Flux modal
+    }
+
+    public function resetModalState()
+    {
+        $this->scannedUserId = null;
+        $this->lateUserId = null;
+        $this->presentUserId = null;
+        $this->absentUserId = null;
+        $this->removeUserId = null;
+    }
+
+
+    // Update student status
+    public function markScanned($userId)
+    {
+        $log = EventAttendanceLog::where('event_id', $this->event->id)
+            ->where('user_id', $userId)
+            ->first();
+
+        $log->update(['attendance_status' => 'scanned']);
+        
+        // Reset modal state
+        // $this->resetModalState();
+
+        // Close Modal
+        $this->modal('mark-scanned')->close();
+
+    }
+
+    public function markLate($userId)
+    {
+        $log = EventAttendanceLog::where('event_id', $this->event->id)
+            ->where('user_id', $userId)
+            ->first();
+
+        $log->update(['attendance_status' => 'late']);
+        
+        // Reset modal state
+        // $this->resetModalState();
+
+        // Close Modal
+        $this->modal('mark-late')->close();
+
+    }
+
+    public function markPresent($userId)
+    {
+        $log = EventAttendanceLog::where('event_id', $this->event->id)
+            ->where('user_id', $userId)
+            ->first();
+
+        $log->update(['attendance_status' => 'present']);
+        
+        // Reset modal state
+        // $this->resetModalState();
+
+        // Close Modal
+        $this->modal('mark-present')->close();
+
+    }
+
+    public function markAbsent($userId)
+    {
+        $log = EventAttendanceLog::where('event_id', $this->event->id)
+            ->where('user_id', $userId)
+            ->first();
+
+        $log->update(['attendance_status' => 'absent']);
+        
+        // Reset modal state
+        // $this->resetModalState();
+
+        // Close Modal
+        $this->modal('mark-absent')->close();
+
+    }
+
+    // Remove record
+    public function removeLogRecord(int $userId): void
+    {
+        EventAttendanceLog::where('event_id', $this->event->id)
+            ->where('user_id', $userId)
+            ->delete();
+
+        // Close Modal
+        $this->modal('remove-record')->close();
     }
 
     public function render()
