@@ -9,11 +9,14 @@ use App\Models\EventAttendanceLog;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Enums\AttendanceStatus;
+use Livewire\Livewire;
 
 #[Layout('components.layouts.attendance_bin_app')]
 class AttendanceBin extends Component
 {
     public $event;
+    public $student_id;
+    public $name;
 
     public function mount(Event $event)
     {
@@ -22,8 +25,24 @@ class AttendanceBin extends Component
 
     public function scanStudent($studentId)
     {
+
         $user = User::where('student_id', $studentId)->first();
         if (!$user) return;
+
+        // Dispatch browser event with student data
+        $this->dispatch('scanned-student', [
+            'student_id' => $user->student_id,
+            'name' => $user->name,
+        ]);
+
+        // $this->dispatch('scanned-student', [
+        //     'student_id' => '20241234',
+        //     'name' => 'Test Student',
+        // ]);
+        
+        // Set for dynamic label
+        $this->student_id = $user->student_id;
+        $this->name = $user->name;
 
         $log = EventAttendanceLog::where('event_id', $this->event->id)
             ->where('user_id', $user->id)

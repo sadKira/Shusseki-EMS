@@ -18,7 +18,7 @@
             placeholder="email@example.com" />
 
         <!-- Student ID -->
-        <flux:input wire:model="student_id" :label="__('Student ID')" type="text" required :placeholder="__('Student ID')" />
+        <flux:input wire:model="student_id" :label="__('Student ID')" type="text" required :placeholder="__('Student ID')"  mask="9999999" />
 
         {{-- Year Level & Course --}}
         <div class="grid grid-cols-2 gap-x-4 gap-y-6">

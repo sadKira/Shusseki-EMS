@@ -53,13 +53,13 @@
                     
 
                     <flux:heading class="flex items-center gap-2 mt-4">
-                        Time In: {{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}
+                        End of Time In Period: {{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}
 
                         <flux:tooltip position="bottom" toggleable>
                             <flux:button icon="information-circle" variant="ghost" />
                             <flux:tooltip.content class="max-w-[20rem] space-y-2">
-                                <p>Failure to scan their QRs during</p>
-                                <p>time-in will be marked as "Late".</p>
+                                <p>Students are expected to scan their</p>
+                                <p>QR codes before the end of the time in period.</p>
                             </flux:tooltip.content>
                         </flux:tooltip>
                     </flux:heading>

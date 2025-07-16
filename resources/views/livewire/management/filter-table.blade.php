@@ -24,7 +24,13 @@
         <div class="bg-(--import) rounded-xl px-10 py-6">
             <div class="flex flex-col  whitespace-nowrap">
                 <flux:text>Active</flux:text>
-                <flux:heading size="xl" level="1">{{ $activeCount }} Students</flux:heading>
+                @if ($activeCount != 0)
+                    <flux:heading size="xl" level="1">{{ $activeCount }} {{$activeCount > 1 ? "Students" : "Student"}}
+                    </flux:heading>
+                @else
+                    <flux:heading size="xl" level="1">{{ $activeCount }} Students
+                    </flux:heading>
+                @endif
                 <div class="flex items-center gap-1">
                     <flux:icon.arrow-trending-up class="text-green-500" variant="micro" />
                     <span class="text-sm text-green-600 dark:text-green-500">{{ $activePercentage }}% +</span>
@@ -35,7 +41,13 @@
         <div class="bg-(--import) rounded-xl px-10 py-6">
             <div class="flex flex-col  whitespace-nowrap">
                 <flux:text>Inactive</flux:text>
-                <flux:heading size="xl" level="1">{{ $inactiveCount }} Students</flux:heading>
+                @if ($inactiveCount != 0)
+                    <flux:heading size="xl" level="1">{{ $inactiveCount }} {{$inactiveCount > 1 ? "Students" : "Student"}}
+                    </flux:heading>
+                @else
+                    <flux:heading size="xl" level="1">{{ $inactiveCount }} Students
+                    </flux:heading>
+                @endif
                 <div class="flex items-center gap-1">
                     <flux:icon.arrow-trending-down class="text-red-500" variant="micro" />
                     <span class="text-sm text-red-500 dark:text-red-500">{{ $inactivePercentage }}% -</span>
@@ -288,7 +300,7 @@
                                         @if ($selection)
                                             @if ($selectedStatus == 'Active Students')
                                                 <flux:dropdown position="left" align="end">
-                                                    <flux:button icon="ellipsis-horizontal"></flux:button>
+                                                    <flux:button icon="ellipsis-horizontal" variant="ghost"></flux:button>
                                                     <flux:menu>
                                                         <flux:menu.item variant="danger" icon="user-minus"
                                                             wire:click="markInactive({{ $user->id }})">Mark as
@@ -297,7 +309,7 @@
                                                 </flux:dropdown>
                                             @else
                                                 <flux:dropdown position="left" align="end">
-                                                    <flux:button icon="ellipsis-horizontal" variant="subtle"></flux:button>
+                                                    <flux:button icon="ellipsis-horizontal" variant="ghost"></flux:button>
                                                     <flux:menu>
                                                         <flux:menu.item icon="user-plus" wire:click="markActive({{ $user->id }})">
                                                             Mark as Active</flux:menu.item>

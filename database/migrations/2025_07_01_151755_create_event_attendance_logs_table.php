@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('event_attendance_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('event_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamp('time_in');
             $table->timestamp('time_out')->nullable();;
             $table->enum('attendance_status', ['present', 'absent', 'late', 'scanned', 'not_scanned'])->default('not_scanned');

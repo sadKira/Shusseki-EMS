@@ -55,8 +55,8 @@
                                         <flux:input    
                                             id="tp_input_time_in"
                                             wire:model="time_in"
-                                            placeholder="Select Time In"
-                                            label="Time In"
+                                            placeholder="Time In Period"
+                                            label="End of Time In Period"
                                             type="text" 
                                             mask="99:99 aa"
                                             required
