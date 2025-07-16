@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->timestamp('time_in');
-            $table->timestamp('time_out')->nullable();;
+            $table->timestamp('time_in')->nullable();
+            $table->timestamp('time_out')->nullable();
             $table->enum('attendance_status', ['present', 'absent', 'late', 'scanned', 'not_scanned'])->default('not_scanned');
             $table->timestamps();
         });
