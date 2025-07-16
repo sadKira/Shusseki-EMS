@@ -144,51 +144,14 @@
                             <th scope="col" class="px-6 py-3">
                                 Status
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                             </th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {{-- @forelse ($users as $user)
-                            <tr wire:key="user-{{ $user->id }} "
-                                class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->user->name ?? '-' }}
-                                </th>
-                                <td class="px-6 py-4 text-zinc-600  whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->user->year_level ?? '-' }}
-                                </td>
-                                <td class="px-6 py-4 text-zinc-600  whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->time_in ? \Carbon\Carbon::parse($user->time_in)->setTimezone('Asia/Manila')->format('h:i A') : '-' }}
-                                </td>
-                                <td class="px-6 py-4 text-zinc-600  whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->time_out ? \Carbon\Carbon::parse($user->time_out)->setTimezone('Asia/Manila')->format('h:i A') : '-' }}
-                                </td>
-                                <td class="px-6 py-4 text-zinc-600  whitespace-nowrap dark:text-zinc-100">
-                                    @if ( $user->attendance_status == \App\Enums\AttendanceStatus::Scanned )
-                                        <flux:badge variant="solid" color="zinc">{{ $user->attendance_status->label() ?? '-' }}</flux:badge>
-                                    @elseif ( $user->attendance_status == \App\Enums\AttendanceStatus::Late )
-                                        <flux:badge variant="solid" color="amber">{{ $user->attendance_status->label() ?? '-' }}</flux:badge>
-                                    @elseif ( $user->attendance_status == \App\Enums\AttendanceStatus::Present )
-                                        <flux:badge variant="solid" color="green">{{ $user->attendance_status->label() ?? '-' }}</flux:badge>
-                                    @else
-                                        <flux:badge variant="solid" color="red">{{ $user->attendance_status->label() ?? '-' }}</flux:badge>
-                                    @endif
-                                </td>
-
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-8 text-lg text-zinc-400 font-semibold">
-                                    No Attendance Logs
-                                </td>
-                            </tr>
-                        @endforelse --}}
                         @forelse ($users as $user)
-                            <tr wire:key="user-{{ $user->id }}"
-                                class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+                            <tr class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
 
                                 {{-- Name --}}
                                 <th scope="row"
@@ -226,7 +189,7 @@
                                 </td>
 
                                 {{-- Override --}}
-                                <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
+                                <td class="px-3 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
                                     
                                     <flux:dropdown position="left" align="end">
 
@@ -234,10 +197,11 @@
 
                                         <flux:menu>
                                             
+                                        
                                             <flux:menu.item wire:click="markAsScanned({{ $user->user_id }})">
                                                     Scanned
                                             </flux:menu.item>
-
+                                            
                                             <flux:menu.item wire:click="markAsLate({{ $user->user_id }})">
                                                     Late
                                             </flux:menu.item>
@@ -253,8 +217,9 @@
                                             <flux:menu.separator />
 
                                             <flux:menu.item wire:click="removeRecord({{ $user->user_id }})" variant="danger">
-                                                    Scanned
+                                                    Remove Record
                                             </flux:menu.item>
+
                                         </flux:menu>
 
                                     </flux:dropdown>
@@ -276,7 +241,7 @@
     </div>
 
     {{-- Mark scanned modal --}}
-    <flux:modal name="mark-scanned" class="min-w-[22rem]" :dismissible="false" wire:model.self="selectedUserId">
+    <flux:modal name="mark-scanned" class="min-w-[22rem]" :dismissible="false">
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Mark Student as Scanned?</flux:heading>
@@ -289,7 +254,7 @@
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button type="submit" variant="primary" color="amber" wire:click="confirmMarkScanned">Mark Scanned</flux:button>
+                <flux:button  variant="primary" color="amber" wire:click="markScanned({{ $scannedUserId }})">Mark Scanned</flux:button>
             </div>
         </div>
     </flux:modal>
@@ -299,6 +264,7 @@
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Mark Student as Late?</flux:heading>
+                <div>ID: {{ $lateUserId }}</div>
                 <flux:text class="mt-2">
                     <p>You're about to mark {{ \App\Models\User::find($lateUserId)?->name ?? 'Student' }} as Late.</p>
                 </flux:text>
@@ -308,7 +274,7 @@
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button type="submit" variant="primary" color="amber">Mark Late</flux:button>
+                <flux:button type="submit" variant="primary" color="amber" wire:click="markLate({{ $lateUserId }})">Mark Late</flux:button>
             </div>
         </div>
     </flux:modal>
@@ -327,7 +293,7 @@
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button type="submit" variant="primary" color="amber">Mark Present</flux:button>
+                <flux:button type="submit" variant="primary" color="amber" wire:click="markPresent({{ $presentUserId }})">Mark Present</flux:button>
             </div>
         </div>
     </flux:modal>
@@ -346,7 +312,7 @@
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button type="submit" variant="primary" color="amber">Mark Absent</flux:button>
+                <flux:button type="submit" variant="primary" color="amber" wire:click="markAbsent({{ $absentUserId }})">Mark Absent</flux:button>
             </div>
         </div>
     </flux:modal>
@@ -365,7 +331,7 @@
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button type="submit" variant="danger" color="amber">Remove Record</flux:button>
+                <flux:button type="submit" variant="danger" color="amber" wire:click="removeLogRecord({{ $removeUserId }})">Remove Record</flux:button>
             </div>
         </div>
     </flux:modal>
