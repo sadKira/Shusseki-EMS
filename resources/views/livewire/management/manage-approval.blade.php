@@ -51,22 +51,36 @@
                 {{-- Bulk Buttons Container --}}
                 <div class="ml-3 {{ $pendingCount > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
                     <flux:dropdown position="bottom" align="end">
-                        <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions</flux:button>
+                        <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
+                        </flux:button>
                         <flux:menu>
                             @if (count($selected) > 0)
-                                <flux:menu.item icon="check" wire:click="bulkApprove">Approve Selected Accounts</flux:menu.item>
-                                <flux:menu.item icon="x-mark" variant="danger" wire:confirm="Confirm bulk account rejection"
-                                    wire:click="bulkReject">
-                                    Reject Selected Accounts</flux:menu.item>
-                                
+
+                                {{-- Selected actions --}}
+                                <flux:modal.trigger name="selected-approve">
+                                    <flux:menu.item icon="check">Approve Selected Accounts</flux:menu.item>
+                                </flux:modal.trigger>
+
+                                <flux:modal.trigger name="selected-reject">
+                                    <flux:menu.item icon="x-mark" variant="danger">Reject Selected Accounts</flux:menu.item>
+                                </flux:modal.trigger>
+
                             @endif
                             @if (count($selected) > 0)
                             @else
-                                <flux:menu.item icon="check-badge"  wire:confirm="Approve all existing accounts?"
-                                    wire:click="totalbulkApprove">Approve All Pending Accounts</flux:menu.item>
-                                <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
-                                    wire:click="totalbulkReject">Reject All Pending Accounts</flux:menu.item>
+
+                                {{-- Bulk actions --}}
+                                <flux:modal.trigger name="bulk-approve">
+                                    <flux:menu.item icon="check-badge">Approve All Pending Accounts</flux:menu.item>
+                                </flux:modal.trigger>
+
+                                <flux:modal.trigger name="bulk-reject">
+                                    <flux:menu.item icon="trash" variant="danger">Reject All Pending Accounts
+                                    </flux:menu.item>
+                                </flux:modal.trigger>
+
                             @endif
+
                         </flux:menu>
                     </flux:dropdown>
                 </div>
@@ -75,13 +89,13 @@
 
         </div>
 
-        @script
+        {{-- @script
         <script>
             setInterval(() => {
                 $wire.$refresh()
             }, 10000)
         </script>
-        @endscript
+        @endscript --}}
 
         <div class="bg-(--import) rounded-xl px-10 py-6">
             {{-- Table --}}
@@ -107,7 +121,8 @@
                                 <th scope="col" class="px-6 py-3">
                                     Course
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <th scope="col" class="px-3 py-3">
+                                    Action
                                 </th>
                             </tr>
                         </thead>
@@ -136,23 +151,73 @@
                                     <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
                                         {{ $user->course }}
                                     </td>
-                                    <td class="flex items-center space-between gap-4 px-6 py-4">
+                                    <td class="flex items-center space-between gap-4 px-3 py-4">
+
                                         <flux:dropdown position="left" align="end">
-                                            <flux:button icon="ellipsis-horizontal"></flux:button>
+                                            <flux:button icon="ellipsis-horizontal" variant="ghost"></flux:button>
                                             <flux:menu>
-                                                <flux:menu.item icon="check" wire:click="approve({{ $user->id }})">
-                                                    Approve</flux:menu.item>
-                                                <flux:menu.item icon="x-mark" variant="danger"
-                                                    wire:confirm="Confirm account rejection." wire:click="reject({{ $user->id }})">
-                                                    Reject</flux:menu.item>
+
+                                                <flux:modal.trigger :name="'approve-solo-'.$user->id">
+                                                    <flux:menu.item icon="check">
+                                                        Approve</flux:menu.item>
+                                                </flux:modal.trigger>
+
+                                                <flux:modal.trigger :name="'reject-solo-'.$user->id">
+                                                    <flux:menu.item icon="x-mark" variant="danger">
+                                                        Reject</flux:menu.item>
+                                                </flux:modal.trigger>
+
                                             </flux:menu>
                                         </flux:dropdown>
+
+                                        {{-- Approve modal --}}
+                                        <flux:modal :name="'approve-solo-'.$user->id" :dismissible="false" class="min-w-[22rem]">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <flux:heading size="lg">Approve User?</flux:heading>
+                                                    <flux:text class="mt-2">
+                                                        <p>You're about to approve {{ $user->name }}.</p>
+                                                    </flux:text>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                    <flux:spacer />
+                                                    <flux:modal.close>
+                                                        <flux:button variant="ghost">Cancel</flux:button>
+                                                    </flux:modal.close>
+                                                    <flux:button variant="primary" color="amber"
+                                                        wire:click="approve({{ $user->id }})">Approve User</flux:button>
+                                                </div>
+                                            </div>
+                                        </flux:modal>
+
+                                        {{-- Reject modal --}}
+                                        <flux:modal :name="'reject-solo-'.$user->id" :dismissible="false" class="min-w-[22rem]">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <flux:heading size="lg">Reject User?</flux:heading>
+                                                    <flux:text class="mt-2">
+                                                        <p>You're about to reject {{ $user->name }}.</p>
+                                                    </flux:text>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                    <flux:spacer />
+                                                    <flux:modal.close>
+                                                        <flux:button variant="ghost">Cancel</flux:button>
+                                                    </flux:modal.close>
+                                                    <flux:button variant="danger" wire:click="reject({{ $user->id }})">
+                                                        Reject User</flux:button>
+                                                </div>
+                                            </div>
+                                        </flux:modal>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-8 text-lg text-zinc-400 font-semibold">
-                                        No Pending Accounts
+                                    <td colspan="6" class="py-8">
+                                        <div class="flex justify-center items-center gap-2 w-full">
+                                            <flux:icon.user-circle variant="solid" class="text-zinc-50"/>
+                                            <flux:heading size="lg">No Pending Accounts</flux:heading>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforelse
@@ -166,4 +231,80 @@
             </div>
         </div>
     </div>
+
+    {{-- Bulk Approve modal --}}
+    <flux:modal name="bulk-approve" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Approve All Pending Users?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to approve all pending users.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="primary" color="amber" wire:click="totalbulkApprove">Approve All</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Bulk Reject modal --}}
+    <flux:modal name="bulk-reject" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Reject All Pending Users?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to reject all pending users.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="danger" wire:click="totalbulkReject">Reject All</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Approve Selected modal --}}
+    <flux:modal name="selected-approve" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Approve Selected Pending Users?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to approve all selected pending users.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="primary" color="amber" wire:click="bulkApprove">Approve Selected</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Reject selected modal --}}
+    <flux:modal name="selected-reject" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Reject Selected Pending Users?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to reject all selected pending users.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="danger" wire:click="bulkReject">Reject Selected</flux:button>
+            </div>
+        </div>
+    </flux:modal>
 </div>

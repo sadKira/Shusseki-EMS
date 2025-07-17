@@ -91,7 +91,7 @@
                                 ($selectedStatus === 'Active Students' && $activeCount > 1) ||
                                 ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
                             )
-                            <flux:button variant="subtle" wire:click.live="toggleSelection">Select Multiple</flux:button>
+                            <flux:button variant="subtle" wire:click="toggleSelection">Select Multiple</flux:button>
                         @endif
 
                     @endcan
@@ -184,25 +184,29 @@
                         <flux:menu>
                             @if ($selectedStatus == 'Active Students')
                                 @if (count($selected) > 0)
-                                    <flux:menu.item icon="check" wire:click="bulkmarkInactive">Mark selected as inactive
-                                    </flux:menu.item>
+                                    <flux:modal.trigger name="inactive-selected">
+                                        <flux:menu.item icon="check">Mark selected as inactive</flux:menu.item>
+                                    </flux:modal.trigger>
                                 @else
-                                    <flux:menu.item icon="user-plus" wire:confirm="Mark all existing accounts as inactive?"
-                                        wire:click="totalbulkmarkInactive">Mark all accounts as inactive</flux:menu.item>
+                                    <flux:modal.trigger name="inactive-bulk">
+                                        <flux:menu.item icon="user-plus">Mark all accounts as inactive</flux:menu.item>
+                                    </flux:modal.trigger>
                                 @endif
                             @else
                                 @if (count($selected) > 0)
-                                    <flux:menu.item icon="check" wire:click="bulkmarkActive">Mark selected as active
-                                    </flux:menu.item>
-                                    <flux:menu.item icon="x-mark" wire:click="bulkremoveAccount">Remove selected accounts
-                                    </flux:menu.item>
+                                    <flux:modal.trigger name="active-selected">
+                                        <flux:menu.item icon="check">Mark selected as active</flux:menu.item>
+                                    </flux:modal.trigger>
+                                    <flux:modal.trigger name="remove-selected">
+                                        <flux:menu.item icon="x-mark">Remove selected accounts</flux:menu.item>
+                                    </flux:modal.trigger>
                                 @else
-                                    <flux:menu.item icon="user-plus" wire:confirm="Mark all existing accounts as active?"
-                                        wire:click="totalbulkmarkActive">Mark all accounts as active</flux:menu.item>
-                                    <flux:menu.item icon="trash" variant="danger" wire:confirm="Delete all existing accounts?"
-                                        wire:click="totalbulkremoveAccount">
-                                        Remove all existing accounts
-                                    </flux:menu.item>
+                                    <flux:modal.trigger name="active-bulk">
+                                        <flux:menu.item icon="user-plus">Mark all accounts as active</flux:menu.item>
+                                    </flux:modal.trigger>
+                                    <flux:modal.trigger name="remove-bulk">
+                                        <flux:menu.item icon="trash" variant="danger">Remove all existing accounts</flux:menu.item>
+                                    </flux:modal.trigger>
                                 @endif
                             @endif
                         </flux:menu>
@@ -259,8 +263,12 @@
                             <th scope="col" class="px-6 py-3">
                                 Course
                             </th>
-                            <th scope="col" class="px- py-3 pl-16.5">
-                            </th>
+                            @if ($selection)
+                                <th scope="col" class="px-6 py-3">
+                                    Action
+                                </th>
+                            @else
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -302,38 +310,109 @@
                                                 <flux:dropdown position="left" align="end">
                                                     <flux:button icon="ellipsis-horizontal" variant="ghost"></flux:button>
                                                     <flux:menu>
-                                                        <flux:menu.item variant="danger" icon="user-minus"
-                                                            wire:click="markInactive({{ $user->id }})">Mark as
-                                                            Inactive</flux:menu.item>
+
+                                                        <flux:modal.trigger :name="'inactive-solo-'.$user->id">
+                                                            <flux:menu.item variant="danger" icon="user-minus"
+                                                                >Mark as
+                                                                Inactive</flux:menu.item>
+                                                        </flux:modal.trigger>
+
                                                     </flux:menu>
                                                 </flux:dropdown>
                                             @else
                                                 <flux:dropdown position="left" align="end">
                                                     <flux:button icon="ellipsis-horizontal" variant="ghost"></flux:button>
                                                     <flux:menu>
-                                                        <flux:menu.item icon="user-plus" wire:click="markActive({{ $user->id }})">
-                                                            Mark as Active</flux:menu.item>
-                                                        <flux:menu.item icon="trash" variant="danger"
-                                                            wire:confirm="Confirm account removal."
-                                                            wire:click="removeAccount({{ $user->id }})">
-                                                            Remove Account</flux:menu.item>
+
+                                                        <flux:modal.trigger :name="'active-solo-'.$user->id">
+                                                            <flux:menu.item icon="user-plus">Mark as Active</flux:menu.item>
+                                                        </flux:modal.trigger>  
+                                                        <flux:modal.trigger :name="'remove-solo-'.$user->id">
+                                                            <flux:menu.item icon="trash" variant="danger">Remove Account</flux:menu.item>
+                                                        </flux:modal.trigger>
+                                                            
                                                     </flux:menu>
                                                 </flux:dropdown>
                                             @endif
                                         @else
                                         @endif
                                     @endcan
+
+                                    {{-- Mark inactive modal --}}
+                                    <flux:modal :name="'inactive-solo-'.$user->id" :dismissible="false" class="min-w-[22rem]">
+                                        <div class="space-y-6">
+                                            <div>
+                                                <flux:heading size="lg">Mark Student as Inactive?</flux:heading>
+                                                <flux:text class="mt-2">
+                                                    <p>You're about to mark {{ $user->name }} as inactive.</p>
+                                                </flux:text>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <flux:spacer />
+                                                <flux:modal.close>
+                                                    <flux:button variant="ghost">Cancel</flux:button>
+                                                </flux:modal.close>
+                                                <flux:button variant="danger" wire:click="markInactive({{ $user->id }})">Mark as Inactive</flux:button>
+                                            </div>
+                                        </div>
+                                    </flux:modal>
+
+                                    {{-- Mark active modal --}}
+                                    <flux:modal :name="'active-solo-'.$user->id" :dismissible="false" class="min-w-[22rem]">
+                                        <div class="space-y-6">
+                                            <div>
+                                                <flux:heading size="lg">Mark Student as Active?</flux:heading>
+                                                <flux:text class="mt-2">
+                                                    <p>You're about to mark {{ $user->name }} as active.</p>
+                                                </flux:text>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <flux:spacer />
+                                                <flux:modal.close>
+                                                    <flux:button variant="ghost">Cancel</flux:button>
+                                                </flux:modal.close>
+                                                <flux:button variant="primary" color="amber" wire:click="markActive({{ $user->id }})">Mark as Active</flux:button>
+                                            </div>
+                                        </div>
+                                    </flux:modal>
+
+                                    {{-- Remove account modal --}}
+                                    <flux:modal :name="'remove-solo-'.$user->id" :dismissible="false" class="min-w-[22rem]">
+                                        <div class="space-y-6">
+                                            <div>
+                                                <flux:heading size="lg">Remove Account?</flux:heading>
+                                                <flux:text class="mt-2">
+                                                    <p>You're about to remove {{ $user->name }}'s account.</p>
+                                                    <p>This action cannot be undone.</p>
+                                                </flux:text>
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <flux:spacer />
+                                                <flux:modal.close>
+                                                    <flux:button variant="ghost">Cancel</flux:button>
+                                                </flux:modal.close>
+                                                <flux:button variant="danger" wire:click="removeAccount({{ $user->id }})">Remove Account</flux:button>
+                                            </div>
+                                        </div>
+                                    </flux:modal>
+
                                 </td>
                             </tr>
                         @empty
                             <tr>
                                 @if ($selectedStatus == 'Active Students')
-                                    <td colspan="6" class="text-center py-8 text-lg text-zinc-400 font-semibold">
-                                        No Active Student Accounts
+                                    <td colspan="6" class="py-8">
+                                        <div class="flex justify-center items-center gap-2 w-full">
+                                            <flux:icon.user-circle variant="solid" class="text-zinc-50"/>
+                                            <flux:heading size="lg">No Active Student Accounts</flux:heading>
+                                        </div>
                                     </td>
                                 @elseif ($selectedStatus == 'Inactive Students')
-                                    <td colspan="6" class="text-center py-8 text-lg text-zinc-400 font-semibold">
-                                        No Inactive Student Accounts
+                                    <td colspan="6" class="py-8">
+                                        <div class="flex justify-center items-center gap-2 w-full">
+                                            <flux:icon.user-circle variant="solid" class="text-zinc-50"/>
+                                            <flux:heading size="lg">No Inactive Student Accounts</flux:heading>
+                                        </div>
                                     </td>
                                 @endif
                             </tr>
@@ -357,5 +436,121 @@
             {{ $users->links('pagination::tailwind') }}
         </div>
     </div>
+
+    {{-- Bulk inactive modal --}}
+    <flux:modal name="inactive-bulk" :dismissible="false" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark All Students as Inactive?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to mark all students as inactive.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="danger" wire:click="totalbulkmarkInactive">Mark as Inactive</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Bulk active modal --}}
+    <flux:modal name="active-bulk" :dismissible="false" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark All Students as Active?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to mark all students as active.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="primary" color="amber" wire:click="totalbulkmarkActive">Mark as Active</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Bulk remove modal --}}
+    <flux:modal name="remove-bulk" :dismissible="false" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Remove All Students?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to remove all students. This action</p>
+                    <p>cannot be undone.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="danger"  wire:click="totalbulkremoveAccount">Remove all Students</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Selected remove modal --}}
+    <flux:modal name="remove-selected" :dismissible="false" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Remove Selected Students?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to remove all selected students.</p>
+                    <p>This action cannot be undone.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="danger" wire:click="bulkremoveAccount">Remove Students</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Selected inactive modal --}}
+    <flux:modal name="inactive-selected" :dismissible="false" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark Selected Students as Inactive?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to mark all selected students as inactive.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="danger" wire:click="bulkmarkInactive">Mark as Inactive</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
+    {{-- Selected active modal --}}
+    <flux:modal name="active-selected" :dismissible="false" class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark Selected Students as Active?</flux:heading>
+                <flux:text class="mt-2">
+                    <p>You're about to mark all selected students as active.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="primary" color="amber" wire:click="bulkmarkActive">Mark as Active</flux:button>
+            </div>
+        </div>
+    </flux:modal>
 
 </div>

@@ -5,6 +5,7 @@ namespace App\Livewire\Management;
 use Livewire\Component;
 use App\Models\User;
 use Livewire\WithPagination;
+use Flux\Flux;
 
 class ManageApproval extends Component
 {
@@ -22,6 +23,9 @@ class ManageApproval extends Component
         $user->update(['status' => 'approved']);
         session()->flash('message', "{$user->name} has been approved.");
         $this->dispatch('refreshPendingCount');
+
+        // Close modal
+        Flux::modals()->close();
     }
 
     // Rejection
@@ -30,6 +34,9 @@ class ManageApproval extends Component
         $user = User::findOrFail($userId);
         $user->delete();
         $this->dispatch('refreshPendingCount');
+
+        // Close modal
+        Flux::modals()->close();
     }
 
     public function getUsersProperty()
@@ -73,6 +80,9 @@ class ManageApproval extends Component
         $this->cancelSelection();
         session()->flash('message', 'Selected users approved successfully.');
         $this->dispatch('refreshPendingCount');
+
+        // Close modal
+        Flux::modals()->close();
     }
 
     // Reject selected
@@ -82,6 +92,9 @@ class ManageApproval extends Component
         $this->cancelSelection();
         session()->flash('message', 'Selected users rejected and deleted.');
         $this->dispatch('refreshPendingCount');
+
+        // Close modal
+        Flux::modals()->close();
     }
 
     // Bulk appprove
@@ -96,6 +109,9 @@ class ManageApproval extends Component
 
         $this->dispatch('refreshPendingCount');
 
+        // Close modal
+        Flux::modals()->close();
+
     }
 
     // Bulk reject
@@ -109,6 +125,9 @@ class ManageApproval extends Component
         $this->cancelSelection();
 
         $this->dispatch('refreshPendingCount');
+
+        // Close modal
+        Flux::modals()->close();
         
     }
 
