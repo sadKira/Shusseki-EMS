@@ -7,10 +7,6 @@
 
         <flux:spacer />
 
-        <flux:navbar class="-mb-px">
-             <flux:navbar.item icon:trailing="arrow-uturn-left" :href="route('view_event', $event)" wire:navigate >Leave Attendance Bin</flux:navbar.item>
-        </flux:navbar>
-
     </flux:header>
 
 
@@ -70,7 +66,7 @@
             {{-- Confirmation --}}
             <div class="flex items-center gap-2 whitespace-nowrap mb-5 opacity-0 pointer-events-none">
                 <flux:icon.check-circle class="text-green-500" variant="mini" />
-                <flux:heading size="lg">2202360 - Noblefranca, Latrell Andre</flux:heading>                    
+                <flux:heading size="lg">2202360 - Test User, Test User</flux:heading>                    
             </div>
 
             {{-- Bin Details --}}
@@ -117,8 +113,9 @@
 
                 {{-- Close attendance bin --}}
                 <div class="grid justify-items-end">
+                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)" wire:navigate>Leave Attendance Bin</flux:button>
                     <flux:modal.trigger name="close-AB">
-                        <flux:button variant="primary" color="amber" icon:trailing="shield-check">Close Attendance Bin</flux:button>
+                        <flux:button variant="primary" color="amber" icon:trailing="shield-check" class="mt-3">Close Attendance Bin</flux:button>
                     </flux:modal.trigger>
 
                     {{-- Close AB modal --}}

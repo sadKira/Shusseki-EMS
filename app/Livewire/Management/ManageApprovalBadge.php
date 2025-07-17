@@ -4,6 +4,7 @@ namespace App\Livewire\Management;
 
 use Livewire\Component;
 use App\Models\User;
+use Livewire\Attributes\Renderless;
 
 class ManageApprovalBadge extends Component
 {
