@@ -105,10 +105,12 @@
         </div>
         
         <!-- Event Description -->
-        <div class="lg:col-span-3 px-10 py-4 text-balance break-words break-all">
+        <div class="lg:col-span-3 px-10 py-4 inline-block   ">
             <flux:heading size="xl" class="">Event <span class="text-[var(--color-accent)]">Description</span></flux:heading>
-            <flux:separator class="mt-2" />
-            <flux:text class="text-base leading-relaxed mt-4 text-zinc-50">{{ $event->description }}</flux:text>
+            {{-- <flux:separator class="mt-2" /> --}}
+            
+            <flux:text class="text-base leading-relaxed mt-2 text-zinc-50 break-all">{{ $event->description }}</flux:text>
+           
         </div>
 
         <!-- Admin Tools -->
@@ -134,12 +136,20 @@
                 @elseif ($event->status == \App\Enums\EventStatus::NotFinished)
 
                     <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber" :href="route('attendance_bin', $event)">View Attendance Bin</flux:button>
-                    <flux:button variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
 
                     @can('SA')
-                        <flux:modal.trigger name="postpone-ev">
-                            <flux:button variant="danger" icon:trailing="shield-exclamation">Postpone Event</flux:button>
-                        </flux:modal.trigger>
+                        <div class="flex items-center justify-between gap-2">    
+                            <flux:button class="flex-grow" variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
+                        
+                            <flux:modal.trigger name="postpone-ev">
+                                <flux:tooltip content="Postpone Event" position="bottom">
+                                    <flux:button variant="danger" icon="shield-exclamation"></flux:button>
+                                </flux:tooltip>
+                            </flux:modal.trigger>
+                        </div> 
+                    @endcan
+                    @can('A')
+                        <flux:button variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
                     @endcan
 
                 @elseif ($event->status == \App\Enums\EventStatus::Finished)
@@ -198,7 +208,7 @@
                             <flux:modal.close>
                                 <flux:button variant="ghost">Cancel</flux:button>
                             </flux:modal.close>
-                            <flux:button variant="primary" color="amber" wire:click="markEventAsResumed">Resume Event</flux:button>
+                            <flux:button variant="primary" color="green" wire:click="markEventAsResumed">Resume Event</flux:button>
                         </div>
                     </div>
                 </flux:modal>

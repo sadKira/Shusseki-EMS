@@ -77,7 +77,6 @@
                                 </div>
                                 <div class="flex-items-center">
                                     
-
                                     @php
                                         $timezone = 'Asia/Manila';
                                         $now = now()->timezone($timezone);

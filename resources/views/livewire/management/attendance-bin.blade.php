@@ -113,7 +113,7 @@
 
                 {{-- Close attendance bin --}}
                 <div class="grid justify-items-end">
-                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)" wire:navigate>Leave Attendance Bin</flux:button>
+                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)">Leave Attendance Bin</flux:button>
                     <flux:modal.trigger name="close-AB">
                         <flux:button variant="primary" color="amber" icon:trailing="shield-check" class="mt-3">Close Attendance Bin</flux:button>
                     </flux:modal.trigger>
