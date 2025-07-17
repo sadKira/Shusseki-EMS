@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\Setting;
 use App\Enums\AccountStatus;
+use Flux\Flux;
 
 
 class FilterTable extends Component
@@ -61,8 +62,9 @@ class FilterTable extends Component
     {
         $user = User::find($userId);
         $user->update(['account_status' => 'inactive']);
-        session()->flash('message', "{$user->name} has been marked inactive.");
 
+        // Close modal
+        Flux::modals()->close();
 
     }
 
@@ -71,9 +73,10 @@ class FilterTable extends Component
     {
         User::whereIn('id', $this->selected)->update(['account_status' => 'inactive']);
         $this->cancelSelection();
-        session()->flash('message', 'Selected users marked inactive.');
-
         $this->toggleSelection();
+
+        // Close modal
+        Flux::modals()->close();
       
     }
 
@@ -89,6 +92,9 @@ class FilterTable extends Component
         $this->toggleSelection();
         $this->cancelSelection();
 
+        // Close modal
+        Flux::modals()->close();
+
     }
 
     // Inactive Students table
@@ -98,6 +104,9 @@ class FilterTable extends Component
         $user = User::findOrFail($userId);
         $user->delete(); 
 
+        // Close modal
+        Flux::modals()->close();
+
     }
 
     // Remove selected account
@@ -105,10 +114,10 @@ class FilterTable extends Component
     {
         User::whereIn('id', $this->selected)->delete();
         $this->cancelSelection();
-        session()->flash('message', 'Selected users removed.');
-
         $this->toggleSelection();
 
+        // Close modal
+        Flux::modals()->close();
     }
 
     // Remove ALL existing inactive accounts
@@ -118,12 +127,14 @@ class FilterTable extends Component
         ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
         ->whereNotIn('status', ['pending'])
         ->delete();
-        session()->flash('message', 'All exisitng users removed.');
 
         // dd(User::where('account_status', 'inactive')->toSql());
 
         $this->toggleSelection();
         $this->cancelSelection();
+
+        // Close modal
+        Flux::modals()->close();
 
     }
 
@@ -132,7 +143,9 @@ class FilterTable extends Component
     {
         $user = User::find($userId);
         $user->update(['account_status' => 'active']);
-        session()->flash('message', "{$user->name} has been marked active.");
+
+        // Close modal
+        Flux::modals()->close();
 
     }
 
@@ -141,10 +154,10 @@ class FilterTable extends Component
     {
         User::whereIn('id', $this->selected)->update(['account_status' => 'active']);
         $this->cancelSelection();
-        session()->flash('message', 'Selected users marked active.');
-
         $this->toggleSelection();
       
+        // Close modal
+        Flux::modals()->close();
     }
 
     // Mark ALL existing as active
@@ -158,6 +171,9 @@ class FilterTable extends Component
 
         $this->toggleSelection();
         $this->cancelSelection();
+
+        // Close modal
+        Flux::modals()->close();
                 
     }
     
