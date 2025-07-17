@@ -12,6 +12,7 @@ use App\Enums\AttendanceStatus;
 use App\Enums\EventStatus;
 use App\Enums\AccountStatus;
 use App\Enums\UserApproval;
+use Flux\Flux;
 
 
 #[Layout('components.layouts.attendance_bin_app')]
@@ -227,6 +228,8 @@ class AttendanceBin extends Component
                 'time_out' => null,
             ]);
         }
+
+        Flux::modals()->close();
 
         return redirect()->route('view_event', $this->event);
   
