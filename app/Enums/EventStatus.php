@@ -6,8 +6,8 @@ enum EventStatus: String
 {
     case NotFinished = 'not_finished';
     case Finished = 'finished';
-
     case Postponed = 'postponed';
+   
 
     public function label()
     {

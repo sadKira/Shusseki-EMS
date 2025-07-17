@@ -76,30 +76,40 @@
                                     </div>
                                 </div>
                                 <div class="flex-items-center">
+                                    
+
                                     @php
                                         $timezone = 'Asia/Manila';
                                         $now = now()->timezone($timezone);
-                                        
-                                        // Combine the actual date with the time strings
+
+                                        // Combine date and time into Carbon instances
                                         $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
                                         $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                                     @endphp
 
-                                    {{-- Event status --}}
-                                    @if ($event->status != \App\Enums\EventStatus::Postponed)
-                                        @if ($now->between($start, $end))
-                                            <flux:badge color="amber" class="mr-10" variant="solid"><span class="text-black">In
-                                                    Progress</span></flux:badge>
-                                        @endif
-                                    @endif
+                                    {{-- Event status badges --}}
                                     @if ($event->status == \App\Enums\EventStatus::Finished)
-                                        <flux:badge color="green" class="mr-10" variant="solid"><span
-                                                class="text-black">Ended</span></flux:badge>
+                                        <flux:badge color="green" class="mr-10" variant="solid">
+                                            <span class="text-black">Ended</span>
+                                        </flux:badge>
+                                    @elseif ($event->status == \App\Enums\EventStatus::Postponed)
+                                        <flux:badge color="red" class="mr-10" variant="solid">
+                                            <span class="text-white">Postponed</span>
+                                        </flux:badge>
+                                    @elseif ($now->between($start, $end))
+                                        <flux:badge color="amber" class="mr-10" variant="solid">
+                                            <span class="text-black">In Progress</span>
+                                        </flux:badge>
+                                    @elseif ($now->gt($end))
+                                        <flux:badge color="zinc" class="mr-10" variant="solid">
+                                            <span class="text-white">Untracked</span>
+                                        </flux:badge>
+                                    {{-- @elseif ($event->status == \App\Enums\EventStatus::Untracked)
+                                        <flux:badge color="zinc" class="mr-10" variant="solid">
+                                            <span class="text-white">Untracked</span>
+                                        </flux:badge> --}}
                                     @endif
-                                    @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                        <flux:badge color="red" class="mr-10" variant="solid"><span
-                                                class="text-white">Postponed</span></flux:badge>
-                                    @endif
+
                                     <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square" :href="route('view_event', $event)" wire:navigate></flux:button>
                                 </div>
 
@@ -250,16 +260,23 @@
                                         {{-- Event status --}}
                                         @if ($event->status != \App\Enums\EventStatus::Postponed)
                                             @if ($now->between($start, $end))
-                                                <flux:badge color="amber" class="mt-5" variant="solid"><span class="text-black">In
+                                                <flux:badge color="amber" class="mt-3" variant="solid"><span class="text-black">In
                                                         Progress</span></flux:badge>
+                                            @endif
+                                            @if ($event->status != \App\Enums\EventStatus::Finished)         
+                                                @if ($now->gt($end))
+                                                    <flux:badge color="zinc" class="mt-3" variant="solid">
+                                                        <span class="text-white">Untracked</span>
+                                                    </flux:badge>
+                                                @endif
                                             @endif
                                         @endif
                                         @if ($event->status == \App\Enums\EventStatus::Finished)
-                                            <flux:badge color="green" class="mt-5" variant="solid"><span
+                                            <flux:badge color="green" class="mt-3" variant="solid"><span
                                                     class="text-black">Ended</span></flux:badge>
                                         @endif
                                         @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                            <flux:badge color="red" class="mt-5" variant="solid"><span
+                                            <flux:badge color="red" class="mt-3" variant="solid"><span
                                                     class="text-white">Postponed</span></flux:badge>
                                         @endif
                                     </div>
