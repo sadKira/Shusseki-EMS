@@ -5,13 +5,16 @@ namespace App\Livewire\Management;
 use Livewire\Component;
 use App\Models\User;
 use Livewire\Attributes\Renderless;
+use Illuminate\Support\Facades\Route;
 
 class ManageApprovalBadge extends Component
 {
     public $count;
+    public $currentRoute;
 
-    public function mount()
+    public function mount($currentRoute = null)
     {
+        $this->currentRoute = $currentRoute ?? Route::currentRouteName();
         $this->count = User::where('status', 'pending')->count();
     }
 
