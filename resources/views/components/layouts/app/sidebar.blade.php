@@ -75,7 +75,7 @@
                         </flux:navlist.item>
 
                         {{-- Dynamic badge --}}
-                        @livewire('management.manage-approval-badge')
+                        @livewire('management.manage-approval-badge', ['currentRoute' => \Route::currentRouteName()])
                     @endcan
                     @can('A')
                         <flux:navlist.item icon="user" :href="route('manage_students')"
@@ -212,7 +212,7 @@
 
     {{-- Reinitialization --}}
     <!-- Lodash -->
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script> --}}
 
     {{-- Luxon --}}
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js"></script>

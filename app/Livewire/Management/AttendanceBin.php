@@ -21,11 +21,6 @@ class AttendanceBin extends Component
     public $event;
     public $student_id;
     public $name;
-    public ?int $scannedUserId = null;
-    public ?int $lateUserId = null;
-    public ?int $presentUserId = null;
-    public ?int $absentUserId = null;
-    public ?int $removeUserId = null;
 
     public function mount(Event $event)
     {
@@ -80,46 +75,6 @@ class AttendanceBin extends Component
         }
     }
 
-    // Modal functionality
-    public function markAsScanned(int $userId): void
-    {
-        $this->scannedUserId = $userId;
-        $this->modal('mark-scanned')->show(); // Flux modal
-    }
-
-    public function markAsLate(int $userId): void
-    {
-        $this->lateUserId = $userId;
-        $this->modal('mark-late')->show(); // Flux modal
-    }
-
-    public function markAsPresent(int $userId): void
-    {
-        $this->presentUserId = $userId;
-        $this->modal('mark-present')->show(); // Flux modal
-    }
-
-    public function markAsAbsent(int $userId): void
-    {
-        $this->absentUserId = $userId;
-        $this->modal('mark-absent')->show(); // Flux modal
-    }
-
-    public function removeRecord(int $userId): void
-    {
-        $this->removeUserId = $userId;
-        $this->modal('remove-record')->show(); // Flux modal
-    }
-
-    public function resetModalState()
-    {
-        $this->scannedUserId = null;
-        $this->lateUserId = null;
-        $this->presentUserId = null;
-        $this->absentUserId = null;
-        $this->removeUserId = null;
-    }
-
 
     // Update student status
     public function markScanned($userId)
@@ -129,12 +84,9 @@ class AttendanceBin extends Component
             ->first();
 
         $log->update(['attendance_status' => 'scanned']);
-        
-        // Reset modal state
-        // $this->resetModalState();
 
-        // Close Modal
-        $this->modal('mark-scanned')->close();
+        // Close modal
+        Flux::modals()->close();
 
     }
 
@@ -146,11 +98,8 @@ class AttendanceBin extends Component
 
         $log->update(['attendance_status' => 'late']);
         
-        // Reset modal state
-        // $this->resetModalState();
-
-        // Close Modal
-        $this->modal('mark-late')->close();
+        // Close modal
+        Flux::modals()->close();
 
     }
 
@@ -162,11 +111,8 @@ class AttendanceBin extends Component
 
         $log->update(['attendance_status' => 'present']);
         
-        // Reset modal state
-        // $this->resetModalState();
-
-        // Close Modal
-        $this->modal('mark-present')->close();
+        // Close modal
+        Flux::modals()->close();
 
     }
 
@@ -178,11 +124,8 @@ class AttendanceBin extends Component
 
         $log->update(['attendance_status' => 'absent']);
         
-        // Reset modal state
-        // $this->resetModalState();
-
-        // Close Modal
-        $this->modal('mark-absent')->close();
+        // Close modal
+        Flux::modals()->close();
 
     }
 
@@ -193,10 +136,11 @@ class AttendanceBin extends Component
             ->where('user_id', $userId)
             ->delete();
 
-        // Close Modal
-        $this->modal('remove-record')->close();
+        // Close modal
+        Flux::modals()->close();
     }
 
+    // Mark event finished
     public function markEventAsFinished()
     {
         //  Mark event as finished
@@ -229,11 +173,13 @@ class AttendanceBin extends Component
             ]);
         }
 
+        // Close all modals
         Flux::modals()->close();
 
         return redirect()->route('view_event', $this->event);
   
     }
+
     public function render()
     {
         $logs = EventAttendanceLog::where('event_id', $this->event->id)
