@@ -38,8 +38,6 @@
     </script>
 
     {{-- Reinitialization --}}
-    <!-- Lodash -->
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
     {{-- Luxon --}}
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js"></script>
@@ -56,9 +54,8 @@
     <!-- Vue -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.17/vue.global.prod.min.js"></script>
 
-    <!-- Instascan JS -->
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js"></script> --}}
-    {{-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> --}}
+    <!-- Toastify CDN -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     {{-- Date time converter --}}
     <script>
@@ -121,6 +118,7 @@
         });
     </script>
 
+    
 
 
 
