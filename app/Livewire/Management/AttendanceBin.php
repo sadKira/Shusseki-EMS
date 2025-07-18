@@ -13,6 +13,8 @@ use App\Enums\EventStatus;
 use App\Enums\AccountStatus;
 use App\Enums\UserApproval;
 use Flux\Flux;
+use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On; 
 
 
 #[Layout('components.layouts.attendance_bin_app')]
@@ -27,11 +29,39 @@ class AttendanceBin extends Component
         $this->event = $event;
     }
 
+    // #[On('scanned-student')]
     public function scanStudent($studentId)
     {
 
         $user = User::where('student_id', $studentId)->first();
-        if (!$user) return;
+
+        // Check if user exists
+        if (!$user) {
+            // User not found
+            $this->dispatch('scanned-student', [
+                'error' => 'User Account not Found',
+                'errorType' => 'not_found',
+            ]);
+            return;
+        }
+
+        // Check account status
+        if ($user->account_status !== AccountStatus::Active) {
+            $this->dispatch('scanned-student', [
+                'error' => 'User is not Active',
+                'errorType' => 'inactive',
+            ]);
+            return;
+        }
+
+        // Check approval status
+        if ($user->status === UserApproval::Pending) {
+            $this->dispatch('scanned-student', [
+                'error' => 'User is not Approved',
+                'errorType' => 'pending',
+            ]);
+            return;
+        }
 
         // Dispatch browser event with student data
         $this->dispatch('scanned-student', [
@@ -39,10 +69,15 @@ class AttendanceBin extends Component
             'name' => $user->name,
         ]);
 
-        
         // Set for dynamic label
         $this->student_id = $user->student_id;
         $this->name = $user->name;
+
+        Log::info('scanned-student', [
+            'student_id' => $user->student_id,
+            'name' => $user->name,
+        ]);
+
 
         $log = EventAttendanceLog::where('event_id', $this->event->id)
             ->where('user_id', $user->id)
