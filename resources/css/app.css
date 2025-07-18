@@ -93,3 +93,31 @@ select:focus[data-flux-control] {
 }
 
 
+
+.video-bg-wrapper {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.background-clip {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    top: 0; left: 0;
+}
+
+.video-gradient-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Diagonal gradient: top/left is dark, right is transparent */
+    background: linear-gradient(120deg, #18181b 0%, #18181b 40%, rgba(24,24,27,0.7) 60%, rgba(24,24,27,0.0) 100%);
+    /* #18181b is Tailwind's zinc-950 */
+    pointer-events: none;
+}

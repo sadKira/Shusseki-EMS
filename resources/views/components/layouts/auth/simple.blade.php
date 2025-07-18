@@ -7,6 +7,8 @@
         <title>Shusseki Login</title>
     @elseif ((request()->routeIs('register')))
         <title>Shusseki Register</title>
+    @elseif ((request()->routeIs('password.request')))
+        <title>Forgot Password</title>
     @else
         <title>Pending Approval</title>
     @endif

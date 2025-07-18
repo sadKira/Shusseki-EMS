@@ -63,8 +63,9 @@
                                 class="p-4 mr-4 flex items-center justify-between rounded-2xl dark:bg-zinc-900 dark:border-zinc-700 dark:hover:bg-zinc-800">
                                 <div class="flex items-center gap-3">
                                     <div>
-                                        <img src="https://picsum.photos/seed/{{ rand(0, 100000) }}/40/40" alt=""
-                                            class="rounded-xl">
+                                        {{-- <img src="https://picsum.photos/seed/{{ rand(0, 100000) }}/40/40" alt=""
+                                            class="rounded-xl"> --}}
+                                        <flux:profile :chevron="false" :initials="$event->initials" avatar:color="{{ $event->avatar_color }}"  />
                                     </div>
                                     <div class="">
                                         <flux:text variant="strong">{{ $event->title }}</flux:text>
@@ -103,10 +104,6 @@
                                         <flux:badge color="zinc" class="mr-10" variant="solid">
                                             <span class="text-white">Untracked</span>
                                         </flux:badge>
-                                    {{-- @elseif ($event->status == \App\Enums\EventStatus::Untracked)
-                                        <flux:badge color="zinc" class="mr-10" variant="solid">
-                                            <span class="text-white">Untracked</span>
-                                        </flux:badge> --}}
                                     @endif
 
                                     <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square" :href="route('view_event', $event)" wire:navigate></flux:button>

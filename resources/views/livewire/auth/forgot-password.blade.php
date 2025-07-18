@@ -1,6 +1,11 @@
  <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Forgot password')" :description="__('Enter your email to receive a password reset link')" />
 
+    {{-- Form header --}}
+    <div class="flex w-full flex-col text-center">
+        <flux:heading size="xl">Forgot password</flux:heading>
+        <flux:subheading>Enter your email to receive a password reset link</flux:subheading>
+    </div>
+    
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 

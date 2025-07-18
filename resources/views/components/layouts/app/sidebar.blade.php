@@ -90,6 +90,11 @@
 
         <flux:spacer />
 
+        <flux:navlist variant="outline">
+            <flux:navlist.item icon="cog-6-tooth" :href="route('settings.profile')"
+                            :current="request()->routeIs(['settings.profile', 'settings.password', 'settings.schoolyear'])" wire:navigate>Settings</flux:navlist.item>
+        </flux:navlist>
+
         <!-- Desktop User Menu -->
         <flux:dropdown class="hidden lg:block" position="bottom" align="start">
             <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()"
@@ -112,13 +117,6 @@
                             </div>
                         </div>
                     </div>
-                </flux:menu.radio.group>
-
-                <flux:menu.separator />
-
-                <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}
-                    </flux:menu.item>
                 </flux:menu.radio.group>
 
                 <flux:menu.separator />

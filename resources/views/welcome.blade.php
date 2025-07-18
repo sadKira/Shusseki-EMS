@@ -27,7 +27,9 @@
 <body class="min-h-screen bg-zinc-50 antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 font-display">
     {{-- border-b border-zinc-200 dark:border-zinc-700 --}}
     {{-- class="bg-zinc-50 dark:bg-zinc-800" --}}
-    <flux:header container >
+
+    
+    <flux:header container class="" >
 
         <div>
             <img src="{{ asset('images/MKDSide_White.svg') }}" alt="MKD Logo" class="h-12 w-auto sm:h-16 md:h-20">
@@ -38,7 +40,6 @@
         <flux:sidebar.toggle class="lg:hidden " icon="bars-2" inset="left" />
 
         <flux:navbar class="-mb-px max-lg:hidden">
-            <flux:separator vertical variant="subtle" class="my-2" />
 
             @php
                 $user = auth()->user();
@@ -50,20 +51,27 @@
                         default => route('dashboard'),
                     };
                 }
+
             @endphp
 
             @auth
-                <flux:navlist.item href="{{ $dashboardRoute }}" current>Return to Dashboard</flux:navlist.item>
+                <flux:button variant="ghost" size="sm"  href="{{ $dashboardRoute }}">
+                    <span class="text-[var(--color-accent)] flex items-center gap-2">
+                        Return to Dashboard
+                        <flux:icon.arrow-uturn-left variant="mini" class="text-[var(--color-accent)]" />
+                    </span>
+                </flux:button>
             @else
-                <flux:navbar.item href="#">Events</flux:navbar.item>
-                <flux:navbar.item href="#">About us</flux:navbar.item>
-                <flux:navbar.item href="{{ $dashboardRoute }}" current>Login</flux:navbar.item>
+                <flux:button variant="ghost" size="sm" href="https://www.facebook.com/mindanaointernationalcollege/" icon:trailing="arrow-up-right" target="_blank">Learn about MKD</flux:button>
+                <flux:button variant="ghost" size="sm" href="{{ $dashboardRoute }}"><span class="text-[var(--color-accent)]">Login</span></flux:button>
             @endauth
-
-            <flux:separator vertical class="my-2" />
+            
         </flux:navbar>
+        
 
     </flux:header>
+
+    
 
     <flux:sidebar stashable sticky
         class="lg:hidden bg-zinc-50 dark:bg-zinc-900 border rtl:border-r-0 rtl:border-l border-zinc-200 dark:border-zinc-700">
@@ -88,8 +96,25 @@
         <flux:spacer />
 
     </flux:sidebar>
-
+    
     <flux:main container>
+
+        <div class="video-bg-wrapper">
+            <video autoplay loop muted playsinline class="background-clip">
+                <source src="{{ asset('videos/shusseki-h264.mp4') }}" type="video/mp4">
+            </video>
+            <svg class="video-svg-mask" width="100vw" height="100vh" style="position:absolute;top:0;left:0;pointer-events:none;z-index:1;">
+                <defs>
+                    <linearGradient id="fadeMask" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#18181b" stop-opacity="1"/>
+                        <stop offset="60%" stop-color="#18181b" stop-opacity="0.7"/>
+                        <stop offset="100%" stop-color="#18181b" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="100vw" height="100vh" fill="url(#fadeMask)" />
+            </svg>
+        </div>
+        
         <div class="flex flex-col justify-center p-6 mx-auto lg:flex-row lg:justify-between">
             <div class="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-none whitespace-nowrap">
@@ -99,14 +124,14 @@
                 <p class="mt-6 mb-8 text-base sm:text-lg lg:text-xl sm:mb-12 text-zinc-50 max-w-2xl">
                     Empowering organizers and students through modern, intuitive tools. With—SHUSSEKI
                 </p>
-                <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
+                {{-- <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
                     <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-[var(--color-accent)] text-white hover:bg-gold/90 transition-colors duration-200">
                         Get Started</a>
+                </div> --}}
+                <div class="flex items-center justify-left gap-3">   
+                    <flux:button variant="primary" color="amber">Get Started</flux:button>
+                    {{-- <flux:button variant="filled">Login</flux:button> --}}
                 </div>
-            </div>
-            <div class="flex items-center justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128">
-                <img src="{{ asset('images/MKDWSeal_White.svg') }}" alt="MKD Logo"
-                    class="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128">
             </div>
         </div>
 

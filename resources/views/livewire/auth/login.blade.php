@@ -4,6 +4,7 @@
         <flux:heading size="xl">Log in to your account</flux:heading>
         <flux:subheading>Enter your email and password below to log in</flux:subheading>
     </div>
+    
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 

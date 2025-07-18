@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Livewire\Management;
+namespace App\Livewire\Settings;
 
 use Livewire\Component;
 use App\Models\Setting;
-use App\Models\SchoolYear;
+use App\Models\SchoolYear as modelSchoolYear;
 
 use Carbon\Carbon;
+use Flux\Flux;
 
-class AdminDashboard extends Component
+class SchoolYear extends Component
 {
 
-    public $selectedSchoolYear = 'All';
+    public $selectedSchoolYear;
 
     public $selectedMonth;
 
+    public $newSchoolYear = '';
     public $schoolYears = [];
 
     public function mount()
@@ -39,9 +41,25 @@ class AdminDashboard extends Component
         Setting::setSchoolYear($value);
     }
 
+    // Add school year
+    public function addSchoolYear()
+    {
+        $this->validate([
+            'newSchoolYear' => 'required|regex:/^\d{4}-\d{4}$/|unique:school_years,year',
+        ]);
+
+        modelSchoolYear::create(['year' => $this->newSchoolYear]);
+
+        $this->newSchoolYear = '';
+        $this->schoolYears = Setting::getAvailableSchoolYears();
+
+        // Closes all modals
+        // Flux::modals()->close();
+
+    }
 
     public function render()
     {
-        return view('livewire.management.admin-dashboard');
+        return view('livewire.settings.school-year');
     }
 }

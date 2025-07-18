@@ -109,6 +109,8 @@ class AppServiceProvider extends ServiceProvider
                     'view_event' => 'View Event',
                     'edit_event' => 'Edit Event',
                     'attendance_bin' => 'Attendance Bin',
+                    'settings.profile' => 'Settings',
+                    'settings.password' => 'Settings',
 
                     //Tsuushin
                     'tsuushin_dashboard' => 'Tsuushin Dashboard',
