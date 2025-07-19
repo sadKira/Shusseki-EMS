@@ -93,7 +93,7 @@ select:focus[data-flux-control] {
 }
 
 
-
+/* Landing page */
 .video-bg-wrapper {
     position: fixed;
     top: 0; left: 0;
@@ -121,3 +121,4 @@ select:focus[data-flux-control] {
     /* #18181b is Tailwind's zinc-950 */
     pointer-events: none;
 }
+

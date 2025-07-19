@@ -65,7 +65,7 @@
                                     <div>
                                         {{-- <img src="https://picsum.photos/seed/{{ rand(0, 100000) }}/40/40" alt=""
                                             class="rounded-xl"> --}}
-                                        <flux:profile :chevron="false" :initials="$event->initials" avatar:color="{{ $event->avatar_color }}"  />
+                                        <flux:profile :chevron="false" :initials="$event->initials" avatar:color="{{ $event->avatar_color }}"/>
                                     </div>
                                     <div class="">
                                         <flux:text variant="strong">{{ $event->title }}</flux:text>

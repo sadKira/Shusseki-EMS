@@ -210,7 +210,8 @@
 
     {{-- Reinitialization --}}
     <!-- Lodash -->
-    {{-- <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="./assets/vendor/lodash/lodash.min.js"></script>
 
     {{-- Luxon --}}
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js"></script>
@@ -227,8 +228,10 @@
     <!-- Vue -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.17/vue.global.prod.min.js"></script>
 
-    <!-- Instascan JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js"></script>
+    <!-- Apexcharts JS -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    {{-- <script src="./assets/vendor/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="./assets/vendor/preline/dist/helper-apexcharts.js"></script> --}}
 
     {{-- Date time converter --}}
     <script>

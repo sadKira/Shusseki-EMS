@@ -9,168 +9,217 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="./assets/vendor/lodash/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="./assets/vendor/dropzone/dist/dropzone-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="./assets/vendor/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="./assets/vendor/preline/dist/helper-apexcharts.js"></script>
+
+    <link rel="stylesheet" href="./assets/vendor/apexcharts/dist/apexcharts.css">
+
     @livewireStyles()
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
-    <style>
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            background-color: #0c0a09;
-            color: white;
-        }
 
-        .landing-container {
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-        }
+</head>
 
-        /* Header */
-        .header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 80px;
-            background-color: #0c0a09;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+<body>
 
-        /* Video Wrapper */
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .bg-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            mask: url(#maskRadial1);
-            -webkit-mask: url(#maskRadial1);
-        }
-
-        /* Optional radial fade overlay */
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 90% 50%,
-                    /* Highlight on the right */
-                    rgba(12, 10, 9, 0) 0%,
-                    #0c0a09 80%);
-            pointer-events: none;
-        }
-
-        /* Content above video */
-        .content {
-            position: absolute;
-            top: 50%;
-            left: 10%;
-            transform: translateY(-50%);
-            z-index: 20;
-            max-width: 500px;
-        }
-
-        .content h1 {
-            font-size: 3rem;
-            margin: 0 0 20px;
-        }
-
-        .content p {
-            font-size: 1.2rem;
-            line-height: 1.5;
-            opacity: 0.8;
-        }
-
-        .content button {
-            margin-top: 20px;
-            padding: 12px 24px;
-            background: #e09f00;
-            border: none;
-            border-radius: 8px;
-            color: black;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .content button:hover {
-            background: #ffb300;
-        }
-    </style>
-    </head>
-
-    <body>
-        <!-- SVG MASK DEFINITIONS -->
-        <svg width="0" height="0">
-            <defs>
-                <!-- Variation 1: Radial fade (highlight on the right center) -->
-                <radialGradient id="videoMaskRadial1" cx="100%" cy="50%" r="150%">
-                    <stop offset="0%" stop-color="white" stop-opacity="1" />
-                    <stop offset="100%" stop-color="black" stop-opacity="1" />
-                </radialGradient>
-                <mask id="maskRadial1">
-                    <rect width="100%" height="100%" fill="url(#videoMaskRadial1)" />
-                </mask>
-
-                <!-- Variation 2: Radial fade (centered highlight) -->
-                <radialGradient id="videoMaskRadial2" cx="50%" cy="50%" r="150%">
-                    <stop offset="0%" stop-color="white" stop-opacity="1" />
-                    <stop offset="100%" stop-color="black" stop-opacity="1" />
-                </radialGradient>
-                <mask id="maskRadial2">
-                    <rect width="100%" height="100%" fill="url(#videoMaskRadial2)" />
-                </mask>
-
-                <!-- Variation 3: Radial fade (diagonal highlight top-right) -->
-                <radialGradient id="videoMaskRadial3" cx="100%" cy="0%" r="150%">
-                    <stop offset="0%" stop-color="white" stop-opacity="1" />
-                    <stop offset="100%" stop-color="black" stop-opacity="1" />
-                </radialGradient>
-                <mask id="maskRadial3">
-                    <rect width="100%" height="100%" fill="url(#videoMaskRadial3)" />
-                </mask>
-            </defs>
-        </svg>
-
-        <div class="landing-container">
-            <!-- Header -->
-            <header class="header">
-                My Landing Page
-            </header>
-
-            <!-- Video Background -->
-            <div class="video-wrapper">
-                <video autoplay muted loop playsinline class="bg-video">
-                    <source src="{{ asset('videos/shusseki-h264.mp4') }}" type="video/mp4" />
-                </video>
-                <div class="video-overlay"></div>
-            </div>
-
-            <!-- Page Content -->
-            <div class="content">
-                <h1>Modern Dark Landing</h1>
-                <p>
-                    This is a modern dark-mode landing page with a radial gradient mask
-                    over the background video. The highlight remains on the right, fading
-                    into the elegant black background.
-                </p>
-                <button>Get Started</button>
-            </div>
+    <!-- Legend Indicator -->
+    <div class="flex justify-center sm:justify-end items-center gap-x-4 mb-3 sm:mb-6">
+        <div class="inline-flex items-center">
+            <span class="size-2.5 inline-block bg-blue-600 rounded-sm me-2"></span>
+            <span class="text-[13px] text-gray-600 dark:text-neutral-400">
+                Income
+            </span>
         </div>
+        <div class="inline-flex items-center">
+            <span class="size-2.5 inline-block bg-cyan-500 rounded-sm me-2"></span>
+            <span class="text-[13px] text-gray-600 dark:text-neutral-400">
+                Outcome
+            </span>
+        </div>
+        <div class="inline-flex items-center">
+            <span class="size-2.5 inline-block bg-gray-300 rounded-sm me-2 dark:bg-neutral-700"></span>
+            <span class="text-[13px] text-gray-600 dark:text-neutral-400">
+                Others
+            </span>
+        </div>
+    </div>
+    <!-- End Legend Indicator -->
 
-    </body>
+    <!-- Apex Lines Chart -->
+    <div id="hs-curved-line-charts"></div>
+
+    <script src="https://preline.co/assets/js/hs-apexcharts-helpers.js"></script>
+
+    <script>
+        window.addEventListener('load', () => {
+            // Apex Curved Line Charts
+            (function () {
+                buildChart('#hs-curved-line-charts', (mode) => ({
+                    chart: {
+                        height: 250,
+                        type: 'line',
+                        toolbar: {
+                            show: false
+                        },
+                        zoom: {
+                            enabled: false
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Income',
+                            data: [0, 27000, 25000, 27000, 40000]
+                        },
+                        {
+                            name: 'Outcome',
+                            data: [19500, 10000, 19000, 17500, 26000]
+                        },
+                        {
+                            name: 'Others',
+                            data: [8000, 2200, 6000, 9000, 10000]
+                        }
+                    ],
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        width: [4, 4, 4],
+                        dashArray: [0, 0, 4]
+                    },
+                    title: {
+                        show: false
+                    },
+                    legend: {
+                        show: false
+                    },
+                    grid: {
+                        strokeDashArray: 0,
+                        borderColor: '#e5e7eb',
+                        padding: {
+                            top: -20,
+                            right: 0
+                        }
+                    },
+                    xaxis: {
+                        type: 'category',
+                        categories: [
+                            '25 January 2023',
+                            '28 January 2023',
+                            '31 January 2023',
+                            '1 February 2023',
+                            '3 February 2023'
+                        ],
+                        axisBorder: {
+                            show: false
+                        },
+                        axisTicks: {
+                            show: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        },
+                        labels: {
+                            offsetY: 5,
+                            style: {
+                                colors: '#9ca3af',
+                                fontSize: '13px',
+                                fontFamily: 'Inter, ui-sans-serif',
+                                fontWeight: 400
+                            },
+                            formatter: (title) => {
+                                let t = title;
+
+                                if (t) {
+                                    const newT = t.split(' ');
+                                    t = `${newT[0]} ${newT[1].slice(0, 3)}`;
+                                }
+
+                                return t;
+                            }
+                        }
+                    },
+                    yaxis: {
+                        min: 0,
+                        max: 40000,
+                        tickAmount: 4,
+                        labels: {
+                            align: 'left',
+                            minWidth: 0,
+                            maxWidth: 140,
+                            style: {
+                                colors: '#9ca3af',
+                                fontSize: '12px',
+                                fontFamily: 'Inter, ui-sans-serif',
+                                fontWeight: 400
+                            },
+                            formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
+                        }
+                    },
+                    tooltip: {
+                        custom: function (props) {
+                            const { categories } = props.ctx.opts.xaxis;
+                            const { dataPointIndex } = props;
+                            const title = categories[dataPointIndex].split(' ');
+                            const newTitle = `${title[0]} ${title[1]}`;
+
+                            return buildTooltip(props, {
+                                title: newTitle,
+                                mode,
+                                hasTextLabel: true,
+                                wrapperExtClasses: 'min-w-36',
+                                labelDivider: ':',
+                                labelExtClasses: 'ms-2'
+                            });
+                        }
+                    }
+                }), {
+                    colors: ['#2563EB', '#22d3ee', '#d1d5db'],
+                    xaxis: {
+                        labels: {
+                            style: {
+                                colors: '#9ca3af',
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: '#9ca3af'
+                            }
+                        }
+                    },
+                    grid: {
+                        borderColor: '#e5e7eb'
+                    }
+                }, {
+                    colors: ['#3b82f6', '#22d3ee', '#737373'],
+                    xaxis: {
+                        labels: {
+                            style: {
+                                colors: '#a3a3a3',
+                            }
+                        }
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: '#a3a3a3'
+                            }
+                        }
+                    },
+                    grid: {
+                        borderColor: '#404040'
+                    }
+                });
+            })();
+        });
+    </script>
+
+</body>
 
 </html>
