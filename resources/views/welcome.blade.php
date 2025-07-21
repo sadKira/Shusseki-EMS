@@ -124,12 +124,12 @@
                 <p class="mt-6 mb-8 text-base sm:text-lg lg:text-xl sm:mb-12 text-zinc-50 max-w-2xl">
                     Empowering organizers and students through modern, intuitive tools. With—SHUSSEKI
                 </p>
-                {{-- <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-                    <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-[var(--color-accent)] text-white hover:bg-gold/90 transition-colors duration-200">
+                <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
+                    <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-[var(--color-accent)] text-zinc-950 hover:bg-gold/90 transition-colors duration-200">
                         Get Started</a>
-                </div> --}}
+                </div>
                 <div class="flex items-center justify-left gap-3">   
-                    <flux:button variant="primary" color="amber">Get Started</flux:button>
+                    {{-- <flux:button variant="primary" color="amber">Get Started</flux:button> --}}
                     {{-- <flux:button variant="filled">Login</flux:button> --}}
                 </div>
             </div>

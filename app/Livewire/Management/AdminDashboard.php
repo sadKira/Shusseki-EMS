@@ -47,13 +47,14 @@ class AdminDashboard extends Component
         $baseQuery = Event::query(); 
 
         $filteredQuery = (clone $baseQuery)
-            ->when($this->selectedSchoolYear !== 'All' && $this->selectedSchoolYear !== null, function ($query) {
-                $query->where('school_year', $this->selectedSchoolYear);
-            })
+            ->where('school_year', $this->selectedSchoolYear)
             ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
                 $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
                 $query->whereMonth('date', $monthNumber);
             });
+            // ->when($this->selectedSchoolYear !== 'All' && $this->selectedSchoolYear !== null, function ($query) {
+            //     $query->where('school_year', $this->selectedSchoolYear);
+            
 
         // Count of filtered events
         $filteredEventCount = (clone $filteredQuery)->count();

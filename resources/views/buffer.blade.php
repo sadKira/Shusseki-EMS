@@ -24,201 +24,54 @@
 
 </head>
 
-<body>
+<body class="bg-black">
 
-    <!-- Legend Indicator -->
-    <div class="flex justify-center sm:justify-end items-center gap-x-4 mb-3 sm:mb-6">
-        <div class="inline-flex items-center">
-            <span class="size-2.5 inline-block bg-blue-600 rounded-sm me-2"></span>
-            <span class="text-[13px] text-gray-600 dark:text-neutral-400">
-                Income
-            </span>
+    <div class="relative rounded-2xl p-4 text-zinc-100 overflow-hidden" style="
+         background: #11100e;
+         border: 1px solid rgba(255, 255, 255, 0.06);
+         box-shadow:
+             inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+             0 2px 6px rgba(0, 0, 0, 0.7);
+     ">
+        <!-- Highlight Overlay -->
+        <div class="absolute inset-0 pointer-events-none"
+            style="background: linear-gradient(135deg, rgba(255,255,255,0.07), transparent 70%);">
         </div>
-        <div class="inline-flex items-center">
-            <span class="size-2.5 inline-block bg-cyan-500 rounded-sm me-2"></span>
-            <span class="text-[13px] text-gray-600 dark:text-neutral-400">
-                Outcome
-            </span>
-        </div>
-        <div class="inline-flex items-center">
-            <span class="size-2.5 inline-block bg-gray-300 rounded-sm me-2 dark:bg-neutral-700"></span>
-            <span class="text-[13px] text-gray-600 dark:text-neutral-400">
-                Others
-            </span>
-        </div>
+
+        <p class="text-sm text-zinc-400 relative">Events This Week Better</p>
+        <p class="text-3xl font-bold text-[#E09F00] relative">8</p>
     </div>
-    <!-- End Legend Indicator -->
 
-    <!-- Apex Lines Chart -->
-    <div id="hs-curved-line-charts"></div>
+    <div class="relative rounded-2xl p-4 text-zinc-100 overflow-hidden" style="
+         background: #18181b;
+         border: 1px solid rgba(255, 255, 255, 0.06);
+         box-shadow:
+             inset 1px 1px 2px rgba(22, 18, 18, 0.05),
+             0 2px 6px rgba(0, 0, 0, 0.7);
+     ">
+        <!-- Highlight Overlay -->
+        <div class="absolute inset-0 pointer-events-none"
+            style="background: linear-gradient(135deg, rgba(255,255,255,0.07), transparent 70%);">
+        </div>
 
-    <script src="https://preline.co/assets/js/hs-apexcharts-helpers.js"></script>
+        <p class="text-sm text-zinc-400 relative">Events This Week</p>
+        <p class="text-3xl font-bold text-[#E09F00] relative">8</p>
+    </div>
 
-    <script>
-        window.addEventListener('load', () => {
-            // Apex Curved Line Charts
-            (function () {
-                buildChart('#hs-curved-line-charts', (mode) => ({
-                    chart: {
-                        height: 250,
-                        type: 'line',
-                        toolbar: {
-                            show: false
-                        },
-                        zoom: {
-                            enabled: false
-                        }
-                    },
-                    series: [
-                        {
-                            name: 'Income',
-                            data: [0, 27000, 25000, 27000, 40000]
-                        },
-                        {
-                            name: 'Outcome',
-                            data: [19500, 10000, 19000, 17500, 26000]
-                        },
-                        {
-                            name: 'Others',
-                            data: [8000, 2200, 6000, 9000, 10000]
-                        }
-                    ],
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        curve: 'smooth',
-                        width: [4, 4, 4],
-                        dashArray: [0, 0, 4]
-                    },
-                    title: {
-                        show: false
-                    },
-                    legend: {
-                        show: false
-                    },
-                    grid: {
-                        strokeDashArray: 0,
-                        borderColor: '#e5e7eb',
-                        padding: {
-                            top: -20,
-                            right: 0
-                        }
-                    },
-                    xaxis: {
-                        type: 'category',
-                        categories: [
-                            '25 January 2023',
-                            '28 January 2023',
-                            '31 January 2023',
-                            '1 February 2023',
-                            '3 February 2023'
-                        ],
-                        axisBorder: {
-                            show: false
-                        },
-                        axisTicks: {
-                            show: false
-                        },
-                        tooltip: {
-                            enabled: false
-                        },
-                        labels: {
-                            offsetY: 5,
-                            style: {
-                                colors: '#9ca3af',
-                                fontSize: '13px',
-                                fontFamily: 'Inter, ui-sans-serif',
-                                fontWeight: 400
-                            },
-                            formatter: (title) => {
-                                let t = title;
-
-                                if (t) {
-                                    const newT = t.split(' ');
-                                    t = `${newT[0]} ${newT[1].slice(0, 3)}`;
-                                }
-
-                                return t;
-                            }
-                        }
-                    },
-                    yaxis: {
-                        min: 0,
-                        max: 40000,
-                        tickAmount: 4,
-                        labels: {
-                            align: 'left',
-                            minWidth: 0,
-                            maxWidth: 140,
-                            style: {
-                                colors: '#9ca3af',
-                                fontSize: '12px',
-                                fontFamily: 'Inter, ui-sans-serif',
-                                fontWeight: 400
-                            },
-                            formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
-                        }
-                    },
-                    tooltip: {
-                        custom: function (props) {
-                            const { categories } = props.ctx.opts.xaxis;
-                            const { dataPointIndex } = props;
-                            const title = categories[dataPointIndex].split(' ');
-                            const newTitle = `${title[0]} ${title[1]}`;
-
-                            return buildTooltip(props, {
-                                title: newTitle,
-                                mode,
-                                hasTextLabel: true,
-                                wrapperExtClasses: 'min-w-36',
-                                labelDivider: ':',
-                                labelExtClasses: 'ms-2'
-                            });
-                        }
-                    }
-                }), {
-                    colors: ['#2563EB', '#22d3ee', '#d1d5db'],
-                    xaxis: {
-                        labels: {
-                            style: {
-                                colors: '#9ca3af',
-                            }
-                        }
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                colors: '#9ca3af'
-                            }
-                        }
-                    },
-                    grid: {
-                        borderColor: '#e5e7eb'
-                    }
-                }, {
-                    colors: ['#3b82f6', '#22d3ee', '#737373'],
-                    xaxis: {
-                        labels: {
-                            style: {
-                                colors: '#a3a3a3',
-                            }
-                        }
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                colors: '#a3a3a3'
-                            }
-                        }
-                    },
-                    grid: {
-                        borderColor: '#404040'
-                    }
-                });
-            })();
-        });
-    </script>
+    <div class="relative rounded-2xl p-4 text-zinc-100 overflow-hidden" style="
+             background: #1C1917;
+             border: 1px solid rgba(255, 255, 255, 0.06);
+             box-shadow:
+                 inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+                 0 2px 6px rgba(0, 0, 0, 0.7);
+         ">
+        <!-- Highlight Overlay -->
+        <div class="absolute inset-0 pointer-events-none"
+            style="background: linear-gradient(135deg, rgba(255,255,255,0.07), transparent 70%);">
+        </div>
+        <p class="text-sm text-zinc-400 relative">Events This Week</p>
+        <p class="text-3xl font-bold text-[#E09F00] relative">8</p>
+    </div>
 
 </body>
 

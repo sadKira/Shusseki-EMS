@@ -13,10 +13,12 @@
                     <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
                 @endcan
             </flux:navlist.group>
-            <flux:navlist.group heading="Set Academic Year" class="mt-4">
-                <flux:navlist.item :href="route('settings.schoolyear')" wire:navigate
-                :current="request()->routeIs(['settings.schoolyear'])">{{ __('Academic Year') }}</flux:navlist.item>
-            </flux:navlist.group>
+            @can('SA')
+                <flux:navlist.group heading="Set Academic Year" class="mt-4">
+                    <flux:navlist.item :href="route('settings.schoolyear')" wire:navigate
+                    :current="request()->routeIs(['settings.schoolyear'])">{{ __('Academic Year') }}</flux:navlist.item>
+                </flux:navlist.group>
+            @endcan
 
         </flux:navlist>
     </div>

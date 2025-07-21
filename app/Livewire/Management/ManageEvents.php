@@ -29,7 +29,6 @@ class ManageEvents extends Component
         // Setting default school year
         $this->selectedSchoolYear = Setting::getSchoolYear();
         $this->schoolYears = Setting::getAvailableSchoolYears(); // loads from SchoolYear model
-
     }
 
     // Obtaining events for the next month
@@ -84,13 +83,13 @@ class ManageEvents extends Component
         $baseQuery = Event::query(); 
 
         $filteredQuery = (clone $baseQuery)
-            ->when($this->selectedSchoolYear !== 'All' && $this->selectedSchoolYear !== null, function ($query) {
-                $query->where('school_year', $this->selectedSchoolYear);
-            })
-            ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
-                $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
-                $query->whereMonth('date', $monthNumber);
-            });
+            ->where('school_year', $this->selectedSchoolYear)
+            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month);
+
+            // ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
+            //     $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
+            //     $query->whereMonth('date', $monthNumber);
+            // });
 
         // Count of filtered events
         $filteredEventCount = (clone $filteredQuery)->count();
@@ -107,7 +106,9 @@ class ManageEvents extends Component
 
         return view('livewire.management.manage-events', [
             'events' => $events,
-            'eventCount' => $filteredEventCount
+            'eventCount' => $filteredEventCount,
+            'nextMonthEvents' => $this->nextMonthEvents,
+            'groupedEvents' => $this->groupedEvents
         ]);
     }
 }

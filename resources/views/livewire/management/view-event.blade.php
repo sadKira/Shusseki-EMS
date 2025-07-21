@@ -33,7 +33,7 @@
                 <flux:separator class="my-4" vertical />
 
                 {{-- Event details content --}}
-                <div class="space-y-3 text-balance">
+                <div class="space-y-3 text-wrap">
                     <flux:text class="mb-4" variant="strong">Academic Year <span class="text-[var(--color-accent)]">{{ $event->school_year }}</span></flux:text>
 
                     {{-- Title with tag --}}
@@ -46,7 +46,7 @@
                         $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                     @endphp
                     
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center text-pretty gap-2">
                         <flux:heading size="xl">{{ $event->title }}</flux:heading>
 
                         {{-- Event status --}}
@@ -105,11 +105,11 @@
         </div>
         
         <!-- Event Description -->
-        <div class="lg:col-span-3 px-10 py-4 inline-block   ">
+        <div class="lg:col-span-3 px-10 py-4 inline-block text-wrap">
             <flux:heading size="xl" class="">Event <span class="text-[var(--color-accent)]">Description</span></flux:heading>
             {{-- <flux:separator class="mt-2" /> --}}
             
-            <flux:text class="text-base leading-relaxed mt-2 text-zinc-50 break-all">{{ $event->description }}</flux:text>
+            <flux:text class="text-base break-normal leading-relaxed mt-2 text-zinc-50">{{ $event->description }}</flux:text>
            
         </div>
 

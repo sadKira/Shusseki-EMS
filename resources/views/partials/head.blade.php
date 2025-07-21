@@ -19,8 +19,7 @@
 {{-- Arimo --}}
 <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
-{{-- Apex charts --}}
-<link rel="stylesheet" href="./assets/vendor/apexcharts/dist/apexcharts.css">
+
 
 {{-- <link rel="stylesheet" href="{{ asset('build/assets/app-2KYTgWL1.css') }}"> --}}
 

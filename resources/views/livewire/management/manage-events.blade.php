@@ -118,7 +118,7 @@
             </div>
 
             {{-- Events for the next month --}}
-            <div class="px-10 py-6 bg-(--import) rounded-xl">
+            <div class="px-10 py-6 metallic-card-soft rounded-xl">
                 <section class="w-full flex items-center justify-start gap-2">
                     <div class="flex items-center gap-2">
                         <flux:heading size="xl" level="1">Events next month: <span
@@ -131,7 +131,7 @@
                 <div
                     class="h-80 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
                     <div class="mt-5 flex flex-col gap-2 w-full">
-                        @forelse ($this->nextMonthEvents as $event)
+                        @forelse ($nextMonthEvents as $event)
                             <div
                                 class="p-4 mr-4 flex items-center justify-between rounded-2xl dark:bg-zinc-900 dark:border-zinc-700 dark:hover:bg-zinc-800">
                                 <div class="flex items-center gap-3">
@@ -190,7 +190,7 @@
         <div class="flex flex-col gap-3">
 
             {{-- Date --}}
-            <div class="bg-(--import) rounded-xl px-10 py-6 flex flex-col gap-3">
+            <div class="metallic-card-soft rounded-xl px-10 py-6 flex flex-col gap-3">
                 <div class="flex flex-col whitespace-nowrap">
                     <flux:text>Date:</flux:text>
                     <div class="flex items-center gap-2">
@@ -210,10 +210,10 @@
             </div>
 
             <!-- Timeline -->
-            <div class="bg-(--import) rounded-xl px-10 py-6 h-full">
+            <div class="metallic-card-soft rounded-xl px-10 py-6 h-full">
                 <div class="h-149.5 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
                     <div class="mr-3">
-                        @forelse ($this->groupedEvents as $date => $events)
+                        @forelse ($groupedEvents as $date => $events)
                             <!-- Heading -->
                             <div class="ps-2 my-2 first:mt-0">
                                 {{-- <h3 class="text-xs font-medium uppercase text-zinc-500 dark:text-zinc-400">

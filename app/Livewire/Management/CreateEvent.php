@@ -41,7 +41,7 @@ class CreateEvent extends Component
 
     public function createEvent()
     {
-        try {
+        // try {
             $this->validate();
 
             // Debug: see what value is coming in
@@ -74,9 +74,9 @@ class CreateEvent extends Component
 
             session()->flash('success', 'Event created successfully!');
             return redirect()->route('manage_events');
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-        }
+        // } catch (\Exception $e) {
+        //     dd($e->getMessage());
+        // }
     }
 
 
