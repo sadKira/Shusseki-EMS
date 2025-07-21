@@ -7,6 +7,7 @@ use App\Models\Setting;
 use App\Models\SchoolYear;
 use App\Models\Event;
 use App\Enums\EventStatus;
+use App\Models\EventAttendanceLog;
 
 use Carbon\Carbon;
 
@@ -19,6 +20,8 @@ class AdminDashboard extends Component
 
     public $schoolYears = [];
 
+    public $attendanceTrendData = [];
+
     public function mount()
     {
         // Get current month as a full capitalized string, e.g., "June"
@@ -28,6 +31,7 @@ class AdminDashboard extends Component
         $this->selectedSchoolYear = Setting::getSchoolYear();
         $this->schoolYears = Setting::getAvailableSchoolYears(); // loads from SchoolYear model
 
+        $this->attendanceTrendData = $this->getAttendanceTrendData();
     }
 
     // Setting school year
@@ -41,23 +45,71 @@ class AdminDashboard extends Component
         Setting::setSchoolYear($value);
     }
 
+    public function getAttendanceTrendData()
+    {
+        $schoolYear = Setting::getSchoolYear();
+        $month = now()->month;
+        $year = now()->year;
+
+        $events = Event::where('school_year', $schoolYear)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->where('status', EventStatus::Finished->value)
+            ->orderBy('date')
+            ->get();
+
+        $trend = [
+            'labels' => [],
+            'eventNames' => [],
+            'present' => [],
+            'late' => [],
+            'absent' => [],
+            'hasEvents' => $events->count() > 0,
+        ];
+
+        foreach ($events as $event) {
+            $trend['labels'][] = \Carbon\Carbon::parse($event->date)->format('M j');
+            $trend['eventNames'][] = $event->title;
+            $logs = EventAttendanceLog::where('event_id', $event->id)->get();
+            $trend['present'][] = $logs->where('attendance_status', 'present')->count();
+            $trend['late'][] = $logs->where('attendance_status', 'late')->count();
+            $trend['absent'][] = $logs->where('attendance_status', 'absent')->count();
+        }
+
+        return $trend;
+    }
+
 
     public function render()
     {
-        $baseQuery = Event::query(); 
+        $baseQuery = Event::query();
 
         $filteredQuery = (clone $baseQuery)
             ->where('school_year', $this->selectedSchoolYear)
             ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
                 $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
                 $query->whereMonth('date', $monthNumber);
-            });
-            // ->when($this->selectedSchoolYear !== 'All' && $this->selectedSchoolYear !== null, function ($query) {
-            //     $query->where('school_year', $this->selectedSchoolYear);
-            
+            })
+            ->whereYear('date', now()->year);;
+        // ->when($this->selectedSchoolYear !== 'All' && $this->selectedSchoolYear !== null, function ($query) {
+        //     $query->where('school_year', $this->selectedSchoolYear);
+
 
         // Count of filtered events
         $filteredEventCount = (clone $filteredQuery)->count();
+
+        // Count of events happening today
+        $todayEventCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->whereDate('date', Carbon::now('Asia/Manila')->toDateString())
+            ->count();
+
+        // Get the start and end of the current week (Monday to Sunday)
+        $startOfWeek = Carbon::now()->startOfWeek(Carbon::MONDAY)->toDateString();
+        $endOfWeek = Carbon::now()->endOfWeek(Carbon::SUNDAY)->toDateString();
+
+        $weekEventCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->whereBetween('date', [$startOfWeek, $endOfWeek])
+            ->count();
 
         $events = $filteredQuery
             ->orderByRaw("
@@ -71,7 +123,9 @@ class AdminDashboard extends Component
 
         return view('livewire.management.admin-dashboard', [
             'events' => $events,
-            'eventCount' => $filteredEventCount
+            'eventCount' => $filteredEventCount,
+            'todayEventCount' => $todayEventCount,
+            'weekEventCount' => $weekEventCount,
         ]);
     }
 }

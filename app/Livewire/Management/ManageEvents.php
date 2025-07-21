@@ -84,7 +84,8 @@ class ManageEvents extends Component
 
         $filteredQuery = (clone $baseQuery)
             ->where('school_year', $this->selectedSchoolYear)
-            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month);
+            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
+            ->whereYear('date', now()->year);;
 
             // ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
             //     $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;

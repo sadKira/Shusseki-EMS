@@ -123,35 +123,35 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    new Chart(document.getElementById('attendanceBreakdownChart'), {
-        type: 'pie',
-        data: {
-            labels: ['Present', 'Late', 'Scanned', 'Absent'],
-            datasets: [{
-                data: [80, 12, 20, 5],
-                backgroundColor: ['#22c55e', '#f59e0b', '#3b82f6', '#ef4444'],
-            }]
-        }
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+        new Chart(document.getElementById('attendanceBreakdownChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Present', 'Late', 'Scanned', 'Absent'],
+                datasets: [{
+                    data: [80, 12, 20, 5],
+                    backgroundColor: ['#22c55e', '#f59e0b', '#3b82f6', '#ef4444'],
+                }]
+            }
+        });
 
-    new Chart(document.getElementById('attendanceTrendChart'), {
-        type: 'line',
-        data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            datasets: [{
-                label: 'Attendance Count',
-                data: [12, 19, 15, 20, 25, 30, 22],
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true } }
-        }
+        new Chart(document.getElementById('attendanceTrendChart'), {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Attendance Count',
+                    data: [12, 19, 15, 20, 25, 30, 22],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
     });
-});
 </script>
