@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Settings;
 
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use App\Models\Setting;
 use App\Models\SchoolYear as modelSchoolYear;
+use Livewire\Attributes\On;
 
 use Carbon\Carbon;
 use Flux\Flux;
@@ -39,6 +41,8 @@ class SchoolYear extends Component
     public function updatedSelectedSchoolYear($value)
     {
         Setting::setSchoolYear($value);
+
+        return redirect()->route('admin_dashboard');
     }
 
     // Add school year

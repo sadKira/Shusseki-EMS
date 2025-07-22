@@ -111,6 +111,7 @@ class AppServiceProvider extends ServiceProvider
                     'attendance_bin' => 'Attendance Bin',
                     'settings.profile' => 'Settings',
                     'settings.password' => 'Settings',
+                    'settings.schoolyear' => 'Settings',
 
                     //Tsuushin
                     'tsuushin_dashboard' => 'Tsuushin Dashboard',

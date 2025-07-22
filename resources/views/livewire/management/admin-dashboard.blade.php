@@ -52,24 +52,26 @@
                 </div>
             </div>
 
-            {{-- Events in progress --}}
+            {{-- Events in this school year --}}
             <div class="metallic-card-soft rounded-xl px-10 py-6">
-                <div class="flex items-center justify-between gap-20">
-                    <flux:text>Ongoing</flux:text>
+                <div class="flex items-center justify-between gap-10">
+                    <flux:text>This Academic Year</flux:text>
                     <flux:icon.arrow-down-circle class="text-zinc-50" variant="mini" />
                 </div>
 
                 <div class="flex flex-col mt-5 whitespace-nowrap">
-                    @if ($todayEventCount > 1)
-                        <flux:heading size="xl" level="1">{{ $todayEventCount }} Events</flux:heading>
-                    @elseif($todayEventCount == 1)
-                        <flux:heading size="xl" level="1">{{ $todayEventCount }} Event</flux:heading>
+                    @if ($nonPostponedEventCount > 1)
+                        <flux:heading size="xl" level="1">{{ $nonPostponedEventCount }} Events</flux:heading>
+                    @elseif($nonPostponedEventCount == 1)
+                        <flux:heading size="xl" level="1">{{ $nonPostponedEventCount }} Event</flux:heading>
                     @else
                         <flux:heading size="xl" level="1">No Events</flux:heading>
                     @endif
 
-                    <flux:heading size="lg" level="1">Happening <span class="text-[var(--color-accent)]">Today</span>
+                    <flux:heading size="lg" level="1">A.Y. <span
+                            class="text-[var(--color-accent)]">{{ $selectedSchoolYear }}</span>
                     </flux:heading>
+
                 </div>
             </div>
 
@@ -97,7 +99,7 @@
             {{-- Total Events for the month --}}
             <div class="metallic-card-soft rounded-xl px-10 py-6">
                 <div class="flex items-center justify-between gap-20">
-                    <flux:text>Total Events</flux:text>
+                    <flux:text>This Month</flux:text>
                     <flux:icon.list-bullet class="text-zinc-50" variant="mini" />
                 </div>
 
@@ -121,17 +123,75 @@
         </div>
 
         {{-- Row 2 --}}
-        <div class="flex items-center justify-between gap-3">
+        <div class="flex items-stretch gap-3">
 
             {{-- Attendance Trends --}}
 
-            <div class="flex items-start gap-5 metallic-card-soft px-10 py-6 rounded-xl whitespace-nowrap">
+            <div class="flex items-start gap-7 metallic-card-soft px-10 py-6 rounded-xl whitespace-nowrap">
                 <div class="flex flex-col">
                     <flux:text>Attendance Trend</flux:text>
-                    <div class="flex items-center gap-3 mt-10">   
-                        <flux:heading size="xl" level="1">{{ \Carbon\Carbon::now()->format('F') }}</flux:heading>
-                        <flux:button variant="subtle" icon="chevron-down" size="sm"></flux:button>
+                    <h1 class="mt-10 text-4xl">This Year</h1>
+                    <flux:heading size="lg" class="text-[var(--color-accent)]"></flux:heading>
+
+                    {{-- Chart legend --}}
+                    <div class="flex flex-col gap-y-1 mt-15">
+                        @php
+                            $presentTotal = array_sum($attendanceTrendData['present']);
+                            $lateTotal = array_sum($attendanceTrendData['late']);
+                            $absentTotal = array_sum($attendanceTrendData['absent']);
+                            $grandTotal = $presentTotal + $lateTotal + $absentTotal;
+
+                            $presentPercent = $grandTotal > 0 ? round(($presentTotal / $grandTotal) * 100, 1) : 0;
+                            $latePercent = $grandTotal > 0 ? round(($lateTotal / $grandTotal) * 100, 1) : 0;
+                            $absentPercent = $grandTotal > 0 ? round(($absentTotal / $grandTotal) * 100, 1) : 0;
+                        @endphp
+                        <div class="flex items-center gap-2">
+                            <svg fill="#08CB56" width="16px" height="16px" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg" stroke="#08CB56">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <g id="Wave_Pulse_1" data-name="Wave Pulse 1">
+                                        <path
+                                            d="M8.974,18h0a1.446,1.446,0,0,1-1.259-.972L5.872,12.883c-.115-.26-.262-.378-.349-.378H2.562a.5.5,0,1,1,0-1H5.523a1.444,1.444,0,0,1,1.263.972l1.839,4.145c.116.261.258.378.349.378h0c.088,0,.229-.113.344-.368L13.7,6.956A1.423,1.423,0,0,1,14.958,6h0a1.449,1.449,0,0,1,1.26.975l1.839,4.151c.11.249.259.379.349.379h3.028a.5.5,0,0,1,0,1H18.41a1.444,1.444,0,0,1-1.263-.975L15.308,7.379c-.116-.261-.259-.378-.35-.379h0c-.088,0-.229.114-.344.368l-4.385,9.676A1.437,1.437,0,0,1,8.974,18Z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <flux:text class="text-zinc-50 text-xs">Present</flux:text>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg fill="#BF1812" width="16px" height="16px" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg" stroke="#BF1812">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <g id="Wave_Pulse_1" data-name="Wave Pulse 1">
+                                        <path
+                                            d="M8.974,18h0a1.446,1.446,0,0,1-1.259-.972L5.872,12.883c-.115-.26-.262-.378-.349-.378H2.562a.5.5,0,1,1,0-1H5.523a1.444,1.444,0,0,1,1.263.972l1.839,4.145c.116.261.258.378.349.378h0c.088,0,.229-.113.344-.368L13.7,6.956A1.423,1.423,0,0,1,14.958,6h0a1.449,1.449,0,0,1,1.26.975l1.839,4.151c.11.249.259.379.349.379h3.028a.5.5,0,0,1,0,1H18.41a1.444,1.444,0,0,1-1.263-.975L15.308,7.379c-.116-.261-.259-.378-.35-.379h0c-.088,0-.229.114-.344.368l-4.385,9.676A1.437,1.437,0,0,1,8.974,18Z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <flux:text class="text-zinc-50 text-xs">Absent</flux:text>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <svg fill="#F59E0B" width="16px" height="16px" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg" stroke="#F59E0B">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <g id="Wave_Pulse_1" data-name="Wave Pulse 1">
+                                        <path
+                                            d="M8.974,18h0a1.446,1.446,0,0,1-1.259-.972L5.872,12.883c-.115-.26-.262-.378-.349-.378H2.562a.5.5,0,1,1,0-1H5.523a1.444,1.444,0,0,1,1.263.972l1.839,4.145c.116.261.258.378.349.378h0c.088,0,.229-.113.344-.368L13.7,6.956A1.423,1.423,0,0,1,14.958,6h0a1.449,1.449,0,0,1,1.26.975l1.839,4.151c.11.249.259.379.349.379h3.028a.5.5,0,0,1,0,1H18.41a1.444,1.444,0,0,1-1.263-.975L15.308,7.379c-.116-.261-.259-.378-.35-.379h0c-.088,0-.229.114-.344.368l-4.385,9.676A1.437,1.437,0,0,1,8.974,18Z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <flux:text class="text-zinc-50 text-xs">Late</flux:text>
+                        </div>
                     </div>
+
                 </div>
 
                 <div class="relative h-64 w-full">
@@ -146,11 +206,25 @@
                 </div>
             </div>
 
-            {{-- Attendance Trends --}}
+            {{-- Event Status --}}
+            <div class="metallic-card-soft rounded-xl px-10 py-6 whitespace-nowrap flex-grow">
+                <div class="flex items-center justify-between ">
+                    <flux:text>Events Overview</flux:text>
+                    <flux:icon.information-circle class="text-zinc-50" variant="mini" />
+                </div>
 
-            <div class="metallic-card-soft px-10 py-6 rounded-xl">
-                <div class="relative h-64">
+                <div class="flex flex-col mt-5 whitespace-nowrap">
+                    @if ($eventCount > 1)
+                        <flux:heading size="xl" level="1">{{ $eventCount }} Events</flux:heading>
+                    @elseif($eventCount == 1)
+                        <flux:heading size="xl" level="1">{{ $eventCount }} Event</flux:heading>
+                    @else
+                        <flux:heading size="xl" level="1">No Events</flux:heading>
+                    @endif
 
+                    <flux:heading size="lg" level="1">Month of <span
+                            class="text-[var(--color-accent)]">{{ \Carbon\Carbon::now()->format('F') }}</span>
+                    </flux:heading>
                 </div>
             </div>
 
@@ -166,11 +240,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        let attendanceTrendChartInstance = null;
+
+        function initAttendanceTrendChart() {
+            const ctx = document.getElementById('monthlyAttendanceTrendChart');
+            if (!ctx) return;
+
+            // Destroy previous chart instance if it exists
+            if (attendanceTrendChartInstance) {
+                attendanceTrendChartInstance.destroy();
+            }
+
             const trendData = @json($attendanceTrendData);
 
-            // Always render the chart, even if empty, to keep the card size
-            new Chart(document.getElementById('monthlyAttendanceTrendChart'), {
+            attendanceTrendChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: trendData.labels,
@@ -223,7 +306,18 @@
                     scales: { y: { beginAtZero: true } }
                 }
             });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initAttendanceTrendChart();
+        });
+
+        document.addEventListener('livewire:navigated', function () {
+            initAttendanceTrendChart();
+        });
+
+        document.addEventListener('school-year-updated', function () {
+            initAttendanceTrendChart();
         });
     </script>
-
 </div>

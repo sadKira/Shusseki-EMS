@@ -95,6 +95,7 @@ Route::middleware(['auth', 'verified', 'tsuushin'])->group(function () {
    
 });
 
+// Admin Settings
 Route::middleware(['auth', 'approved', 'role:super_admin,admin'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 

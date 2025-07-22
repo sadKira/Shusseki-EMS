@@ -48,12 +48,12 @@ class AdminDashboard extends Component
     public function getAttendanceTrendData()
     {
         $schoolYear = Setting::getSchoolYear();
-        $month = now()->month;
-        $year = now()->year;
+        // $month = now()->month;
+        // $year = now()->year;
 
         $events = Event::where('school_year', $schoolYear)
-            ->whereMonth('date', $month)
-            ->whereYear('date', $year)
+            // ->whereMonth('date', $month)
+            // ->whereYear('date', $year)
             ->where('status', EventStatus::Finished->value)
             ->orderBy('date')
             ->get();
@@ -98,9 +98,14 @@ class AdminDashboard extends Component
         // Count of filtered events
         $filteredEventCount = (clone $filteredQuery)->count();
 
-        // Count of events happening today
-        $todayEventCount = Event::where('school_year', $this->selectedSchoolYear)
-            ->whereDate('date', Carbon::now('Asia/Manila')->toDateString())
+        // Count of events for the school year where status is not postponed
+        $nonPostponedEventCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', '!=', EventStatus::Postponed->value)
+            ->count();
+
+        // Count of postponed events for the school year
+        $postponedEventCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::Postponed->value)
             ->count();
 
         // Get the start and end of the current week (Monday to Sunday)
@@ -124,7 +129,8 @@ class AdminDashboard extends Component
         return view('livewire.management.admin-dashboard', [
             'events' => $events,
             'eventCount' => $filteredEventCount,
-            'todayEventCount' => $todayEventCount,
+            'nonPostponedEventCount' => $nonPostponedEventCount,
+            'postponedEventCount' => $postponedEventCount,
             'weekEventCount' => $weekEventCount,
         ]);
     }
