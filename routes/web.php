@@ -17,6 +17,10 @@ use App\Livewire\Management\CreateEvent;
 use App\Livewire\Management\ViewEvent;
 use App\Livewire\Management\EditEvent;
 use App\Livewire\Management\AttendanceBin;
+use App\Livewire\Management\BufferView;
+use App\Livewire\Management\EventList;
+use App\Livewire\Management\StudentRecord;
+use App\Livewire\Management\GenerateReport;
 
 use App\Livewire\User\Dashboard;
 use App\Livewire\User\Events;
@@ -60,15 +64,23 @@ Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
 Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
     // Protected routes
     Route::get('admin/dashboard', AdminDashboard::class)->name('admin_dashboard');
+
     Route::get('admin/events', ManageEvents::class)->name('manage_events');
     Route::get('admin/events/{event}', ViewEvent::class)->name('view_event');
+    Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
+    Route::get('admin/event-list', EventList::class)->name('event_list');
+
     Route::get('admin/students', ManageStudents::class)->name('manage_students');
     Route::get('admin/students-approval', ManageApproval::class)->name('manage_approval');
-    Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
     Route::get('admin/attendance-bin/{event}', AttendanceBin::class)->name('attendance_bin');
+    Route::get('admin/student-records',StudentRecord::class)->name('student_records');
+    
+    Route::get('admin/generate-report', GenerateReport::class)->name('generate_report');
 
     Route::get('admin/create-event', CreateEvent::class)->name('create_event');
     Route::get('admin/edit-event/{event}', EditEvent::class)->name('edit_event');
+
+    Route::get('admin/buffer-view', BufferView::class)->name('buffer_view');
 
 });
 

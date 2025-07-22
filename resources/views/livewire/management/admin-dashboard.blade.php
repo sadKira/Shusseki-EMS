@@ -207,7 +207,7 @@
             </div>
 
             {{-- Event Status --}}
-            <div class="metallic-card-soft rounded-xl px-10 py-6 whitespace-nowrap flex-grow">
+            {{-- <div class="metallic-card-soft rounded-xl px-10 py-6 whitespace-nowrap flex-grow">
                 <div class="flex items-center justify-between ">
                     <flux:text>Events Overview</flux:text>
                     <flux:icon.information-circle class="text-zinc-50" variant="mini" />
@@ -226,7 +226,7 @@
                             class="text-[var(--color-accent)]">{{ \Carbon\Carbon::now()->format('F') }}</span>
                     </flux:heading>
                 </div>
-            </div>
+            </div> --}}
 
 
         </div>

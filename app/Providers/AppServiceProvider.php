@@ -112,6 +112,12 @@ class AppServiceProvider extends ServiceProvider
                     'settings.profile' => 'Settings',
                     'settings.password' => 'Settings',
                     'settings.schoolyear' => 'Settings',
+                    'event_list' => 'Event List',
+                    'student_records' => 'Student Records',
+                    'generate_report' => 'Generate Report',
+
+
+                    'buffer_view' => 'Buffer View',
 
                     //Tsuushin
                     'tsuushin_dashboard' => 'Tsuushin Dashboard',

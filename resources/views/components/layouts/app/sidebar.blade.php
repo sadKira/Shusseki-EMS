@@ -54,6 +54,10 @@
             {{-- Events navlist --}}
             <flux:navlist.group :heading="__('Events')" class="grid">
                 @can('manage')
+                    <flux:navlist.item icon="list-bullet" :href="route('event_list')"
+                        :current="request()->routeIs(['event_list'])" wire:navigate>
+                        {{ __('Event List') }}
+                    </flux:navlist.item>
                     <flux:navlist.item icon="calendar" :href="route('manage_events')"
                         :current="request()->routeIs(['manage_events', 'create_event', 'view_event', 'edit-event'])" wire:navigate>
                         {{ __('Manage Events') }}
@@ -68,6 +72,10 @@
             {{-- Students navlist --}}
             <flux:navlist.group :heading="__('Students')" class="grid">
                 @can('manage')
+                    <flux:navlist.item icon="newspaper" :href="route('student_records')"
+                        :current="request()->routeIs(['student_records'])" wire:navigate>
+                        {{ __('Student Records') }}
+                    </flux:navlist.item>
                     @can('SA')
                         <flux:navlist.item icon="user" :href="route('manage_students')"
                             :current="request()->routeIs(['manage_students'])" wire:navigate>
@@ -91,6 +99,10 @@
         <flux:spacer />
 
         <flux:navlist variant="outline">
+            <flux:navlist.item icon="code-bracket" :href="route('buffer_view')"
+                            :current="request()->routeIs(['buffer_view'])" wire:navigate>Buffer</flux:navlist.item>
+            <flux:navlist.item icon="information-circle" :href="route('generate_report')"
+                            :current="request()->routeIs(['generate_report'])" wire:navigate>Generate Report</flux:navlist.item>
             <flux:navlist.item icon="cog-6-tooth" :href="route('settings.profile')"
                             :current="request()->routeIs(['settings.profile', 'settings.password', 'settings.schoolyear'])" wire:navigate>Settings</flux:navlist.item>
         </flux:navlist>
