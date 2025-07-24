@@ -8,6 +8,7 @@ use App\Models\SchoolYear;
 use App\Models\Event;
 use App\Enums\EventStatus;
 use App\Models\EventAttendanceLog;
+use App\Models\User;
 
 use Carbon\Carbon;
 
@@ -48,35 +49,71 @@ class AdminDashboard extends Component
     public function getAttendanceTrendData()
     {
         $schoolYear = Setting::getSchoolYear();
-        // $month = now()->month;
-        // $year = now()->year;
 
-        $events = Event::where('school_year', $schoolYear)
-            // ->whereMonth('date', $month)
-            // ->whereYear('date', $year)
-            ->where('status', EventStatus::Finished->value)
-            ->orderBy('date')
-            ->get();
+        // Assume school year format is '2025-2026'
+        [$startYear, $endYear] = explode('-', $schoolYear);
+        $startYear = (int) $startYear;
+        $endYear = (int) $endYear;
+        // Try to get the earliest event in the first year of the school year
+        $firstEventInStartYear = Event::where('school_year', $schoolYear)
+            ->whereYear('date', $startYear)
+            ->orderBy('date', 'asc')
+            ->first();
 
-        $trend = [
-            'labels' => [],
-            'eventNames' => [],
-            'present' => [],
-            'late' => [],
-            'absent' => [],
-            'hasEvents' => $events->count() > 0,
-        ];
+        if ($firstEventInStartYear) {
+            $startMonth = (int)\Carbon\Carbon::parse($firstEventInStartYear->date)->month;
+        } else {
+            // Fallback: use the earliest event in the school year (could be in the second year)
+            $firstEvent = Event::where('school_year', $schoolYear)
+                ->orderBy('date', 'asc')
+                ->first();
+            $startMonth = $firstEvent ? (int)\Carbon\Carbon::parse($firstEvent->date)->month : 7; // fallback to July
+        }
+        // $startMonth = 7;
+        $months = [];
+        $years = [];
+        $monthYearPairs = [];
 
-        foreach ($events as $event) {
-            $trend['labels'][] = \Carbon\Carbon::parse($event->date)->format('M j');
-            $trend['eventNames'][] = $event->title;
-            $logs = EventAttendanceLog::where('event_id', $event->id)->get();
-            $trend['present'][] = $logs->where('attendance_status', 'present')->count();
-            $trend['late'][] = $logs->where('attendance_status', 'late')->count();
-            $trend['absent'][] = $logs->where('attendance_status', 'absent')->count();
+        // Build months July (startYear) to June (endYear)
+        for ($i = 0; $i < 12; $i++) {
+            $monthNum = ($startMonth + $i - 1) % 12 + 1;
+            $year = $monthNum >= $startMonth ? $startYear : $endYear;
+            $months[] = \Carbon\Carbon::create()->month($monthNum)->format('M'); // Short month name
+            $years[] = $year;
+            $monthYearPairs[] = ['month' => $monthNum, 'year' => $year];
         }
 
-        return $trend;
+        $present = [];
+        $late = [];
+        $absent = [];
+
+        foreach ($monthYearPairs as $pair) {
+            $events = Event::where('school_year', $schoolYear)
+                ->whereMonth('date', $pair['month'])
+                ->whereYear('date', $pair['year'])
+                ->where('status', EventStatus::Finished->value)
+                ->get();
+            $monthPresent = $monthLate = $monthAbsent = 0;
+            foreach ($events as $event) {
+                $logs = EventAttendanceLog::where('event_id', $event->id)->get();
+                $monthPresent += $logs->where('attendance_status', 'present')->count();
+                $monthLate += $logs->where('attendance_status', 'late')->count();
+                $monthAbsent += $logs->where('attendance_status', 'absent')->count();
+            }
+            $present[] = $monthPresent;
+            $late[] = $monthLate;
+            $absent[] = $monthAbsent;
+        }
+
+        $hasEvents = array_sum($present) + array_sum($late) + array_sum($absent) > 0;
+        return [
+            'labels' => $months,
+            'years' => $years,
+            'present' => $present,
+            'late' => $late,
+            'absent' => $absent,
+            'hasEvents' => $hasEvents,
+        ];
     }
 
 
@@ -90,7 +127,8 @@ class AdminDashboard extends Component
                 $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
                 $query->whereMonth('date', $monthNumber);
             })
-            ->whereYear('date', now()->year);;
+            ->whereYear('date', now()->year)
+            ->where('status', '!=', EventStatus::Postponed->value);
         // ->when($this->selectedSchoolYear !== 'All' && $this->selectedSchoolYear !== null, function ($query) {
         //     $query->where('school_year', $this->selectedSchoolYear);
 
@@ -108,14 +146,7 @@ class AdminDashboard extends Component
             ->where('status', EventStatus::Postponed->value)
             ->count();
 
-        // Get the start and end of the current week (Monday to Sunday)
-        $startOfWeek = Carbon::now()->startOfWeek(Carbon::MONDAY)->toDateString();
-        $endOfWeek = Carbon::now()->endOfWeek(Carbon::SUNDAY)->toDateString();
-
-        $weekEventCount = Event::where('school_year', $this->selectedSchoolYear)
-            ->whereBetween('date', [$startOfWeek, $endOfWeek])
-            ->count();
-
+        // events query
         $events = $filteredQuery
             ->orderByRaw("
                 CASE 
@@ -126,12 +157,36 @@ class AdminDashboard extends Component
             ->orderBy('date', $this->sortDirection ?? 'asc')
             ->get();
 
+        // event status doughnut chart
+        $now = now();
+
+        $finishedCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::Finished->value)
+            ->count();
+
+        $postponedCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::Postponed->value)
+            ->count();
+
+        $untrackedCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::NotFinished->value)
+            ->where(function ($query) use ($now) {
+                $query->whereDate('date', '<', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->whereDate('date', $now->toDateString())
+                            ->whereTime('end_time', '<', $now->toTimeString());
+                    });
+            })
+            ->count();
+
         return view('livewire.management.admin-dashboard', [
             'events' => $events,
             'eventCount' => $filteredEventCount,
             'nonPostponedEventCount' => $nonPostponedEventCount,
             'postponedEventCount' => $postponedEventCount,
-            'weekEventCount' => $weekEventCount,
+            'finishedCount' => $finishedCount,
+            'postponedCount' => $postponedCount,
+            'untrackedCount' => $untrackedCount,
         ]);
     }
 }

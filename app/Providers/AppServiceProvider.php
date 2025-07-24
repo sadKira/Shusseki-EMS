@@ -79,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
          * Notification badges
          */
 
-        View::composer(['components.layouts.app.sidebar', 'livewire.management.manage-approval'], function ($view) {
+        View::composer(['components.layouts.app.sidebar', 'livewire.management.manage-approval', 'livewire.management.admin-dashboard'], function ($view) {
             $pendingCount = User::where('status', 'pending')->count();
             $view->with('pendingCount', $pendingCount);
         });

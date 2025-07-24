@@ -240,6 +240,9 @@
     <!-- Vue -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.17/vue.global.prod.min.js"></script>
 
+    <!-- ChartJS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
     {{-- Date time converter --}}
     <script>
@@ -298,6 +301,7 @@
             if (window.HSFileUpload && typeof window.HSFileUpload.autoInit === 'function') {
                 window.HSFileUpload.autoInit();
             }
+
 
         });
     </script>

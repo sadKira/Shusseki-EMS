@@ -90,7 +90,6 @@ class ManageApproval extends Component
     {
         User::whereIn('id', $this->selected)->delete();
         $this->cancelSelection();
-        session()->flash('message', 'Selected users rejected and deleted.');
         $this->dispatch('refreshPendingCount');
 
         // Close modal
@@ -103,7 +102,6 @@ class ManageApproval extends Component
         User::where('status', 'pending')
         ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
         ->update(['status' => 'approved']);
-        session()->flash('message', 'All pending users approved.');
 
         $this->cancelSelection();
 
@@ -120,7 +118,6 @@ class ManageApproval extends Component
         User::where('status', 'pending')
         ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
         ->delete();
-        session()->flash('message', 'All pending users rejected and deleted.');
 
         $this->cancelSelection();
 
