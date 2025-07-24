@@ -22,7 +22,6 @@ class AdminDashboard extends Component
     public $schoolYears = [];
 
     public $attendanceTrendData = [];
-
     public function mount()
     {
         // Get current month as a full capitalized string, e.g., "June"

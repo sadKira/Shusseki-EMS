@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         //     SchoolYearSeeder::class,
         // ]);
 
-        User::factory(9)->create();
+        User::factory(10)->create();
     
         // Event::factory(30)->create();
 

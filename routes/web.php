@@ -64,7 +64,6 @@ Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
 Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
     // Protected routes
     Route::get('admin/dashboard', AdminDashboard::class)->name('admin_dashboard');
-
     Route::get('admin/events', ManageEvents::class)->name('manage_events');
     Route::get('admin/events/{event}', ViewEvent::class)->name('view_event');
     Route::get('admin/events-coverage', CoverageEvents::class)->name('coverage_events');
@@ -81,7 +80,6 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/edit-event/{event}', EditEvent::class)->name('edit_event');
 
     Route::get('admin/buffer-view', BufferView::class)->name('buffer_view');
-
 });
 
 // User (Active)

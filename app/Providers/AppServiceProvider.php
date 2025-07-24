@@ -115,8 +115,6 @@ class AppServiceProvider extends ServiceProvider
                     'event_list' => 'Event List',
                     'student_records' => 'Student Records',
                     'generate_report' => 'Generate Report',
-
-
                     'buffer_view' => 'Buffer View',
 
                     //Tsuushin
