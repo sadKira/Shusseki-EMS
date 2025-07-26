@@ -82,6 +82,10 @@
     @apply !mb-0 !leading-tight;
 }
 
+/* [data-flux-input] {
+    @apply !bg-[#252322];
+} */
+
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
@@ -90,9 +94,70 @@ select:focus[data-flux-control] {
 
 /* Cards */
 @layer utilities {
+    .metallic-sidebar-soft {
+        @apply relative text-white overflow-hidden;
+        background: linear-gradient(180deg, #11100e 0%, #0c0a09 70%);
+        border-right: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.04),
+            0 2px 6px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Metallic sheen effect */
+    /* .metallic-sidebar-soft::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0) 40%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+    }
+
+    .metallic-sidebar-soft:hover::before {
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.07) 0%,
+            rgba(255, 255, 255, 0) 40%
+        );
+    } */
+
+    .metallic-gradient-bg {
+        @apply bg-zinc-950;
+        position: relative;
+        color: white;
+        /* overflow: hidden; */
+    }
+
+    .metallic-gradient-bg::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0) 40%
+        );
+        pointer-events: none;
+    }
+
+    .metallic-bg {
+        background: radial-gradient(
+                circle at top left,
+                rgba(255, 255, 255, 0.08),
+                rgba(0, 0, 0, 0) 70%
+            ),
+            #0c0a09; /* base background */
+    }
+
     .metallic-card-soft {
         /* @apply relative rounded-2xl p-4 bg-[#11100e] text-white overflow-hidden; */
-        @apply relative bg-[#11100e] text-white overflow-hidden;
+        @apply relative bg-zinc-950 text-white overflow-hidden;
         border: 1px solid rgba(255, 255, 255, 0.06);
         box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.05),
             0 2px 6px rgba(0, 0, 0, 0.7);
@@ -125,7 +190,8 @@ select:focus[data-flux-control] {
     .event-status-finished {
         @apply relative bg-[#11100e] text-white overflow-hidden;
         border: 1px solid rgba(34, 197, 94, 0.15); /* green border */
-        box-shadow: inset 1px 1px 2px rgba(34, 197, 94, 0.08), 0 2px 6px rgba(0, 0, 0, 0.7);
+        box-shadow: inset 1px 1px 2px rgba(34, 197, 94, 0.08),
+            0 2px 6px rgba(0, 0, 0, 0.7);
     }
     .event-status-finished::before {
         content: "";
@@ -134,18 +200,27 @@ select:focus[data-flux-control] {
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, rgba(34,197,94,0.12) 0%, rgba(34,197,94,0) 70%);
+        background: linear-gradient(
+            90deg,
+            rgba(34, 197, 94, 0.12) 0%,
+            rgba(34, 197, 94, 0) 70%
+        );
         pointer-events: none;
         transition: background 0.3s ease;
     }
     .event-status-finished:hover::before {
-        background: linear-gradient(90deg, rgba(34,197,94,0.18) 0%, rgba(34,197,94,0) 70%);
+        background: linear-gradient(
+            90deg,
+            rgba(34, 197, 94, 0.18) 0%,
+            rgba(34, 197, 94, 0) 70%
+        );
     }
 
     .event-status-postponed {
         @apply relative bg-[#11100e] text-white overflow-hidden;
         border: 1px solid rgba(239, 68, 68, 0.15); /* red border */
-        box-shadow: inset 1px 1px 2px rgba(239, 68, 68, 0.08), 0 2px 6px rgba(0, 0, 0, 0.7);
+        box-shadow: inset 1px 1px 2px rgba(239, 68, 68, 0.08),
+            0 2px 6px rgba(0, 0, 0, 0.7);
     }
     .event-status-postponed::before {
         content: "";
@@ -154,18 +229,27 @@ select:focus[data-flux-control] {
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, rgba(239,68,68,0.12) 0%, rgba(239,68,68,0) 70%);
+        background: linear-gradient(
+            90deg,
+            rgba(239, 68, 68, 0.12) 0%,
+            rgba(239, 68, 68, 0) 70%
+        );
         pointer-events: none;
         transition: background 0.3s ease;
     }
     .event-status-postponed:hover::before {
-        background: linear-gradient(90deg, rgba(239,68,68,0.18) 0%, rgba(239,68,68,0) 70%);
+        background: linear-gradient(
+            90deg,
+            rgba(239, 68, 68, 0.18) 0%,
+            rgba(239, 68, 68, 0) 70%
+        );
     }
 
     .event-status-untracked {
         @apply relative bg-[#11100e] text-white overflow-hidden;
         border: 1px solid rgba(156, 163, 175, 0.15); /* light grey border */
-        box-shadow: inset 1px 1px 2px rgba(156, 163, 175, 0.08), 0 2px 6px rgba(0, 0, 0, 0.7);
+        box-shadow: inset 1px 1px 2px rgba(156, 163, 175, 0.08),
+            0 2px 6px rgba(0, 0, 0, 0.7);
     }
     .event-status-untracked::before {
         content: "";
@@ -174,12 +258,20 @@ select:focus[data-flux-control] {
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, rgba(156,163,175,0.12) 0%, rgba(156,163,175,0) 70%);
+        background: linear-gradient(
+            90deg,
+            rgba(156, 163, 175, 0.12) 0%,
+            rgba(156, 163, 175, 0) 70%
+        );
         pointer-events: none;
         transition: background 0.3s ease;
     }
     .event-status-untracked:hover::before {
-        background: linear-gradient(90deg, rgba(156,163,175,0.18) 0%, rgba(156,163,175,0) 70%);
+        background: linear-gradient(
+            90deg,
+            rgba(156, 163, 175, 0.18) 0%,
+            rgba(156, 163, 175, 0) 70%
+        );
     }
 }
 
@@ -256,5 +348,4 @@ select:focus[data-flux-control] {
 }
 
 @layer utilities {
-    
 }

@@ -14,11 +14,22 @@
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-950 font-display">
+<body class="min-h-screen bg-zinc-950 font-display">
 
     {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
     {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
-    <flux:sidebar sticky stashable class=" border-zinc-900 dark:bg-zinc-950 border-r">
+    {{-- <flux:sidebar sticky stashable class=" border-zinc-900 dark:bg-zinc-950 border-r" style=" background: linear-gradient(180deg, #0f0f0f, #18181b 70%);"> --}}
+    <flux:sidebar sticky stashable class="border-r border-zinc-800 dark:bg-zinc-950">
+        {{-- style="background: linear-gradient(
+            135deg,
+            rgba(255, 240, 220, 0.05),
+            rgba(255, 255, 255, 0) 60%
+        ),
+        linear-gradient(
+            180deg,
+            #11100e 0%, 
+            #0c0a09 70%
+        );"> --}}
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         {{-- <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"

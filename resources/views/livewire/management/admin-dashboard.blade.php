@@ -32,10 +32,10 @@
     </div>
 
     {{-- Dashboard content --}}
-    <div class="flex flex-col gap-3 ">
+    <div class="flex flex-col gap-6 ">
 
         {{-- Row 1 --}}
-        <div class="grid grid-cols-4 gap-3 whitespace-nowrap">
+        <div class="grid grid-cols-4 gap-6 whitespace-nowrap">
 
             {{-- Events in this school year --}}
             <div class="metallic-card-soft rounded-xl px-7 py-6 flex items-center justify-between">
@@ -74,14 +74,14 @@
                             $absentPercent = $grandTotal > 0 ? round(($absentTotal / $grandTotal) * 100, 1) : 0;
                         @endphp
 
-                        <flux:heading size="xl" level="1" class="text-green-500">{{ $presentPercent }}%</flux:heading>
-                        <flux:icon.plus class="text-green-500" variant="micro" />
+                        <flux:heading size="xl" level="1">{{ $presentPercent }}%</flux:heading>
+                        {{-- <flux:icon.plus class="text-green-500" variant="micro" /> --}}
 
                     </div>
                     <flux:text>Attendance Rate</flux:text>
                 </div>
 
-                <flux:icon.percent-badge class="text-green-500 size-10" variant="outline" />
+                <flux:icon.percent-badge class="text-[var(--color-accent)] size-10" variant="outline" />
             </div>
 
             {{-- Total Events for the month --}}
@@ -136,7 +136,7 @@
         </div>
 
         {{-- Row 2 --}}
-        <div class="flex items-stretch gap-3">
+        <div class="flex items-stretch gap-6">
 
             {{-- Attendance Trends --}}
             <div class="flex flex-col gap-7 metallic-card-soft px-7 py-6 rounded-xl whitespace-nowrap">
@@ -198,7 +198,7 @@
                     <div class="relative event-status-finished p-4 rounded-xl shadow-inner">
 
                         {{-- svg --}}
-                        <div class="absolute right-0 top-0 opacity-10 pointer-events-none">
+                        <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
                             <flux:icon name="check-circle" class="w-36 h-36" />
                         </div>
 
@@ -219,7 +219,7 @@
                     <div class="relative event-status-postponed p-4 rounded-xl shadow-inner">
 
                         {{-- svg --}}
-                        <div class="absolute right-0 top-0 opacity-10 pointer-events-none">
+                        <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
                             <flux:icon name="x-circle" class="w-36 h-36" />
                         </div>
 
@@ -240,7 +240,7 @@
                     <div class="relative event-status-untracked p-4 rounded-xl shadow-inner">
 
                         {{-- svg --}}
-                        <div class="absolute right-0 top-0 opacity-10 pointer-events-none">
+                        <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
                             <flux:icon name="ellipsis-horizontal-circle" class="w-36 h-36" />
                         </div>
 

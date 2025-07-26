@@ -11,6 +11,8 @@ class ManageApproval extends Component
 {
     use WithPagination;
 
+    public $search = '';
+
     // Multi select
     public $selected = [];
     public $selectAll = false;
@@ -46,7 +48,9 @@ class ManageApproval extends Component
 
     public function getUsersQueryProperty()
     {
-        return User::query()->where('status', 'pending')->latest();
+        return User::query()->where('status', 'pending')
+        ->latest()
+        ->search($this->search);
     }
 
     // Update selection
