@@ -55,67 +55,59 @@
 
 <body class="metallic-bg-1 min-h-screen text-white">
 
-    <!-- Sidebar -->
-    <aside class="w-64 h-screen fixed left-0 top-0 metallic-bg-2 p-5">
-        <h1 class="text-xl font-bold mb-8">Dashboard</h1>
-        <nav class="space-y-4">
-            <a href="#" class="block text-gray-300 hover:text-white">Overview</a>
-            <a href="#" class="block text-gray-300 hover:text-white">Users</a>
-            <a href="#" class="block text-gray-300 hover:text-white">Reports</a>
-            <a href="#" class="block text-gray-300 hover:text-white">Settings</a>
-        </nav>
-    </aside>
+    <div x-data="{
+        tabSelected: 1,
+        tabId: $id('tabs'),
+        tabButtonClicked(tabButton){
+            this.tabSelected = tabButton.id.replace(this.tabId + '-', '');
+            this.tabRepositionMarker(tabButton);
+        },
+        tabRepositionMarker(tabButton){
+            this.$refs.tabMarker.style.width=tabButton.offsetWidth + 'px';
+            this.$refs.tabMarker.style.height=tabButton.offsetHeight + 'px';
+            this.$refs.tabMarker.style.left=tabButton.offsetLeft + 'px';
+        },
+        tabContentActive(tabContent){
+            return this.tabSelected == tabContent.id.replace(this.tabId + '-content-', '');
+        },
+        tabButtonActive(tabContent){
+            const tabId = tabContent.id.split('-').slice(-1);
+            return this.tabSelected == tabId;
+        }
+    }" x-init="tabRepositionMarker($refs.tabButtons.firstElementChild);" class="relative w-full max-w-sm">
 
-    <!-- Main Content -->
-    <main class="ml-64 p-10 space-y-8">
-        <!-- Dashboard Header -->
-        <header>
-            <h2 class="text-3xl font-bold">Welcome, Admin</h2>
-            <p class="text-gray-400 mt-1">Here's an overview of your data.</p>
-        </header>
+        <div x-ref="tabButtons"
+            class="relative inline-grid items-center justify-center w-full h-10 grid-cols-3 p-1 text-gray-500 bg-white border border-gray-100 rounded-lg select-none">
+            <button :id="$id(tabId)" @click="tabButtonClicked($el);" type="button"
+                :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }"
+                class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Tab1</button>
+            <button :id="$id(tabId)" @click="tabButtonClicked($el);" type="button"
+                :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }"
+                class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Tab2</button>
+            <button :id="$id(tabId)" @click="tabButtonClicked($el);" type="button"
+                :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }"
+                class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Tab3</button>
+            <div x-ref="tabMarker" class="absolute left-0 z-10 w-1/2 h-full duration-300 ease-out" x-cloak>
+                <div class="w-full h-full bg-gray-100 rounded-md shadow-sm"></div>
+            </div>
+        </div>
+        <div
+            class="relative flex items-center justify-center w-full p-5 mt-2 text-xs text-gray-400 border rounded-md content border-gray-200/70">
 
-        <!-- Cards Row -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="metallic-card-soft">
-                <h3 class="text-lg font-semibold">Pending Approvals</h3>
-                <p class="text-3xl font-bold mt-2">12</p>
+            <div :id="$id(tabId + '-content')" x-show="tabContentActive($el)" class="relative">
+                This is the content shown for Tab1
             </div>
-            <div class="metallic-card-soft">
-                <h3 class="text-lg font-semibold">Active Users</h3>
-                <p class="text-3xl font-bold mt-2">240</p>
-            </div>
-            <div class="metallic-card-soft">
-                <h3 class="text-lg font-semibold">Events</h3>
-                <p class="text-3xl font-bold mt-2">8</p>
-            </div>
-        </section>
 
-        <!-- Table Section -->
-        <section class="metallic-card-soft">
-            <h3 class="text-xl font-bold mb-4">Recent Activity</h3>
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="border-b border-gray-600 text-gray-300 text-sm">
-                        <th class="py-2 px-4">User</th>
-                        <th class="py-2 px-4">Action</th>
-                        <th class="py-2 px-4">Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="hover:bg-white/5">
-                        <td class="py-2 px-4">John Doe</td>
-                        <td class="py-2 px-4">Approved Account</td>
-                        <td class="py-2 px-4">July 25, 2025</td>
-                    </tr>
-                    <tr class="hover:bg-white/5">
-                        <td class="py-2 px-4">Jane Smith</td>
-                        <td class="py-2 px-4">Updated Profile</td>
-                        <td class="py-2 px-4">July 24, 2025</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
+            <div :id="$id(tabId + '-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                And, this is the content for Tab2
+            </div>
+
+            <div :id="$id(tabId + '-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                Finally, this is the content for Tab3
+            </div>
+
+        </div>
+    </div>
 </body>
 
 </html>

@@ -233,8 +233,8 @@
 
     {{-- Reinitialization --}}
     <!-- Lodash -->
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-    <script src="./assets/vendor/lodash/lodash.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="./assets/vendor/lodash/lodash.min.js"></script> --}}
 
     {{-- Luxon --}}
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js"></script>
@@ -243,7 +243,7 @@
     <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 
     <!-- Preline -->
-    <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
+    {{-- <script src="https://unpkg.com/preline@latest/dist/preline.js"></script> --}}
 
     <!-- WebRTC -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/9.0.3/adapter.min.js"></script>

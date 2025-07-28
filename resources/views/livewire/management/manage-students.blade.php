@@ -21,14 +21,6 @@
         @endcan
     </div>
 
-    @script
-        <script>
-            setInterval(() => {
-                $wire.$refresh()
-            }, 10000)
-        </script>
-    @endscript
-
     {{-- Table --}}
     <div>
         <livewire:management.filter-table />

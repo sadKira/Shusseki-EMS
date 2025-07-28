@@ -1,64 +1,79 @@
 <div class="flex flex-col gap-3">
-    
-    {{-- Sub headings --}}
-    <div class="flex gap-3 items-stretch">
 
-        <div class="bg-(--import) rounded-xl px-10 py-6">
-            <div class="flex items-center gap-5 whitespace-nowrap">
-                <flux:icon.user class="text-zinc-50 size-10" variant="solid" />
-                <div class="flex flex-col">
-                    <flux:text>User Count</flux:text>
-                    @if ($totalApproved != 0)
-                        <flux:heading size="xl" level="1">{{ $totalApproved }} {{$totalApproved > 1 ? "Students" : "Student"}}
-                        </flux:heading>
-                    @else
-                        <flux:heading size="xl" level="1">{{ $totalApproved }} Students
-                        </flux:heading>
-                    @endif
-                    <flux:text variant="subtle">A.Y. {{ $schoolYear }}</flux:text>
-                </div>
-            </div>
+    {{-- Sub headings --}}
+    <div class="flex gap-20 items-center justify-center-safe">
+
+        <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
+
+            <flux:text>User Count</flux:text>
+            @if ($totalApproved != 0)
+                <flux:heading size="xl" level="1">{{ $totalApproved }} {{$totalApproved > 1 ? "Students" : "Student"}}
+                </flux:heading>
+            @else
+                <flux:heading size="xl" level="1">{{ $totalApproved }} Students
+                </flux:heading>
+            @endif
+            {{-- <flux:text variant="subtle">A.Y. {{ $schoolYear }}</flux:text> --}}
+
         </div>
 
         {{-- Active & Inactive students --}}
-        <div class="bg-(--import) rounded-xl px-10 py-6">
-            <div class="flex flex-col  whitespace-nowrap">
-                <flux:text>Active</flux:text>
+        <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
+            <flux:text>Active Users</flux:text>
+            <div class="flex items-end gap-2">
                 @if ($activeCount != 0)
-                    <flux:heading size="xl" level="1">{{ $activeCount }} {{$activeCount > 1 ? "Students" : "Student"}}
+                    <flux:heading size="xl" level="1">{{ $activeCount }}
                     </flux:heading>
                 @else
-                    <flux:heading size="xl" level="1">{{ $activeCount }} Students
+                    <flux:heading size="xl" level="1">{{ $activeCount }}
                     </flux:heading>
                 @endif
                 <div class="flex items-center gap-1">
-                    <flux:icon.arrow-trending-up class="text-green-500" variant="micro" />
-                    <span class="text-sm text-green-600 dark:text-green-500">{{ $activePercentage }}% +</span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        class="size-4 text-green-500">
+                        <path fill-rule="evenodd"
+                            d="M15.22 6.268a.75.75 0 0 1 .968-.431l5.942 2.28a.75.75 0 0 1 .431.97l-2.28 5.94a.75.75 0 1 1-1.4-.537l1.63-4.251-1.086.484a11.2 11.2 0 0 0-5.45 5.173.75.75 0 0 1-1.199.19L9 12.312l-6.22 6.22a.75.75 0 0 1-1.06-1.061l6.75-6.75a.75.75 0 0 1 1.06 0l3.606 3.606a12.695 12.695 0 0 1 5.68-4.974l1.086-.483-4.251-1.632a.75.75 0 0 1-.432-.97Z"
+                            clip-rule="evenodd" />
+                    </svg>
+
+                    <flux:text class="text-xs dark:text-green-500">{{ $activePercentage }}%</flux:text>
                 </div>
             </div>
+
         </div>
 
-        <div class="bg-(--import) rounded-xl px-10 py-6">
-            <div class="flex flex-col  whitespace-nowrap">
-                <flux:text>Inactive</flux:text>
+        <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
+            <flux:text>Inactive Users</flux:text>
+            <div class="flex items-end gap-2">
                 @if ($inactiveCount != 0)
-                    <flux:heading size="xl" level="1">{{ $inactiveCount }} {{$inactiveCount > 1 ? "Students" : "Student"}}
+                    <flux:heading size="xl" level="1">{{ $inactiveCount }}
                     </flux:heading>
                 @else
-                    <flux:heading size="xl" level="1">{{ $inactiveCount }} Students
+                    <flux:heading size="xl" level="1">{{ $inactiveCount }}
                     </flux:heading>
                 @endif
                 <div class="flex items-center gap-1">
-                    <flux:icon.arrow-trending-down class="text-red-500" variant="micro" />
-                    <span class="text-sm text-red-500 dark:text-red-500">{{ $inactivePercentage }}% -</span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        class="size-4 text-red-500">
+                        <path fill-rule="evenodd"
+                            d="M1.72 5.47a.75.75 0 0 1 1.06 0L9 11.69l3.756-3.756a.75.75 0 0 1 .985-.066 12.698 12.698 0 0 1 4.575 6.832l.308 1.149 2.277-3.943a.75.75 0 1 1 1.299.75l-3.182 5.51a.75.75 0 0 1-1.025.275l-5.511-3.181a.75.75 0 0 1 .75-1.3l3.943 2.277-.308-1.149a11.194 11.194 0 0 0-3.528-5.617l-3.809 3.81a.75.75 0 0 1-1.06 0L1.72 6.53a.75.75 0 0 1 0-1.061Z"
+                            clip-rule="evenodd" />
+                    </svg>
+
+
+                    <flux:text class="text-xs dark:text-red-500">{{ $inactivePercentage }}%</flux:text>
                 </div>
             </div>
-        </div>  
+
+        </div>
 
     </div>
 
+    {{-- Content Main --}}
+    <div class="metallic-card-soft rounded-xl px-7 py-6">
 
-    <div class="bg-(--import) rounded-xl px-10 py-6">
         {{-- Filters --}}
         <div class="flex items-center justify-between max-lg:hidden">
             <div class="flex items-center space-x-1">
@@ -67,34 +82,39 @@
                 @if ($selection)
 
                     {{-- Active and inactive students filter --}}
-                    {{-- <flux:radio.group wire:model.live="selectedStatus" variant="segmented">
+                    {{-- Option 1 --}}
+                    <flux:radio.group wire:model.live="selectedStatus" variant="segmented">
                         <flux:radio value="Active Students" label="Active Students" />
                         <flux:radio value="Inactive Students" label="Inactive Students" />
-                    </flux:radio.group> --}}
-                    <div class="flex items-center gap-2">
-                        <flux:heading size="xl" level="1"><span class="text-[var(--color-accent)]">{{ $selectedStatus }}</span></flux:heading>
+                    </flux:radio.group>
+
+                    {{-- Option 2 --}}
+                    {{-- <div class="flex items-center gap-2">
+                        <flux:heading size="xl" level="1"><span class="text-[var(--color-accent)]">{{ $selectedStatus
+                                }}</span></flux:heading>
                         <flux:dropdown>
                             <flux:button icon="chevron-down" variant="ghost"></flux:button>
                             <flux:menu>
-                                <flux:menu.radio.group  wire:model.live="selectedStatus">
+                                <flux:menu.radio.group wire:model.live="selectedStatus">
                                     <flux:menu.radio value="Active Students" checked>Active Students</flux:menu.radio>
                                     <flux:menu.radio value="Inactive Students">Inactive Students</flux:menu.radio>
                                 </flux:menu.radio.group>
                             </flux:menu>
                         </flux:dropdown>
-                    </div>
+                    </div> --}}
+
 
                     {{-- Super admin capabilities --}}
-                    @can('SA')
+                    {{-- @can('SA')
 
-                        @if (
-                                ($selectedStatus === 'Active Students' && $activeCount > 1) ||
-                                ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
-                            )
-                            <flux:button variant="subtle" wire:click="toggleSelection">Select Multiple</flux:button>
-                        @endif
+                    @if (
+                    ($selectedStatus === 'Active Students' && $activeCount > 1) ||
+                    ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                    )
+                    <flux:button variant="subtle" wire:click="toggleSelection">Select Multiple</flux:button>
+                    @endif
 
-                    @endcan
+                    @endcan --}}
 
                     {{-- When multi-select is enabled --}}
                 @else
@@ -131,49 +151,65 @@
                     @if ($selectedStatus == 'Active Students')
                         {{-- Don't display filters if there are no students --}}
                         @if ($activeCount > 1)
-                            <flux:dropdown>
-                                <flux:button icon:trailing="chevron-down" variant="filled">Filter</flux:button>
+                            <flux:button.group>
+                                <flux:dropdown>
+                                    <flux:button icon:trailing="chevron-down" variant="filled">Filter</flux:button>
 
-                                <flux:menu>
-                                    <flux:menu.submenu heading="Year Level">
-                                        <flux:menu.radio.group wire:model.live="selectedStatus_level">
-                                            <flux:menu.radio checked value="All">All</flux:menu.radio>
-                                            <flux:menu.radio value="1st Year">1st Year</flux:menu.radio>
-                                            <flux:menu.radio value="2nd Year">2nd Year</flux:menu.radio>
-                                            <flux:menu.radio value="3rd Year">3rd Year</flux:menu.radio>
-                                            <flux:menu.radio value="4th Year">4th Year</flux:menu.radio>
-                                        </flux:menu.radio.group>
-                                    </flux:menu.submenu>
+                                    <flux:menu>
+                                        <flux:menu.submenu heading="Year Level">
+                                            <flux:menu.radio.group wire:model.live="selectedStatus_level">
+                                                <flux:menu.radio checked value="All">All</flux:menu.radio>
+                                                <flux:menu.radio value="1st Year">1st Year</flux:menu.radio>
+                                                <flux:menu.radio value="2nd Year">2nd Year</flux:menu.radio>
+                                                <flux:menu.radio value="3rd Year">3rd Year</flux:menu.radio>
+                                                <flux:menu.radio value="4th Year">4th Year</flux:menu.radio>
+                                            </flux:menu.radio.group>
+                                        </flux:menu.submenu>
 
-                                    <flux:menu.submenu heading="Course" wire:model.live="selectedStatus_course">
-                                        <flux:menu.radio.group wire:model.live="selectedStatus_course">
-                                            <flux:menu.radio checked value="All">All</flux:menu.radio>
-                                            <flux:menu.radio value="Bachelor of Arts in International Studies">
-                                                Bachelor of Arts in International Studies</flux:menu.radio>
-                                            <flux:menu.radio value="Bachelor of Science in Information Systems">
-                                                Bachelor of Science in Information Systems</flux:menu.radio>
-                                            <flux:menu.radio value="Bachelor of Human Services">
-                                                Bachelor of Human Services</flux:menu.radio>
-                                            <flux:menu.radio value="Bachelor of Secondary Education">
-                                                Bachelor of Secondary Education</flux:menu.radio>
-                                        </flux:menu.radio.group>
-                                    </flux:menu.submenu>
+                                        <flux:menu.submenu heading="Course" wire:model.live="selectedStatus_course">
+                                            <flux:menu.radio.group wire:model.live="selectedStatus_course">
+                                                <flux:menu.radio checked value="All">All</flux:menu.radio>
+                                                <flux:menu.radio value="Bachelor of Arts in International Studies">
+                                                    Bachelor of Arts in International Studies</flux:menu.radio>
+                                                <flux:menu.radio value="Bachelor of Science in Information Systems">
+                                                    Bachelor of Science in Information Systems</flux:menu.radio>
+                                                <flux:menu.radio value="Bachelor of Human Services">
+                                                    Bachelor of Human Services</flux:menu.radio>
+                                                <flux:menu.radio value="Bachelor of Secondary Education">
+                                                    Bachelor of Secondary Education</flux:menu.radio>
+                                            </flux:menu.radio.group>
+                                        </flux:menu.submenu>
 
-                                    {{-- Clear filter --}}
-                                    @if ($selectedStatus_level !== 'All' || $selectedStatus_course !== 'All' || $search !== '')
-                                        <flux:menu.separator />
-                                        <flux:menu.item icon="x-mark" wire:click="clearFilters" variant="danger">
-                                            Clear Filters
-                                        </flux:menu.item>
+                                        {{-- Clear filter --}}
+                                        @if ($selectedStatus_level !== 'All' || $selectedStatus_course !== 'All' || $search !== '')
+                                            <flux:menu.separator />
+                                            <flux:menu.item icon="x-mark" wire:click="clearFilters" variant="danger">
+                                                Clear Filters
+                                            </flux:menu.item>
+                                        @endif
+
+                                    </flux:menu>
+                                </flux:dropdown>
+                                {{-- Super admin capabilities --}}
+                                @can('SA')
+
+                                    @if (
+                                            ($selectedStatus === 'Active Students' && $activeCount > 1) ||
+                                            ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                                        )
+                                        <flux:button variant="filled" icon:trailing="cursor-arrow-rays" wire:click="toggleSelection">Select
+                                        </flux:button>
                                     @endif
 
-                                </flux:menu>
-                            </flux:dropdown>
+                                @endcan
+
+                            </flux:button.group>
                         @endif
                     @endif
 
                     {{-- Search field --}}
-                    <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search" autocomplete="off" clearable />
+                    <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
+                        autocomplete="off" clearable />
                 </div>
             @else
                 {{-- Bulk Buttons Container --}}
@@ -215,226 +251,267 @@
             @endif
         </div>
 
+
+
+
         {{-- Table --}}
-        <div class="mt-5 relative overflow-x-auto shadow-md sm:rounded-lg">
-            <flux:checkbox.group>
-                <table class="w-full text-sm text-left rtl:text-right text-zinc-600 dark:text-zinc-400">
-                    <thead class="text-xs text-zinc-700 uppercase dark:bg-[--import] dark:text-zinc-300">
-                        <tr>
-                            @if ($selection)
-                            @else
-                                <th scope="col" class="p-4">
-                                </th>
-                            @endif
-                            <th scope="col" class="px-6 py-3 whitespace-nowrap p-3 cursor-pointer"
-                                wire:click="sortBy('name')">
-                                <div class="class flex items-center gap-2">
-                                    Student Name
-                                    @if ($sortField === 'name')
-                                        @if ($sortDirection === 'asc')
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
-                                            </svg>
-
-                                        @else
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
-                                            </svg>
-
-                                        @endif
-                                    @endif
-                                </div>
-
-                            </th>
-                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                                @if ($selectedStatus == 'Active Students')
-                                    Email
-                                @else
-                                    Status
-                                @endif
-                            </th>
-                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
-                                Year
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Course
-                            </th>
-                            @if ($selection)
-                                <th scope="col" class="px-6 py-3">
-                                    Action
-                                </th>
-                            @else
-                            @endif
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($users as $user)
-                            <tr wire:key="{{ $user->id }}"
-                                class="bg-white border-b dark:bg-zinc-900 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
-                                @if ($selection)
-                                @else
-                                    <td class="w-4 p-4">
-                                        <div class="flex items-center">
-                                            <flux:checkbox value="{{ $user->id }}" wire:model.live="selected" />
-                                        </div>
-                                    </td>
-                                @endif
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->name }}
-                                </th>
-                                {{-- text-zinc-600 --}}
-                                <td class="px-6 py-4  dark:text-zinc-400">
-                                    @if ($selectedStatus == 'Active Students')
-                                        {{ $user->email }}
-                                    @else
-                                        <span class="text-[var(--color-amber-400)]">{{ $user->account_status->label() }}</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400 whitespace-nowrap">
-                                    <span
-                                        class="{{ $selectedStatus_level != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->year_level }}</span>
-                                </td>
-                                <td class="px-6 py-4 text-zinc-600 dark:text-zinc-400">
-                                    <span
-                                        class="{{ $selectedStatus_course != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->course }}</span>
-                                </td>
-                                <td class="flex items-center space-between gap-4 px-6 py-4">
-                                    @can ('SA')
+        <div>
+            <div class="flex flex-col mt-5">
+                <div class="-m-1.5 overflow-x-auto">
+                    <div class="p-1.5 min-w-full inline-block align-middle">
+                        <div class="overflow-hidden rounded-xl">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                <thead class="">
+                                    <tr>
                                         @if ($selection)
-                                            @if ($selectedStatus == 'Active Students')
-                                                <flux:dropdown position="left" align="end">
-                                                    <flux:button icon="ellipsis-horizontal" variant="ghost"></flux:button>
-                                                    <flux:menu>
+                                        @else
+                                            <th scope="col"
+                                                class="px-6 py-3 text-start text-gray-500 dark:text-neutral-300">
+                                            </th>
+                                        @endif
 
-                                                        <flux:modal.trigger :name="'inactive-solo-'.$user->id">
-                                                            <flux:menu.item variant="danger" icon="user-minus"
-                                                                >Mark as
-                                                                Inactive</flux:menu.item>
-                                                        </flux:modal.trigger>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-zinc-300"
+                                            wire:click="sortBy('name')">
+                                            <div class="flex items-center gap-2">
+                                                Student
+                                                @if ($sortField === 'name')
+                                                    @if ($sortDirection === 'asc')
+                                                        {{-- <svg xmlns="http://www.w3.org/3000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="size-4">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                                                        </svg> --}}
+                                                        <flux:icon.arrows-up-down variant="micro" />
 
-                                                    </flux:menu>
-                                                </flux:dropdown>
-                                            @else
-                                                <flux:dropdown position="left" align="end">
-                                                    <flux:button icon="ellipsis-horizontal" variant="ghost"></flux:button>
-                                                    <flux:menu>
+                                                    @else
+                                                        {{-- <svg xmlns="http://www.w3.org/3000/svg" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="size-4">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                                                        </svg> --}}
+                                                        <flux:icon.arrow-down variant="micro" />
 
-                                                        <flux:modal.trigger :name="'active-solo-'.$user->id">
-                                                            <flux:menu.item icon="user-plus">Mark as Active</flux:menu.item>
-                                                        </flux:modal.trigger>  
-                                                        <flux:modal.trigger :name="'remove-solo-'.$user->id">
-                                                            <flux:menu.item icon="trash" variant="danger">Remove Account</flux:menu.item>
-                                                        </flux:modal.trigger>
-                                                            
-                                                    </flux:menu>
-                                                </flux:dropdown>
-                                            @endif
+                                                    @endif
+                                                @endif
+                                                <div>
+                                        </th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                            Status</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                            Year Level</th>
+                                        <th scope="col"
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                            Course</th>
+                                        @if ($selection)
+                                            <th scope="col"
+                                                class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                Action</th>
                                         @else
                                         @endif
-                                    @endcan
+                                    </tr>
+                                </thead>
 
-                                    {{-- Mark inactive modal --}}
-                                    <flux:modal :name="'inactive-solo-'.$user->id" :dismissible="false" class="min-w-[22rem]">
-                                        <div class="space-y-6">
-                                            <div>
-                                                <flux:heading size="lg">Mark Student as Inactive?</flux:heading>
-                                                <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->name }} as inactive.</p>
-                                                </flux:text>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <flux:spacer />
-                                                <flux:modal.close>
-                                                    <flux:button variant="ghost">Cancel</flux:button>
-                                                </flux:modal.close>
-                                                <flux:button variant="danger" wire:click="markInactive({{ $user->id }})">Mark as Inactive</flux:button>
-                                            </div>
-                                        </div>
-                                    </flux:modal>
+                                <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                                    @forelse ($users as $user)
+                                        <tr wire:key="{{ $user->id }}" class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                                            @if ($selection)
+                                            @else
+                                                <td class="w-4 p-2">
+                                                    <div class="flex items-center">
+                                                        <flux:checkbox value="{{ $user->id }}" wire:model.live="selected" />
+                                                    </div>
+                                                </td>
+                                            @endif
+                                            <td
+                                                class="!flex !flex-col px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                                <div class="font-bold">{!! $user->highlightField('name', $search) !!}</div>
+                                                <div class="text-zinc-400">{!! $user->highlightField('email', $search) !!}
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                @if ($selectedStatus == 'Active Students')
+                                                    <span
+                                                        class="bg-transparent text-zinc-50 border border-neutral-500 inline-flex items-center text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                                                        <span
+                                                            class="block w-1.5 h-1.5 -ml-0.5 mr-1 bg-green-500 rounded-full"></span>
+                                                        <span>Active</span>
+                                                    </span>
+                                                @else
+                                                    <span
+                                                        class="bg-transparent text-zinc-50 border border-neutral-500 inline-flex items-center text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                                                        <span
+                                                            class="block w-1.5 h-1.5 -ml-0.5 mr-1 bg-red-500 rounded-full"></span>
+                                                        <span>Inactive</span>
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-200">
+                                                {!! $user->highlightField('year_level', $search) !!}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-200">
+                                                @php
 
-                                    {{-- Mark active modal --}}
-                                    <flux:modal :name="'active-solo-'.$user->id" :dismissible="false" class="min-w-[22rem]">
-                                        <div class="space-y-6">
-                                            <div>
-                                                <flux:heading size="lg">Mark Student as Active?</flux:heading>
-                                                <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->name }} as active.</p>
-                                                </flux:text>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <flux:spacer />
-                                                <flux:modal.close>
-                                                    <flux:button variant="ghost">Cancel</flux:button>
-                                                </flux:modal.close>
-                                                <flux:button variant="primary" color="amber" wire:click="markActive({{ $user->id }})">Mark as Active</flux:button>
-                                            </div>
-                                        </div>
-                                    </flux:modal>
+                                                    $course = $user->course;
 
-                                    {{-- Remove account modal --}}
-                                    <flux:modal :name="'remove-solo-'.$user->id" :dismissible="false" class="min-w-[22rem]">
-                                        <div class="space-y-6">
-                                            <div>
-                                                <flux:heading size="lg">Remove Account?</flux:heading>
-                                                <flux:text class="mt-2">
-                                                    <p>You're about to remove {{ $user->name }}'s account.</p>
-                                                    <p>This action cannot be undone.</p>
-                                                </flux:text>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <flux:spacer />
-                                                <flux:modal.close>
-                                                    <flux:button variant="ghost">Cancel</flux:button>
-                                                </flux:modal.close>
-                                                <flux:button variant="danger" wire:click="removeAccount({{ $user->id }})">Remove Account</flux:button>
-                                            </div>
-                                        </div>
-                                    </flux:modal>
+                                                    $output = match (true) {
+                                                        $course == 'Bachelor of Arts in International Studies' => 'ABIS',
+                                                        $course == 'Bachelor of Science in Information Systems' => 'BSIS',
+                                                        $course == 'Bachelor of Human Services' => 'BHS',
+                                                        $course == 'Bachelor of Secondary Education' => 'BSED',
+                                                        default => 'Course',
+                                                    };
 
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                @if ($selectedStatus == 'Active Students')
-                                    <td colspan="6" class="py-8">
-                                        <div class="flex justify-center items-center gap-2 w-full">
-                                            <flux:icon.user-circle variant="solid" class="text-zinc-50"/>
-                                            <flux:heading size="lg">No Active Student Accounts</flux:heading>
-                                        </div>
-                                    </td>
-                                @elseif ($selectedStatus == 'Inactive Students')
-                                    <td colspan="6" class="py-8">
-                                        <div class="flex justify-center items-center gap-2 w-full">
-                                            <flux:icon.user-circle variant="solid" class="text-zinc-50"/>
-                                            <flux:heading size="lg">No Inactive Student Accounts</flux:heading>
-                                        </div>
-                                    </td>
-                                @endif
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                                @endphp
+                                                {!! $user->highlightText($output, $search) !!}
+                                            </td>
+                                            <td class="px-6 py-4 ">
 
-            </flux:checkbox.group>
+                                                @can ('SA')
+                                                    @if ($selection)
+                                                        @if ($selectedStatus == 'Active Students')
+                                                            <flux:dropdown position="left" align="end">
+                                                                <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
+                                                                    class="ml-13"></flux:button>
+                                                                <flux:menu>
+
+                                                                    <flux:modal.trigger :name="'inactive-solo-'.$user->id">
+                                                                        <flux:menu.item variant="danger" icon="user-minus">Mark as
+                                                                            Inactive</flux:menu.item>
+                                                                    </flux:modal.trigger>
+
+                                                                </flux:menu>
+                                                            </flux:dropdown>
+                                                        @else
+                                                            <flux:dropdown position="left" align="end">
+                                                                <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
+                                                                    class="ml-13"></flux:button>
+                                                                <flux:menu>
+
+                                                                    <flux:modal.trigger :name="'active-solo-'.$user->id">
+                                                                        <flux:menu.item icon="user-plus">Mark as Active</flux:menu.item>
+                                                                    </flux:modal.trigger>
+                                                                    <flux:modal.trigger :name="'remove-solo-'.$user->id">
+                                                                        <flux:menu.item icon="trash" variant="danger">Remove Account
+                                                                        </flux:menu.item>
+                                                                    </flux:modal.trigger>
+
+                                                                </flux:menu>
+                                                            </flux:dropdown>
+                                                        @endif
+                                                    @else
+                                                    @endif
+                                                @endcan
+
+                                                {{-- Mark inactive modal --}}
+                                                <flux:modal :name="'inactive-solo-'.$user->id" :dismissible="false"
+                                                    class="min-w-[22rem]">
+                                                    <div class="space-y-6">
+                                                        <div>
+                                                            <flux:heading size="lg">Mark Student as Inactive?</flux:heading>
+                                                            <flux:text class="mt-2">
+                                                                <p>You're about to mark {{ $user->name }} as inactive.</p>
+                                                            </flux:text>
+                                                        </div>
+                                                        <div class="flex gap-2">
+                                                            <flux:spacer />
+                                                            <flux:modal.close>
+                                                                <flux:button variant="ghost">Cancel</flux:button>
+                                                            </flux:modal.close>
+                                                            <flux:button variant="danger"
+                                                                wire:click="markInactive({{ $user->id }})">Mark as Inactive
+                                                            </flux:button>
+                                                        </div>
+                                                    </div>
+                                                </flux:modal>
+
+                                                {{-- Mark active modal --}}
+                                                <flux:modal :name="'active-solo-'.$user->id" :dismissible="false"
+                                                    class="min-w-[22rem]">
+                                                    <div class="space-y-6">
+                                                        <div>
+                                                            <flux:heading size="lg">Mark Student as Active?</flux:heading>
+                                                            <flux:text class="mt-2">
+                                                                <p>You're about to mark {{ $user->name }} as active.</p>
+                                                            </flux:text>
+                                                        </div>
+                                                        <div class="flex gap-2">
+                                                            <flux:spacer />
+                                                            <flux:modal.close>
+                                                                <flux:button variant="ghost">Cancel</flux:button>
+                                                            </flux:modal.close>
+                                                            <flux:button variant="primary" color="amber"
+                                                                wire:click="markActive({{ $user->id }})">Mark as Active
+                                                            </flux:button>
+                                                        </div>
+                                                    </div>
+                                                </flux:modal>
+
+                                                {{-- Remove account modal --}}
+                                                <flux:modal :name="'remove-solo-'.$user->id" :dismissible="false"
+                                                    class="min-w-[22rem]">
+                                                    <div class="space-y-6">
+                                                        <div>
+                                                            <flux:heading size="lg">Remove Account?</flux:heading>
+                                                            <flux:text class="mt-2">
+                                                                <p>You're about to remove {{ $user->name }}'s account.</p>
+                                                                <p>This action cannot be undone.</p>
+                                                            </flux:text>
+                                                        </div>
+                                                        <div class="flex gap-2">
+                                                            <flux:spacer />
+                                                            <flux:modal.close>
+                                                                <flux:button variant="ghost">Cancel</flux:button>
+                                                            </flux:modal.close>
+                                                            <flux:button variant="danger"
+                                                                wire:click="removeAccount({{ $user->id }})">Remove Account
+                                                            </flux:button>
+                                                        </div>
+                                                    </div>
+                                                </flux:modal>
+
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr class="">
+                                            @if ($selectedStatus == 'Active Students')
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
+                                                    <div class="flex justify-center items-center gap-2 w-full">
+                                                        <flux:icon.user-circle variant="solid" class="text-zinc-50" />
+                                                        <flux:heading size="lg">No Active Student Accounts</flux:heading>
+                                                    </div>
+                                                </td>
+                                            @elseif ($selectedStatus == 'Inactive Students')
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
+                                                    <div class="flex justify-center items-center gap-2 w-full">
+                                                        <flux:icon.user-circle variant="solid" class="text-zinc-50" />
+                                                        <flux:heading size="lg">No Inactive Student Accounts</flux:heading>
+                                                    </div>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforelse
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                {{ $users->links('pagination::tailwind') }}
+            </div>
         </div>
 
-        {{-- @script
-        <script>
-            setInterval(() => {
-                $wire.$refresh()
-            }, 5000)
-        </script>
-        @endscript --}}
 
 
-        <div class="mt-4">
-            {{ $users->links('pagination::tailwind') }}
-        </div>
     </div>
 
     {{-- Bulk inactive modal --}}
@@ -470,7 +547,8 @@
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button variant="primary" color="amber" wire:click="totalbulkmarkActive">Mark as Active</flux:button>
+                <flux:button variant="primary" color="amber" wire:click="totalbulkmarkActive">Mark as Active
+                </flux:button>
             </div>
         </div>
     </flux:modal>
@@ -490,7 +568,7 @@
                 <flux:modal.close>
                     <flux:button variant="ghost">Cancel</flux:button>
                 </flux:modal.close>
-                <flux:button variant="danger"  wire:click="totalbulkremoveAccount">Remove all Students</flux:button>
+                <flux:button variant="danger" wire:click="totalbulkremoveAccount">Remove all Students</flux:button>
             </div>
         </div>
     </flux:modal>

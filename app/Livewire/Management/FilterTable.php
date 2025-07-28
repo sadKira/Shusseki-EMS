@@ -9,7 +9,7 @@ use Livewire\Attributes\Url;
 use App\Models\Setting;
 use App\Enums\AccountStatus;
 use Flux\Flux;
-
+use Illuminate\Support\Facades\Cache;
 
 class FilterTable extends Component
 {
@@ -266,12 +266,14 @@ class FilterTable extends Component
             ->search($this->search)
             ->orderBy($this->sortField, $this->sortDirection);
 
+        
+
         // Percentage display
         $activePercentage = $totalApproved > 0 ? round(($activeCount / $totalApproved) * 100, 1) : 0;
         $inactivePercentage = $totalApproved > 0 ? round(($inactiveCount / $totalApproved) * 100, 1) : 0;
 
         return view('livewire.management.filter-table', [
-            'users' => $filteredQuery->paginate(10),
+            'users' => $filteredQuery->paginate(5),
             'totalApproved' => $totalApproved,
             'activeCount' => $activeCount,
             'inactiveCount' => $inactiveCount,
