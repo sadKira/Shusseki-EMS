@@ -20,6 +20,10 @@ class ManageEvents extends Component
     public $newSchoolYear = '';
     public $schoolYears = [];
 
+    public $selectedEvent = null;
+
+    
+
     // Mounting data
     public function mount()
     {
@@ -29,6 +33,12 @@ class ManageEvents extends Component
         // Setting default school year
         $this->selectedSchoolYear = Setting::getSchoolYear();
         $this->schoolYears = Setting::getAvailableSchoolYears(); // loads from SchoolYear model
+    }
+
+    public function selectEvent($id)
+    {
+      
+        $this->selectedEvent = Event::find($id);
     }
 
     // Obtaining events for the next month
@@ -85,7 +95,7 @@ class ManageEvents extends Component
         $filteredQuery = (clone $baseQuery)
             ->where('school_year', $this->selectedSchoolYear)
             ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
-            ->whereYear('date', now()->year);;
+            ->whereYear('date', now()->year);
 
             // ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
             //     $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
@@ -105,11 +115,49 @@ class ManageEvents extends Component
             ->orderBy('date', $this->sortDirection ?? 'asc')
             ->get();
 
+        // event count
+        $now = now();
+
+        // Count of events for the month where status is not postponed
+        $nonPostponedEventCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
+            ->whereYear('date', now()->year)
+            ->where('status', '!=', EventStatus::Postponed->value)
+            ->count();
+        
+        // Count of postponed events for the month
+        $postponedEventCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
+            ->whereYear('date', now()->year)
+            ->where('status', EventStatus::Postponed->value)
+            ->count();
+
+        // Untracked count for the month
+        $untrackedCount = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::NotFinished->value)
+            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
+            ->whereYear('date', now()->year)
+            ->where(function ($query) use ($now) {
+                $query->whereDate('date', '<', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->whereDate('date', $now->toDateString())
+                            ->whereTime('end_time', '<', $now->toTimeString());
+                    });
+            })
+            ->count();
+
+        
+
         return view('livewire.management.manage-events', [
             'events' => $events,
             'eventCount' => $filteredEventCount,
             'nextMonthEvents' => $this->nextMonthEvents,
-            'groupedEvents' => $this->groupedEvents
+            'groupedEvents' => $this->groupedEvents,
+            'nonPostponedEventCount' => $nonPostponedEventCount,
+            'postponedEventCount' => $postponedEventCount,
+            'untrackedCount' => $untrackedCount,
+            
+           
         ]);
     }
 }

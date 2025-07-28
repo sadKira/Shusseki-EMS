@@ -130,12 +130,12 @@
                     {{-- Super admin capabilities --}}
                     {{-- @can('SA')
 
-                    @if (
-                    ($selectedStatus === 'Active Students' && $activeCount > 1) ||
-                    ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
-                    )
-                    <flux:button variant="subtle" wire:click="toggleSelection">Select Multiple</flux:button>
-                    @endif
+                        @if (
+                        ($selectedStatus === 'Active Students' && $activeCount > 1) ||
+                        ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                        )
+                        <flux:button variant="subtle" wire:click="toggleSelection">Select Multiple</flux:button>
+                        @endif
 
                     @endcan --}}
 
@@ -213,6 +213,7 @@
 
                                     </flux:menu>
                                 </flux:dropdown>
+
                                 {{-- Super admin capabilities --}}
                                 @can('SA')
 
@@ -227,7 +228,23 @@
                                 @endcan
 
                             </flux:button.group>
+                       
+
                         @endif
+                    @elseif ($selectedStatus == 'Inactive Students')
+
+                        {{-- Super admin capabilities --}}
+                        @can('SA')
+
+                            @if (
+                                    ($selectedStatus === 'Active Students' && $activeCount > 1) ||
+                                    ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                                )
+                                <flux:button variant="filled" icon:trailing="cursor-arrow-rays" wire:click="toggleSelection">Select
+                                </flux:button>
+                            @endif
+
+                        @endcan
                     @endif
 
                     {{-- Search field --}}
@@ -375,7 +392,7 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-200">
-                                                {!! $user->highlightField('year_level', $search) !!}
+                                                <span class="{{ $selectedStatus_level != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{!! $user->highlightField('year_level', $search) !!}</span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-200">
                                                 @php
@@ -391,7 +408,9 @@
                                                     };
 
                                                 @endphp
+                                                <span class="{{ $selectedStatus_course != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">
                                                 {!! $user->highlightText($output, $search) !!}
+                                                </span>
                                             </td>
                                             <td class="px-6 py-4 ">
 

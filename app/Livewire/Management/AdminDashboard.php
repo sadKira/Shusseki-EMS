@@ -156,7 +156,7 @@ class AdminDashboard extends Component
             ->orderBy('date', $this->sortDirection ?? 'asc')
             ->get();
 
-        // event status doughnut chart
+        // event count
         $now = now();
 
         $finishedCount = Event::where('school_year', $this->selectedSchoolYear)

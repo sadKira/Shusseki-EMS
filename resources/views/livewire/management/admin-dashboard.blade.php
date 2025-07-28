@@ -120,7 +120,7 @@
                             @elseif($pendingCount == 1)
                                 <flux:heading size="xl" level="1">{{ $pendingCount }} Account</flux:heading>
                             @else
-                                <flux:heading size="xl" level="1">No Pending Accounts</flux:heading>
+                                <flux:heading size="xl" level="1">No Pending</flux:heading>
                             @endif
                         </div>
                         <div class="flex items-center gap-1">

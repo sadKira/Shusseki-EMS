@@ -101,7 +101,7 @@ class AppServiceProvider extends ServiceProvider
                 UserRole::Admin, UserRole::Super_Admin, UserRole::Tsuushin, UserRole::User  => [
                     // Management
                     'admin_dashboard' => 'Admin Dashboard',
-                    'manage_events' => 'Events',
+                    'manage_events' => 'Attendance Bin',
                     'manage_students' => 'Students',
                     'manage_approval' => 'Student Approval',
                     'coverage_events' => 'Events Coverage',
