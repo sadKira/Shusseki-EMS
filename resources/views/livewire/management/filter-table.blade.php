@@ -83,17 +83,40 @@
 
                     {{-- Active and inactive students filter --}}
                     {{-- Option 1 --}}
-                    <flux:radio.group wire:model.live="selectedStatus" variant="segmented">
+                    {{-- <flux:radio.group wire:model.live="selectedStatus" variant="segmented">
                         <flux:radio value="Active Students" label="Active Students" />
                         <flux:radio value="Inactive Students" label="Inactive Students" />
-                    </flux:radio.group>
+                    </flux:radio.group> --}}
 
                     {{-- Option 2 --}}
-                    {{-- <div class="flex items-center gap-2">
-                        <flux:heading size="xl" level="1"><span class="text-[var(--color-accent)]">{{ $selectedStatus
-                                }}</span></flux:heading>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1">
+                            @if ($selectedStatus == 'Active Students')
+                                <svg fill="#00C951" width="32px" height="32px" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg" stroke="#00C951">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M7.8 10a2.2 2.2 0 0 0 4.4 0 2.2 2.2 0 0 0-4.4 0z"></path>
+                                    </g>
+                                </svg>
+                            @else
+                                <svg fill="#FB2C36" width="32px" height="32px" viewBox="0 0 20 20" 
+                                    xmlns="http://www.w3.org/2000/svg" stroke="#FB2C36">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path d="M7.8 10a2.2 2.2 0 0 0 4.4 0 2.2 2.2 0 0 0-4.4 0z"></path>
+                                    </g>
+                                </svg>
+                            @endif
+
+                            <flux:heading size="lg" level="1"><span class="text-zinc-50">{{ $selectedStatus
+                                    }}</span></flux:heading>
+                        </div>
+                        
                         <flux:dropdown>
-                            <flux:button icon="chevron-down" variant="ghost"></flux:button>
+                            <flux:button icon="chevron-down" variant="ghost" size="sm"></flux:button>
                             <flux:menu>
                                 <flux:menu.radio.group wire:model.live="selectedStatus">
                                     <flux:menu.radio value="Active Students" checked>Active Students</flux:menu.radio>
@@ -101,7 +124,7 @@
                                 </flux:menu.radio.group>
                             </flux:menu>
                         </flux:dropdown>
-                    </div> --}}
+                    </div>
 
 
                     {{-- Super admin capabilities --}}
@@ -260,7 +283,7 @@
                 <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
                         <div class="overflow-hidden rounded-xl">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                            <table class="min-w-full">
                                 <thead class="">
                                     <tr>
                                         @if ($selection)
@@ -321,7 +344,7 @@
                                         <tr wire:key="{{ $user->id }}" class="hover:bg-gray-100 dark:hover:bg-neutral-700">
                                             @if ($selection)
                                             @else
-                                                <td class="w-4 p-2">
+                                                <td class="px-6 py-4">
                                                     <div class="flex items-center">
                                                         <flux:checkbox value="{{ $user->id }}" wire:model.live="selected" />
                                                     </div>
@@ -481,7 +504,7 @@
                                         <tr class="">
                                             @if ($selectedStatus == 'Active Students')
                                                 <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
+                                                     colspan="7" class="px-6 py-10 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
                                                     <div class="flex justify-center items-center gap-2 w-full">
                                                         <flux:icon.user-circle variant="solid" class="text-zinc-50" />
                                                         <flux:heading size="lg">No Active Student Accounts</flux:heading>
@@ -489,7 +512,7 @@
                                                 </td>
                                             @elseif ($selectedStatus == 'Inactive Students')
                                                 <td
-                                                    class="px-6 py-4 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
+                                                     colspan="7" class="px-6 py-10 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
                                                     <div class="flex justify-center items-center gap-2 w-full">
                                                         <flux:icon.user-circle variant="solid" class="text-zinc-50" />
                                                         <flux:heading size="lg">No Inactive Student Accounts</flux:heading>

@@ -94,29 +94,29 @@
                 <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
                         <div class="overflow-hidden rounded-xl">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                                <thead class="">
+                            <table class="min-w-full ">
+                                <thead class="whitespace-nowrap">
                                     <tr>
                                         <th scope="col"
-                                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             </th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             Student Name</th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             ID</th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             Email</th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             Year Level</th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             Course</th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-400">
+                                            class="px-6 py-3 text-end text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             Action</th>
                                     </tr>
                                 </thead>
@@ -233,8 +233,8 @@
                                     @empty
                                         <tr class="">
                                             <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
-                                                <div class="flex justify-center items-center gap-2 w-full">
+                                                colspan="7" class="px-6 py-10 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
+                                                <div class="flex justify-center items-center gap-2">
                                                     <flux:icon.user-circle variant="solid" class="text-zinc-50" />
                                                     <flux:heading size="lg">No Pending Accounts</flux:heading>
                                                 </div>
@@ -247,6 +247,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="mt-4">
+                {{ $users->links('pagination::tailwind') }}
             </div>
             
         </div>
