@@ -299,7 +299,7 @@
             <div class="flex flex-col mt-5">
                 <div class="-m-1.5 overflow-x-auto">
                     <div class="p-1.5 min-w-full inline-block align-middle">
-                        <div class="overflow-hidden rounded-xl">
+                        <div class="overflow-hidden">
                             <table class="min-w-full">
                                 <thead class="">
                                     <tr>
@@ -358,7 +358,7 @@
 
                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                                     @forelse ($users as $user)
-                                        <tr wire:key="{{ $user->id }}" class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                                        <tr wire:key="{{ $user->id }}" class="hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
                                             @if ($selection)
                                             @else
                                                 <td class="px-6 py-4">

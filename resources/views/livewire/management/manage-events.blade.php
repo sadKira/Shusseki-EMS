@@ -24,70 +24,106 @@
     <div class="grid grid-cols-5 gap-3">
 
         {{-- Left side --}}
-        <div class="flex flex-col col-span-2 gap-3 ">
+        <div class="flex flex-col col-span-2 gap-3 flex-grow ">
 
            
 
-            {{-- Events for the next month --}}
-            <div class="px-7 py-6 metallic-card-soft rounded-xl">
-                {{-- <section class="w-full flex items-center justify-start gap-2">
-                    <div class="flex items-center gap-2">
-                        <flux:heading size="xl" level="1">Events next month: <span
-                                class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($selectedMonth)->addMonth()->format('F') }}</span>
-                        </flux:heading>
+            {{-- Dynamic Card --}}
+    
+            @if ($selectedEvent)
+
+                <div class=" px-7 py-6 metallic-card-soft rounded-xl flex flex-col gap-5 
+                           "
+                   
+                    >
+
+                    {{-- Image --}}
+                    <div class="">
+                        <img src="{{ asset('storage/' . $selectedEvent->image) }}" alt="Event Image"
+                            class="w-full h-50 object-cover shadow-md">
                     </div>
-                </section> --}}
 
-                {{-- Dynamic Card --}}
-                @if ($selectedEvent)
+                    <div class="flex flex-col gap-2">
 
-                    <div class="flex flex-col gap-5">
+                        {{-- Event title --}}
+                        <div class="flex items-center text-pretty gap-2">
+                            <flux:heading size="xl">{{ $selectedEvent->title }}</flux:heading>
 
-                        {{-- Image --}}
-                        <div class="">
-                            <img src="{{ asset('storage/' . $selectedEvent->image) }}" alt="Event Image"
-                                class="w-full h-50 object-cover shadow-md">
+                            {{-- Title with tag --}}
+                            @php
+                                $timezone = 'Asia/Manila';
+                                $now = \Carbon\Carbon::now()->timezone($timezone);
+                                
+                                // Combine the actual date with the time strings
+                                $start = \Carbon\Carbon::parse($selectedEvent->date . ' ' . $selectedEvent->start_time, $timezone);
+                                $end = \Carbon\Carbon::parse($selectedEvent->date . ' ' . $selectedEvent->end_time, $timezone);
+                            @endphp
+
+                            {{-- Event status --}}
+                            @if ($selectedEvent->status != \App\Enums\EventStatus::Postponed)
+                                @if ($now->between($start, $end))
+                                    <flux:badge color="amber" class="" variant="solid"><span class="text-black">In
+                                            Progress</span></flux:badge>
+                                @endif
+                                @if ($selectedEvent->status != \App\Enums\EventStatus::Finished)         
+                                    @if ($now->gt($end))
+                                        <flux:badge color="zinc" class="" variant="solid">
+                                            <span class="text-white">Untracked</span>
+                                        </flux:badge>
+                                    @endif
+                                @endif
+                            @endif
+                            @if ($selectedEvent->status == \App\Enums\EventStatus::Finished)
+                                <flux:badge color="green" class="" variant="solid"><span
+                                        class="text-black">Ended</span></flux:badge>
+                            @endif
+                            @if ($selectedEvent->status == \App\Enums\EventStatus::Postponed)
+                                <flux:badge color="red" class="" variant="solid"><span
+                                        class="text-white">Postponed</span></flux:badge>
+                            @endif
                         </div>
 
-                        <div class="flex flex-col gap-2">
+                        {{-- Event details --}}
 
-                            {{-- Event title --}}
-                            <flux:heading size="xl" level="1">{{ $selectedEvent->title }}</flux:heading>
-
-                            {{-- Event details --}}
-
-                            <div class="flex items-center gap-2">
-                                <flux:icon.calendar class="text-zinc-50" />
-                                <flux:heading>
-                                    {{ \Carbon\Carbon::parse($selectedEvent->date)->format('F d, Y') }}, 
-                                    {{ \Carbon\Carbon::parse($selectedEvent->start_time)->format('h:i A') }} - 
-                                    {{ \Carbon\Carbon::parse($selectedEvent->end_time)->format('h:i A') }}
-                                </flux:heading>
-                            </div>
-
-                            <div class="flex items-center gap-2">
-                                <flux:icon.map-pin class="text-zinc-50" />
-                                <flux:heading>{{ $selectedEvent->location }}</flux:heading>
-                            </div>
-
-                            <flux:heading class="flex items-center gap-2 mt-5">
-                                End of Time In Period: <span class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($selectedEvent->time_in)->format('h:i A') }}</span>
+                        <div class="flex items-center gap-2">
+                            <flux:icon.calendar class="text-zinc-50" />
+                            <flux:heading>
+                                {{ \Carbon\Carbon::parse($selectedEvent->date)->format('F d, Y') }}, 
+                                {{ \Carbon\Carbon::parse($selectedEvent->start_time)->format('h:i A') }} - 
+                                {{ \Carbon\Carbon::parse($selectedEvent->end_time)->format('h:i A') }}
                             </flux:heading>
-
                         </div>
 
-                        <flux:button  class="w-full mt-5" variant="primary" color="amber" icon="arrow-top-right-on-square" :href="route('view_event', $selectedEvent)" wire:navigate>
-                            View Event
-                        </flux:button>
+                        <div class="flex items-center gap-2">
+                            <flux:icon.map-pin class="text-zinc-50" />
+                            <flux:heading>{{ $selectedEvent->location }}</flux:heading>
+                        </div>
 
-                        
+                        <flux:heading class="flex items-center gap-2 mt-5">
+                            End of Time In Period: <span class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($selectedEvent->time_in)->format('h:i A') }}</span>
+                        </flux:heading>
+
                     </div>
-                    
 
-                @endif
+                    <flux:button  class="w-full mt-2" variant="primary" color="amber" icon="arrow-top-right-on-square" :href="route('view_event', $selectedEvent)" wire:navigate>
+                        View Event
+                    </flux:button>
+
+                    
+                </div>
+                
+            @else
+            
+                {{-- Empty Image --}}
+                <div class="px-7 py-6">
+                    <img src="{{ asset('images/Seal_White.svg')}}" alt="Event Image"
+                        class="w-full h-full object-cover shadow-md opacity-40">
+                </div>
+
+            @endif
                 
                 
-            </div>
+           
 
         </div>
 
@@ -96,7 +132,7 @@
         <div class="flex flex-col col-span-3 gap-3">
 
             {{-- Sub Headings --}}
-            <div class="whitespace-nowrap flex gap-20 items-center justify-center-safe px-7 mb-3">
+            <div class="whitespace-nowrap flex gap-20 items-center justify-center-safe px-7">
 
                 {{-- Current Month --}}
                 <div class="whitespace-nowrap grid justify-items-center">
@@ -165,10 +201,10 @@
             </div>
 
             {{-- Events for the month --}}
-            <div class="metallic-card-soft px-10 py-6 rounded-xl">
+            <div class="px-10 py-6 rounded-xl">
                 <section class="w-full flex items-center justify-between gap-2">
                     
-                    <flux:button variant="ghost" href="{{route('create_event')}}" icon="plus" wire:navigate>Create Event</flux:button>
+                    {{-- <flux:button variant="ghost" href="{{route('create_event')}}" icon="plus" wire:navigate>Create Event</flux:button> --}}
 
                     {{-- <flux:dropdown>
                         <flux:button variant="filled" icon="chevron-down" size="sm"></flux:button>
@@ -193,7 +229,7 @@
 
                 {{-- Events content --}}
                 <div
-                    class="mt-1 h-80 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
+                    class="h-80 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
                     <div class="flex flex-col gap-2 w-full">
 
                         {{-- Mini long bars --}}
@@ -203,7 +239,7 @@
                                 {{-- class="bg-white/10 border border-white/5 shadow-inner backdrop-blur-sm p-4 mr-4 flex items-center justify-between rounded-2xl" --}}
                                 {{-- class="bg-zinc-900/70 border border-white/5 shadow p-4 mr-4 flex items-center justify-between rounded-2xl" --}}
                                 {{-- class="bg-gradient-to-br from-zinc-800/80 via-zinc-900/80 to-zinc-950 border border-white/5 shadow-md p-4 mr-4 flex items-center justify-between rounded-2xl" --}}
-                                class="bg-transparent p-4 mr-4 flex items-center justify-between rounded-2xl cursor-pointer"
+                                class="{{ $selectedEvent && $selectedEvent->id == $event->id ? 'bg-neutral-700' : 'metallic-card-soft' }} p-4 mr-4 flex items-center justify-between rounded-2xl cursor-pointer hover:bg-neutral-700 transition"
                                 style="border: 2px solid rgba(255, 255, 255, 0.06);"
                                 wire:click="selectEvent({{ $event->id }})"
                                 >

@@ -123,7 +123,7 @@
 
                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
                                     @forelse ($users as $user)
-                                        <tr wire:key="user-{{ $user->id }}" class="hover:bg-gray-100 dark:hover:bg-neutral-700">
+                                        <tr wire:key="user-{{ $user->id }}" class="hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                                                 @if ($pendingCount > 1)
