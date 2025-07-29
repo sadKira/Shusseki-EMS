@@ -10,11 +10,11 @@
                         <flux:breadcrumbs.item :href="route('manage_events')" wire:navigate>Events
                         </flux:breadcrumbs.item>
                         <flux:breadcrumbs.item :href="route('manage_events')" :accent="true" wire:navigate>
-                            <span class="text-[var(--color-accent)]">Attendance Bin<span>
+                            <span class="text-[var(--color-accent)]">Events Bin<span>
                         </flux:breadcrumbs.item>
                     </flux:breadcrumbs>
                 </div>
-                <flux:heading size="xl" level="1">Attendance Bin</flux:heading>
+                <flux:heading size="xl" level="1">Events Bin</flux:heading>
             </div>
         </div>
     </div>
@@ -38,8 +38,52 @@
                     </div>
                 </section> --}}
 
+                {{-- Dynamic Card --}}
                 @if ($selectedEvent)
-                    <h1 class="text-zinc-50 text-3xl">{{ $selectedEvent->title }}</h1>
+
+                    <div class="flex flex-col gap-5">
+
+                        {{-- Image --}}
+                        <div class="">
+                            <img src="{{ asset('storage/' . $selectedEvent->image) }}" alt="Event Image"
+                                class="w-full h-50 object-cover shadow-md">
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+
+                            {{-- Event title --}}
+                            <flux:heading size="xl" level="1">{{ $selectedEvent->title }}</flux:heading>
+
+                            {{-- Event details --}}
+
+                            <div class="flex items-center gap-2">
+                                <flux:icon.calendar class="text-zinc-50" />
+                                <flux:heading>
+                                    {{ \Carbon\Carbon::parse($selectedEvent->date)->format('F d, Y') }}, 
+                                    {{ \Carbon\Carbon::parse($selectedEvent->start_time)->format('h:i A') }} - 
+                                    {{ \Carbon\Carbon::parse($selectedEvent->end_time)->format('h:i A') }}
+                                </flux:heading>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <flux:icon.map-pin class="text-zinc-50" />
+                                <flux:heading>{{ $selectedEvent->location }}</flux:heading>
+                            </div>
+
+                            <flux:heading class="flex items-center gap-2 mt-5">
+                                End of Time In Period: <span class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($selectedEvent->time_in)->format('h:i A') }}</span>
+                            </flux:heading>
+
+                        </div>
+
+                        <flux:button  class="w-full mt-5" variant="primary" color="amber" icon="arrow-top-right-on-square" :href="route('view_event', $selectedEvent)" wire:navigate>
+                            View Event
+                        </flux:button>
+
+                        
+                    </div>
+                    
+
                 @endif
                 
                 
@@ -124,7 +168,7 @@
             <div class="metallic-card-soft px-10 py-6 rounded-xl">
                 <section class="w-full flex items-center justify-between gap-2">
                     
-                    {{-- <flux:button variant="ghost" href="{{route('create_event')}}" icon="plus" wire:navigate>Create Event</flux:button> --}}
+                    <flux:button variant="ghost" href="{{route('create_event')}}" icon="plus" wire:navigate>Create Event</flux:button>
 
                     {{-- <flux:dropdown>
                         <flux:button variant="filled" icon="chevron-down" size="sm"></flux:button>
@@ -208,7 +252,7 @@
                                         </flux:badge>
                                     @endif
 
-                                    <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square" :href="route('view_event', $event)" wire:navigate></flux:button>
+                                    {{-- <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square" :href="route('view_event', $event)" wire:navigate></flux:button> --}}
                                 </div>
 
                             </div>

@@ -71,7 +71,7 @@
                     </flux:navlist.item>
                     <flux:navlist.item icon="calendar" :href="route('manage_events')"
                         :current="request()->routeIs(['manage_events', 'create_event', 'view_event', 'edit-event'])" wire:navigate>
-                        {{ __('Attendance Bin') }}
+                        {{ __('Events Bin') }}
                     </flux:navlist.item>
                     <flux:navlist.item icon="envelope" :href="route('coverage_events')"
                         :current="request()->routeIs(['coverage_events'])" wire:navigate>

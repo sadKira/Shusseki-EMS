@@ -54,7 +54,7 @@
                     <flux:text>This Academic Year</flux:text>
                 </div>
 
-                <flux:icon.arrow-down-circle class="size-10 text-[var(--color-accent)]" variant="outline" />
+                <flux:icon.bell-alert class="size-10 text-[var(--color-accent)]" variant="outline" />
             </div>
 
             {{-- Attendance Rate --}}
