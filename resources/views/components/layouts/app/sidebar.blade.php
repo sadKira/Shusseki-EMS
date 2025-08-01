@@ -243,7 +243,7 @@
     <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
 
     <!-- Preline -->
-    {{-- <script src="https://unpkg.com/preline@latest/dist/preline.js"></script> --}}
+    <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
 
     <!-- WebRTC -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/9.0.3/adapter.min.js"></script>
@@ -309,8 +309,13 @@
             }
 
             // File Upload
-            if (window.HSFileUpload && typeof window.HSFileUpload.autoInit === 'function') {
-                window.HSFileUpload.autoInit();
+            // if (window.HSFileUpload && typeof window.HSFileUpload.autoInit === 'function') {
+            //     window.HSFileUpload.autoInit();
+            // }
+
+            // Pin Input
+            if (window.HSPinInput && typeof window.HSPinInput.autoInit === 'function') {
+                window.HSPinInput.autoInit();
             }
 
 

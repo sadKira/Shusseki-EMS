@@ -24,7 +24,7 @@ class TsuushinSeeder extends Seeder
             'status' => 'approved',
             'year_level' => 'null',
             'course' => 'null',
-            'account_status' => 'active'
+            'account_status' => 'active',
         ]);
     }
 }

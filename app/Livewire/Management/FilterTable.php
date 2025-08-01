@@ -273,7 +273,7 @@ class FilterTable extends Component
         $inactivePercentage = $totalApproved > 0 ? round(($inactiveCount / $totalApproved) * 100, 1) : 0;
 
         return view('livewire.management.filter-table', [
-            'users' => $filteredQuery->paginate(5),
+            'users' => $filteredQuery->paginate(10),
             'totalApproved' => $totalApproved,
             'activeCount' => $activeCount,
             'inactiveCount' => $inactiveCount,

@@ -116,6 +116,7 @@ class AppServiceProvider extends ServiceProvider
                     'student_records' => 'Student Records',
                     'generate_report' => 'Generate Report',
                     'buffer_view' => 'Buffer View',
+                    'settings.sakey' => 'Settings',
 
                     //Tsuushin
                     'tsuushin_dashboard' => 'Tsuushin Dashboard',

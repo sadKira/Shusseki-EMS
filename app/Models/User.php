@@ -60,7 +60,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'role' => UserRole::class,
             'status' => UserApproval::class,
-            'account_status' => AccountStatus::class
+            'account_status' => AccountStatus::class,
         ];
     }
 

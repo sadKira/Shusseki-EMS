@@ -19,7 +19,7 @@
 
         {{-- Active & Inactive students --}}
         <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
-            <flux:text>Active Users</flux:text>
+            <flux:text>Active Students</flux:text>
             <div class="flex items-end gap-2">
                 @if ($activeCount != 0)
                     <flux:heading size="xl" level="1">{{ $activeCount }}
@@ -44,7 +44,7 @@
         </div>
 
         <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
-            <flux:text>Inactive Users</flux:text>
+            <flux:text>Inactive Students</flux:text>
             <div class="flex items-end gap-2">
                 @if ($inactiveCount != 0)
                     <flux:heading size="xl" level="1">{{ $inactiveCount }}
@@ -248,8 +248,13 @@
                     @endif
 
                     {{-- Search field --}}
-                    <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
-                        autocomplete="off" clearable />
+                    @if (
+                                    ($selectedStatus === 'Active Students' && $activeCount > 1) ||
+                                    ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                                )
+                        <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
+                            autocomplete="off" clearable />
+                    @endif
                 </div>
             @else
                 {{-- Bulk Buttons Container --}}

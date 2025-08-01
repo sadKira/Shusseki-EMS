@@ -1,4 +1,4 @@
-<div class="flex items-start max-md:flex-col px-10 py-6 bg-(--import) rounded-xl">
+<div class="flex items-start max-md:flex-col px-10 py-6 metallic-card-soft rounded-xl">
     <div class="me-10 w-full pb-4 md:w-[220px]">
 
         <flux:navlist>
@@ -14,9 +14,11 @@
                 @endcan
             </flux:navlist.group>
             @can('SA')
-                <flux:navlist.group heading="Set Academic Year" class="mt-4">
+                <flux:navlist.group heading="Super Administrator" class="mt-4">
                     <flux:navlist.item :href="route('settings.schoolyear')" wire:navigate
                     :current="request()->routeIs(['settings.schoolyear'])">{{ __('Academic Year') }}</flux:navlist.item>
+                    <flux:navlist.item :href="route('settings.sakey')" wire:navigate
+                    :current="request()->routeIs(['settings.sakey'])">{{ __('Admin Key') }}</flux:navlist.item>
                 </flux:navlist.group>
             @endcan
 

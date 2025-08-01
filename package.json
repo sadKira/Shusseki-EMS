@@ -7,6 +7,7 @@
     },
     "dependencies": {
         "@preline/file-upload": "^3.1.0",
+        "@preline/pin-input": "^3.2.0",
         "@preline/select": "^3.1.0",
         "axios": "^1.7.4",
         "chart.js": "^4.5.0",

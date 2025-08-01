@@ -18,11 +18,13 @@ class Setting extends Model
         return SchoolYear::orderByDesc('year')->pluck('year')->toArray();
     }
 
+    // Obtain school year
     public static function getSchoolYear()
     {
         return static::where('key', 'current_school_year')->value('value');
     }
 
+    // Set school year
     public static function setSchoolYear($year)
     {
         return static::updateOrCreate(
@@ -30,4 +32,11 @@ class Setting extends Model
             ['value' => $year]
         );
     }
+
+    // Obtain admin key
+    public static function getAdminKey()
+    {
+        return static::where('key', 's_a_k');
+    }
+
 }

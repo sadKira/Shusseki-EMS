@@ -37,57 +37,61 @@
         {{-- Content Main --}}
         <div class="metallic-card-soft rounded-xl px-7 py-6">
  
-            {{-- Selection --}}
-            <div class="flex items-center justify-between">
+            @if ($pendingCount > 1)
 
-                <flux:input class="max-w-xs" icon="magnifying-glass" placeholder="Search..."  wire:model.live.debounce.150ms="search" autocomplete="off" clearable/>
+                {{-- Selection --}}
+                <div class="flex items-center justify-between">
+                    
+                    <flux:input class="max-w-xs" icon="magnifying-glass" placeholder="Search..."  wire:model.live.debounce.150ms="search" autocomplete="off" clearable/>
 
-                <div class="flex items-center">
-                    {{-- Selection Count Button --}}
-                    <flux:button icon="x-mark" variant="filled" wire:click="cancelSelection"
-                        class="{{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
-                        {{ count($selected) }} selected
-                    </flux:button>
+                    <div class="flex items-center">
+                        {{-- Selection Count Button --}}
+                        <flux:button icon="x-mark" variant="filled" wire:click="cancelSelection"
+                            class="{{ count($selected) > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                            {{ count($selected) }} selected
+                        </flux:button>
 
-                    {{-- Bulk Buttons Container --}}
-                    <div class="ml-3 {{ $pendingCount > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
-                        <flux:dropdown position="bottom" align="end">
-                            <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
-                            </flux:button>
-                            <flux:menu>
-                                @if (count($selected) > 0)
+                        {{-- Bulk Buttons Container --}}
+                        <div class="ml-3 {{ $pendingCount > 1 ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
+                            <flux:dropdown position="bottom" align="end">
+                                <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
+                                </flux:button>
+                                <flux:menu>
+                                    @if (count($selected) > 0)
 
-                                    {{-- Selected actions --}}
-                                    <flux:modal.trigger name="selected-approve">
-                                        <flux:menu.item icon="check">Approve Selected Accounts</flux:menu.item>
-                                    </flux:modal.trigger>
+                                        {{-- Selected actions --}}
+                                        <flux:modal.trigger name="selected-approve">
+                                            <flux:menu.item icon="check">Approve Selected Accounts</flux:menu.item>
+                                        </flux:modal.trigger>
 
-                                    <flux:modal.trigger name="selected-reject">
-                                        <flux:menu.item icon="x-mark" variant="danger">Reject Selected Accounts</flux:menu.item>
-                                    </flux:modal.trigger>
+                                        <flux:modal.trigger name="selected-reject">
+                                            <flux:menu.item icon="x-mark" variant="danger">Reject Selected Accounts</flux:menu.item>
+                                        </flux:modal.trigger>
 
-                                @endif
-                                @if (count($selected) > 0)
-                                @else
+                                    @endif
+                                    @if (count($selected) > 0)
+                                    @else
 
-                                    {{-- Bulk actions --}}
-                                    <flux:modal.trigger name="bulk-approve">
-                                        <flux:menu.item icon="check-badge">Approve All Pending Accounts</flux:menu.item>
-                                    </flux:modal.trigger>
+                                        {{-- Bulk actions --}}
+                                        <flux:modal.trigger name="bulk-approve">
+                                            <flux:menu.item icon="check-badge">Approve All Pending Accounts</flux:menu.item>
+                                        </flux:modal.trigger>
 
-                                    <flux:modal.trigger name="bulk-reject">
-                                        <flux:menu.item icon="trash" variant="danger">Reject All Pending Accounts
-                                        </flux:menu.item>
-                                    </flux:modal.trigger>
+                                        <flux:modal.trigger name="bulk-reject">
+                                            <flux:menu.item icon="trash" variant="danger">Reject All Pending Accounts
+                                            </flux:menu.item>
+                                        </flux:modal.trigger>
 
-                                @endif
+                                    @endif
 
-                            </flux:menu>
-                        </flux:dropdown>
+                                </flux:menu>
+                            </flux:dropdown>
+                        </div>
                     </div>
+
                 </div>
 
-            </div>
+            @endif
 
             {{-- Table --}}
             <div class="flex flex-col mt-5">

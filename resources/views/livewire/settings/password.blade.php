@@ -8,7 +8,7 @@
                 :label="__('Current password')"
                 type="password"
                 required
-                autocomplete="current-password"
+                autocomplete="off"
             />
             <flux:input
                 wire:model="password"

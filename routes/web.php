@@ -31,6 +31,7 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\SchoolYear;
+use App\Livewire\Settings\SuperadminPin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -112,6 +113,7 @@ Route::middleware(['auth', 'approved', 'role:super_admin,admin'])->group(functio
     Route::get('admin/settings/profile', Profile::class)->name('settings.profile');
     Route::get('admin/settings/password', Password::class)->name('settings.password');
     Route::get('admin/settings/school-year', SchoolYear::class)->name('settings.schoolyear');
+    Route::get('admin/settings/admin-key', SuperadminPin::class)->name('settings.sakey');
 
     Route::get('admin/settings/appearance', Appearance::class)->name('settings.appearance');
 });
