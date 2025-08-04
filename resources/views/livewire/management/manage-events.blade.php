@@ -239,7 +239,7 @@
                                 {{-- class="bg-white/10 border border-white/5 shadow-inner backdrop-blur-sm p-4 mr-4 flex items-center justify-between rounded-2xl" --}}
                                 {{-- class="bg-zinc-900/70 border border-white/5 shadow p-4 mr-4 flex items-center justify-between rounded-2xl" --}}
                                 {{-- class="bg-gradient-to-br from-zinc-800/80 via-zinc-900/80 to-zinc-950 border border-white/5 shadow-md p-4 mr-4 flex items-center justify-between rounded-2xl" --}}
-                                class="{{ $selectedEvent && $selectedEvent->id == $event->id ? 'bg-neutral-700' : 'metallic-card-soft' }} p-4 mr-4 flex items-center justify-between rounded-2xl cursor-pointer hover:bg-neutral-700 transition"
+                                class="{{ $selectedEvent && $selectedEvent->id == $event->id ? 'bg-neutral-700' : 'metallic-card-soft' }} p-4 mr-4 flex items-center justify-between rounded-xl cursor-pointer hover:bg-neutral-700 transition"
                                 style="border: 2px solid rgba(255, 255, 255, 0.06);"
                                 wire:click="selectEvent({{ $event->id }})"
                                 >

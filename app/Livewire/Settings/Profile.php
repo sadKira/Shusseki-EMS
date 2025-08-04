@@ -14,6 +14,7 @@ class Profile extends Component
 
     public string $email = '';
 
+
     /**
      * Mount the component.
      */
@@ -52,6 +53,7 @@ class Profile extends Component
         $user->save();
 
         $this->dispatch('profile-updated', name: $user->name);
+
     }
 
     /**

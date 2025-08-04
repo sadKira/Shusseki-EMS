@@ -25,7 +25,7 @@ class FilterTable extends Component
     // Filtering
     public $search = '';
     public $selection = true;
-    public $selectedStatus = 'Active Students';
+    public $selectedStatus = 'Active Accounts';
     public $selectedStatus_level = 'All';
     public $selectedStatus_course = 'All';
 
@@ -56,7 +56,7 @@ class FilterTable extends Component
     }
 
 
-    // Active students table
+    // Active Accounts table
     // Mark as inactive
     public function markInactive($userId)
     {
@@ -97,7 +97,7 @@ class FilterTable extends Component
 
     }
 
-    // Inactive Students table
+    // Inactive Accounts table
     // Remove account
     public function removeAccount($userId)
     {
@@ -252,7 +252,7 @@ class FilterTable extends Component
 
         // Build the filtered query for display
         $filteredQuery = (clone $baseQuery)
-            ->when($this->selectedStatus === 'Active Students', function ($query) {
+            ->when($this->selectedStatus === 'Active Accounts', function ($query) {
                 $query->where('account_status', 'active');
             }, function ($query) {
                 $query->where('account_status', 'inactive');

@@ -19,7 +19,7 @@
 
         {{-- Active & Inactive students --}}
         <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
-            <flux:text>Active Students</flux:text>
+            <flux:text>Active Student Accounts</flux:text>
             <div class="flex items-end gap-2">
                 @if ($activeCount != 0)
                     <flux:heading size="xl" level="1">{{ $activeCount }}
@@ -44,7 +44,7 @@
         </div>
 
         <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
-            <flux:text>Inactive Students</flux:text>
+            <flux:text>Inactive Student Accounts</flux:text>
             <div class="flex items-end gap-2">
                 @if ($inactiveCount != 0)
                     <flux:heading size="xl" level="1">{{ $inactiveCount }}
@@ -84,14 +84,14 @@
                     {{-- Active and inactive students filter --}}
                     {{-- Option 1 --}}
                     {{-- <flux:radio.group wire:model.live="selectedStatus" variant="segmented">
-                        <flux:radio value="Active Students" label="Active Students" />
-                        <flux:radio value="Inactive Students" label="Inactive Students" />
+                        <flux:radio value="Active Accounts" label="Active Accounts" />
+                        <flux:radio value="Inactive Accounts" label="Inactive Accounts" />
                     </flux:radio.group> --}}
 
                     {{-- Option 2 --}}
                     <div class="flex items-center gap-2">
                         <div class="flex items-center gap-1">
-                            @if ($selectedStatus == 'Active Students')
+                            @if ($selectedStatus == 'Active Accounts')
                                 <svg fill="#00C951" width="32px" height="32px" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg" stroke="#00C951">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -119,8 +119,8 @@
                             <flux:button icon="chevron-down" variant="ghost" size="sm"></flux:button>
                             <flux:menu>
                                 <flux:menu.radio.group wire:model.live="selectedStatus">
-                                    <flux:menu.radio value="Active Students" checked>Active Students</flux:menu.radio>
-                                    <flux:menu.radio value="Inactive Students">Inactive Students</flux:menu.radio>
+                                    <flux:menu.radio value="Active Accounts" checked>Active Accounts</flux:menu.radio>
+                                    <flux:menu.radio value="Inactive Accounts">Inactive Accounts</flux:menu.radio>
                                 </flux:menu.radio.group>
                             </flux:menu>
                         </flux:dropdown>
@@ -131,8 +131,8 @@
                     {{-- @can('SA')
 
                         @if (
-                        ($selectedStatus === 'Active Students' && $activeCount > 1) ||
-                        ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                        ($selectedStatus === 'Active Accounts' && $activeCount > 1) ||
+                        ($selectedStatus === 'Inactive Accounts' && $inactiveCount > 1)
                         )
                         <flux:button variant="subtle" wire:click="toggleSelection">Select Multiple</flux:button>
                         @endif
@@ -145,7 +145,7 @@
                     <flux:button variant="danger" icon="x-mark" wire:click="toggleSelection">Cancel</flux:button>
 
                     {{-- If active students --}}
-                    @if ($selectedStatus == 'Active Students')
+                    @if ($selectedStatus == 'Active Accounts')
                         {{-- Selection Count Button --}}
                         <flux:button variant="filled"
                             class="ml-3 {{ $selection == false ? 'opacity-100' : 'opacity-0 pointer-events-none' }}">
@@ -171,7 +171,7 @@
                 <div class="flex items-center gap-2">
 
                     {{-- Display filters only when active students are selected --}}
-                    @if ($selectedStatus == 'Active Students')
+                    @if ($selectedStatus == 'Active Accounts')
                         {{-- Don't display filters if there are no students --}}
                         @if ($activeCount > 1)
                             <flux:button.group>
@@ -218,8 +218,8 @@
                                 @can('SA')
 
                                     @if (
-                                            ($selectedStatus === 'Active Students' && $activeCount > 1) ||
-                                            ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                                            ($selectedStatus === 'Active Accounts' && $activeCount > 1) ||
+                                            ($selectedStatus === 'Inactive Accounts' && $inactiveCount > 1)
                                         )
                                         <flux:button variant="filled" icon:trailing="cursor-arrow-rays" wire:click="toggleSelection">Select
                                         </flux:button>
@@ -231,14 +231,14 @@
                        
 
                         @endif
-                    @elseif ($selectedStatus == 'Inactive Students')
+                    @elseif ($selectedStatus == 'Inactive Accounts')
 
                         {{-- Super admin capabilities --}}
                         @can('SA')
 
                             @if (
-                                    ($selectedStatus === 'Active Students' && $activeCount > 1) ||
-                                    ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                                    ($selectedStatus === 'Active Accounts' && $activeCount > 1) ||
+                                    ($selectedStatus === 'Inactive Accounts' && $inactiveCount > 1)
                                 )
                                 <flux:button variant="filled" icon:trailing="cursor-arrow-rays" wire:click="toggleSelection">Select
                                 </flux:button>
@@ -249,8 +249,8 @@
 
                     {{-- Search field --}}
                     @if (
-                                    ($selectedStatus === 'Active Students' && $activeCount > 1) ||
-                                    ($selectedStatus === 'Inactive Students' && $inactiveCount > 1)
+                                    ($selectedStatus === 'Active Accounts' && $activeCount > 1) ||
+                                    ($selectedStatus === 'Inactive Accounts' && $inactiveCount > 1)
                                 )
                         <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
                             autocomplete="off" clearable />
@@ -263,7 +263,7 @@
                         <flux:button icon:trailing="chevron-down" variant="primary" color="amber">Bulk Actions
                         </flux:button>
                         <flux:menu>
-                            @if ($selectedStatus == 'Active Students')
+                            @if ($selectedStatus == 'Active Accounts')
                                 @if (count($selected) > 0)
                                     <flux:modal.trigger name="inactive-selected">
                                         <flux:menu.item icon="check">Mark selected as inactive</flux:menu.item>
@@ -380,7 +380,7 @@
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                @if ($selectedStatus == 'Active Students')
+                                                @if ($selectedStatus == 'Active Accounts')
                                                     <span
                                                         class="bg-transparent text-zinc-50 border border-neutral-500 inline-flex items-center text-xs font-semibold px-2.5 py-0.5 rounded-full">
                                                         <span
@@ -421,7 +421,7 @@
 
                                                 @can ('SA')
                                                     @if ($selection)
-                                                        @if ($selectedStatus == 'Active Students')
+                                                        @if ($selectedStatus == 'Active Accounts')
                                                             <flux:dropdown position="left" align="end">
                                                                 <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
                                                                     class="ml-13"></flux:button>
@@ -526,7 +526,7 @@
                                         </tr>
                                     @empty
                                         <tr class="">
-                                            @if ($selectedStatus == 'Active Students')
+                                            @if ($selectedStatus == 'Active Accounts')
                                                 <td
                                                      colspan="7" class="px-6 py-10 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
                                                     <div class="flex justify-center items-center gap-2 w-full">
@@ -534,7 +534,7 @@
                                                         <flux:heading size="lg">No Active Student Accounts</flux:heading>
                                                     </div>
                                                 </td>
-                                            @elseif ($selectedStatus == 'Inactive Students')
+                                            @elseif ($selectedStatus == 'Inactive Accounts')
                                                 <td
                                                      colspan="7" class="px-6 py-10 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
                                                     <div class="flex justify-center items-center gap-2 w-full">

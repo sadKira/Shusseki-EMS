@@ -115,7 +115,7 @@
             <flux:navlist.item icon="information-circle" :href="route('generate_report')"
                             :current="request()->routeIs(['generate_report'])" wire:navigate>Generate Report</flux:navlist.item>
             <flux:navlist.item icon="cog-6-tooth" :href="route('settings.profile')"
-                            :current="request()->routeIs(['settings.profile', 'settings.password', 'settings.schoolyear'])" wire:navigate>Settings</flux:navlist.item>
+                            :current="request()->routeIs(['settings.profile', 'settings.password', 'settings.schoolyear', 'settings.sakey'])" wire:navigate>Settings</flux:navlist.item>
         </flux:navlist>
 
         <!-- Desktop User Menu -->
@@ -314,9 +314,9 @@
             // }
 
             // Pin Input
-            if (window.HSPinInput && typeof window.HSPinInput.autoInit === 'function') {
-                window.HSPinInput.autoInit();
-            }
+            // if (window.HSPinInput && typeof window.HSPinInput.autoInit === 'function') {
+            //     window.HSPinInput.autoInit();
+            // }
 
 
         });

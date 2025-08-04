@@ -36,14 +36,14 @@
                     </flux:button>
                     <flux:menu>
                         <flux:menu.radio.group wire:model.live="selectedStatus">
-                            <flux:menu.radio checked value="Active Students">Active Students</flux:menu.radio>
-                            <flux:menu.radio value="Inactive Students">Inactive Students</flux:menu.radio>
+                            <flux:menu.radio checked value="Active Accounts">Active Accounts</flux:menu.radio>
+                            <flux:menu.radio value="Inactive Accounts">Inactive Accounts</flux:menu.radio>
                         </flux:menu.radio.group>
                     </flux:menu>
                 </flux:dropdown>
 
                 {{-- Conditional Filters --}}
-                @if ($selectedStatus == 'Active Students')
+                @if ($selectedStatus == 'Active Accounts')
                     <div class="flex items-center gap-2">
                         <flux:text class="text-xs" variant="strong">Year Level:</flux:text>
                         <flux:dropdown>
@@ -104,8 +104,8 @@
                     </flux:button>
                     <flux:menu>
                         <flux:menu.radio.group wire:model.live="selectedStatus">
-                            <flux:menu.radio checked value="Active Students">Active Students</flux:menu.radio>
-                            <flux:menu.radio value="Inactive Students">Inactive Students</flux:menu.radio>
+                            <flux:menu.radio checked value="Active Accounts">Active Accounts</flux:menu.radio>
+                            <flux:menu.radio value="Inactive Accounts">Inactive Accounts</flux:menu.radio>
                         </flux:menu.radio.group>
                     </flux:menu>
                 </flux:dropdown>
@@ -117,7 +117,7 @@
                 @endif
             </div>
 
-            @if ($selectedStatus == 'Active Students')
+            @if ($selectedStatus == 'Active Accounts')
                 <div class="flex flex-col gap-3">
                     <div class="flex items-center gap-2">
                         <flux:text class="text-xs" variant="strong">Year Level:</flux:text>

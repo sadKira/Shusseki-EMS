@@ -357,6 +357,47 @@
         </div>
     </div>
 
+    {{-- Admin key modal --}}
+    <flux:modal name="admin-key" class="min-w-[22rem] min-h-[15rem]" :dismissible="false">
+        <div class="space-y-6">
+
+            {{-- Current Admin Key --}}
+            <div class="mt-10">
+                <flux:heading class="mb-5 flex justify-center">Current Admin Key</flux:heading>
+                <div class="flex gap-x-5 justify-center" id="pin-current" wire:ignore data-hs-pin-input='{
+                    "availableCharsRE": "^[0-9]+$"
+
+                    }'>
+                    <input
+                        class="block size-11 text-center border-gray-200 rounded-md sm:text-sm focus:scale-110 focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400"
+                        type="password" placeholder="○" data-hs-pin-input-item="" autofocus>
+                    <input
+                        class="block size-11 text-center border-gray-200 rounded-md sm:text-sm focus:scale-110 focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400"
+                        type="password" placeholder="○" data-hs-pin-input-item="">
+                    <input
+                        class="block size-11 text-center border-gray-200 rounded-md sm:text-sm focus:scale-110 focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400"
+                        type="password" placeholder="○" data-hs-pin-input-item="">
+                    <input
+                        class="block size-11 text-center border-gray-200 rounded-md sm:text-sm focus:scale-110 focus:border-[var(--color-accent)] focus:ring-[var(--color-accent)] dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400"
+                        type="password" placeholder="○" data-hs-pin-input-item="">
+
+                </div>
+                
+                @error('current_admin_key')
+                    <p class="mt-4 text-sm text-red-600 flex justify-center">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="danger" wire:click="verifyAdminKey">
+                    Key</flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
     {{-- Attendance bin functionality --}}
 
     <!-- Instascan CDN -->
@@ -556,6 +597,62 @@
 
     </script>
     {{-- -top-10 end-10 to display top right --}}
+
+    {{-- Confirmation Pin --}}
+    <script>
+        function initAdminPinInputs() {
+            const bindings = [
+                { id: 'pin-current', model: 'current_admin_key' },
+               
+            ];
+
+            if (!window.HSPinInput || typeof window.HSPinInput.autoInit !== 'function') {
+                console.error("❌ Preline HSPinInput is not available.");
+                return;
+            }
+
+            window.HSPinInput.autoInit();
+
+            bindings.forEach(({ id, model }) => {
+                const instance = window.HSPinInput.getInstance(`#${id}`);
+                if (!instance) {
+                    console.warn(`⚠️ Could not find HSPinInput instance for #${id}`);
+                    return;
+                }
+
+                instance.on('completed', ({ currentValue }) => {
+                    const pinValue = Array.isArray(currentValue)
+                        ? currentValue.join('')
+                        : currentValue;
+
+                    @this.set(model, pinValue);
+
+                    
+                });
+            });
+
+            // Listen for Livewire-triggered reset
+            window.addEventListener('admin-key-updated', () => {
+                bindings.forEach(({ id }) => {
+                    const container = document.getElementById(id);
+                    if (!container) return;
+
+                    const inputs = container.querySelectorAll('input[data-hs-pin-input-item]');
+                    inputs.forEach(input => input.value = '');
+                    if (inputs[0]) inputs[0].focus();
+                });
+            });
+
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', initAdminPinInputs);
+
+        // Re-init after Livewire navigation or DOM updates
+        document.addEventListener('livewire:navigated', initAdminPinInputs);
+        document.addEventListener('livewire:load', initAdminPinInputs);
+
+    </script>
 
 
 </div>

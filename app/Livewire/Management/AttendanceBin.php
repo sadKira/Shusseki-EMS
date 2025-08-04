@@ -15,6 +15,9 @@ use App\Enums\UserApproval;
 use Flux\Flux;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On; 
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Setting;
 
 
 #[Layout('components.layouts.attendance_bin_app')]
@@ -23,6 +26,9 @@ class AttendanceBin extends Component
     public $event;
     public $student_id;
     public $name;
+    public string $current_admin_key = '';
+    public string $pendingAction = '';
+    public int|null $pendingUserId = null;
 
     public function mount(Event $event)
     {
@@ -114,15 +120,46 @@ class AttendanceBin extends Component
     // Update student status
     public function markScanned($userId)
     {
-        $log = EventAttendanceLog::where('event_id', $this->event->id)
-            ->where('user_id', $userId)
-            ->first();
+        $this->pendingAction = 'markScanned';
+        $this->pendingUserId = $userId;
+        Flux::modal('admin-key')->show();
 
-        $log->update(['attendance_status' => 'scanned']);
+        // $log = EventAttendanceLog::where('event_id', $this->event->id)
+        //     ->where('user_id', $userId)
+        //     ->first();
 
-        // Close modal
+        // $log->update(['attendance_status' => 'scanned']);
+
+        // // Close modal
+        // Flux::modals()->close();
+
+    }
+
+    public function verifyAdminKey()
+    {
+        $setting = Setting::where('key', 's_a_k')->first();
+
+        if (!$setting || !Hash::check($this->current_admin_key, $setting->value)) {
+            $this->reset(['current_admin_key']);
+            $this->dispatch('admin-key-updated');
+            throw ValidationException::withMessages([
+                'current_admin_key' => ['The current admin key is incorrect.'],
+            ]);
+            
+        }
+
+        // Proceed with action
+        if ($this->pendingAction === 'markScanned' && $this->pendingUserId) {
+            EventAttendanceLog::where('event_id', $this->event->id)
+                ->where('user_id', $this->pendingUserId)
+                ->first()
+                ?->update(['attendance_status' => 'scanned']);
+        }
+
+        $this->reset(['current_admin_key', 'pendingAction', 'pendingUserId']);
+        $this->resetErrorBag();
+        $this->dispatch('admin-key-updated');
         Flux::modals()->close();
-
     }
 
     public function markLate($userId)

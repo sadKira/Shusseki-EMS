@@ -4,21 +4,19 @@
         <flux:navlist>
 
             <flux:navlist.group heading="Account Settings" class="mt-4">
-                <flux:navlist.item :href="route('settings.profile')" wire:navigate
-                :current="request()->routeIs(['settings.profile'])">{{ __('Profile') }}</flux:navlist.item>
-                <flux:navlist.item :href="route('settings.password')" wire:navigate
-                :current="request()->routeIs(['settings.password'])">{{ __('Password') }}</flux:navlist.item>
+
+                @livewire('settings.profile-tab', ['currentRoute' => \Route::currentRouteName()])
+                @livewire('settings.password-tab', ['currentRoute' => \Route::currentRouteName()])
 
                 @can('dark_mode')
-                    <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
+                    <flux:navlist.item :href="route('settings.appearance')" wire:navigate>{{ __('Appearance') }}
+                    </flux:navlist.item>
                 @endcan
             </flux:navlist.group>
             @can('SA')
                 <flux:navlist.group heading="Super Administrator" class="mt-4">
-                    <flux:navlist.item :href="route('settings.schoolyear')" wire:navigate
-                    :current="request()->routeIs(['settings.schoolyear'])">{{ __('Academic Year') }}</flux:navlist.item>
-                    <flux:navlist.item :href="route('settings.sakey')" wire:navigate
-                    :current="request()->routeIs(['settings.sakey'])">{{ __('Admin Key') }}</flux:navlist.item>
+                    @livewire('settings.schoolyear-tab', ['currentRoute' => \Route::currentRouteName()])
+                    @livewire('settings.sakey-tab', ['currentRoute' => \Route::currentRouteName()])
                 </flux:navlist.group>
             @endcan
 
@@ -35,4 +33,5 @@
             {{ $slot }}
         </div>
     </div>
+
 </div>
