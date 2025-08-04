@@ -358,12 +358,12 @@
     </div>
 
     {{-- Admin key modal --}}
-    <flux:modal name="admin-key" class="min-w-[22rem] min-h-[15rem]" :dismissible="false">
+    <flux:modal name="admin-key" class="min-w-[22rem] min-h-[10rem]" :dismissible="false">
         <div class="space-y-6">
 
             {{-- Current Admin Key --}}
-            <div class="mt-10">
-                <flux:heading class="mb-5 flex justify-center">Current Admin Key</flux:heading>
+            <div class="mt-5">
+                <flux:heading class="mb-5 flex justify-center">Input Admin Key</flux:heading>
                 <div class="flex gap-x-5 justify-center" id="pin-current" wire:ignore data-hs-pin-input='{
                     "availableCharsRE": "^[0-9]+$"
 
@@ -384,16 +384,13 @@
                 </div>
                 
                 @error('current_admin_key')
-                    <p class="mt-4 text-sm text-red-600 flex justify-center">{{ $message }}</p>
+                    <p class="mt-4 text-sm  text-red-600 flex justify-center">{{ $message }}</p>
                 @enderror
             </div>
-            <div class="flex gap-2">
-                <flux:spacer />
-                <flux:modal.close>
-                    <flux:button variant="ghost">Cancel</flux:button>
-                </flux:modal.close>
-                <flux:button variant="danger" wire:click="verifyAdminKey">
-                    Key</flux:button>
+            <div class="flex justify-center">
+                <div wire:loading.class="opacity-100" wire:target="verifyAdminKey" class="opacity-0 transition-opacity duration-300">
+                    <flux:icon.loading class="text-zinc-50" />
+                </div>
             </div>
         </div>
     </flux:modal>
@@ -625,7 +622,9 @@
                         ? currentValue.join('')
                         : currentValue;
 
-                    @this.set(model, pinValue);
+                    @this.set(model, pinValue).then(() => {
+                        @this.call('verifyAdminKey');
+                    });
 
                     
                 });

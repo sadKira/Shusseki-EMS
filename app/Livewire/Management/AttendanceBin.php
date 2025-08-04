@@ -120,21 +120,61 @@ class AttendanceBin extends Component
     // Update student status
     public function markScanned($userId)
     {
+        // Close initial modal
+        Flux::modals()->close();
         $this->pendingAction = 'markScanned';
         $this->pendingUserId = $userId;
+
         Flux::modal('admin-key')->show();
-
-        // $log = EventAttendanceLog::where('event_id', $this->event->id)
-        //     ->where('user_id', $userId)
-        //     ->first();
-
-        // $log->update(['attendance_status' => 'scanned']);
-
-        // // Close modal
-        // Flux::modals()->close();
 
     }
 
+    public function markLate($userId)
+    {
+        // Close initial modal
+        Flux::modals()->close();
+        $this->pendingAction = 'markLate';
+        $this->pendingUserId = $userId;
+        
+        Flux::modal('admin-key')->show();
+
+    }
+
+    public function markPresent($userId)
+    {
+        // Close initial modal
+        Flux::modals()->close();
+        $this->pendingAction = 'markPresent';
+        $this->pendingUserId = $userId;
+        
+        Flux::modal('admin-key')->show();
+        
+    }
+
+    public function markAbsent($userId)
+    {
+        // Close initial modal
+        Flux::modals()->close();
+        $this->pendingAction = 'markAbsent';
+        $this->pendingUserId = $userId;
+        
+        Flux::modal('admin-key')->show();
+
+    }
+
+    // Remove record
+    public function removeLogRecord(int $userId): void
+    {
+        // Close initial modal
+        Flux::modals()->close();
+        $this->pendingAction = 'removeLogRecord';
+        $this->pendingUserId = $userId;
+        
+        Flux::modal('admin-key')->show();
+
+    }
+
+    // Action verification
     public function verifyAdminKey()
     {
         $setting = Setting::where('key', 's_a_k')->first();
@@ -143,7 +183,7 @@ class AttendanceBin extends Component
             $this->reset(['current_admin_key']);
             $this->dispatch('admin-key-updated');
             throw ValidationException::withMessages([
-                'current_admin_key' => ['The current admin key is incorrect.'],
+                'current_admin_key' => ['The admin key is incorrect'],
             ]);
             
         }
@@ -156,59 +196,36 @@ class AttendanceBin extends Component
                 ?->update(['attendance_status' => 'scanned']);
         }
 
+        if ($this->pendingAction === 'markLate' && $this->pendingUserId) {
+            EventAttendanceLog::where('event_id', $this->event->id)
+                ->where('user_id', $this->pendingUserId)
+                ->first()
+                ?->update(['attendance_status' => 'late']);
+        }
+
+        if ($this->pendingAction === 'markPresent' && $this->pendingUserId) {
+            EventAttendanceLog::where('event_id', $this->event->id)
+                ->where('user_id', $this->pendingUserId)
+                ->first()
+                ?->update(['attendance_status' => 'present']);
+        }
+
+        if ($this->pendingAction === 'markAbsent' && $this->pendingUserId) {
+            EventAttendanceLog::where('event_id', $this->event->id)
+                ->where('user_id', $this->pendingUserId)
+                ->first()
+                ?->update(['attendance_status' => 'absent']);
+        }
+
+        if ($this->pendingAction === 'removeLogRecord' && $this->pendingUserId) {
+            EventAttendanceLog::where('event_id', $this->event->id)
+                ->where('user_id', $this->pendingUserId)
+                ->delete();
+        }
+
         $this->reset(['current_admin_key', 'pendingAction', 'pendingUserId']);
         $this->resetErrorBag();
         $this->dispatch('admin-key-updated');
-        Flux::modals()->close();
-    }
-
-    public function markLate($userId)
-    {
-        $log = EventAttendanceLog::where('event_id', $this->event->id)
-            ->where('user_id', $userId)
-            ->first();
-
-        $log->update(['attendance_status' => 'late']);
-        
-        // Close modal
-        Flux::modals()->close();
-
-    }
-
-    public function markPresent($userId)
-    {
-        $log = EventAttendanceLog::where('event_id', $this->event->id)
-            ->where('user_id', $userId)
-            ->first();
-
-        $log->update(['attendance_status' => 'present']);
-        
-        // Close modal
-        Flux::modals()->close();
-
-    }
-
-    public function markAbsent($userId)
-    {
-        $log = EventAttendanceLog::where('event_id', $this->event->id)
-            ->where('user_id', $userId)
-            ->first();
-
-        $log->update(['attendance_status' => 'absent']);
-        
-        // Close modal
-        Flux::modals()->close();
-
-    }
-
-    // Remove record
-    public function removeLogRecord(int $userId): void
-    {
-        EventAttendanceLog::where('event_id', $this->event->id)
-            ->where('user_id', $userId)
-            ->delete();
-
-        // Close modal
         Flux::modals()->close();
     }
 
@@ -218,6 +235,12 @@ class AttendanceBin extends Component
         //  Mark event as finished
         $this->event->status = EventStatus::Finished; 
         $this->event->save();
+
+        // Get all users with 'scanned' status
+        EventAttendanceLog::where('event_id', $this->event->id)
+        ->where('attendance_status', AttendanceStatus::Scanned)
+        // ->whereNull('time_out')
+        ->update(['attendance_status' => AttendanceStatus::Absent]);
 
         // Get all active users
         $activeUsers = User::where('role', 'user')
