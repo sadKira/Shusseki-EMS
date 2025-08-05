@@ -50,16 +50,6 @@
                     </flux:navlist.item>
                 @endcan
 
-                @can('tsuushin_dashboard')
-                    <flux:navlist.item icon="home" :href="route('tsuushin_dashboard')"
-                        :current="request()->routeIs(['tsuushin_dashboard'])" wire:navigate>{{ __('Dashboard') }}
-                    </flux:navlist.item>
-                @endcan
-                @can('dashboard')
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs(['dashboard'])"
-                        wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                @endcan
-
             </flux:navlist.group>
 
             {{-- Events navlist --}}
@@ -228,7 +218,6 @@
 
         // Refresh CSRF token every 10 minutes (600,000 ms)
         setInterval(refreshCsrfToken, 10 * 60 * 1000);
-
     </script>
 
     {{-- Reinitialization --}}

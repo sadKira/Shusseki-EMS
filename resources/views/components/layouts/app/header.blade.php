@@ -14,40 +14,43 @@
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800 font-display">
-    <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
-        <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
+<body class="min-h-screen bg-zinc-950 font-display"">
+    <flux:header container class="border-b border-zinc-800 dark:bg-zinc-950 max-lg:hidden">
 
-        {{-- <a href="{{ route('dashboard') }}" class="ms-2 me-5 flex items-center space-x-2 rtl:space-x-reverse lg:ms-0"
-            wire:navigate>
-            <x-app-logo />
-        </a> --}}
-
-        <flux:brand href="#" logo="{{ asset('images/Seal_White.svg') }}" name="SHUSSEKI" class="font-logo" />
+        <flux:brand href="#" name="" class="font-logo">
+            <x-slot name="logo" class="size-25">
+                <img src="{{ asset('images/Side_White.svg') }}" alt="MKD Logo" class="">
+            </x-slot>
+        </flux:brand>
 
         <flux:navbar class="-mb-px max-lg:hidden">
-            <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-                wire:navigate>
-                {{ __('Dashboard') }}
-            </flux:navbar.item>
-            <flux:navbar.item icon="calendar" :href="route('events')" :current="request()->routeIs('events')"
-                wire:navigate>
-                {{ __('Events') }}
-            </flux:navbar.item>
+            @can('tsuushin_dashboard')
+                <flux:navbar.item icon="home" :href="route('tsuushin_dashboard')"
+                    :current="request()->routeIs(['tsuushin_dashboard'])" wire:navigate>{{ __('Dashboard') }}
+                </flux:navbar.item>
+            @endcan
+            @can('dashboard')
+                <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
+                    wire:navigate>
+                    {{ __('Dashboard') }}
+                </flux:navbar.item>
+                <flux:navbar.item icon="calendar" :href="route('events')" :current="request()->routeIs('events')"
+                    wire:navigate>
+                    {{ __('Events') }}
+                </flux:navbar.item>
+            @endcan
         </flux:navbar>
 
         <flux:spacer />
 
-        <flux:navbar class="me-1.5 space-x-0.5 rtl:space-x-reverse py-0!">
-            <flux:tooltip :content="__('Search')" position="bottom">
-                <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#"
-                    :label="__('Search')" />
-            </flux:tooltip>
-        </flux:navbar>
-
         <!-- Desktop User Menu -->
         <flux:dropdown position="top" align="end">
-            <flux:profile class="cursor-pointer uppercase" :initials="auth()->user()->initials()" />
+            <flux:profile circle class="cursor-pointer" 
+                :initials="auth()->user()->initials()"
+                name="{{ auth()->user()->name }}"
+                avatar:color="auto"
+                avatart:color:seed="{{ auth()->user()->id }}"
+                    />
 
             <flux:menu>
                 <flux:menu.radio.group>
@@ -79,46 +82,20 @@
 
                 <form method="POST" action="{{ route('logout') }}" class="w-full">
                     @csrf
-                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
+                    <flux:menu.item as="button" type="submit" variant="danger" icon="arrow-right-start-on-rectangle" class="w-full">
                         {{ __('Log Out') }}
                     </flux:menu.item>
                 </form>
             </flux:menu>
         </flux:dropdown>
+
+
     </flux:header>
 
-    <!-- Mobile Menu -->
-    <flux:sidebar stashable sticky
-        class="lg:hidden border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
-        <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
-
-        <a href="{{ route('dashboard') }}" class="ms-1 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
-            <x-app-logo />
-        </a>
-
-        <flux:navlist variant="outline">
-            <flux:navlist.group :heading="__('Platform')">
-                <flux:navlist.item icon="layout-grid" :href="route('dashboard')"
-                    :current="request()->routeIs('dashboard')" wire:navigate>
-                    {{ __('Dashboard') }}
-                </flux:navlist.item>
-            </flux:navlist.group>
-        </flux:navlist>
-
-        <flux:spacer />
-
-        <flux:navlist variant="outline">
-            <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit"
-                target="_blank">
-                {{ __('Repository') }}
-            </flux:navlist.item>
-
-            <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire"
-                target="_blank">
-                {{ __('Documentation') }}
-            </flux:navlist.item>
-        </flux:navlist>
-    </flux:sidebar>
+    {{-- Mobile view --}}
+    <flux:header container class=" dark:bg-zinc-950 lg:hidden">
+        
+    </flux:header>
 
     {{ $slot }}
 
