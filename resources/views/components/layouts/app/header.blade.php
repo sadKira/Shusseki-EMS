@@ -24,21 +24,22 @@
         </flux:brand>
 
         <flux:navbar class="-mb-px max-lg:hidden">
-            @can('tsuushin_dashboard')
-                <flux:navbar.item icon="home" :href="route('tsuushin_dashboard')"
-                    :current="request()->routeIs(['tsuushin_dashboard'])" wire:navigate>{{ __('Dashboard') }}
+            @can('tsuushin')
+                <flux:navbar.item icon="home" :href="route('dashboard')"
+                    :current="request()->routeIs(['dashboard', 'user_viewevent'])" wire:navigate>{{ __('Home') }}
                 </flux:navbar.item>
             @endcan
-            @can('dashboard')
+            @can('user')
                 <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
-                <flux:navbar.item icon="calendar" :href="route('events')" :current="request()->routeIs('events')"
-                    wire:navigate>
-                    {{ __('Events') }}
-                </flux:navbar.item>
+                
             @endcan
+            <flux:navbar.item icon="calendar" :href="route('events')" :current="request()->routeIs('events')"
+                wire:navigate>
+                {{ __('Event Calendar') }}
+            </flux:navbar.item>
         </flux:navbar>
 
         <flux:spacer />

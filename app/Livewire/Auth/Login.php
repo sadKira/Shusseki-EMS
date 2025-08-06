@@ -52,12 +52,12 @@ class Login extends Component
             return redirect()->route("admin_dashboard")->with("success", "Logged in successfully!");
         }
 
-        if(Auth::User()->role == UserRole::Tsuushin){
-            return redirect()->route("tsuushin_dashboard")->with("success", "Logged in successfully!");
+        if(Auth::User()->role == UserRole::Tsuushin || Auth::User()->role == UserRole::User){
+            return redirect()->route("dashboard")->with("success", "Logged in successfully!");
         }
 
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+        // $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 
     /**

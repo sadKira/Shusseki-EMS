@@ -9,10 +9,12 @@ class BufferView extends Component
     public $newIdea = '';
 
     // Static in-memory ideas list
+    // Static data
     public $ideas = [
-        'Add AI-generated suggestions',
-        'Group ideas into categories',
-        'Export ideas as PDF or Markdown',
+        'Use max-w-* + mx-auto for clean layouts',
+        'Tailwind is mobile-first: always start with base styles',
+        'Use responsive padding: px-4 sm:px-6 lg:px-8',
+        'Combine with dark mode classes for a sleek UI',
     ];
 
     public function addIdea()

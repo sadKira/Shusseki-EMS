@@ -19,39 +19,32 @@
         </div>
     </div>
 
-    <div class="min-h-screen bg-zinc-900 text-white px-4 py-6">
-        <!-- Header -->
-        <header class="mb-6">
-            <h1 class="text-2xl font-bold tracking-tight">💭 Brainstorm Board</h1>
-            <p class="text-sm text-zinc-400">A space to jot down random ideas—no saving, just thinking.</p>
-        </header>
+    <div class="min-h-screen bg-zinc-900 text-white">
+        <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <!-- Header -->
+            <header class="mb-8 text-center">
+                <h1 class="text-3xl font-bold tracking-tight mb-2">💡 Centered Layout Demo</h1>
+                <p class="text-zinc-400 max-w-md mx-auto">
+                    That’s the secret behind most modern, centered layouts you see on websites.
+                </p>
+            </header>
 
-        <!-- Idea Input -->
-        <form wire:submit.prevent="addIdea" class="space-y-4">
-            <div>
-                <label for="newIdea" class="block text-sm text-zinc-300">Your Idea</label>
-                <textarea id="newIdea" wire:model.defer="newIdea" rows="3" placeholder="What's on your mind?"
-                    class="mt-1 block w-full rounded-md bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 text-sm resize-none transition"></textarea>
-            </div>
-            <button type="submit"
-                class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition">
-                + Add Idea
-            </button>
-        </form>
-
-        <!-- Ideas List -->
-        <section class="mt-8">
-            <h2 class="text-lg font-semibold mb-4">🧠 Ideas</h2>
-            <ul class="space-y-3">
+            <!-- Static Idea List -->
+            <section class="space-y-4">
                 @foreach ($ideas as $idea)
-                    <li
-                        class="bg-zinc-800 border border-zinc-700 rounded-lg p-4 text-sm shadow-sm hover:shadow-md transition">
+                    <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-4 shadow-md hover:shadow-lg transition">
                         {{ $idea }}
-                    </li>
+                    </div>
                 @endforeach
-            </ul>
-        </section>
+            </section>
+
+            <!-- Footer note -->
+            <footer class="mt-10 text-sm text-zinc-500 text-center">
+                Built with the TALL stack & Tailwind’s layout tricks.
+            </footer>
+        </main>
     </div>
+
 
 
 

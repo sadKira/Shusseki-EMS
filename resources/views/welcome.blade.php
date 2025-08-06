@@ -37,9 +37,8 @@
 
         <flux:spacer />
 
-        <flux:sidebar.toggle class="lg:hidden " icon="bars-2" inset="left" />
 
-        <flux:navbar class="-mb-px max-lg:hidden">
+        <flux:navbar class="-mb-px">
 
             @php
                 $user = auth()->user();
@@ -47,7 +46,7 @@
                 if ($user) {
                     $dashboardRoute = match($user->role) {
                         \App\Enums\UserRole::Super_Admin, \App\Enums\UserRole::Admin => route('admin_dashboard'),
-                        \App\Enums\UserRole::Tsuushin => route('tsuushin_dashboard'),
+                        \App\Enums\UserRole::Tsuushin => route('dashboard'),
                         default => route('dashboard'),
                     };
                 }
@@ -71,31 +70,6 @@
 
     </flux:header>
 
-    
-
-    <flux:sidebar stashable sticky
-        class="lg:hidden bg-zinc-50 dark:bg-zinc-900 border rtl:border-r-0 rtl:border-l border-zinc-200 dark:border-zinc-700">
-        <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
-
-        <div>
-            <img src="{{ asset('images/MKDSide.svg') }}" alt="MKD Logo" class="h-12 w-auto sm:h-16 md:h-20">
-        </div>
-
-        <flux:navlist>
-            @auth
-                <flux:navlist.item href="#">Login</flux:navlist.item>
-            @else
-                <flux:navlist.item href="#" current>Events</flux:navlist.item>
-                <flux:navlist.item href="#">About us</flux:navlist.item>
-                <flux:navlist.item href="#">Login</flux:navlist.item>
-            @endauth
-            
-            {{-- <flux:navlist.item icon="information-circle" href="#">Help</flux:navlist.item> --}}
-        </flux:navlist>
-
-        <flux:spacer />
-
-    </flux:sidebar>
     
     <flux:main container>
 

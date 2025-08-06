@@ -24,6 +24,7 @@ use App\Livewire\Management\GenerateReport;
 
 use App\Livewire\User\Dashboard;
 use App\Livewire\User\Events;
+use App\Livewire\User\ViewEvent as UserViewEvent;
 
 use App\Livewire\Tsuushin\TsuushinDashboard;
 
@@ -87,7 +88,8 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
 Route::middleware(['auth', 'verified', 'user', 'approved', 'active'])->group(function () {
     // Protected routes
     Route::get('user/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('user/events', Events::class)->name('events');
+    Route::get('user/event-calendar', Events::class)->name('events');
+    Route::get('user/view-event/{event}', UserViewEvent::class)->name('user_viewevent');
    
 });
 
@@ -102,7 +104,9 @@ Route::middleware(['auth', 'verified', 'user', 'approved', 'inactive'])->group(f
 // Tsuushin
 Route::middleware(['auth', 'verified', 'tsuushin'])->group(function () {
     // Protected routes
-    Route::get('tsuushin/dashboard', TsuushinDashboard::class)->name('tsuushin_dashboard');
+    Route::get('tsuushin/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('tsuushin/event-calendar', Events::class)->name('events');
+    Route::get('tsuushin/view-event/{event}', UserViewEvent::class)->name('user_viewevent');
    
 });
 

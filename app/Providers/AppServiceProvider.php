@@ -46,8 +46,8 @@ class AppServiceProvider extends ServiceProvider
 
 
         // Tsuushin & User
-        Gate::define('tsuushin_dashboard', fn(User $user) => $user->role == UserRole::Tsuushin);
-        Gate::define('dashboard', fn(User $user) => $user->role == UserRole::User);
+        Gate::define('tsuushin', fn(User $user) => $user->role == UserRole::Tsuushin);
+        Gate::define('user', fn(User $user) => $user->role == UserRole::User);
 
 
 
@@ -118,12 +118,10 @@ class AppServiceProvider extends ServiceProvider
                     'buffer_view' => 'Buffer View',
                     'settings.sakey' => 'Settings',
 
-                    //Tsuushin
-                    'tsuushin_dashboard' => 'Tsuushin Dashboard',
-
-                    //User
-                    'dashboard' => 'Dashboard',
-                    'events' => 'Events',
+                    //User / Tsuushin
+                    'dashboard' => 'Home',
+                    'events' => 'Event Calendar',
+                    'user_viewevent' => 'View Event',
                 ],
                 default => [
                     'error' => "error",
