@@ -12,12 +12,14 @@ class ViewEvent extends Component
 {
 
     public $event;
+
     
     // Mounting data
     public function mount(Event $event)
     {
         $this->event = $event;
     }
+
 
     public function render()
     {

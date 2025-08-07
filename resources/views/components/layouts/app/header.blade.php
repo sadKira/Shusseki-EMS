@@ -14,7 +14,7 @@
     @include('partials.head')
 </head>
 
-<body class="min-h-screen bg-zinc-950 font-display"">
+<body class="min-h-screen bg-zinc-950 font-display">
     <flux:header container class="border-b border-zinc-800 dark:bg-zinc-950 max-lg:hidden">
 
         <flux:brand href="#" name="" class="font-logo">
