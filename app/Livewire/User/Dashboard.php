@@ -17,7 +17,7 @@ use App\Enums\EventStatus;
 class Dashboard extends Component
 {
     public $selectedMonth;
-     public $selectedSchoolYear;
+    public $selectedSchoolYear;
 
     // Mounting data
     public function mount()

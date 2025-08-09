@@ -70,8 +70,8 @@
                         border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
                         ">
                     <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
-                        {{-- style="background-image: url('{{ asset('storage/' . $event->image) }}');" --}}
-                        style="background-image: url('https://picsum.photos/seed/{{ rand(0, 100000) }}/1080/566');"
+                        style="background-image: url('{{ asset('storage/' . $event->image) }}');"
+                        {{-- style="background-image: url('https://picsum.photos/seed/{{ rand(0, 100000) }}/1080/566');" --}}
                         >
                         
                         <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
@@ -169,8 +169,8 @@
                             class="relative w-full h-[80vh] sm:max-w-5xl sm:rounded-lg overflow-hidden flex">
 
                             <!-- Event Modal -->
-                            <div class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
-                                <div class="relative max-w-xl w-full rounded-xl overflow-hidden shadow-2xl">
+                            <div class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-4 sm:px-0">
+                                <div class="relative w-full sm:max-w-xl max-w-md rounded-xl overflow-hidden shadow-2xl">
                                     
                                     <!-- Background Image -->
                                     <div class="relative h-96">
@@ -178,33 +178,106 @@
                                             alt="Event Image"
                                             class="absolute inset-0 w-full h-full object-cover">
 
-                                        <!-- Gradient Details Panel -->
-                                        <div class="absolute inset-0 flex justify-end">
-                                            <!-- Close button -->
-                                            <button @click="modalOpen=false" 
-                                                class="absolute top-4 right-4 flex items-center justify-center w-8 h-8 text-zinc-50 bg-black rounded-full hover:text-black hover:bg-zinc-50 z-10">
-                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                                </svg>  
-                                            </button>
+                                        <!-- Close Button (kept above everything) -->
+                                        <button @click="modalOpen=false" 
+                                            class="pointer-events-auto absolute top-4 right-4 flex items-center justify-center w-8 h-8 text-zinc-50 bg-black rounded-full hover:text-black hover:bg-zinc-50 z-20">
+                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" 
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" 
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>  
+                                        </button>
 
-                                            <!-- Wider gradient, but text still in narrow area -->
-                                            <div class="w-3/5 h-full bg-gradient-to-l from-zinc-950/95 via-zinc-950/70 to-transparent flex justify-end  ">
-                                                <div class="p-4 flex flex-col justify-center">
-                                                    <h2 class="font-bold text-2xl text-zinc-50">{{ $event->title }}</h2>
-                                                    <div class="mt-4 text-xs text-gray-400">
-                                                        <p>Date: {{ $event->date }}</p>
-                                                        <p>Location: {{ $event->location }}</p>
+                                        <!-- Dark Overlay (allows clicks through) -->
+                                        <div class="absolute inset-0 bg-black/60 pointer-events-none"></div>
+
+                                        <!-- Centered Event Details -->
+                                        <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-zinc-50 px-6 md:px-4 sm:px-0 space-y-3">
+                                            <h2 class="font-bold text-2xl">{{ $event->title }}</h2>
+
+                                            <div class="grid grid-cols-2 space-y-3 gap-x-7 md:gap-x-5 sm:gap-x-0 whitespace-nowrap">
+                                                {{-- Date --}}
+                                                <div class="gap-2">
+                                                    <div class="flex items-center justify-start gap-2">
+                                                        <flux:icon.calendar class="text-zinc-50 size-4" />
+                                                        <flux:heading size="lg">Date</flux:heading>
+                                                    </div>
+                                                    <div class="flex items-center justify-start gap-2">
+                                                        <flux:icon.calendar class="size-4 opacity-0" />
+                                                        <flux:text class="text-zinc-300">
+                                                            {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }},
+                                                        </flux:text>
+                                                    </div>
+                                                </div>
+
+                                                {{-- Time --}}
+                                                <div class="gap-2">
+                                                    <div class="flex items-center justify-end gap-2">
+                                                        <flux:icon.clock class="text-zinc-50 size-4" />
+                                                        <flux:heading size="lg">Time</flux:heading>
+                                                    </div>
+                                                    <div class="flex items-center justify-end gap-2">
+                                                        <flux:icon.calendar class="size-4 opacity-0" />
+                                                        <flux:text class="text-zinc-300">
+                                                            {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} -
+                                                            {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                                                        </flux:text>
+                                                    </div>
+                                                </div>
+
+                                                {{-- Location --}}
+                                                <div class="gap-2">
+                                                    <div class="flex items-center justify-start gap-2">
+                                                        <flux:icon.map-pin class="text-zinc-50 size-4" />
+                                                        <flux:heading size="lg">Location</flux:heading>
+                                                    </div>
+                                                    <div class="flex items-center justify-start gap-2">
+                                                        <flux:icon.calendar class="size-4 opacity-0" />
+                                                        <flux:text class="text-zinc-300">
+                                                            {{ $event->location }}
+                                                        </flux:text>
+                                                    </div>
+                                                </div>
+
+                                                {{-- Attendance End --}}
+                                                <div class="gap-2">
+                                                    <div class="flex items-center justify-end gap-2">
+                                                        <flux:icon.information-circle class="text-zinc-50 size-4" />
+                                                        <flux:heading size="lg">End of Attendance</flux:heading>
+                                                    </div>
+                                                    <div class="flex items-center justify-end gap-2">
+                                                        <flux:icon.calendar class="size-4 opacity-0" />
+                                                        <flux:text class="text-zinc-300">
+                                                            <span class="text-[var(--color-accent)] underline">
+                                                                {{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}
+                                                            </span>
+                                                        </flux:text>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
+                                            {{-- Attendance Status --}}
+                                            <div class="gap-3">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <flux:icon.user class="text-zinc-50 size-4" />
+                                                    <flux:heading size="lg">Your Attendance Status</flux:heading>
+                                                </div>
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <flux:icon.calendar class="size-4 opacity-0" />
+                                                    <flux:badge color="green" variant="solid">
+                                                        <span class="text-black">Present</span>
+                                                    </flux:badge>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
+
+
                         </div>
+
                     </div>
                 </template>
 

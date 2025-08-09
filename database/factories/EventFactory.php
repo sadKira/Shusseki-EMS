@@ -68,7 +68,14 @@ class EventFactory extends Factory
             'end_time' => Carbon::createFromTime(rand(13, 17), [0, 30][rand(0, 1)])
                 ->format('H:i:s'),
             'school_year' => $schoolYear,
-            'image' => 'events/References_5.png',
+            'image' => fake()->randomElement([
+                'events/intrams.jfif',
+                'events/clubfair.jfif',
+                'events/galanight.jfif',
+                'events/nyuugakushiki.jfif',
+                'events/personnelsday.jfif',
+                'events/pjfest.jfif',
+            ]),
             'status' => fake()->randomElement([
                 'not_finished',
                 'finished',
