@@ -9,7 +9,7 @@
         <!-- Desktop User Menu -->
         <flux:dropdown position="top" align="end">
             <flux:profile circle class="cursor-pointer" :initials="auth()->user()->initials()" avatar:color="auto"
-                avatart:color:seed="{{ auth()->user()->id }}" />
+                avatar:color:seed="{{ auth()->user()->id }}" />
 
             <flux:menu>
                 <flux:menu.radio.group>
@@ -58,23 +58,14 @@
             {{-- Event Card --}}
             <div 
 
-                x-data="{ fullscreenModal: false }"
-                x-init="
-                $watch('fullscreenModal', function(value){
-                        if(value === true){
-                            document.body.classList.add('overflow-hidden');
-                        }else{
-                            document.body.classList.remove('overflow-hidden');
-                        }
-                    })
-                "
-                @keydown.escape="fullscreenModal=false"
-                class="cursor-pointer"
+                x-data="{ modalOpen: false }"
+                @keydown.escape.window="modalOpen = false"
+                class="relative z-50 w-auto h-auto"
                 >
 
                 {{-- Card Content --}}
                 <div 
-                    @click="fullscreenModal=true"
+                    @click="modalOpen=true"
                     class="relative grid min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
                         border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
                         ">
@@ -152,114 +143,71 @@
 
                 {{-- Modal Content --}}
                 <template x-teleport="body">
+                    <div x-show="modalOpen" class="fixed top-0 left-0 z-[99] flex items-center justify-center w-screen h-screen" x-cloak>
+                        
+                        <!-- Background overlay -->
+                        <div x-show="modalOpen" 
+                            x-transition:enter="ease-out duration-300"
+                            x-transition:enter-start="opacity-0"
+                            x-transition:enter-end="opacity-100"
+                            x-transition:leave="ease-in duration-300"
+                            x-transition:leave-start="opacity-100"
+                            x-transition:leave-end="opacity-0"
+                            @click="modalOpen=false" 
+                            class="absolute inset-0 w-full h-full bg-opacity-10">
+                        </div>
 
-                    <div 
-                        x-show="fullscreenModal"
-                        x-transition:enter="transition ease-out duration-100"
-                        x-transition:enter-start="opacity-0"
-                        x-transition:enter-end="opacity-100"
-                        x-transition:leave="transition ease-in duration-100"
-                        x-transition:leave-start="opacity-100"
-                        x-transition:leave-end="opacity-0"
-                        class="flex fixed inset-0 z-[99] w-screen h-screen bg-zinc-950"
-                        >
-                       
-                        {{-- Main content --}}
-                        <div class="w-full h-full flex flex-col bg-zinc-950">
+                        <!-- Modal container -->
+                        <div x-show="modalOpen"
+                            x-trap.inert.noscroll="modalOpen"
+                            x-transition:enter="ease-out duration-300"
+                            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                            x-transition:leave="ease-in duration-200"
+                            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            class="relative w-full h-[80vh] sm:max-w-5xl sm:rounded-lg overflow-hidden flex">
 
-                            <!-- Image section with overlayed return button -->
-                            <div class="relative w-full flex-shrink-0" style="height: 30vh; min-height: 220px;">
-                                <img src="{{ asset('storage/' . $event->image) }}" alt="Event Image"
-                                    class="w-full h-full object-cover object-center" />
-                                <button @click="fullscreenModal=false" class="absolute top-4 left-4 z-10 bg-zinc-900/70 hover:bg-zinc-900/90 text-white rounded-full p-2 shadow-md backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-accent flex items-center">
-                                    <flux:icon.arrow-uturn-left class="w-5 h-5" />
-                                </button>
-                                <!-- Top gradient for text contrast -->
-                                <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-transparent pointer-events-none"></div>
-                                <!-- Bottom gradient for fade into bg-zinc-950 -->
-                                <div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-b from-transparent to-zinc-950 pointer-events-none"></div>
-                            </div>
-                            
-                            <!-- Details section -->
-                            <div class="flex-1 w-full max-w-2xl mx-auto px-4 py-6 overflow-y-auto">
-                                <h2 class="font-bold text-3xl text-zinc-50">{{ $event->title }}</h2>
+                            <!-- Event Modal -->
+                            <div class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm">
+                                <div class="relative max-w-xl w-full rounded-xl overflow-hidden shadow-2xl">
+                                    
+                                    <!-- Background Image -->
+                                    <div class="relative h-96">
+                                        <img src="{{ asset('storage/' . $event->image) }}" 
+                                            alt="Event Image"
+                                            class="absolute inset-0 w-full h-full object-cover">
 
-                                <div class="space-y-3 mt-5 grid lg:grid-cols-2">
-                                    <div class="flex flex-col gap-4">
-                                        <div class="gap-2">
-                                            <div class="flex items-center gap-2">
-                                                <flux:icon.calendar class="text-zinc-50 size-4" />
-                                                <flux:heading size="lg">Date and Time</flux:heading>
+                                        <!-- Gradient Details Panel -->
+                                        <div class="absolute inset-0 flex justify-end">
+                                            <!-- Close button -->
+                                            <button @click="modalOpen=false" 
+                                                class="absolute top-4 right-4 flex items-center justify-center w-8 h-8 text-zinc-50 bg-black rounded-full hover:text-black hover:bg-zinc-50 z-10">
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>  
+                                            </button>
+
+                                            <!-- Wider gradient, but text still in narrow area -->
+                                            <div class="w-3/5 h-full bg-gradient-to-l from-zinc-950/95 via-zinc-950/70 to-transparent flex justify-end  ">
+                                                <div class="p-4 flex flex-col justify-center">
+                                                    <h2 class="font-bold text-2xl text-zinc-50">{{ $event->title }}</h2>
+                                                    <div class="mt-4 text-xs text-gray-400">
+                                                        <p>Date: {{ $event->date }}</p>
+                                                        <p>Location: {{ $event->location }}</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="flex items-center gap-2">
-                                                <flux:icon.calendar class="size-4 opacity-0" />
-                                                <flux:text class="text-zinc-300">
-                                                    {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }},
-                                                    {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} -
-                                                    {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
-                                                </flux:text>
-                                            </div>
-                                            
                                         </div>
 
-                                        <div class="gap-2">
-                                            <div class="flex items-center gap-2">
-                                                <flux:icon.map-pin class="text-zinc-50 size-4" />
-                                                <flux:heading size="lg">Location</flux:heading>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <flux:icon.calendar class="size-4 opacity-0" />
-                                                <flux:text class="text-zinc-300">
-                                                    {{ $event->location }}
-                                                </flux:text>
-                                            </div>
-                                            
-                                        </div>
-
-                                        <div class="gap-2">
-                                            <div class="flex items-center gap-2">
-                                                <flux:icon.clock class="text-zinc-50 size-4" />
-                                                <flux:heading size="lg">End of Attendance</flux:heading>
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <flux:icon.calendar class="size-4 opacity-0" />
-                                                <flux:text class="text-zinc-300">
-                                                    <span class="text-[var(--color-accent)] underline">
-                                                        {{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}
-                                                    </span>
-                                                </flux:text>
-                                            </div>
-                                            
-                                        </div>
-                                       
-                                    </div>
-
-                                    <div class="gap-2">
-                                        <div class="flex items-center gap-2">
-                                            <flux:icon.information-circle class="text-zinc-50 size-4" />
-                                            <flux:heading size="lg">Description</flux:heading>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <flux:icon.calendar class="size-4 opacity-0" />
-                                            <div x-data="{ showFullText: false }" class="w-full">
-                                                <p :class="{ 'truncate overflow-hidden text-ellipsis': !showFullText }" class="text-zinc-300 inline-block w-full">
-                                                    {{ $event->description }}
-                                                </p>
-                                                <button @click="showFullText = !showFullText" class="text-accent hover:underline ml-1 text-xs mt-2" type="button">
-                                                    <span x-text="showFullText ? 'Read Less' : 'Read More'"></span>
-                                                </button>
-                                                    
-                                            </div>
-                                        </div>
-                                        
                                     </div>
                                 </div>
-                                <!-- Add event description or other details here if needed -->
                             </div>
+
                         </div>
                     </div>
-                    
                 </template>
+
             </div>
         @endforeach
 

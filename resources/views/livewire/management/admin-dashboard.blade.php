@@ -145,7 +145,7 @@
                         <flux:text>Attendance Trend</flux:text>
                         <div class="flex item-center gap-2">
                             <flux:heading size="xl" level="1" class="">{{ $selectedSchoolYear }}</flux:heading>
-                            <flux:button icon="chevron-down" variant="ghost" size="sm"></flux:button>
+                            {{-- <flux:button icon="chevron-down" variant="ghost" size="sm"></flux:button> --}}
                         </div>
                     </div>
 
