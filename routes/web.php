@@ -24,6 +24,8 @@ use App\Livewire\Management\GenerateReport;
 
 use App\Livewire\User\Dashboard;
 use App\Livewire\User\Events;
+use App\Livewire\User\AttendanceRecord;
+use App\Livewire\User\QCode;
 use App\Livewire\User\ViewEvent as UserViewEvent;
 
 use App\Livewire\Tsuushin\TsuushinDashboard;
@@ -89,11 +91,14 @@ Route::middleware(['auth', 'verified', 'user', 'approved', 'active'])->group(fun
     // Protected routes
     Route::get('user/dashboard', Dashboard::class)->name('dashboard');
     Route::get('user/event-calendar', Events::class)->name('events');
+    Route::get('user/attendance-record', AttendanceRecord::class)->name('attendance_record');
+    Route::get('user/qr-code', QCode::class)->name('qr_code');
+
     Route::get('user/view-event/{event}', UserViewEvent::class)->name('user_viewevent');
    
 });
 
-// User (Inactve)
+// User (Inactive)
 Route::middleware(['auth', 'verified', 'user', 'approved', 'inactive'])->group(function () {
     // Protected routes
     Route::get('user/access-denied', Denied::class)->name('access_denied'); 
@@ -101,14 +106,17 @@ Route::middleware(['auth', 'verified', 'user', 'approved', 'inactive'])->group(f
 });
 
 
-// Tsuushin
-Route::middleware(['auth', 'verified', 'tsuushin'])->group(function () {
-    // Protected routes
-    Route::get('tsuushin/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('tsuushin/event-calendar', Events::class)->name('events');
-    Route::get('tsuushin/view-event/{event}', UserViewEvent::class)->name('user_viewevent');
+// // Tsuushin
+// Route::middleware(['auth', 'verified', 'tsuushin'])->group(function () {
+//     // Protected routes
+//     Route::get('tsuushin/dashboard', Dashboard::class)->name('dashboard');
+//     Route::get('tsuushin/event-calendar', Events::class)->name('events');
+//     Route::get('tsuushin/attendance-record', AttendanceRecord::class)->name('attendance_record');
+//     Route::get('tsuushin/qr-code', QCode::class)->name('qr_code');
+
+//     Route::get('tsuushin/view-event/{event}', UserViewEvent::class)->name('user_viewevent');
    
-});
+// });
 
 // Admin Settings
 Route::middleware(['auth', 'approved', 'role:super_admin,admin'])->group(function () {

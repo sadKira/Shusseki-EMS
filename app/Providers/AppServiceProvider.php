@@ -121,6 +121,9 @@ class AppServiceProvider extends ServiceProvider
                     //User / Tsuushin
                     'dashboard' => 'Home',
                     'events' => 'Event Calendar',
+                    'attendance_record' => 'Attendance Record',
+                    'qr_code' => 'My QR Code',
+
                     'user_viewevent' => 'View Event',
                 ],
                 default => [

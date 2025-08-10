@@ -24,22 +24,26 @@
         </flux:brand>
 
         <flux:navbar class="-mb-px max-lg:hidden">
-            @can('tsuushin')
-                <flux:navbar.item icon="home" :href="route('dashboard')"
-                    :current="request()->routeIs(['dashboard', 'user_viewevent'])" wire:navigate>{{ __('Home') }}
-                </flux:navbar.item>
-            @endcan
-            @can('user')
-                <flux:navbar.item icon="layout-grid" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
-                    wire:navigate>
-                    {{ __('Dashboard') }}
-                </flux:navbar.item>
-                
-            @endcan
+
+            <flux:navbar.item icon="home" :href="route('dashboard')"
+                :current="request()->routeIs(['dashboard'])" wire:navigate>{{ __('Home') }}
+            </flux:navbar.item>
+
+            <flux:navbar.item icon="qr-code" :href="route('qr_code')" :current="request()->routeIs('qr_code')"
+                wire:navigate>
+                {{ __('My QR Code') }}
+            </flux:navbar.item>
+        
             <flux:navbar.item icon="calendar" :href="route('events')" :current="request()->routeIs('events')"
                 wire:navigate>
                 {{ __('Event Calendar') }}
             </flux:navbar.item>
+
+            <flux:navbar.item icon="newspaper" :href="route('attendance_record')" :current="request()->routeIs('attendance_record')"
+                wire:navigate>
+                {{ __('Attendance Record') }}
+            </flux:navbar.item>
+
         </flux:navbar>
 
         <flux:spacer />
