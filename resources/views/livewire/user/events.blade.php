@@ -51,54 +51,206 @@
     </div>
 
 
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mt-7">
         @foreach($groupedEvents as $monthYear => $events)
             <!-- Month-Year Header -->
-            <h2 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white mt-5">
                 {{ \Carbon\Carbon::parse($monthYear . '-01')->format('F Y') }}
             </h2>
 
             <!-- Timeline -->
-            <div>
+            <div class="mt-3">
                 @foreach($events as $event)
-                    <div class="flex gap-x-3">
+                    <div class="flex gap-x-3 md:gap-x-2 sm:gap-x-1">
+
                         <!-- Left Content (Year of the month) -->
-                        <div class="min-w-14 text-end">
-                            <span class="text-2xl text-gray-500 dark:text-neutral-400">
-                                {{ \Carbon\Carbon::parse($monthYear . '-01')->format('Y') }}
-                            </span>
+                        <div class="min-w-14 text-center">
+                            
+                            <div class="text-2xl font-bold text-gray-800 dark:text-white leading-none">
+                                {{ \Carbon\Carbon::parse($event->date)->format('d') }}
+                            </div>
+                            <div class="text-sm text-gray-500 dark:text-neutral-400">
+                                {{ \Carbon\Carbon::parse($event->date)->format('D') }}
+                            </div>
+                        
                         </div>
 
                         <!-- Icon with vertical line -->
                         <div
-                            class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+                            class="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-neutral-400 ">
                             <div class="relative z-10 size-7 flex justify-center items-center">
-                                <div class="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+                                <div class="size-2 rounded-full bg-neutral-400"></div>
                             </div>
                         </div>
 
                         <!-- Right Content (Event Title only) -->
-                        <div class="grow pt-0.5 pb-8">
-                            <h3 class="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
-                                <svg class="shrink-0 size-4 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" x2="8" y1="13" y2="13"></line>
-                                    <line x1="16" x2="8" y1="17" y2="17"></line>
-                                    <line x1="10" x2="8" y1="9" y2="9"></line>
-                                </svg>
-                                {{ $event->title }}
-                            </h3>
-                        </div>
+                        <div 
+                            x-data="{ modalOpen: false }"
+                            @keydown.escape.window="modalOpen = false"
+                            class="grow pt-0.5 pb-8 relative z-50 w-auto h-auto" 
+                            >
+
+                            <div class="flex flex-col items-start gap-1">
+                                <flux:button @click="modalOpen=true" variant="ghost" size="sm">
+                                    <span class="font-semibold dark:text-white text-lg">
+                                        {{ $event->title }}
+                                    </span>
+
+                                </flux:button>
+                                @if ($event->status == \App\Enums\EventStatus::Postponed)
+                                    <flux:badge color="red" class="ml-3" size="sm" variant="solid"><span
+                                        class="text-white">Event Postponed</span></flux:badge>
+                                @endif
+                            </div>
+
+                            {{-- Modal Content --}}
+                            <template x-teleport="body">
+                                <div x-show="modalOpen" class="fixed top-0 left-0 z-[99] flex items-center justify-center w-screen h-screen" x-cloak>
+                                    
+                                    <!-- Background overlay -->
+                                    <div x-show="modalOpen" 
+                                        x-transition:enter="ease-out duration-300"
+                                        x-transition:enter-start="opacity-0"
+                                        x-transition:enter-end="opacity-100"
+                                        x-transition:leave="ease-in duration-300"
+                                        x-transition:leave-start="opacity-100"
+                                        x-transition:leave-end="opacity-0"
+                                        @click="modalOpen=false" 
+                                        class="absolute inset-0 w-full h-full bg-opacity-10">
+                                    </div>
+
+                                    <!-- Modal container -->
+                                    <div x-show="modalOpen"
+                                        x-trap.inert.noscroll="modalOpen"
+                                        x-transition:enter="ease-out duration-300"
+                                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                                        x-transition:leave="ease-in duration-200"
+                                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                                        class="relative w-full h-[80vh] sm:max-w-5xl sm:rounded-lg overflow-hidden flex">
+
+                                        <!-- Event Modal -->
+                                        <div class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-4 sm:px-0">
+                                            <div class="relative w-full sm:max-w-xl max-w-md rounded-xl overflow-hidden shadow-2xl">
+                                                
+                                                <!-- Background Image -->
+                                                <div class="relative h-96">
+                                                    <img src="{{ asset('storage/' . $event->image) }}" 
+                                                        alt="Event Image"
+                                                        class="absolute inset-0 w-full h-full object-cover">
+
+                                                    <!-- Close Button (kept above everything) -->
+                                                    <button @click="modalOpen=false" 
+                                                        class="pointer-events-auto absolute top-4 right-4 flex items-center justify-center w-8 h-8 text-zinc-50 bg-black rounded-full hover:text-black hover:bg-zinc-50 z-20">
+                                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" 
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" 
+                                                                d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>  
+                                                    </button>
+
+                                                    <!-- Dark Overlay (allows clicks through) -->
+                                                    <div class="absolute inset-0 bg-black/60 pointer-events-none"></div>
+
+                                                    <!-- Centered Event Details -->
+                                                    <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-zinc-50 px-6 md:px-4 sm:px-0 space-y-3">
+                                                        <h2 class="font-bold text-2xl">{{ $event->title }}</h2>
+
+                                                        <div class="grid grid-cols-2 space-y-3 gap-x-7 md:gap-x-5 sm:gap-x-0 whitespace-nowrap">
+                                                            {{-- Date --}}
+                                                            <div class="gap-2">
+                                                                <div class="flex items-center justify-start gap-2">
+                                                                    <flux:icon.calendar class="text-zinc-50 size-4" />
+                                                                    <flux:heading size="lg">Date</flux:heading>
+                                                                </div>
+                                                                <div class="flex items-center justify-start gap-2">
+                                                                    <flux:icon.calendar class="size-4 opacity-0" />
+                                                                    <flux:text class="text-zinc-300">
+                                                                        {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }},
+                                                                    </flux:text>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- Time --}}
+                                                            <div class="gap-2">
+                                                                <div class="flex items-center justify-end gap-2">
+                                                                    <flux:icon.clock class="text-zinc-50 size-4" />
+                                                                    <flux:heading size="lg">Time</flux:heading>
+                                                                </div>
+                                                                <div class="flex items-center justify-end gap-2">
+                                                                    <flux:icon.calendar class="size-4 opacity-0" />
+                                                                    <flux:text class="text-zinc-300">
+                                                                        {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} -
+                                                                        {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                                                                    </flux:text>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- Location --}}
+                                                            <div class="gap-2">
+                                                                <div class="flex items-center justify-start gap-2">
+                                                                    <flux:icon.map-pin class="text-zinc-50 size-4" />
+                                                                    <flux:heading size="lg">Location</flux:heading>
+                                                                </div>
+                                                                <div class="flex items-center justify-start gap-2">
+                                                                    <flux:icon.calendar class="size-4 opacity-0" />
+                                                                    <flux:text class="text-zinc-300">
+                                                                        {{ $event->location }}
+                                                                    </flux:text>
+                                                                </div>
+                                                            </div>
+
+                                                            {{-- Attendance End --}}
+                                                            <div class="gap-2">
+                                                                <div class="flex items-center justify-end gap-2">
+                                                                    <flux:icon.information-circle class="text-zinc-50 size-4" />
+                                                                    <flux:heading size="lg">End of Attendance</flux:heading>
+                                                                </div>
+                                                                <div class="flex items-center justify-end gap-2">
+                                                                    <flux:icon.calendar class="size-4 opacity-0" />
+                                                                    <flux:text class="text-zinc-300">
+                                                                        <span class="text-[var(--color-accent)] underline">
+                                                                            {{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}
+                                                                        </span>
+                                                                    </flux:text>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {{-- Attendance Status --}}
+                                                        <div class="gap-3">
+                                                            <div class="flex items-center justify-center gap-2">
+                                                                <flux:icon.user class="text-zinc-50 size-4" />
+                                                                <flux:heading size="lg">Your Attendance Status</flux:heading>
+                                                            </div>
+                                                            <div class="flex items-center justify-center gap-2">
+                                                                <flux:icon.calendar class="size-4 opacity-0" />
+                                                                <flux:badge color="green" variant="solid">
+                                                                    <span class="text-black">Present</span>
+                                                                </flux:badge>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+                            </template>
+
+                        </div>  
                     </div>
+
                 @endforeach
             </div>
         @endforeach
     </div>
 
-
-
-
+    
 
 </div>
