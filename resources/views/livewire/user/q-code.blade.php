@@ -1,9 +1,9 @@
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-10">
 
-    <flux:heading size="xl" class="max-lg:hidden font-bold">My QR Code</flux:heading>
+    <flux:heading size="xl" class="max-lg:hidden font-bold whitespace-nowrap">My QR Code</flux:heading>
 
     {{-- Mobile view --}}
-    <div class="flex items-center justify-between gap-20 lg:hidden whitespace-nowrap">
+    <div class="flex items-center justify-between lg:hidden whitespace-nowrap">
         <flux:heading size="xl" class="font-bold">My QR Code</flux:heading>
 
         <!-- Desktop User Menu -->

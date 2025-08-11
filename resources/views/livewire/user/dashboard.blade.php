@@ -1,9 +1,9 @@
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-10">
 
-    <flux:heading size="xl" class="max-lg:hidden font-bold">Events this {{ $selectedMonth }}</flux:heading>
+    <flux:heading size="xl" class="max-lg:hidden font-bold whitespace-nowrap">Events this {{ $selectedMonth }}</flux:heading>
 
     {{-- Mobile view --}}
-    <div class="flex items-center justify-between gap-20 lg:hidden whitespace-nowrap">
+    <div class="flex items-center justify-between lg:hidden whitespace-nowrap">
         <flux:heading size="xl" class="font-bold">Events this {{ $selectedMonth }}</flux:heading>
 
         <!-- Desktop User Menu -->
@@ -334,8 +334,11 @@
                                                                 <span class="text-white">Event Postponed</span>
                                                             </flux:badge>
                                                         @else
-                                                            <flux:badge color="zinc" variant="solid">
+                                                            {{-- <flux:badge color="zinc" variant="solid">
                                                                 No record
+                                                            </flux:badge> --}}
+                                                            <flux:badge color="red" variant="solid">
+                                                                Absent
                                                             </flux:badge>
                                                         @endif
                                                         

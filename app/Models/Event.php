@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Enums\EventStatus;
+use App\Enums\AttendanceStatus;
+use Illuminate\Support\Facades\Auth;
 
 class Event extends Model
 {
@@ -41,12 +43,39 @@ class Event extends Model
             ->withPivot('time_in', 'time_out', 'attendance_status');
     }
 
+    // // Search function
+    // public function scopeSearch($query, $value)
+    // {
+    //     $query->where('title', 'like', "%{$value}%")
+    //         ->orWhere('date', 'like', "%{$value}%")
+    //         ->orWhere('location', 'like', "%{$value}%");
+    // }
+
     // Search function
     public function scopeSearch($query, $value)
     {
-        $query->where('title', 'like', "%{$value}%")
-            ->orWhere('location', 'like', "%{$value}%");
+        $search = strtolower(trim($value));
+
+        $statusMatch = collect(AttendanceStatus::cases())
+            ->first(function ($case) use ($search) {
+                return strtolower($case->name) === $search 
+                    || strtolower($case->label()) === $search;
+            });
+
+        $query->where(function ($q) use ($search, $statusMatch) {
+            $q->where('title', 'like', "%{$search}%")
+            ->orWhere('date', 'like', "%{$search}%")
+            ->orWhere('location', 'like', "%{$search}%");
+
+            if ($statusMatch) {
+                $q->orWhereHas('attendanceLogs', function ($logQuery) use ($statusMatch) {
+                    $logQuery->where('user_id', Auth::id()) // filter to current user
+                            ->where('attendance_status', $statusMatch->value); // match backing value
+                });
+            }
+        });
     }
+
 
     /**
      * Get the route key for the model.

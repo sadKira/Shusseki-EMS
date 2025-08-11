@@ -250,7 +250,7 @@ class AttendanceBin extends Component
         // Get all users with 'scanned' status
         EventAttendanceLog::where('event_id', $this->event->id)
         ->where('attendance_status', AttendanceStatus::Scanned)
-        // ->whereNull('time_out')
+        ->whereNull('time_out')
         ->update(['attendance_status' => AttendanceStatus::Absent]);
 
         // Get all active users

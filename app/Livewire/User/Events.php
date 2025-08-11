@@ -19,6 +19,7 @@ class Events extends Component
     public $selectedMonth;
 
     public $selectedSchoolYear;
+    public $search = '';
 
     // Mounting data
     public function mount()
@@ -61,6 +62,7 @@ class Events extends Component
 
         // Get events for that school year and sort starting from earliest month
         $events = Event::where('school_year', $schoolYear)
+            ->search($this->search)
             ->get()
             ->sortBy(function ($event) use ($startYear, $startMonth) {
                 $date = \Carbon\Carbon::parse($event->date);
