@@ -4,12 +4,14 @@ namespace App\Livewire\User;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Event;
 use App\Models\Setting;
 use App\Models\SchoolYear;
 use Carbon\Carbon;
 use App\Enums\EventStatus;
+use App\Models\EventAttendanceLog;
 
 #[Layout('components.layouts.user_app')]
 class Events extends Component
@@ -73,7 +75,9 @@ class Events extends Component
                 return [$adjustedYear, $date->month, $date->day];
             });
 
-        // Step 3: Group by date
+        
+        
+        // Group by date
         return $events->groupBy(function ($event) {
              return \Carbon\Carbon::parse($event->date)->format('F Y');
         });
@@ -82,9 +86,21 @@ class Events extends Component
 
     public function render()
     {
+        $eventIds = $this->groupedEvents
+        ->flatten() // merge grouped collections into one
+        ->pluck('id');
 
+        // Separate query: attendance logs for only finished events for current user
+        $attendanceLogs = EventAttendanceLog::whereIn('event_id', 
+               $eventIds
+            )
+            ->where('user_id', Auth::id())
+            ->get()
+            ->keyBy('event_id'); // makes it easy to access by event ID
+        
         return view('livewire.user.events', [
             'groupedEvents' => $this->groupedEvents,
+            'attendanceLogs' => $attendanceLogs,
         ]);
     }
 }

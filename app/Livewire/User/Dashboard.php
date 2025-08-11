@@ -10,6 +10,7 @@ use Livewire\Attributes\Layout;
 use App\Models\Event;
 use App\Models\Setting;
 use App\Models\SchoolYear;
+use App\Models\EventAttendanceLog;
 use Carbon\Carbon;
 use App\Enums\EventStatus;
 
@@ -56,8 +57,18 @@ class Dashboard extends Component
             ->orderBy('date', $this->sortDirection ?? 'asc')
             ->get();
 
+
+        // Separate query: attendance logs for only finished events for current user
+        $attendanceLogs = EventAttendanceLog::whereIn('event_id', 
+                $events->pluck('id')
+            )
+            ->where('user_id', Auth::id())
+            ->get()
+            ->keyBy('event_id'); // makes it easy to access by event ID
+
         return view('livewire.user.dashboard', [
             'events' => $events,
+            'attendanceLogs' => $attendanceLogs,
         ]);
     }
 }

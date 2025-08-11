@@ -74,8 +74,8 @@
             <h3 class="text-2xl font-semibold text-zinc-50">
                 {{ auth()->user()->name }}
             </h3>
-            <p class="text-lg text-gray-500 dark:text-gray-400">
-                {{ auth()->user()->email }}
+            <p class="text-lg text-zinc-50">
+                Student ID: {{ auth()->user()->student_id }}
             </p>
         </div>
 

@@ -30,9 +30,20 @@ class AttendanceBin extends Component
     public string $pendingAction = '';
     public int|null $pendingUserId = null;
 
+    public $studentIdInput;
+
     public function mount(Event $event)
     {
         $this->event = $event;
+    }
+
+    // Attendance Logic
+    public function updatedStudentIdInput($value)
+    {
+        if (!empty($value)) {
+            $this->scanStudent($value);
+            $this->reset('studentIdInput'); // clear field for next scan
+        }
     }
 
     // #[On('scanned-student')]

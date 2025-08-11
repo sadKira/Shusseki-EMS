@@ -50,7 +50,7 @@
         </flux:dropdown>
     </div>
 
-
+    {{-- Calendar --}}
     <div class="mt-7">
         @foreach($groupedEvents as $monthYear => $events)
             <!-- Month-Year Header -->
@@ -97,9 +97,22 @@
                                     </span>
 
                                 </flux:button>
+                                @php
+                                    $timezone = 'Asia/Manila';
+                                    $now = now()->timezone($timezone);
+
+                                    // Combine date and time into Carbon instances
+                                    $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
+                                    $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
+                                @endphp
+
                                 @if ($event->status == \App\Enums\EventStatus::Postponed)
                                     <flux:badge color="red" class="ml-3" size="sm" variant="solid"><span
                                         class="text-white">Event Postponed</span></flux:badge>
+                                @elseif($now->between($start, $end))
+                                    <flux:badge color="amber" class="ml-3" size="sm" variant="solid">
+                                        <span class="text-black">In Progress</span>
+                                    </flux:badge>
                                 @endif
                             </div>
 
@@ -161,7 +174,7 @@
                                                             {{-- Date --}}
                                                             <div class="gap-2">
                                                                 <div class="flex items-center justify-start gap-2">
-                                                                    <flux:icon.calendar class="text-zinc-50 size-4" />
+                                                                    <flux:icon.calendar variant="solid" class="text-zinc-50 size-4" />
                                                                     <flux:heading size="lg">Date</flux:heading>
                                                                 </div>
                                                                 <div class="flex items-center justify-start gap-2">
@@ -175,7 +188,7 @@
                                                             {{-- Time --}}
                                                             <div class="gap-2">
                                                                 <div class="flex items-center justify-end gap-2">
-                                                                    <flux:icon.clock class="text-zinc-50 size-4" />
+                                                                    <flux:icon.clock variant="solid" class="text-zinc-50 size-4" />
                                                                     <flux:heading size="lg">Time</flux:heading>
                                                                 </div>
                                                                 <div class="flex items-center justify-end gap-2">
@@ -190,7 +203,7 @@
                                                             {{-- Location --}}
                                                             <div class="gap-2">
                                                                 <div class="flex items-center justify-start gap-2">
-                                                                    <flux:icon.map-pin class="text-zinc-50 size-4" />
+                                                                    <flux:icon.map-pin variant="solid" class="text-zinc-50 size-4" />
                                                                     <flux:heading size="lg">Location</flux:heading>
                                                                 </div>
                                                                 <div class="flex items-center justify-start gap-2">
@@ -204,7 +217,7 @@
                                                             {{-- Attendance End --}}
                                                             <div class="gap-2">
                                                                 <div class="flex items-center justify-end gap-2">
-                                                                    <flux:icon.information-circle class="text-zinc-50 size-4" />
+                                                                    <flux:icon.information-circle variant="solid" class="text-zinc-50 size-4" />
                                                                     <flux:heading size="lg">End of Attendance</flux:heading>
                                                                 </div>
                                                                 <div class="flex items-center justify-end gap-2">
@@ -221,14 +234,81 @@
                                                         {{-- Attendance Status --}}
                                                         <div class="gap-3">
                                                             <div class="flex items-center justify-center gap-2">
-                                                                <flux:icon.user class="text-zinc-50 size-4" />
+                                                                <flux:icon.user variant="solid" class="text-zinc-50 size-4" />
                                                                 <flux:heading size="lg">Your Attendance Status</flux:heading>
                                                             </div>
+
+                                                            {{-- Badge Logic --}}
                                                             <div class="flex items-center justify-center gap-2">
                                                                 <flux:icon.calendar class="size-4 opacity-0" />
-                                                                <flux:badge color="green" variant="solid">
-                                                                    <span class="text-black">Present</span>
-                                                                </flux:badge>
+                                                                @php
+                                                                    $log = $attendanceLogs->get($event->id);
+                                                                @endphp
+
+                                                                
+
+                                                                @if ($log)
+
+                                                                    @php
+                                                                        $status = $log->attendance_status?->label() ?? 'Unknown';
+                                                                        $color = match ($log->attendance_status) {
+                                                                            \App\Enums\AttendanceStatus::Scanned => 'zinc',
+                                                                            \App\Enums\AttendanceStatus::Late => 'amber',
+                                                                            \App\Enums\AttendanceStatus::Present => 'green',
+                                                                            default => 'red',
+                                                                        };
+
+                                                                        $timezone = 'Asia/Manila';
+                                                                        $now = now()->timezone($timezone);
+
+                                                                        // Combine date and time into Carbon instances
+                                                                        $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
+                                                                        $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
+                                                                    @endphp
+
+                                                                    @if ($event->status == \App\Enums\EventStatus::Finished)
+                                                                        <flux:badge color="{{ $color }}" variant="solid">
+                                                                            {{ $status }}
+                                                                        </flux:badge>
+                                                                    @elseif($event->status == \App\Enums\EventStatus::NotFinished)
+                                                                        @if ($now->between($start, $end))
+                                                                            <flux:badge color="amber" class="mr-10" variant="solid">
+                                                                                <span class="text-black">In Progress</span>
+                                                                            </flux:badge>
+                                                                        @else
+                                                                            <flux:badge color="zinc" variant="solid">
+                                                                                Upcoming
+                                                                            </flux:badge>
+                                                                        @endif
+                                                                    @elseif($event->status == \App\Enums\EventStatus::Postponed)
+                                                                        <flux:badge color="red" variant="solid">
+                                                                            <span class="text-white">Event Postponed</span>
+                                                                        </flux:badge>
+                                                                    @endif
+                                                                
+                                                                @else
+                                                                    @if($event->status == \App\Enums\EventStatus::NotFinished)
+                                                                        @if ($now->between($start, $end))
+                                                                            <flux:badge color="amber" class="mr-10" variant="solid">
+                                                                                <span class="text-black">In Progress</span>
+                                                                            </flux:badge>
+                                                                        @else
+                                                                            <flux:badge color="zinc" variant="solid">
+                                                                                Upcoming
+                                                                            </flux:badge>
+                                                                        @endif
+                                                                    @elseif($event->status == \App\Enums\EventStatus::Postponed)
+                                                                        <flux:badge color="red" variant="solid">
+                                                                            <span class="text-white">Event Postponed</span>
+                                                                        </flux:badge>
+                                                                    @else
+                                                                        <flux:badge color="zinc" variant="solid">
+                                                                            No record
+                                                                        </flux:badge>
+                                                                    @endif
+                                                                    
+                                                                @endif
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>

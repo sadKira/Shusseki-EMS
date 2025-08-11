@@ -54,8 +54,8 @@
                 :initials="auth()->user()->initials()"
                 name="{{ auth()->user()->name }}"
                 avatar:color="auto"
-                avatart:color:seed="{{ auth()->user()->id }}"
-                    />
+                {{-- color:seed="{{ auth()->user()->id }}" --}}
+                />
 
             <flux:menu>
                 <flux:menu.radio.group>

@@ -14,21 +14,29 @@
         {{-- Video --}}
         <div class="col-span-2 px-10 py-6">
 
-            <div class="">
-                {{-- Video feed --}}
+            {{-- Instascan --}}
+            {{-- <div class="">
+                Video feed
                 <video id="preview" width="400" height="300"
                     style="width:600px; height:300px; object-fit:cover; background:#111; display:block; margin:0 auto;"
                     autoplay muted playsinline></video>
-            </div>
+            </div> --}}
 
             {{-- Camera devices --}}
-            <div wire:ignore class="mt-5">
+            {{-- <div wire:ignore class="mt-5">
                 <flux:select id="camera-select" placeholder="Select Camera" label="Camera Devices"></flux:select>
-            </div>
+            </div> --}}
 
             {{-- Value receiver --}}
-            <div class="opacity-0 pointer-events-none">
-                <flux:input type="text" id="text" name="text" label="" readonly></flux:input>
+            <div class="pointer-events-none">
+                <flux:input 
+                    type="text"
+                    wire:model.live="studentIdInput" 
+                    x-ref="qrInput"
+                    autofocus
+                    
+                    >
+                </flux:input>
             </div>
 
         </div>
@@ -398,107 +406,32 @@
     {{-- Attendance bin functionality --}}
 
     <!-- Instascan CDN -->
-    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    {{-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> --}}
 
 
+    {{-- Attendance Logic --}}
     <script>
-        function startQRScanner() {
-            const videoElement = document.getElementById('preview');
-            const select = document.getElementById('camera-select');
-            if (!videoElement || window.currentScanner) return;
-
-            window.currentScanner = new Instascan.Scanner({ video: videoElement, mirror: false });
-
-            Instascan.Camera.getCameras().then(cameras => {
-                if (cameras.length === 0) {
-                    alert("No cameras found.");
-                    return;
-                }
-
-                // Populate dropdown
-                select.innerHTML = '';
-                cameras.forEach((camera, idx) => {
-                    const option = document.createElement('option');
-                    option.textContent = camera.name || `Camera ${idx + 1}`;
-                    option.value = camera.id;
-                    select.appendChild(option);
-                });
-
-                // Select preferred or first
-                let preferred = cameras.find(c => /back|rear|environment/i.test(c.name));
-                let selectedCamera = preferred || cameras[0];
-
-                // Start scanner safely
-                if (!window.currentScanner._scanner || window.currentScanner._scanner.state !== 'started') {
-                    window.currentScanner.start(selectedCamera);
-                }
-
-                // Allow camera switch
-                select.onchange = () => {
-                    const cam = cameras.find(c => c.id === select.value);
-                    if (cam) {
-                        window.currentScanner.stop().then(() => {
-                            window.currentScanner.start(cam);
-                        });
-                    }
-                };
+        document.addEventListener('livewire:init', () => {
+            Livewire.hook('message.processed', () => {
+                document.querySelector('[x-ref="qrInput"]')?.focus();
             });
-
-            // On successful scan
-            window.currentScanner.addListener('scan', content => {
-                document.getElementById('text').value = content;
-
-                const root = document.querySelector('[wire\\:id]');
-                const component = Livewire.find(root?.getAttribute('wire:id'));
-                if (component && typeof component.scanStudent === 'function') {
-                    component.scanStudent(content);
-                }
-            });
-        }
-
-        function stopQRScanner() {
-            if (window.currentScanner) {
-                window.currentScanner.stop();
-                window.currentScanner = null;
-            }
-
-            const video = document.getElementById('preview');
-            if (video && video.srcObject) {
-                video.srcObject.getTracks().forEach(track => track.stop());
-                video.srcObject = null;
-            }
-        }
-
-        // Load safely even if Instascan loads late
-        function tryInitScanner() {
-            if (typeof Instascan !== 'undefined') {
-                startQRScanner();
-            } else {
-                const fallback = setInterval(() => {
-                    if (typeof Instascan !== 'undefined') {
-                        clearInterval(fallback);
-                        startQRScanner();
-                    }
-                }, 100);
-            }
-        }
-
-        // Init on first load
-        document.addEventListener('DOMContentLoaded', tryInitScanner);
-
-        // Reinit on Livewire SPA nav
-        document.addEventListener('livewire:navigated', () => {
-            stopQRScanner();
-            tryInitScanner();
         });
 
-        // Stop on full page leave
-        window.addEventListener('beforeunload', stopQRScanner);
+        document.addEventListener('DOMContentLoaded', () => {
+            const qrInput = document.querySelector('[x-ref="qrInput"]');
 
-        // 
-        // Livewire.hook('message.processed', () => {
-        //     populateCameraDropdown(); // re-populate your camera select
-        // });
+            // Keep refocusing when the input loses focus
+            qrInput.addEventListener('blur', () => {
+                setTimeout(() => qrInput.focus(), 0);
+            });
+
+            // Also re-focus after each Livewire update
+            document.addEventListener('livewire:init', () => {
+                Livewire.hook('message.processed', () => {
+                    qrInput.focus();
+                });
+            });
+        });
     </script>
 
 
@@ -576,7 +509,7 @@
             const toastMarkup = `
                 <div class="flex items-center p-4">
                     <span class="mr-2">${icon}</span>
-                    <p class="text-sm text-gray-700 dark:text-neutral-400">${message}</p>
+                    <p class="text-sm text-zinc-50">${message}</p>
                 </div>
             `;
 
@@ -653,5 +586,106 @@
 
     </script>
 
+    {{-- Instascan (Camera scannner) --}}
+    {{-- <script>
+        function startQRScanner() {
+            const videoElement = document.getElementById('preview');
+            const select = document.getElementById('camera-select');
+            if (!videoElement || window.currentScanner) return;
+
+            window.currentScanner = new Instascan.Scanner({ video: videoElement, mirror: false });
+
+            Instascan.Camera.getCameras().then(cameras => {
+                if (cameras.length === 0) {
+                    alert("No cameras found.");
+                    return;
+                }
+
+                // Populate dropdown
+                select.innerHTML = '';
+                cameras.forEach((camera, idx) => {
+                    const option = document.createElement('option');
+                    option.textContent = camera.name || `Camera ${idx + 1}`;
+                    option.value = camera.id;
+                    select.appendChild(option);
+                });
+
+                // Select preferred or first
+                let preferred = cameras.find(c => /back|rear|environment/i.test(c.name));
+                let selectedCamera = preferred || cameras[0];
+
+                // Start scanner safely
+                if (!window.currentScanner._scanner || window.currentScanner._scanner.state !== 'started') {
+                    window.currentScanner.start(selectedCamera);
+                }
+
+                // Allow camera switch
+                select.onchange = () => {
+                    const cam = cameras.find(c => c.id === select.value);
+                    if (cam) {
+                        window.currentScanner.stop().then(() => {
+                            window.currentScanner.start(cam);
+                        });
+                    }
+                };
+            });
+
+            // On successful scan
+            window.currentScanner.addListener('scan', content => {
+                document.getElementById('text').value = content;
+
+                const root = document.querySelector('[wire\\:id]');
+                const component = Livewire.find(root?.getAttribute('wire:id'));
+                if (component && typeof component.scanStudent === 'function') {
+                    component.scanStudent(content);
+                }
+            });
+
+        }
+
+        function stopQRScanner() {
+            if (window.currentScanner) {
+                window.currentScanner.stop();
+                window.currentScanner = null;
+            }
+
+            const video = document.getElementById('preview');
+            if (video && video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        }
+
+        // Load safely even if Instascan loads late
+        function tryInitScanner() {
+            if (typeof Instascan !== 'undefined') {
+                startQRScanner();
+            } else {
+                const fallback = setInterval(() => {
+                    if (typeof Instascan !== 'undefined') {
+                        clearInterval(fallback);
+                        startQRScanner();
+                    }
+                }, 100);
+            }
+        }
+
+        // Init on first load
+        document.addEventListener('DOMContentLoaded', tryInitScanner);
+
+        // Reinit on Livewire SPA nav
+        document.addEventListener('livewire:navigated', () => {
+            stopQRScanner();
+            tryInitScanner();
+        });
+
+        // Stop on full page leave
+        window.addEventListener('beforeunload', stopQRScanner);
+
+        // 
+        // Livewire.hook('message.processed', () => {
+        //     populateCameraDropdown(); // re-populate your camera select
+        // });
+    </script> --}}
 
 </div>
