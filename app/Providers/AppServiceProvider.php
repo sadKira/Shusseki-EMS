@@ -125,6 +125,7 @@ class AppServiceProvider extends ServiceProvider
                     'qr_code' => 'My QR Code',
                     'user_main_profile' => 'My Profile',
                     'user_password' => 'My Profile',
+                    'user_edit_profile' => 'My Profile',
 
                     'user_viewevent' => 'View Event',
                 ],

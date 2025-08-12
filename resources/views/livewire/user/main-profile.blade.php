@@ -1,44 +1,33 @@
-<div>
-    <div class="flex flex-col space-y-1">
-        <flux:heading size="xl">{{ auth()->user()->name }}</flux:heading>
-        <flux:heading size="lg">{{ auth()->user()->email }}</flux:heading>
-    </div>
-    <div class="mt-5 w-full max-w-lg">
-        <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
-            <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
+<div class="">
+    <div class="flex flex-col space-y-1 items-center justify-center">
 
+        <!-- Shusseki Image Placeholder -->
+        <div class="w-full flex items-center justify-center rounded-lg overflow-hidden mb-2">
+            <img src="{{ asset('images/Side_White.svg') }}" 
+                alt="shusseki logo" 
+                class="max-h-20 max-w-full object-contain">
+        </div>
+
+        <!-- QR Image Placeholder -->
+        <div class="w-53 h-53 flex items-center justify-center rounded-lg overflow-hidden">
+            <img src="https://quickchart.io/qr?text={{ auth()->user()->student_id }}&margin=2&size=640&format=svg" alt="My QR Code" class="w-full h-full object-cover">
+        </div>
+
+        <div class="flex flex-col items-center justify-center mt-1">
+            <flux:heading size="xl">{{ auth()->user()->name }}</flux:heading>
+            <flux:heading size="lg" class="text-zinc-50 font-light">Student ID: {{ auth()->user()->student_id }}</flux:heading>
+            {{-- <flux:heading size="lg">{{ auth()->user()->email }}</flux:heading> --}}
+        </div>
+
+        {{-- <flux:separator class="mt-3 mb-3" variant="subtle" /> --}}
+
+
+        <div class="grid grid-cols-2">
             <div>
-                <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
 
-                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !auth()->user()->hasVerifiedEmail())
-                    <div>
-                        <flux:text class="mt-4">
-                            {{ __('Your email address is unverified.') }}
-
-                            <flux:link class="text-sm cursor-pointer" wire:click.prevent="resendVerificationNotification">
-                                {{ __('Click here to re-send the verification email.') }}
-                            </flux:link>
-                        </flux:text>
-
-                        @if (session('status') === 'verification-link-sent')
-                            <flux:text class="mt-2 font-medium !dark:text-green-400 !text-green-600">
-                                {{ __('A new verification link has been sent to your email address.') }}
-                            </flux:text>
-                        @endif
-                    </div>
-                @endif
             </div>
-
-            <div class="flex items-center gap-4">
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
-                </div>
-
-                <x-action-message class="me-3" on="profile-updated">
-                    {{ __('Saved.') }}
-                </x-action-message>
-            </div>
-        </form>
+        </div>
 
     </div>
+    
 </div>

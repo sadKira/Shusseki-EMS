@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Livewire\Settings;
+namespace App\Livewire\User;
 
-use App\Models\User;
+use Livewire\Component;
+use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
-use Livewire\Component;
+use App\Models\User;
 
-class Profile extends Component
+#[Layout('components.user.layout')]
+class EditProfile extends Component
 {
     public string $name = '';
-
+    public string $student_id = '';
     public string $email = '';
+    public string $year_level= '';
+    public string $course= '';
 
-
-    /**
-     * Mount the component.
-     */
     public function mount(): void
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+        $this->year_level = Auth::user()->year_level;
+        $this->course = Auth::user()->course;
+        $this->student_id = Auth::user()->student_id;
     }
 
-    /**
-     * Update the profile information for the currently authenticated user.
-     */
     public function updateProfileInformation(): void
     {
         $user = Auth::user();
 
         $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
+            // 'name' => ['required', 'string', 'max:255'],
 
             'email' => [
                 'required',
@@ -55,22 +55,8 @@ class Profile extends Component
         $this->dispatch('profile-updated', name: $user->name);
 
     }
-
-    /**
-     * Send an email verification notification to the current user.
-     */
-    // public function resendVerificationNotification(): void
-    // {
-    //     $user = Auth::user();
-
-    //     if ($user->hasVerifiedEmail()) {
-    //         $this->redirectIntended(default: route('dashboard', absolute: false));
-
-    //         return;
-    //     }
-
-    //     $user->sendEmailVerificationNotification();
-
-    //     Session::flash('status', 'verification-link-sent');
-    // }
+    public function render()
+    {
+        return view('livewire.user.edit-profile');
+    }
 }
