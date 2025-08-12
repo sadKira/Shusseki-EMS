@@ -62,7 +62,7 @@
 
         {{-- Search --}}
         <div>
-            <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
+            <flux:input size="sm" icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
                 autocomplete="off" clearable 
                 class=""
                 />

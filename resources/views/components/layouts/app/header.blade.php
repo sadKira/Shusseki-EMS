@@ -25,14 +25,15 @@
 
         <flux:navbar class="-mb-px max-lg:hidden">
 
-            <flux:navbar.item icon="home" :href="route('dashboard')"
-                :current="request()->routeIs(['dashboard'])" wire:navigate>{{ __('Home') }}
+            <flux:navbar.item icon="home" :href="route('dashboard')" :current="request()->routeIs(['dashboard'])" 
+                wire:navigate>
+                {{ __('Home') }}
             </flux:navbar.item>
 
-            <flux:navbar.item icon="qr-code" :href="route('qr_code')" :current="request()->routeIs('qr_code')"
+            {{-- <flux:navbar.item icon="qr-code" :href="route('qr_code')" :current="request()->routeIs('qr_code')"
                 wire:navigate>
                 {{ __('My QR Code') }}
-            </flux:navbar.item>
+            </flux:navbar.item> --}}
         
             <flux:navbar.item icon="calendar" :href="route('events')" :current="request()->routeIs('events')"
                 wire:navigate>
@@ -42,6 +43,11 @@
             <flux:navbar.item icon="newspaper" :href="route('attendance_record')" :current="request()->routeIs('attendance_record')"
                 wire:navigate>
                 {{ __('Attendance Record') }}
+            </flux:navbar.item>
+
+            <flux:navbar.item icon="user" :href="route('user_main_profile')" :current="request()->routeIs('user_main_profile')"
+                wire:navigate>
+                {{ __('Profile') }}
             </flux:navbar.item>
 
         </flux:navbar>

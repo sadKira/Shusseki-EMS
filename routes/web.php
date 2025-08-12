@@ -27,6 +27,8 @@ use App\Livewire\User\Events;
 use App\Livewire\User\AttendanceRecord;
 use App\Livewire\User\QCode;
 use App\Livewire\User\ViewEvent as UserViewEvent;
+use App\Livewire\User\MainProfile;
+use App\Livewire\User\Password as UserPassword;
 
 use App\Livewire\Tsuushin\TsuushinDashboard;
 
@@ -89,10 +91,14 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
 // User (Active)
 Route::middleware(['auth', 'verified', 'user', 'approved', 'active'])->group(function () {
     // Protected routes
-    Route::get('user/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('user/home', Dashboard::class)->name('dashboard');
     Route::get('user/event-calendar', Events::class)->name('events');
     Route::get('user/attendance-record', AttendanceRecord::class)->name('attendance_record');
     Route::get('user/qr-code', QCode::class)->name('qr_code');
+
+    // Profile
+    Route::get('user/my-profile', MainProfile::class)->name('user_main_profile');
+    Route::get('user/password', UserPassword::class)->name('user_password');
 
     Route::get('user/view-event/{event}', UserViewEvent::class)->name('user_viewevent');
    
