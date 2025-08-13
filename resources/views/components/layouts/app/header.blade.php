@@ -97,9 +97,9 @@
     </flux:header>
 
     {{-- Mobile view --}}
-    <flux:header container class=" bg-zinc-950 lg:hidden flex items-center justify-center">
-        <flux:spacer />
-        <flux:brand href="#" name="" class="font-logo">
+    <flux:header container class=" bg-zinc-950 lg:hidden">
+        {{-- <flux:spacer /> --}}
+        <flux:brand href="#" name="" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-10 font-logo">
             <x-slot name="logo" class="size-25">
                 <img src="{{ asset('images/Side_White.svg') }}" alt="MKD Logo" class="">
             </x-slot>

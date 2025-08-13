@@ -25,7 +25,6 @@ use App\Livewire\Management\GenerateReport;
 use App\Livewire\User\Dashboard;
 use App\Livewire\User\Events;
 use App\Livewire\User\AttendanceRecord;
-use App\Livewire\User\QCode;
 use App\Livewire\User\ViewEvent as UserViewEvent;
 use App\Livewire\User\MainProfile;
 use App\Livewire\User\Password as UserPassword;
@@ -95,7 +94,6 @@ Route::middleware(['auth', 'verified', 'user', 'approved', 'active'])->group(fun
     Route::get('user/home', Dashboard::class)->name('dashboard');
     Route::get('user/event-calendar', Events::class)->name('events');
     Route::get('user/attendance-record', AttendanceRecord::class)->name('attendance_record');
-    Route::get('user/qr-code', QCode::class)->name('qr_code');
 
     // Profile
     Route::get('user/my-profile', MainProfile::class)->name('user_main_profile');

@@ -14,11 +14,11 @@
             </div>
 
             {{-- Editable email --}}
-            <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" autofocus />
+            <flux:input wire:model.defer="email" :label="__('Email')" type="email" required autocomplete="email" autofocus />
 
             {{-- Locked course and editable year level --}}
             <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-                <flux:select wire:model="year_level" :label="__('Year level')">
+                <flux:select wire:model.defer="year_level" :label="__('Year level')">
                     <flux:select.option value="1st Year">1st Year</flux:select.option>
                     <flux:select.option value="2nd Year">2nd Year</flux:select.option>
                     <flux:select.option value="3rd Year">3rd Year</flux:select.option>

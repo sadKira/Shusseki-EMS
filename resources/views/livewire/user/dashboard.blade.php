@@ -8,24 +8,19 @@
 
         <!-- Desktop User Menu -->
         <flux:dropdown position="top" align="end">
-            <flux:profile circle class="cursor-pointer" 
-                :initials="auth()->user()->initials()"
-                name="Menu"
-                avatar:color="auto"
-                {{-- color:seed="{{ auth()->user()->id }}" --}}
-                />
+            
+            <flux:button icon:trailing="chevron-down" variant="ghost">Menu</flux:button>
 
             <flux:menu>
                 <flux:menu.radio.group>
                     <div class="p-0 text-sm font-normal">
                         <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                <span
-                                    class="flex h-full w-full items-center justify-center rounded-lg ">
-                                    {{-- {{ auth()->user()->initials() }} --}}
-                                    <flux:icon.user variant="solid" class="text-white" />
-                                </span>
-                            </span>
+                            <flux:profile circle class="cursor-pointer" 
+                                :initials="auth()->user()->initials()"
+                                avatar:color="auto"
+                                :chevron="false"
+                                {{-- color:seed="{{ auth()->user()->id }}" --}}
+                                />
 
                             <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight">
                                 <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
@@ -36,11 +31,11 @@
                 </flux:menu.radio.group>
 
                 <flux:menu.separator />
-
-                <flux:menu.item icon="home">Home</flux:menu.item>
-                <flux:menu.item icon="calendar">Event Calendar</flux:menu.item>
-                <flux:menu.item icon="newspaper">Attendance Record</flux:menu.item>
-                <flux:menu.item icon="user">Profile</flux:menu.item>
+                
+                <flux:menu.item icon="home" :href="route('dashboard')" wire:navigate>Home</flux:menu.item>
+                <flux:menu.item icon="calendar" :href="route('events')" wire:navigate>Event Calendar</flux:menu.item>
+                <flux:menu.item icon="newspaper" :href="route('attendance_record')" wire:navigate>Attendance Record</flux:menu.item>
+                <flux:menu.item icon="user" :href="route('user_main_profile')" wire:navigate>Profile</flux:menu.item>
 
                 <flux:menu.separator />
 
@@ -72,6 +67,7 @@
                     @click="modalOpen=true"
                     class="relative grid min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
                         border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
+                        cursor-pointer
                         ">
                     <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
                         style="background-image: url('{{ asset('storage/' . $event->image) }}');"

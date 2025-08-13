@@ -1,7 +1,7 @@
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-10">
 
     <div class="max-lg:hidden flex items-center justify-between whitespace-nowrap">
-        <flux:heading size="xl" class="font-bold">Event calendar {{ $selectedSchoolYear }}</flux:heading>
+        <flux:heading size="xl" class="font-bold">Event Calendar <span class="text-[var(--color-accent)]">A.Y. {{ $selectedSchoolYear }}</span></flux:heading>
         <div>
             <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
                 autocomplete="off" clearable 
@@ -14,24 +14,23 @@
     <div class="lg:hidden whitespace-nowrap space-y-3">
 
         <div class="flex items-center justify-between">
-            <flux:heading size="xl" class="font-bold">Event calendar {{ $selectedSchoolYear }}</flux:heading>
+            <flux:heading size="xl" class="font-bold">Event Calendar</flux:heading>
 
             <!-- Desktop User Menu -->
             <flux:dropdown position="top" align="end">
-                <flux:profile circle class="cursor-pointer" :initials="auth()->user()->initials()" avatar:color="auto"
-                    avatar:color:seed="{{ auth()->user()->id }}" />
+                
+                <flux:button icon:trailing="chevron-down" variant="ghost">Menu</flux:button>
 
                 <flux:menu>
                     <flux:menu.radio.group>
                         <div class="p-0 text-sm font-normal">
                             <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                    <span
-                                        class="flex h-full w-full items-center justify-center rounded-lg ">
-                                        {{-- {{ auth()->user()->initials() }} --}}
-                                        <flux:icon.user variant="solid" class="text-white" />
-                                    </span>
-                                </span>
+                                <flux:profile circle class="cursor-pointer" 
+                                    :initials="auth()->user()->initials()"
+                                    avatar:color="auto"
+                                    :chevron="false"
+                                    {{-- color:seed="{{ auth()->user()->id }}" --}}
+                                    />
 
                                 <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight">
                                     <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
@@ -40,6 +39,13 @@
                             </div>
                         </div>
                     </flux:menu.radio.group>
+
+                    <flux:menu.separator />
+                    
+                    <flux:menu.item icon="home" :href="route('dashboard')" wire:navigate>Home</flux:menu.item>
+                    <flux:menu.item icon="calendar" :href="route('events')" wire:navigate>Event Calendar</flux:menu.item>
+                    <flux:menu.item icon="newspaper" :href="route('attendance_record')" wire:navigate>Attendance Record</flux:menu.item>
+                    <flux:menu.item icon="user" :href="route('user_main_profile')" wire:navigate>Profile</flux:menu.item>
 
                     <flux:menu.separator />
 
@@ -66,7 +72,7 @@
     <div class="mt-7">
         @foreach($groupedEvents as $monthYear => $events)
             <!-- Month-Year Header -->
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-white mt-5">
+            <h2 class="text-xl font-semibold text-white mt-5">
                 {{ \Carbon\Carbon::parse($monthYear . '-01')->format('F Y') }}
             </h2>
 
@@ -78,7 +84,7 @@
                         <!-- Left Content (Year of the month) -->
                         <div class="min-w-14 text-center">
                             
-                            <div class="text-2xl font-bold text-gray-800 dark:text-white leading-none">
+                            <div class="text-2xl font-bold text-white leading-none">
                                 {{ \Carbon\Carbon::parse($event->date)->format('d') }}
                             </div>
                             <div class="text-sm text-gray-500 dark:text-neutral-400">
@@ -103,13 +109,43 @@
                             >
 
                             <div class="flex flex-col items-start gap-1">
-                                <flux:button @click="modalOpen=true" variant="ghost" size="sm">
+                                {{-- <flux:button @click="modalOpen=true" variant="ghost" size="sm">
                                     <span class="font-semibold dark:text-white text-lg">
                                         {{ $event->title }}
                                     </span>
 
-                                </flux:button>
-                                @php
+                                </flux:button> --}}
+                                {{-- Card Content --}}
+                                <div 
+                                    @click="modalOpen=true"
+                                    class="relative min-h-25 md:min-h-17 lg:min-h-17 w-full overflow-hidden rounded-xl bg-zinc-950
+                                        border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
+                                        cursor-pointer
+                                        ">
+                                    <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
+                                        style="background-image: url('{{ asset('storage/' . $event->image) }}');"
+                                        >
+                                    
+                                        <!-- Gradientt -->
+                                        <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
+                                        </div>
+                                        
+                                    </div>
+
+                                    {{-- Content --}}
+                                    <div class="relative w-full space-y-1 p-6 px-6 py-5 md:px-7 sm:flex items-center justify-between">
+
+                                        <div class="">
+                                            <h2 class="text-xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                                {{ $event->title }}
+                                            </h2>
+                                        </div>
+
+    
+                                    </div>
+
+                                </div>
+                                {{-- @php
                                     $timezone = 'Asia/Manila';
                                     $now = now()->timezone($timezone);
 
@@ -125,7 +161,7 @@
                                     <flux:badge color="amber" class="ml-3" size="sm" variant="solid">
                                         <span class="text-black">In Progress</span>
                                     </flux:badge>
-                                @endif
+                                @endif --}}
                             </div>
 
                             {{-- Modal Content --}}

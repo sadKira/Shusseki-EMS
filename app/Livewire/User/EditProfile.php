@@ -42,6 +42,12 @@ class EditProfile extends Component
                 'max:255',
                 Rule::unique(User::class)->ignore($user->id),
             ],
+
+            'year_level' => [
+                'required',
+                'string',
+                
+            ],
         ]);
 
         $user->fill($validated);
