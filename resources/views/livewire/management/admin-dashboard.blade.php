@@ -282,6 +282,12 @@
             // We'll assume you add 'years' to the trendData array in PHP:
             // 'years' => $years,
 
+            // Create labels with year (e.g., "Jul '25")
+            const labels = trendData.labels.map((month, index) => {
+                const year = trendData.years ? trendData.years[index] : new Date().getFullYear();
+                return `${month} '${year.toString().slice(-2)}`; // Shows "Jul '25" format
+            });
+
             attendanceTrendChartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {

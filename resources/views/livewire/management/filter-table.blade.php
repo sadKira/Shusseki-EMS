@@ -21,13 +21,9 @@
         <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
             <flux:text>Active Student Accounts</flux:text>
             <div class="flex items-end gap-2">
-                @if ($activeCount != 0)
-                    <flux:heading size="xl" level="1">{{ $activeCount }}
-                    </flux:heading>
-                @else
-                    <flux:heading size="xl" level="1">{{ $activeCount }}
-                    </flux:heading>
-                @endif
+
+                <flux:heading size="xl" level="1">{{ $activeCount }}</flux:heading>
+
                 <div class="flex items-center gap-1">
 
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -46,13 +42,10 @@
         <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
             <flux:text>Inactive Student Accounts</flux:text>
             <div class="flex items-end gap-2">
-                @if ($inactiveCount != 0)
-                    <flux:heading size="xl" level="1">{{ $inactiveCount }}
-                    </flux:heading>
-                @else
-                    <flux:heading size="xl" level="1">{{ $inactiveCount }}
-                    </flux:heading>
-                @endif
+                
+                <flux:heading size="xl" level="1">{{ $inactiveCount }}
+                </flux:heading>
+              
                 <div class="flex items-center gap-1">
 
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -316,7 +309,7 @@
                                         @endif
 
                                         <th scope="col"
-                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-zinc-300"
+                                            class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-zinc-400"
                                             wire:click="sortBy('name')">
                                             <div class="flex items-center gap-2">
                                                 Student
@@ -373,9 +366,17 @@
                                                 </td>
                                             @endif
                                             <td
-                                                class="!flex !flex-col px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">
-                                                <div class="font-bold">{!! $user->highlightField('name', $search) !!}</div>
-                                                <div class="text-zinc-400">{!! $user->highlightField('email', $search) !!}
+                                                class="!flex gap-2 px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">
+
+                                                <flux:profile circle class="cursor-pointer" 
+                                                avatar:name="{{ $user->name }}"
+                                                avatar:color="auto"
+                                                :chevron="false"
+                                                {{-- color:seed="{{ auth()->user()->id }}" --}}
+                                                />
+                                                <div class="!flex !flex-col">
+                                                    <div class="font-bold">{!! $user->highlightField('name', $search) !!}</div>
+                                                    <div class="text-zinc-400">{!! $user->highlightField('email', $search) !!}</div>
                                                 </div>
                                             </td>
                                             <td

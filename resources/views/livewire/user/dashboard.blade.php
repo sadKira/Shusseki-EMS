@@ -9,7 +9,7 @@
         <!-- Desktop User Menu -->
         <flux:dropdown position="top" align="end">
             
-            <flux:button icon:trailing="chevron-down" variant="ghost">Menu</flux:button>
+            <flux:button icon:trailing="bars-3" variant="ghost">Menu</flux:button>
 
             <flux:menu>
                 <flux:menu.radio.group>
@@ -65,7 +65,7 @@
                 {{-- Card Content --}}
                 <div 
                     @click="modalOpen=true"
-                    class="relative grid min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
+                    class="relative grid min-h-50 md:min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
                         border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
                         cursor-pointer
                         ">

@@ -38,20 +38,20 @@ class DatabaseSeeder extends Seeder
         // Create events for each school year - 5 events per month for all 12 months of each year
         $schoolYearMonths = [
             '2022-2023' => [
-                ['year' => 2022, 'months' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], // All months 2022
-                ['year' => 2023, 'months' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], // All months 2023
+                ['year' => 2022, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2022
+                ['year' => 2023, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2023
             ],
             '2023-2024' => [
-                ['year' => 2023, 'months' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], // All months 2023
-                ['year' => 2024, 'months' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], // All months 2024
+                ['year' => 2023, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2023
+                ['year' => 2024, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2024
             ],
             '2024-2025' => [
-                ['year' => 2024, 'months' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], // All months 2024
-                ['year' => 2025, 'months' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], // All months 2025
+                ['year' => 2024, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2024
+                ['year' => 2025, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2025
             ],
             '2025-2026' => [
-                ['year' => 2025, 'months' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], // All months 2025
-                ['year' => 2026, 'months' => [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]], // All months 2026
+                ['year' => 2025, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2025
+                ['year' => 2026, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2026
             ],
         ];
 
@@ -84,7 +84,7 @@ class DatabaseSeeder extends Seeder
         // Set the current school year
         Setting::updateOrCreate(
             ['key' => 'current_school_year'],
-            ['value' => '2024-2025'],
+            ['value' => '2025-2026'],
         );
 
         // Set the super admin key

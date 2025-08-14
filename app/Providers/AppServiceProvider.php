@@ -107,12 +107,13 @@ class AppServiceProvider extends ServiceProvider
                     'coverage_events' => 'Events Coverage',
                     'create_event' => 'Create Event',
                     'view_event' => 'View Event',
+                    'view_event_timeline' => 'View Event',
                     'edit_event' => 'Edit Event',
                     'attendance_bin' => 'Attendance Bin',
                     'settings.profile' => 'Settings',
                     'settings.password' => 'Settings',
                     'settings.schoolyear' => 'Settings',
-                    'event_list' => 'Event List',
+                    'event_timeline' => 'Event Timeline',
                     'student_records' => 'Student Records',
                     'generate_report' => 'Generate Report',
                     'buffer_view' => 'Buffer View',
@@ -135,7 +136,7 @@ class AppServiceProvider extends ServiceProvider
             };
 
             $title = collect($titles)
-                ->first(fn($label, $route) => request()->routeIs($route)) ?? 'Dashboard';
+                ->first(fn($label, $route) => request()->routeIs($route)) ?? 'Set Title';
 
             $view->with('title', $title);
         });

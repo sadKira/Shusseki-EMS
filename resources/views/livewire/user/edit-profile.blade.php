@@ -17,7 +17,7 @@
             <flux:input wire:model.defer="email" :label="__('Email')" type="email" required autocomplete="email" autofocus />
 
             {{-- Locked course and editable year level --}}
-            <div class="grid grid-cols-2 gap-x-4 gap-y-6">
+            <div class="grid md:grid-cols-2 gap-x-4 gap-y-6">
                 <flux:select wire:model.defer="year_level" :label="__('Year level')">
                     <flux:select.option value="1st Year">1st Year</flux:select.option>
                     <flux:select.option value="2nd Year">2nd Year</flux:select.option>
@@ -29,9 +29,8 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
-                </div>
+                
+                <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
 
                 <x-action-message class="me-3" on="profile-updated">
                     {{ __('Saved.') }}

@@ -48,38 +48,35 @@ class AdminDashboard extends Component
     public function getAttendanceTrendData()
     {
         $schoolYear = Setting::getSchoolYear();
-
-        // Assume school year format is '2025-2026'
         [$startYear, $endYear] = explode('-', $schoolYear);
-        $startYear = (int) $startYear;
-        $endYear = (int) $endYear;
-        // Try to get the earliest event in the first year of the school year
-        $firstEventInStartYear = Event::where('school_year', $schoolYear)
-            ->whereYear('date', $startYear)
+        $startYear = (int)$startYear;
+        $endYear = (int)$endYear;
+
+        // Get the first event in the school year to determine start month
+        $firstEvent = Event::where('school_year', $schoolYear)
             ->orderBy('date', 'asc')
             ->first();
 
-        if ($firstEventInStartYear) {
-            $startMonth = (int)\Carbon\Carbon::parse($firstEventInStartYear->date)->month;
-        } else {
-            // Fallback: use the earliest event in the school year (could be in the second year)
-            $firstEvent = Event::where('school_year', $schoolYear)
-                ->orderBy('date', 'asc')
-                ->first();
-            $startMonth = $firstEvent ? (int)\Carbon\Carbon::parse($firstEvent->date)->month : 7; // fallback to July
-        }
-        // $startMonth = 7;
+        $startMonth = $firstEvent ? (int)\Carbon\Carbon::parse($firstEvent->date)->month : 7; // Default to July if no events
+
         $months = [];
         $years = [];
         $monthYearPairs = [];
+        $currentYear = $startYear;
+        $currentMonth = $startMonth;
 
-        // Build months July (startYear) to June (endYear)
+        // Build 12 months starting from the start month
         for ($i = 0; $i < 12; $i++) {
-            $monthNum = ($startMonth + $i - 1) % 12 + 1;
-            $year = $monthNum >= $startMonth ? $startYear : $endYear;
-            $months[] = \Carbon\Carbon::create()->month($monthNum)->format('M'); // Short month name
-            $years[] = $year;
-            $monthYearPairs[] = ['month' => $monthNum, 'year' => $year];
+            $monthName = \Carbon\Carbon::create($currentYear, $currentMonth, 1)->format('M');
+            $months[] = $monthName;
+            $years[] = $currentYear;
+            $monthYearPairs[] = ['month' => $currentMonth, 'year' => $currentYear];
+
+            $currentMonth++;
+            if ($currentMonth > 12) {
+                $currentMonth = 1;
+                $currentYear = $endYear; // Switch to the end year after December
+            }
         }
 
         $present = [];
@@ -92,6 +89,7 @@ class AdminDashboard extends Component
                 ->whereYear('date', $pair['year'])
                 ->where('status', EventStatus::Finished->value)
                 ->get();
+
             $monthPresent = $monthLate = $monthAbsent = 0;
             foreach ($events as $event) {
                 $logs = EventAttendanceLog::where('event_id', $event->id)->get();
@@ -105,9 +103,10 @@ class AdminDashboard extends Component
         }
 
         $hasEvents = array_sum($present) + array_sum($late) + array_sum($absent) > 0;
+
         return [
             'labels' => $months,
-            'years' => $years,
+            'years' => $years,  // Now properly populated
             'present' => $present,
             'late' => $late,
             'absent' => $absent,

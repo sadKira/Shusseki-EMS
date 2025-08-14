@@ -51,7 +51,7 @@
             </flux:dropdown>
         </div>
 
-        <div class="flex items-start max-md:flex-col px-10 py-6">
+        <div class="flex items-start max-md:flex-col py-6">
             <div class="me-10 w-full pb-4 md:w-[220px]">
 
                 <flux:navlist>

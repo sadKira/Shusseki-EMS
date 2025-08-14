@@ -114,7 +114,7 @@
                                     class="absolute left-50 md:left-110 lg:left-140 lg:top-[-7px]  w-[50%] md:w-[20%] opacity-20 object-cover pointer-events-none select-none" />
                                     {{-- class="absolute top-[-7px] opacity-20 object-cover pointer-events-none select-none"
                                     style="left: clamp(1rem, 10vw, 35rem); width: 20%;"  --}}
-                                    />
+                                    
                             @endif                            
                         @endif
                         

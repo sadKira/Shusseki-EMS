@@ -1,5 +1,6 @@
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-10">
 
+    {{-- Header and search bar --}}
     <div class="max-lg:hidden flex items-center justify-between whitespace-nowrap">
         <flux:heading size="xl" class="font-bold">Event Calendar <span class="text-[var(--color-accent)]">A.Y. {{ $selectedSchoolYear }}</span></flux:heading>
         <div>
@@ -82,7 +83,7 @@
                     <div class="flex gap-x-3 md:gap-x-2 sm:gap-x-1">
 
                         <!-- Left Content (Year of the month) -->
-                        <div class="min-w-14 text-center">
+                        <div class="md:min-w-14 min-w-8 text-center">
                             
                             <div class="text-2xl font-bold text-white leading-none">
                                 {{ \Carbon\Carbon::parse($event->date)->format('d') }}
@@ -118,7 +119,7 @@
                                 {{-- Card Content --}}
                                 <div 
                                     @click="modalOpen=true"
-                                    class="relative min-h-25 md:min-h-17 lg:min-h-17 w-full overflow-hidden rounded-xl bg-zinc-950
+                                    class="relative min-h-17 w-full overflow-hidden rounded-xl bg-zinc-950
                                         border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
                                         cursor-pointer
                                         ">
@@ -133,35 +134,33 @@
                                     </div>
 
                                     {{-- Content --}}
-                                    <div class="relative w-full space-y-1 p-6 px-6 py-5 md:px-7 sm:flex items-center justify-between">
+                                    <div class="relative w-full justify-start md:flex items-center gap-2 p-6 md:px-7">
 
-                                        <div class="">
-                                            <h2 class="text-xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
-                                                {{ $event->title }}
-                                            </h2>
-                                        </div>
+                                        <h2 class=" text-md md:text-xl font-medium text-white group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                            {{ $event->title }}
+                                        </h2>
+                                        @php
+                                            $timezone = 'Asia/Manila';
+                                            $now = now()->timezone($timezone);
 
+                                            // Combine date and time into Carbon instances
+                                            $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
+                                            $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
+                                        @endphp
+
+                                        @if ($event->status == \App\Enums\EventStatus::Postponed)
+                                            <flux:badge color="red" size="sm" variant="solid"><span
+                                                class="text-white">Event Postponed</span></flux:badge>
+                                        @elseif($now->between($start, $end))
+                                            <flux:badge color="amber" class="" size="sm" variant="solid">
+                                                <span class="text-black">In Progress</span>
+                                            </flux:badge>
+                                        @endif
     
                                     </div>
 
                                 </div>
-                                {{-- @php
-                                    $timezone = 'Asia/Manila';
-                                    $now = now()->timezone($timezone);
-
-                                    // Combine date and time into Carbon instances
-                                    $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
-                                    $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
-                                @endphp
-
-                                @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                    <flux:badge color="red" class="ml-3" size="sm" variant="solid"><span
-                                        class="text-white">Event Postponed</span></flux:badge>
-                                @elseif($now->between($start, $end))
-                                    <flux:badge color="amber" class="ml-3" size="sm" variant="solid">
-                                        <span class="text-black">In Progress</span>
-                                    </flux:badge>
-                                @endif --}}
+                                
                             </div>
 
                             {{-- Modal Content --}}

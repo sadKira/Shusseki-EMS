@@ -288,14 +288,27 @@ class AttendanceBin extends Component
 
     public function render()
     {
+        // Attendance Logs
         $logs = EventAttendanceLog::where('event_id', $this->event->id)
             ->with('user')
             ->orderByDesc('time_in')
             ->get();
 
+         // Attendance stats
+        $totalAttendees = $this->event->attendanceLogs()->count();
+
+        // Status counts (without excused)
+        $presentCount = $this->event->attendanceLogs()->where('attendance_status', 'present')->count();
+        $lateCount    = $this->event->attendanceLogs()->where('attendance_status', 'late')->count();
+        $absentCount  = $this->event->attendanceLogs()->where('attendance_status', 'absent')->count();
+
         return view('livewire.management.attendance-bin', [
             'users' => $logs,
             'event' => $this->event,
+            'totalAttendees'   => $totalAttendees,
+            'presentCount'     => $presentCount,
+            'lateCount'        => $lateCount,
+            'absentCount'      => $absentCount,
         ]);
     }
 }

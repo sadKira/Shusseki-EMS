@@ -17,7 +17,6 @@ use App\Models\EventAttendanceLog;
 class Events extends Component
 {
     public $selectedMonth;
-
     public $selectedSchoolYear;
     public $search = '';
 

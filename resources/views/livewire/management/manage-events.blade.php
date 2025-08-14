@@ -7,7 +7,7 @@
                 <div class="mt-2">
                     <flux:breadcrumbs>
                         <flux:breadcrumbs.item :href="route('admin_dashboard')" wire:navigate>Home</flux:breadcrumbs.item>
-                        <flux:breadcrumbs.item :href="route('manage_events')" wire:navigate>Events
+                        <flux:breadcrumbs.item :href="route('event_timeline')" wire:navigate>Events
                         </flux:breadcrumbs.item>
                         <flux:breadcrumbs.item :href="route('manage_events')" :accent="true" wire:navigate>
                             <span class="text-[var(--color-accent)]">Events Bin<span>
@@ -162,30 +162,6 @@
 
             {{-- Events for the month --}}
             <div class="px-10 py-6 rounded-xl">
-                <section class="w-full flex items-center justify-between gap-2">
-                    
-                    {{-- <flux:button variant="ghost" href="{{route('create_event')}}" icon="plus" wire:navigate>Create Event</flux:button> --}}
-
-                    {{-- <flux:dropdown>
-                        <flux:button variant="filled" icon="chevron-down" size="sm"></flux:button>
-                        <flux:menu>
-                            <flux:menu.radio.group wire:model.live="selectedMonth">
-                                <flux:menu.radio checked value="January">January</flux:menu.radio>
-                                <flux:menu.radio value="February">February</flux:menu.radio>
-                                <flux:menu.radio value="March">March</flux:menu.radio>
-                                <flux:menu.radio value="April">April</flux:menu.radio>
-                                <flux:menu.radio value="May">May</flux:menu.radio>
-                                <flux:menu.radio value="June">June</flux:menu.radio>
-                                <flux:menu.radio value="July">July</flux:menu.radio>
-                                <flux:menu.radio value="August">August</flux:menu.radio>
-                                <flux:menu.radio value="September">September</flux:menu.radio>
-                                <flux:menu.radio value="October">October</flux:menu.radio>
-                                <flux:menu.radio value="November">November</flux:menu.radio>
-                                <flux:menu.radio value="December">December</flux:menu.radio>
-                            </flux:menu.radio.group>
-                        </flux:menu>
-                    </flux:dropdown> --}}
-                </section>
 
                 {{-- Events content --}}
                 <div
@@ -204,15 +180,15 @@
                                 wire:click="selectEvent({{ $event->id }})"
                                 >
                                 <div class="flex items-center gap-3">
-                                    <div>
-                                        {{-- <img src="https://picsum.photos/seed/{{ rand(0, 100000) }}/40/40" alt=""
-                                            class="rounded-xl"> --}}
+                                    {{-- <div>
+                                        <img src="https://picsum.photos/seed/{{ rand(0, 100000) }}/40/40" alt=""
+                                            class="rounded-xl">
                                         <flux:profile :chevron="false" :initials="$event->initials" avatar:color="{{ $event->avatar_color }}"/>
-                                    </div>
+                                    </div> --}}
                                     <div class="">
                                         <flux:text variant="strong">{{ $event->title }}</flux:text>
                                         <flux:text variant="subtle">
-                                            {{ \Carbon\Carbon::parse($event->date)->format('Y, F j') }} |
+                                            {{ \Carbon\Carbon::parse($event->date)->format('Y, F j') }}  | 
                                             {{  \Carbon\Carbon::parse($event->start_time)->format('g:i A') }} -
                                             {{ \Carbon\Carbon::parse($event->end_time)->format('g:i A') }}
                                         </flux:text>

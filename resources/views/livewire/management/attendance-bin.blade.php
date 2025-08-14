@@ -10,9 +10,10 @@
     </flux:header>
 
 
-    <div class="grid grid-cols-5 gap-10">
-        {{-- Video --}}
-        <div class="col-span-2 px-10 py-6">
+    <div class="grid grid-cols-5">
+
+        {{-- Left side --}}
+        <div class="col-span-2 px-10 py-6 space-y-5">
 
             {{-- Instascan --}}
             {{-- <div class="">
@@ -27,8 +28,83 @@
                 <flux:select id="camera-select" placeholder="Select Camera" label="Camera Devices"></flux:select>
             </div> --}}
 
+            {{-- Card Content --}}
+            <div 
+                class="relative grid min-h-50 md:min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
+                    border border-transparent 
+                    ">
+                <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
+                    style="background-image: url('{{ asset('storage/' . $event->image) }}');"
+                    {{-- style="background-image: url('https://picsum.photos/seed/{{ rand(0, 100000) }}/1080/566');" --}}
+                    >
+                    
+                    <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
+                    </div>
+                </div>
+                <div class="relative space-y-3 p-6 px-6 py-10 md:px-12">
+                    <flux:text class="font-medium text-zinc-300">
+                        {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
+                    </flux:text>
+                    <h2 class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                        {{ $event->title }}
+                    </h2>
+
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-1">
+                            <flux:icon.clock variant="solid" class="text-zinc-300 size-4" />
+                            <flux:heading size="sm" class="text-zinc-300">
+                                {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} -
+                                {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                            </flux:heading>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <flux:icon.map-pin variant="solid" class="text-zinc-300 size-4" />
+                            <flux:heading size="sm" class="text-zinc-300">
+                                {{ $event->location }}
+                            </flux:heading>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- Close attendance bin --}}
+            <div class="grid">
+                <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)">
+                    Leave Attendance Bin</flux:button>
+                <flux:modal.trigger name="close-AB">
+                    <flux:button variant="primary" color="amber" icon:trailing="shield-check" class="mt-3">Close
+                        Attendance Bin</flux:button>
+                </flux:modal.trigger>
+
+                {{-- Close AB modal --}}
+                <flux:modal name="close-AB" class="min-w-[22rem]">
+                    <div class="space-y-6">
+                        <div>
+                            <flux:heading size="lg">Close Attendance Bin?</flux:heading>
+                            <flux:text class="mt-2">
+                                <p>You're about to close the attendance bin.</p>
+                                <p>Only the Moderator can re-open the bin.</p>
+                            </flux:text>
+                        </div>
+                        <div class="flex gap-2">
+                            <flux:spacer />
+                            <flux:modal.close>
+                                <flux:button variant="ghost">Cancel</flux:button>
+                            </flux:modal.close>
+                            <flux:button variant="danger" wire:click="markEventAsFinished">Close Bin</flux:button>
+                        </div>
+                    </div>
+                </flux:modal>
+                <div class="flex items-center justify-center gap-1 mt-3">
+                    <flux:icon.information-circle class="text-zinc-400" variant="micro" />
+                    <flux:text class="text-xs">Closing the bin logs all absentees.</flux:text>
+                </div>
+            </div>
+
             {{-- Value receiver --}}
-            <div class="pointer-events-none">
+            <div class="pointer-events-none opacity-0">
                 <flux:input 
                     type="text"
                     wire:model.live="studentIdInput" 
@@ -43,84 +119,64 @@
 
 
         {{-- Attendance Display --}}
-        <div class="col-span-3 px-10 py-6">
+        <div class="col-span-3 px-7 py-6">
 
-            {{-- Bin Details --}}
-            <div class="flex items-start justify-between">
-                {{-- Event Details --}}
-                <div class="flex items-center gap-x-6">
+            {{-- Bin Stats --}}
+            <div class="flex items-center justify-between gap-2">
+                
+                <flux:heading size="xl">Attendance Bin</flux:heading>
 
-                    <flux:separator class="" vertical />
+                <div class="flex items-center">
 
-                    {{-- Event details content --}}
-                    <div class="space-y-3 text-balance">
-                        <flux:text class="mb-4" variant="strong">Academic Year <span
-                                class="text-[var(--color-accent)]">{{ $event->school_year }}</span></flux:text>
-                        <flux:heading size="xl">{{ $event->title }}</flux:heading>
-
-                        <div class="flex items-center gap-2 mt-4">
-                            <flux:icon.calendar class="text-zinc-50" />
-                            <flux:heading>
-                                {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }},
-                                {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} -
-                                {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
-                            </flux:heading>
-                        </div>
-
+                    {{-- Attendess Count --}}
+                    <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
+                        <flux:text>Total Attendees</flux:text>
                         <div class="flex items-center gap-2">
-                            <flux:icon.map-pin class="text-zinc-50" />
-                            <flux:heading>{{ $event->location }}</flux:heading>
+
+                            <flux:heading size="xl" level="1">
+
+                                @if ($totalAttendees > 1)
+                                    {{ $totalAttendees }} Students
+                                @elseif ($totalAttendees == 0)
+                                    {{ $totalAttendees }} Students
+                                @else
+                                    {{ $totalAttendees }} Student
+                                @endif
+
+                            </flux:heading>
+                        
                         </div>
 
+                    </div>
 
-                        <flux:heading class="flex items-center gap-2 mt-4">
-                            End of Time In Period: <span
-                                class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
+                    {{-- Present Students Count --}}
+                    <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
+                        <flux:text>Present Students</flux:text>
+                        <div class="flex items-center gap-2">
+                            
+                            <span class="w-3 h-3 bg-green-500 rounded-sm"></span>
+                            <flux:heading size="xl" level="1">{{ $presentCount }}
+                            </flux:heading>
+                        
+                        </div>
 
-                            <flux:tooltip position="right" toggleable>
-                                <flux:button icon="information-circle" variant="ghost" />
-                                <flux:tooltip.content class="max-w-[20rem] space-y-2">
-                                    <p>Students are expected to scan their QR</p>
-                                    <p>codes before the end of the time in period.</p>
-                                </flux:tooltip.content>
-                            </flux:tooltip>
-                        </flux:heading>
+                    </div>
+
+                    {{-- Late Students Count --}}
+                    <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
+                        <flux:text>Late Students</flux:text>
+                        <div class="flex items-center gap-2">
+                            
+                            <span class="w-3 h-3 bg-[var(--color-accent)] rounded-sm"></span>
+                            <flux:heading size="xl" level="1">{{ $lateCount }}
+                            </flux:heading>
+                        
+                        </div>
+
                     </div>
                 </div>
 
-                {{-- Close attendance bin --}}
-                <div class="grid justify-items-end">
-                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)">
-                        Leave Attendance Bin</flux:button>
-                    <flux:modal.trigger name="close-AB">
-                        <flux:button variant="primary" color="amber" icon:trailing="shield-check" class="mt-3">Close
-                            Attendance Bin</flux:button>
-                    </flux:modal.trigger>
-
-                    {{-- Close AB modal --}}
-                    <flux:modal name="close-AB" class="min-w-[22rem]">
-                        <div class="space-y-6">
-                            <div>
-                                <flux:heading size="lg">Close Attendance Bin?</flux:heading>
-                                <flux:text class="mt-2">
-                                    <p>You're about to close the attendance bin.</p>
-                                    <p>Only the Moderator can re-open the bin.</p>
-                                </flux:text>
-                            </div>
-                            <div class="flex gap-2">
-                                <flux:spacer />
-                                <flux:modal.close>
-                                    <flux:button variant="ghost">Cancel</flux:button>
-                                </flux:modal.close>
-                                <flux:button variant="danger" wire:click="markEventAsFinished">Close Bin</flux:button>
-                            </div>
-                        </div>
-                    </flux:modal>
-                    <div class="flex items-center gap-1 mt-3">
-                        <flux:icon.information-circle class="text-zinc-400" variant="micro" />
-                        <flux:text class="text-xs">Closing the bin logs all absentees.</flux:text>
-                    </div>
-                </div>
+                
             </div>
 
             {{-- Table --}}
@@ -151,7 +207,7 @@
                     <tbody>
                         @forelse ($users as $user)
                             <tr wire:key="attendance-log-{{ $user->id }}"
-                                class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+                                class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition">
 
                                 {{-- Name --}}
                                 <th scope="row"
