@@ -158,9 +158,9 @@ select:focus[data-flux-control] {
     .metallic-card-soft {
         /* @apply relative rounded-2xl p-4 bg-[#11100e] text-white overflow-hidden; */
         @apply relative bg-zinc-950 text-white overflow-hidden;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.05),
-            0 2px 6px rgba(0, 0, 0, 0.7);
+        /* border: 1px solid rgba(255, 255, 255, 0.06); */
+        /* box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+            0 2px 6px rgba(0, 0, 0, 0.7); */
     }
 
     .metallic-card-soft::before {
@@ -187,6 +187,235 @@ select:focus[data-flux-control] {
         );
     }
 
+    /* Attendance record */
+    .radial-glow-card {
+        @apply relative bg-zinc-950 text-white overflow-hidden;
+        /* box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+            0 2px 6px rgba(0, 0, 0, 0.7); */
+        /* border: 1px solid rgba(255, 255, 255, 0.06); */
+    }
+
+    .radial-glow-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at bottom right,
+            rgba(255, 255, 255, 0.06) 0%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+    }
+
+    .radial-glow-card:hover::before {
+        background: radial-gradient(
+            circle at bottom right,
+            rgba(255, 255, 255, 0.09) 0%,
+            rgba(255, 255, 255, 0) 100%
+        );
+    }
+
+    /* Amber Glow */
+    .radial-glow-card-amber {
+        @apply relative bg-zinc-950 text-white overflow-hidden;
+        /* box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+            0 2px 6px rgba(0, 0, 0, 0.7); */
+        /* border: 1px solid rgba(245, 158, 11, 0.3); */
+    }
+
+    .radial-glow-card-amber::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at bottom right,
+            rgba(255, 191, 0, 0.15) 0%,
+            rgba(255, 191, 0, 0) 100%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+    }
+
+    .radial-glow-card-amber:hover::before {
+        background: radial-gradient(
+            circle at bottom right,
+            rgba(255, 191, 0, 0.25) 0%,
+            rgba(255, 191, 0, 0) 100%
+        );
+    }
+
+    /* Red Glow */
+    .radial-glow-card-red {
+        @apply relative bg-zinc-950 text-white overflow-hidden;
+        /* box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+            0 2px 6px rgba(0, 0, 0, 0.7); */
+        /* border: 1px solid rgba(239, 68, 68, 0.3); */
+    }
+
+    .radial-glow-card-red::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at bottom right,
+            rgba(255, 0, 0, 0.15) 0%,
+            rgba(255, 0, 0, 0) 100%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+    }
+
+    .radial-glow-card-red:hover::before {
+        background: radial-gradient(
+            circle at bottom right,
+            rgba(255, 0, 0, 0.25) 0%,
+            rgba(255, 0, 0, 0) 100%
+        );
+    }
+
+    /* Green Glow */
+    .radial-glow-card-green {
+        @apply relative bg-zinc-950 text-white overflow-hidden;
+        /* box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+            0 2px 6px rgba(0, 0, 0, 0.7); */
+        /* border: 1px solid rgba(34, 197, 94, 0.3); */
+    }
+
+    .radial-glow-card-green::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at bottom right,
+            rgba(0, 255, 128, 0.15) 0%,
+            rgba(0, 255, 128, 0) 70%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+    }
+
+    .radial-glow-card-green:hover::before {
+        background: radial-gradient(
+            circle at bottom right,
+            rgba(0, 255, 128, 0.25) 0%,
+            rgba(0, 255, 128, 0) 70%
+        );
+    }
+
+    /* === Base Vertical Glow Card === */
+    .vertical-glow-card {
+        @apply relative bg-zinc-950 text-white overflow-hidden;
+    }
+
+    /* White Glow */
+    .vertical-glow-white::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(255, 255, 255, 0.06) 0%,
+            rgba(255, 255, 255, 0) 96%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+        /* border: 1px solid rgba(255, 255, 255, 0.06); */
+    }
+
+    .vertical-glow-white:hover::before {
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(255, 255, 255, 0.09) 0%,
+            rgba(255, 255, 255, 0) 96%
+        );
+    }
+
+    /* Amber Glow */
+    .vertical-glow-amber::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(245, 158, 11, 0.06) 0%,
+            rgba(245, 158, 11, 0) 70%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .vertical-glow-amber:hover::before {
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(245, 158, 11, 0.09) 0%,
+            rgba(245, 158, 11, 0) 70%
+        );
+    }
+
+    /* Green Glow */
+    .vertical-glow-green::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(34, 197, 94, 0.06) 0%,
+            rgba(34, 197, 94, 0) 70%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .vertical-glow-green:hover::before {
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(34, 197, 94, 0.09) 0%,
+            rgba(34, 197, 94, 0) 70%
+        );
+    }
+
+    /* Red Glow */
+    .vertical-glow-red::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(239, 68, 68, 0.06) 0%,
+            rgba(239, 68, 68, 0) 70%
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .vertical-glow-red:hover::before {
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(239, 68, 68, 0.09) 0%,
+            rgba(239, 68, 68, 0) 70%
+        );
+    }
+
+    /* Admin Dashboard */
     .event-status-finished {
         @apply relative bg-[#11100e] text-white overflow-hidden;
         border: 1px solid rgba(34, 197, 94, 0.15); /* green border */

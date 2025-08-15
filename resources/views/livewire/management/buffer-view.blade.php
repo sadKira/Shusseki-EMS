@@ -19,100 +19,104 @@
         </div>
     </div>
 
-    <div class="max-w-5xl mx-auto p-6 space-y-6">
-        {{-- Page Title --}}
-        <div class="flex items-center justify-between">
-            <flux:heading size="xl" class="text-white">📄 Generate Report</flux:heading>
+    <div class="p-6 bg-white rounded-xl shadow-md space-y-6" wire:ignore>
+        {{-- Header --}}
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Student Attendance Records</h2>
+            <span class="text-sm text-gray-500">School Year: 2024-2025</span>
         </div>
 
-        {{-- Card --}}
-        <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-lg space-y-6">
-            {{-- Description --}}
-            <p class="text-sm text-zinc-400">
-                Configure your report settings. You can generate a report for the entire school year or filter it to a specific month.
-            </p>
-
-            {{-- School Year Select --}}
-            <div class="space-y-1">
-                <flux:label for="school_year">School Year</flux:label>
-                <flux:select id="school_year" wire:model="selectedSchoolYear" class="w-full">
-                    <option value="">Select School Year</option>
-                    <option value="2024-2025">2024-2025</option>
-                    <option value="2023-2024">2023-2024</option>
-                    <option value="2022-2023">2022-2023</option>
-                </flux:select>
+        {{-- Chart --}}
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="w-full md:w-1/3 flex justify-center items-center">
+                <canvas id="attendancePieChart" class="max-w-[250px]"></canvas>
             </div>
 
-            {{-- Month Select --}}
-            <div class="space-y-1">
-                <flux:label for="month">Month (Optional)</flux:label>
-                <flux:select id="month" wire:model="selectedMonth" class="w-full">
-                    <option value="">All Months</option>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </flux:select>
-            </div>
-
-            {{-- Buttons --}}
-            <div class="flex space-x-3 pt-4">
-                <flux:button color="primary" wire:click="generateReport">
-                    Generate Report
-                </flux:button>
-
-                <flux:button color="secondary" wire:click="resetFilters">
-                    Reset
-                </flux:button>
+            {{-- Summary Counts --}}
+            <div class="w-full md:w-2/3 grid grid-cols-3 gap-4">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+                    <h3 class="text-lg font-bold text-green-700">Present</h3>
+                    <p class="text-2xl font-semibold text-green-900">120</p>
+                </div>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+                    <h3 class="text-lg font-bold text-yellow-700">Late</h3>
+                    <p class="text-2xl font-semibold text-yellow-900">15</p>
+                </div>
+                <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                    <h3 class="text-lg font-bold text-red-700">Absent</h3>
+                    <p class="text-2xl font-semibold text-red-900">8</p>
+                </div>
             </div>
         </div>
 
-        {{-- Example Table for Preview (Static Data) --}}
-        <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 shadow-lg">
-            <flux:heading size="md" class="mb-4 text-white">Preview</flux:heading>
+        {{-- Table --}}
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 border-b">
+                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Student Name</th>
+                        <th class="px-4 py-2 text-center text-sm font-semibold text-gray-700">Present</th>
+                        <th class="px-4 py-2 text-center text-sm font-semibold text-gray-700">Late</th>
+                        <th class="px-4 py-2 text-center text-sm font-semibold text-gray-700">Absent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $students = [
+                            ['name' => 'Juan Dela Cruz', 'present' => 20, 'late' => 2, 'absent' => 1],
+                            ['name' => 'Maria Santos', 'present' => 18, 'late' => 4, 'absent' => 1],
+                            ['name' => 'Pedro Reyes', 'present' => 15, 'late' => 1, 'absent' => 7],
+                            ['name' => 'Ana Villanueva', 'present' => 22, 'late' => 0, 'absent' => 1],
+                            ['name' => 'Mark Garcia', 'present' => 19, 'late' => 3, 'absent' => 1],
+                        ];
+                    @endphp
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-gray-400">
-                    <thead class="text-xs uppercase bg-zinc-800 text-gray-300">
-                        <tr>
-                            <th scope="col" class="px-4 py-3">Event</th>
-                            <th scope="col" class="px-4 py-3">Date</th>
-                            <th scope="col" class="px-4 py-3">Total Attendees</th>
-                            <th scope="col" class="px-4 py-3">Present</th>
-                            <th scope="col" class="px-4 py-3">Late</th>
-                            <th scope="col" class="px-4 py-3">Absent</th>
+                    @foreach ($students as $student)
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-2 text-sm text-gray-800">{{ $student['name'] }}</td>
+                            <td class="px-4 py-2 text-sm text-center text-green-700 font-medium">{{ $student['present'] }}
+                            </td>
+                            <td class="px-4 py-2 text-sm text-center text-yellow-700 font-medium">{{ $student['late'] }}
+                            </td>
+                            <td class="px-4 py-2 text-sm text-center text-red-700 font-medium">{{ $student['absent'] }}</td>
                         </tr>
-                    </thead>
-                    <tbody class="divide-y divide-zinc-800">
-                        <tr>
-                            <td class="px-4 py-3">Orientation 2024</td>
-                            <td class="px-4 py-3">August 15, 2024</td>
-                            <td class="px-4 py-3">120</td>
-                            <td class="px-4 py-3 text-green-400">110</td>
-                            <td class="px-4 py-3 text-yellow-400">5</td>
-                            <td class="px-4 py-3 text-red-400">5</td>
-                        </tr>
-                        <tr>
-                            <td class="px-4 py-3">Sportsfest</td>
-                            <td class="px-4 py-3">September 10, 2024</td>
-                            <td class="px-4 py-3">150</td>
-                            <td class="px-4 py-3 text-green-400">140</td>
-                            <td class="px-4 py-3 text-yellow-400">7</td>
-                            <td class="px-4 py-3 text-red-400">3</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
+
+    {{-- Chart.js Script --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('attendancePieChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Present', 'Late', 'Absent'],
+                    datasets: [{
+                        data: [120, 15, 8], // Static data for now
+                        backgroundColor: ['#22c55e', '#eab308', '#ef4444'],
+                        borderColor: ['#16a34a', '#ca8a04', '#dc2626'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
 
 
 

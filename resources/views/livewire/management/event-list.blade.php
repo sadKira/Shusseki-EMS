@@ -80,6 +80,7 @@
                                 {{-- Card Content --}}
                                 <a 
                                     href="{{route('view_event_timeline', $event)}}"
+                                    wire:navigate
                                     class="relative min-h-17 w-full overflow-hidden rounded-xl bg-zinc-950
                                         border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
                                         cursor-pointer

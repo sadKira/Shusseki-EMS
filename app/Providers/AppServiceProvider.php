@@ -114,10 +114,11 @@ class AppServiceProvider extends ServiceProvider
                     'settings.password' => 'Settings',
                     'settings.schoolyear' => 'Settings',
                     'event_timeline' => 'Event Timeline',
-                    'student_records' => 'Student Records',
+                    'attendance_records' => 'Attendance Record',
                     'generate_report' => 'Generate Report',
                     'buffer_view' => 'Buffer View',
                     'settings.sakey' => 'Settings',
+                    'view_student_record' => 'Student Record',
 
                     //User / Tsuushin
                     'dashboard' => 'Home',

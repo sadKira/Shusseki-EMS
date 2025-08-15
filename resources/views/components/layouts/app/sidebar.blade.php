@@ -63,24 +63,22 @@
                         :current="request()->routeIs(['manage_events', 'create_event', 'view_event', 'edit_event'])" wire:navigate>
                         {{ __('Events Bin') }}
                     </flux:navlist.item>
-                    <flux:navlist.item icon="envelope" :href="route('coverage_events')"
-                        :current="request()->routeIs(['coverage_events'])" wire:navigate>
-                        {{ __('Events Coverage') }}
-                    </flux:navlist.item>
                 @endcan
             </flux:navlist.group>
 
             {{-- Students navlist --}}
             <flux:navlist.group :heading="__('Students')" class="grid">
                 @can('manage')
-                    <flux:navlist.item icon="newspaper" :href="route('student_records')"
-                        :current="request()->routeIs(['student_records'])" wire:navigate>
-                        {{ __('Student Records') }}
-                    </flux:navlist.item>
+                    
                     @can('SA')
                         <flux:navlist.item icon="user" :href="route('manage_students')"
                             :current="request()->routeIs(['manage_students'])" wire:navigate>
                             {{ __('Manage Students') }}
+                        </flux:navlist.item>
+
+                        <flux:navlist.item icon="newspaper" :href="route('attendance_records')"
+                            :current="request()->routeIs(['attendance_records', 'view_student_record'])" wire:navigate>
+                            {{ __('Attendance Records') }}
                         </flux:navlist.item>
 
                         {{-- Dynamic badge --}}
@@ -91,7 +89,13 @@
                             :current="request()->routeIs(['manage_students'])" wire:navigate>
                             {{ __('Student List') }}
                         </flux:navlist.item>
+
+                        <flux:navlist.item icon="newspaper" :href="route('attendance_records')"
+                            :current="request()->routeIs(['attendance_records', 'view_student_record'])" wire:navigate>
+                            {{ __('Attendance Records') }}
+                        </flux:navlist.item>
                     @endcan
+                    
                 @endcan
             </flux:navlist.group>
 
@@ -102,8 +106,8 @@
         <flux:navlist variant="outline">
             <flux:navlist.item icon="code-bracket" :href="route('buffer_view')"
                             :current="request()->routeIs(['buffer_view'])" wire:navigate>Buffer</flux:navlist.item>
-            <flux:navlist.item icon="information-circle" :href="route('generate_report')"
-                            :current="request()->routeIs(['generate_report'])" wire:navigate>Generate Report</flux:navlist.item>
+            {{-- <flux:navlist.item icon="information-circle" :href="route('generate_report')"
+                            :current="request()->routeIs(['generate_report'])" wire:navigate>Generate Report</flux:navlist.item> --}}
             <flux:navlist.item icon="cog-6-tooth" :href="route('settings.profile')"
                             :current="request()->routeIs(['settings.profile', 'settings.password', 'settings.schoolyear', 'settings.sakey'])" wire:navigate>Settings</flux:navlist.item>
         </flux:navlist>

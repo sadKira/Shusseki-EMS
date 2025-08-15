@@ -21,21 +21,34 @@
         </div>
 
         {{-- School year --}}
-        <div class="whitespace-nowrap">
-            <flux:text class="text-[var(--color-accent)] flex justify-end">Academic Year</flux:text>
+        <div class="flex items-center gap-3">
+            {{-- <flux:text class="text-[var(--color-accent)] flex justify-end">Academic Year</flux:text>
             <div class="flex items-center gap-2">
                 <flux:icon.presentation-chart-line class="text-zinc-50" variant="solid" />
                 <flux:heading size="xl" level="1">{{ $selectedSchoolYear }}</flux:heading>
-            </div>
+            </div> --}}
+
+            <flux:button icon="calendar-date-range" variant="ghost">A.Y. {{ $selectedSchoolYear }}</flux:button>
+            <flux:button 
+                onclick="setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 1000)" 
+                wire:click="generateYearlyReport" 
+                size="sm" 
+                icon="cloud-arrow-down" 
+                variant="primary" 
+                color="amber"
+                    >
+                    Generate Report
+                    
+            </flux:button>
         </div>
 
     </div>
 
     {{-- Dashboard content --}}
-    <div class="flex flex-col gap-6 ">
+    <div class="flex flex-col gap-3 ">
 
         {{-- Row 1 --}}
-        <div class="grid grid-cols-4 gap-6 whitespace-nowrap">
+        <div class="grid grid-cols-4 gap-3 whitespace-nowrap">
 
             {{-- Events in this school year --}}
             <div class="metallic-card-soft rounded-xl px-7 py-6 flex items-center justify-between">
@@ -54,7 +67,7 @@
                     <flux:text>This Academic Year</flux:text>
                 </div>
 
-                <flux:icon.bell-alert class="size-10 text-[var(--color-accent)]" variant="outline" />
+                <flux:icon.rectangle-group class="size-10 text-[var(--color-accent)]" variant="outline" />
             </div>
 
             {{-- Attendance Rate --}}
@@ -136,7 +149,7 @@
         </div>
 
         {{-- Row 2 --}}
-        <div class="flex items-stretch gap-6">
+        <div class="flex items-stretch gap-3">
 
             {{-- Attendance Trends --}}
             <div class="flex flex-col gap-7 metallic-card-soft px-7 py-6 rounded-xl whitespace-nowrap">
@@ -178,7 +191,7 @@
                     @else
                         <canvas id="monthlyAttendanceTrendChart" class="w-full h-full"></canvas>
                         <div class="absolute inset-0 flex items-center justify-center text-zinc-400 text-lg ">
-                            No events for the month
+                            No events 
                         </div>
                     @endif
                 </div>
@@ -356,6 +369,10 @@
         });
 
         document.addEventListener('livewire:navigated', function () {
+            initAttendanceTrendChart();
+        });
+
+        document.addEventListener('livewire:update', function () {
             initAttendanceTrendChart();
         });
 

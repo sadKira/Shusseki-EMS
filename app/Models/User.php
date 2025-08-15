@@ -65,6 +65,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
+
+    /**
      * Get the user's initials  
      */
     public function initials(): string
@@ -167,4 +177,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(EventAttendanceLog::class);
     }
+
+
 }
