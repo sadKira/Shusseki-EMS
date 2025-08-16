@@ -93,13 +93,7 @@
                         <flux:text>Sanctioned Students</flux:text>
                         <flux:heading size="xl" level="1">
 
-                            @if ($sanctionedStudents->count() != 0)
-                                <flux:heading size="xl" level="1">{{ $sanctionedStudents->count() }} {{$sanctionedStudents->count() > 1 ? "Students" : "Student"}}
-                                </flux:heading>
-                            @else
-                                <flux:heading size="xl" level="1">{{ $sanctionedStudents->count() }} Students
-                                </flux:heading>
-                            @endif
+                            {{ $sanctionedStudents->count() }}
 
                         </flux:heading>
 
@@ -140,10 +134,10 @@
 
                                 <div class="flex items-end gap-2">
                                     @if ($student->late_count > 0)
-                                        <flux:badge variant="solid" size="sm" color="amber">Late ({{ $student->late_count }})</flux:badge>
+                                        <flux:badge variant="solid" size="sm" color="amber">{{ $student->late_count }} Late(s)</flux:badge>
                                     @endif
                                     @if ($student->absent_count > 0)
-                                        <flux:badge variant="solid" size="sm" color="red">Absent ({{ $student->absent_count }})</flux:badge>
+                                        <flux:badge variant="solid" size="sm" color="red">({{ $student->absent_count }}) Absence(s)</flux:badge>
                                     @endif
                                 </div>
                             </a>

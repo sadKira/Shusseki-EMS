@@ -31,11 +31,6 @@
                 {{ __('Home') }}
             </flux:navbar.item>
 
-            {{-- <flux:navbar.item icon="qr-code" :href="route('qr_code')" :current="request()->routeIs('qr_code')"
-                wire:navigate>
-                {{ __('My QR Code') }}
-            </flux:navbar.item> --}}
-
             <flux:navbar.item icon="calendar" :href="route('events')" :current="request()->routeIs('events')"
                 wire:navigate>
                 {{ __('Event Calendar') }}

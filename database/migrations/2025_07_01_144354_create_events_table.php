@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
             $table->date('date');
             $table->string('location');
             $table->time('time_in');
@@ -23,6 +22,7 @@ return new class extends Migration
             $table->string('school_year');
             $table->string('image');
             $table->enum('status', ['not_finished', 'finished', 'postponed'])->default('not_finished');
+            $table->enum('tsuushin_request', ['approved', 'not_approved'])->default('not_approved');
             $table->timestamps();
         });
     }

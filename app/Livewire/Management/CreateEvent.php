@@ -14,7 +14,7 @@ class CreateEvent extends Component
 {
     use WithFileUploads;
 
-    public $title, $description, $date, $location;
+    public $title, $date, $location;
     public $time_in, $start_time, $end_time, $image;
 
     public $selectedSchoolYear; // Bound to the global school year
@@ -24,7 +24,6 @@ class CreateEvent extends Component
         // dd($this->tag);
         return [
             'title' => 'required|string|unique:events,title|max:155',
-            'description' => 'required|string|min:40|max:2000',
             'date' => 'required|string',
             'location' => 'required|string|max:255',
             'time_in' => 'required|date_format:h:i A',
@@ -62,7 +61,6 @@ class CreateEvent extends Component
 
             $event = Event::create([
                 'title' => $this->title,
-                'description' => $this->description,
                 'date' => $formattedDate,
                 'location' => $this->location,
                 'time_in' => $formattedIn,
@@ -72,7 +70,6 @@ class CreateEvent extends Component
                 'image' => $imagePath,
             ]);
 
-            session()->flash('success', 'Event created successfully!');
             return redirect()->route('manage_events');
         // } catch (\Exception $e) {
         //     dd($e->getMessage());

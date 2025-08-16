@@ -136,7 +136,7 @@ class AdminDashboard extends Component
             $monthlySummary[] = [
                 'month' => $monthName,
                 'total_events' => $monthEvents->count(),
-                'total_attendees' => $logs->count(),
+                'total_attendees' => $logs->where('attendance_status', '!=', 'absent')->count(),
                 'present' => $logs->where('attendance_status', 'present')->count(),
                 'late' => $logs->where('attendance_status', 'late')->count(),
                 'absent' => $logs->where('attendance_status', 'absent')->count(),

@@ -19,7 +19,6 @@ use App\Livewire\Management\AttendanceBin;
 use App\Livewire\Management\BufferView;
 use App\Livewire\Management\EventList;
 use App\Livewire\Management\StudentRecord;
-use App\Livewire\Management\GenerateReport;
 use App\Livewire\Management\ViewStudentRecord;
 
 use App\Livewire\User\Dashboard;
@@ -83,8 +82,6 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/attendance-bin/{event}', AttendanceBin::class)->name('attendance_bin');
     Route::get('admin/attendance-record',StudentRecord::class)->name('attendance_records');
     
-    Route::get('admin/generate-report', GenerateReport::class)->name('generate_report');
-
     Route::get('admin/create-event', CreateEvent::class)->name('create_event');
     Route::get('admin/edit-event/{event}', EditEvent::class)->name('edit_event');
 

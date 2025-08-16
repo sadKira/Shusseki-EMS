@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Enums\EventStatus;
 use App\Enums\AttendanceStatus;
+use App\Enums\TsuushinRequest;
 use Illuminate\Support\Facades\Auth;
 
 class Event extends Model
@@ -14,7 +15,6 @@ class Event extends Model
     protected $fillable = [
 
         'title',
-        'description',
         'date',
         'location',
         'time_in',
@@ -23,12 +23,14 @@ class Event extends Model
         'school_year',
         'image',
         'status',
+        'tsuushin_request',
 
     ];
 
     protected $casts = [
         
         'status' => EventStatus::class,
+        'tsuushin_request' => TsuushinRequest::class,
 
     ];
 

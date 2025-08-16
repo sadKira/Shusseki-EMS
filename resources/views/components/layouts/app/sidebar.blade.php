@@ -104,10 +104,9 @@
         <flux:spacer />
 
         <flux:navlist variant="outline">
-            <flux:navlist.item icon="code-bracket" :href="route('buffer_view')"
-                            :current="request()->routeIs(['buffer_view'])" wire:navigate>Buffer</flux:navlist.item>
-            {{-- <flux:navlist.item icon="information-circle" :href="route('generate_report')"
-                            :current="request()->routeIs(['generate_report'])" wire:navigate>Generate Report</flux:navlist.item> --}}
+            {{-- <flux:navlist.item icon="code-bracket" :href="route('buffer_view')"
+                            :current="request()->routeIs(['buffer_view'])" wire:navigate>Buffer</flux:navlist.item> --}}
+
             <flux:navlist.item icon="cog-6-tooth" :href="route('settings.profile')"
                             :current="request()->routeIs(['settings.profile', 'settings.password', 'settings.schoolyear', 'settings.sakey'])" wire:navigate>Settings</flux:navlist.item>
         </flux:navlist>

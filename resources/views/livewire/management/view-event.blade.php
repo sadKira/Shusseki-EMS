@@ -176,6 +176,18 @@
                             </flux:tooltip.content>
                         </flux:tooltip>
                     </flux:heading>
+
+                    <div class="flex items-center gap-2">
+                        <flux:heading class="flex items-center gap-2">
+                            Media Coverage: 
+                        </flux:heading>
+
+                        @if ($event->tsuushin_request == \App\Enums\TsuushinRequest::NotApproved)
+                            <flux:badge color="zinc" class="" variant="solid">None</flux:badge>
+                        @else
+                            <flux:badge color="green" class="" variant="solid">Available</flux:badge>
+                        @endif
+                    </div>
                     
                     
                     {{-- Admin tools --}}

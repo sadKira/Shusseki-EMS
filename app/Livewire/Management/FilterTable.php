@@ -176,6 +176,28 @@ class FilterTable extends Component
         Flux::modals()->close();
                 
     }
+
+    // Mark student as Tsuushin
+    public function markTsuushin($userId)
+    {
+        $user = User::find($userId);
+        $user->update(['tsuushin' => 'member']);
+
+        // Close modal
+        Flux::modals()->close();
+
+    }
+
+    // Revoke student as Tsuushin
+    public function removeTsuushin($userId)
+    {
+        $user = User::find($userId);
+        $user->update(['tsuushin' => 'not_member']);
+
+        // Close modal
+        Flux::modals()->close();
+
+    }
     
     // Clear filters
     public function clearFilters()
@@ -250,6 +272,11 @@ class FilterTable extends Component
             ->where('account_status', 'inactive')
             ->count();
 
+        // Tsuushin Member Count
+        $tsuushinCount = (clone $baseQuery)
+            ->where('tsuushin', 'member')
+            ->count();
+
         // Build the filtered query for display
         $filteredQuery = (clone $baseQuery)
             ->when($this->selectedStatus === 'Active Accounts', function ($query) {
@@ -264,6 +291,8 @@ class FilterTable extends Component
                 $query->where('course', $this->selectedStatus_course);
             })
             ->search($this->search)
+            // Prioritize tsuushin = 'member'
+            ->orderByRaw("CASE WHEN tsuushin = 'member' THEN 0 ELSE 1 END")
             ->orderBy($this->sortField, $this->sortDirection);
 
         
@@ -277,6 +306,7 @@ class FilterTable extends Component
             'totalApproved' => $totalApproved,
             'activeCount' => $activeCount,
             'inactiveCount' => $inactiveCount,
+            'tsuushinCount' => $tsuushinCount,
             'schoolYear' => $this->selectedSchoolYear,
             'activePercentage' => $activePercentage,
             'inactivePercentage' => $inactivePercentage,

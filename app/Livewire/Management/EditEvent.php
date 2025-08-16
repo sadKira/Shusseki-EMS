@@ -14,9 +14,8 @@ use Illuminate\Validation\Rule;
 class EditEvent extends Component
 {
     use WithFileUploads;
-
     public $event;
-    public $title, $description, $date, $location;
+    public $title, $date, $location;
     public $time_in, $start_time, $end_time, $image;
 
     // Mounting data
@@ -25,7 +24,6 @@ class EditEvent extends Component
         $this->event = $event;
 
         $this->title = $event->title;
-        $this->description = $event->description;
         $this->date = Carbon::parse($event->date)->format('F d, Y');
         $this->location = $event->location;
         $this->time_in = Carbon::parse($event->time_in)->format('h:i A');
@@ -43,7 +41,6 @@ class EditEvent extends Component
             // Rule::unique('events', 'title')->ignore($this->event->id)
             ],
 
-            'description' => 'required|string|min:40|max:2000',
             'date' => 'required|string',
             'location' => 'required|string|max:255',
             'time_in' => 'required|date_format:h:i A',
@@ -73,7 +70,6 @@ class EditEvent extends Component
 
         $this->event->update([
             'title' => $this->title,
-            'description' => $this->description,
             'date' => $formattedDate,
             'location' => $this->location,
             'time_in' => $formattedIn,

@@ -30,7 +30,7 @@
 
             <flux:button icon="calendar-date-range" variant="ghost">A.Y. {{ $selectedSchoolYear }}</flux:button>
             <flux:button 
-                onclick="setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 1000)" 
+                onclick="setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 4000)" 
                 wire:click="generateYearlyReport" 
                 size="sm" 
                 icon="cloud-arrow-down" 

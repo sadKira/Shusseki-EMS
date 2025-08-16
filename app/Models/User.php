@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\UserApproval;
 use App\Enums\UserRole;
 use App\Enums\AccountStatus;
+use App\Enums\TsuushinRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -35,6 +36,7 @@ class User extends Authenticatable
         'role',
         'status',
         'account_status',
+        'tsuushin',
 
     ];
 
@@ -61,6 +63,7 @@ class User extends Authenticatable
             'role' => UserRole::class,
             'status' => UserApproval::class,
             'account_status' => AccountStatus::class,
+            'tsuushin' => TsuushinRole::class,
         ];
     }
 

@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-3">
 
     {{-- Sub headings --}}
-    <div class="flex gap-20 items-center justify-center-safe">
+    <div class="flex gap-14 items-center justify-center-safe">
 
         <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
 
@@ -58,6 +58,22 @@
 
                     <flux:text class="text-xs dark:text-red-500">{{ $inactivePercentage }}%</flux:text>
                 </div>
+            </div>
+
+        </div>
+
+        <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
+            <flux:text>Tsuushin Officer</flux:text>
+            <div class="flex items-end gap-2">
+                
+                @if ($tsuushinCount < 1)
+                    <flux:heading size="xl" level="1">No Officer Set
+                    </flux:heading>
+                @else
+                    <flux:heading size="xl" level="1">{{ $tsuushinCount }} Officer Set
+                    </flux:heading>
+                @endif
+              
             </div>
 
         </div>
@@ -375,7 +391,12 @@
                                                 {{-- color:seed="{{ auth()->user()->id }}" --}}
                                                 />
                                                 <div class="!flex !flex-col">
-                                                    <div class="font-bold">{!! $user->highlightField('name', $search) !!}</div>
+                                                    <div class="flex items-center gap-2">
+                                                        <div class="font-bold">{!! $user->highlightField('name', $search) !!}</div>
+                                                        @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
+                                                            <flux:badge variant="solid" size="sm" color="blue">MKD Tsuushin</flux:badge>
+                                                        @endif
+                                                    </div>
                                                     <div class="text-zinc-400">{!! $user->highlightField('email', $search) !!}</div>
                                                 </div>
                                             </td>
@@ -432,6 +453,20 @@
                                                                         <flux:menu.item variant="danger" icon="user-minus">Mark as
                                                                             Inactive</flux:menu.item>
                                                                     </flux:modal.trigger>
+
+                                                                    @if ($tsuushinCount < 1)
+                                                                        <flux:modal.trigger :name="'tag-tsuushin-'.$user->id">
+                                                                            <flux:menu.item icon="camera">Tag as
+                                                                                Tsuushin</flux:menu.item>
+                                                                        </flux:modal.trigger>
+                                                                    @endif
+
+                                                                    @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
+                                                                        <flux:modal.trigger :name="'remove-tsuushin-'.$user->id">
+                                                                            <flux:menu.item variant="danger" icon="minus-circle">Remove
+                                                                                Tsuushin Tag</flux:menu.item>
+                                                                        </flux:modal.trigger>
+                                                                    @endif
 
                                                                 </flux:menu>
                                                             </flux:dropdown>
@@ -518,6 +553,52 @@
                                                             </flux:modal.close>
                                                             <flux:button variant="danger"
                                                                 wire:click="removeAccount({{ $user->id }})">Remove Account
+                                                            </flux:button>
+                                                        </div>
+                                                    </div>
+                                                </flux:modal>
+
+                                                {{-- Tag as Tsuushin --}}
+                                                <flux:modal :name="'tag-tsuushin-'.$user->id" :dismissible="false"
+                                                    class="min-w-[22rem]">
+                                                    <div class="space-y-6">
+                                                        <div>
+                                                            <flux:heading size="lg">Tag Student as Tsuushin?</flux:heading>
+                                                            <flux:text class="mt-2">
+                                                                <p>You're about to tag {{ $user->name }} as a Tsuushin member.</p>
+                                                                <p>They will receive media coverage requests.</p>
+                                                            </flux:text>
+                                                        </div>
+                                                        <div class="flex gap-2">
+                                                            <flux:spacer />
+                                                            <flux:modal.close>
+                                                                <flux:button variant="ghost">Cancel</flux:button>
+                                                            </flux:modal.close>
+                                                            <flux:button variant="primary" color="blue"
+                                                                wire:click="markTsuushin({{ $user->id }})">Tag as Tsuushin
+                                                            </flux:button>
+                                                        </div>
+                                                    </div>
+                                                </flux:modal>
+
+                                                {{-- Remove Tsuushin Tag --}}
+                                                <flux:modal :name="'remove-tsuushin-'.$user->id" :dismissible="false"
+                                                    class="min-w-[22rem]">
+                                                    <div class="space-y-6">
+                                                        <div>
+                                                            <flux:heading size="lg">Remove Tsuushin Tag?</flux:heading>
+                                                            <flux:text class="mt-2">
+                                                                <p>You're about to remove {{ $user->name }}'s Tsuushin tag.</p>
+                                                                <p>They will not receive media coverage requests.</p>
+                                                            </flux:text>
+                                                        </div>
+                                                        <div class="flex gap-2">
+                                                            <flux:spacer />
+                                                            <flux:modal.close>
+                                                                <flux:button variant="ghost">Cancel</flux:button>
+                                                            </flux:modal.close>
+                                                            <flux:button variant="danger"
+                                                                wire:click="removeTsuushin({{ $user->id }})">Remove Tag
                                                             </flux:button>
                                                         </div>
                                                     </div>

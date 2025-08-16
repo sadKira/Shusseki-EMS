@@ -13,6 +13,7 @@ use App\Models\SchoolYear;
 use App\Models\EventAttendanceLog;
 use Carbon\Carbon;
 use App\Enums\EventStatus;
+use App\Enums\TsuushinRequest;
 
 #[Layout('components.layouts.user_app')]
 class Dashboard extends Component
@@ -29,6 +30,16 @@ class Dashboard extends Component
         // Setting default school year
         $this->selectedSchoolYear = Setting::getSchoolYear();
     }
+
+    // Approve covereage request
+    public function approveRequest($eventId)
+    {
+        $event = Event::find($eventId);
+        $event->update(['tsuushin_request' => 'approved']);
+
+    }
+
+
 
     public function render()
     {
@@ -66,9 +77,21 @@ class Dashboard extends Component
             ->get()
             ->keyBy('event_id'); // makes it easy to access by event ID
 
+        // Detects upcoming events
+        $upcomingEvents = Event::where('status', '!=', EventStatus::Finished)
+        ->where('status', '!=', EventStatus::Postponed)
+        ->where('tsuushin_request','!=',TsuushinRequest::Approved)
+        ->whereBetween('date', [
+            Carbon::today(),
+            Carbon::today()->addDays(7)
+        ])
+        ->orderBy('date', 'asc')
+        ->get();
+
         return view('livewire.user.dashboard', [
             'events' => $events,
             'attendanceLogs' => $attendanceLogs,
+            'upcomingEvents' => $upcomingEvents,
         ]);
     }
 }

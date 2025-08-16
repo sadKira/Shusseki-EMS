@@ -26,14 +26,14 @@ class DatabaseSeeder extends Seeder
             SchoolYearSeeder::class,
         ]);
 
-        User::factory(10)->create();
+        User::factory(180)->create();
     
-        Event::factory(30)->create();
+        Event::factory(15)->create();
 
-        Setting::create([
-            'key' => 'current_school_year',
-            'value' => '2024-2025',
-        ]);
+        // Setting::create([
+        //     'key' => 'current_school_year',
+        //     'value' => '2024-2025',
+        // ]);
 
         // Create events for each school year - 5 events per month for all 12 months of each year
         $schoolYearMonths = [

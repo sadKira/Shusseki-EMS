@@ -27,14 +27,24 @@
                 @endif
             </div>
 
-            <div class="flex items-center gap-4">
-                <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
-                </div>
+            {{-- Profile Update button --}}
+            <div x-data="{ shown: false }" x-init="
+                    @this.on('profile-updated', () => {
+                        shown = true;
+                        setTimeout(() => { shown = false }, 2000);
+                    })
+                " class="">
 
-                <x-action-message class="me-3" on="profile-updated">
-                    {{ __('Saved.') }}
-                </x-action-message>
+                <!-- Button (default, shown when callout is hidden) -->
+                <template x-if="!shown">
+                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
+                </template>
+
+                <!-- Callout (shown temporarily when event fires) -->
+                <template x-if="shown">
+                    <flux:callout variant="success" icon="check-circle" heading="Profile Updated" />
+                </template>
+
             </div>
         </form>
 

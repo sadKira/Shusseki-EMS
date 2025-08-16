@@ -295,7 +295,7 @@ class AttendanceBin extends Component
             ->get();
 
          // Attendance stats
-        $totalAttendees = $this->event->attendanceLogs()->count();
+        $totalAttendees = $this->event->attendanceLogs()->where('attendance_status', '!=', 'absent')->count();
 
         // Status counts (without excused)
         $presentCount = $this->event->attendanceLogs()->where('attendance_status', 'present')->count();

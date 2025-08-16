@@ -14,139 +14,90 @@
         <flux:heading size="xl" level="1">Edit Event</flux:heading>
     </div>
 
-    {{-- Form --}}
-    <div class="w-full rounded-xl bg-white dark:bg-(--import) dark:border-stone-800 text-stone-800 shadow-xs">
-        <div class="px-20 py-8">
+    {{-- Centered Form --}}
+    <div class="flex justify-center items-center">
+        <div class="w-full max-w-5xl rounded-xl metallic-card-soft shadow-lg">
+            <div class="px-10 py-8">
+                {{-- Update event form --}}
+                <form wire:submit.prevent="updateEvent">
+                    @csrf
+                    <flux:fieldset>
+                        <flux:legend class="text-lg font-semibold mb-4">Update Event Details</flux:legend>
 
-            {{-- Create event form --}}
-            <form wire:submit.prevent="updateEvent">
-                @csrf
-                <flux:fieldset>
-                    <flux:legend>Update Event Details</flux:legend>
+                        <div class="space-y-8">
+                            <div class="grid grid-cols-12 gap-8">
 
-                    <div class="space-y-6">
-                        <div class="flex items-start space gap-x-6">
+                                {{-- Left Column --}}
+                                <div class="col-span-7 space-y-6">
+                                    <div class="grid grid-cols-6 gap-5">
+                                        <div class="col-span-3">
+                                            <flux:input wire:model="title" label="Title" type="text" required autofocus
+                                                placeholder="Event title" clearable autocomplete="off" />
+                                        </div>
 
-                            {{-- Left column --}}
-                            <div class="grid grid-cols-6 gap-x-5 gap-y-6 w-full">
+                                        <div class="col-span-3">
+                                            <flux:input wire:model="location" label="Location" icon="map-pin"
+                                                type="text" required placeholder="Event location" clearable
+                                                autocomplete="off" />
+                                        </div>
 
-                                <div class="col-span-3">
-                                    <!-- Event title -->
-                                    <flux:input wire:model="title" label="Title" type="text" required autofocus
-                                        placeholder="Event title" clearable autocomplete="off" />
-                                </div>
+                                        <div class="col-span-3">
+                                            <flux:input wire:model="date" label="Event Date" type="text" id="datepicker"
+                                                placeholder="e.g. July 12, 2000" autocomplete="off" />
+                                        </div>
 
-                                <div class="col-span-3">
-                                    {{-- Location --}}
-                                    <flux:input wire:model="location" label="Location" icon="map-pin" type="text"
-                                        required placeholder="Event location" clearable autocomplete="off" />
-                                </div>
+                                        <div class="col-span-3">
+                                            <div class="flex items-center gap-1">
+                                                <flux:input id="tp_input_time_in" wire:model="time_in"
+                                                    placeholder="Time In Period" label="End of Time In Period"
+                                                    type="text" mask="99:99 aa" required autocomplete="off" readonly />
+                                                <x-time-picker-time-in />
+                                            </div>
+                                        </div>
 
-                                <div class="col-span-3">
-                                    {{-- Date --}}
-                                    <flux:input wire:model="date" label="Event Date" type="text" 
-                                        id="datepicker"
-                                        placeholder="e.g. July 12, 2000" autocomplete="off" />
-                                </div>
+                                        <div class="col-span-3">
+                                            <div class="flex items-center gap-1">
+                                                <flux:input id="tp_input" wire:model="start_time"
+                                                    placeholder="Select Start Time" label="Start Time" type="text"
+                                                    mask="99:99 aa" required autocomplete="off" readonly />
+                                                <x-time-picker />
+                                            </div>
+                                        </div>
 
-                                <div class="col-span-3">
-                                    {{-- Time in --}}
-                                    <div class="flex items-center gap-1">
-                                        <flux:input    
-                                            id="tp_input_time_in"
-                                            wire:model="time_in"
-                                            placeholder="Time In Period"
-                                            label="End of Time In Period"
-                                            type="text" 
-                                            mask="99:99 aa"
-                                            required
-                                            autocomplete="off"
-                                            readonly
-                                        />
-
-                                        {{-- Time picker --}}
-                                        <x-time-picker-time-in/>
-                                    </div>
-                                      
-                                </div>
-
-                                <div class="col-span-3">
-                                    {{-- Start time --}}
-                                    <div class="flex items-center gap-1">
-                                        <flux:input    
-                                            id="tp_input"
-                                            wire:model="start_time"
-                                            placeholder="Select Start Time"
-                                            label="Start Time"
-                                            type="text" 
-                                            mask="99:99 aa"
-                                            required
-                                            autocomplete="off"
-                                            readonly
-                                        />
-
-                                        {{-- Time picker --}}
-                                        <x-time-picker/>
-                                    </div>
-                                      
-                                </div>
-
-                                <div class="col-span-3">
-                                    {{-- End time --}}
-                                    <div class="flex items-center gap-1">
-                                        <flux:input    
-                                            id="tp_input_2"
-                                            wire:model="end_time"
-                                            placeholder="Select End Time"
-                                            label="End Time"
-                                            type="text" 
-                                            mask="99:99 aa"
-                                            required
-                                            autocomplete="off"
-                                            readonly
-                                        />
-
-                                        {{-- Time picker --}}
-                                        <x-time-picker-2 />
+                                        <div class="col-span-3">
+                                            <div class="flex items-center gap-1">
+                                                <flux:input id="tp_input_2" wire:model="end_time"
+                                                    placeholder="Select End Time" label="End Time" type="text"
+                                                    mask="99:99 aa" required autocomplete="off" readonly />
+                                                <x-time-picker-2 />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="col-span-6">
-                                    {{-- Event image --}}
+                                {{-- Right Column --}}
+                                <div class="col-span-5 p-6 flex flex-col justify-center">
                                     <flux:input type="file" wire:model="image" badge="Optional"
                                         label="Upload Event Image" />
                                 </div>
                             </div>
-                            
-                            <!-- Separator -->
-                            <flux:separator vertical />
 
-                            <!-- Right column -->
-                            <div class="w-full gap-y-6 grid grid-cols-6">
-                                <div class="col-span-6">
-                                    <flux:textarea label="Description" wire:model="description" required
-                                        placeholder="Say something about the event" resize="none" rows="auto" clearable 
-                                        description:trailing="Minimum of 40 characters."
-                                        autocomplete="off"
-                                        />
-
-                                </div>
+                            {{-- Buttons --}}
+                            <div class="flex gap-5">
+                                <flux:button type="submit" variant="primary" class="w-full">
+                                    {{ __('Update Event') }}
+                                </flux:button>
+                                <flux:button variant="filled" :href="route('view_event', $event)" wire:navigate
+                                    class="w-full">
+                                    {{ __('Cancel') }}
+                                </flux:button>
                             </div>
                         </div>
-                        <div class="mt-6 flex items-center gap-5">
-                            <flux:button type="submit" variant="primary" class="w-full">
-                                {{ __('Update Event') }}
-                            </flux:button>
-                            <flux:button variant="filled" :href="route('view_event', $event)" wire:navigate class="w-full">
-                                {{ __('Cancel') }}
-                            </flux:button>
-                        </div>
-                    </div>
-                </flux:fieldset>
-
-            </form>
-
+                    </flux:fieldset>
+                </form>
+            </div>
         </div>
     </div>
+
 
 </div>

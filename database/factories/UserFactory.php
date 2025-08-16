@@ -46,6 +46,7 @@ class UserFactory extends Factory
             'account_status' => 'active',
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'tsuushin' => 'not_member',
         ];
     }
 

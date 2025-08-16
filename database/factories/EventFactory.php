@@ -49,7 +49,6 @@ class EventFactory extends Factory
 
         return [
             'title' => $uniqueName,
-            'description' => fake()->paragraph(),
             'date' => $this->generateDateForSchoolYear($schoolYear),
             'location' => fake()->randomElement([
                 'MKD AVR',
@@ -81,6 +80,7 @@ class EventFactory extends Factory
                 'finished',
                 'postponed',
             ]),
+            'tsuushin_request' => 'not_approved',
         ];
     }
 
