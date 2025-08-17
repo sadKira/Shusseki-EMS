@@ -2,7 +2,8 @@
 
     <div class="max-lg:hidden flex items-center justify-between whitespace-nowrap">
         <flux:heading size="xl" class="font-bold">Attendance Record</flux:heading>
-        <div>
+        <div class="flex items-center gap-2">
+            <flux:button wire:click="generateStampCard" variant="primary" color="amber" icon="arrow-down-on-square">Download</flux:button>
             <flux:input icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
                 autocomplete="off" clearable 
                 class=""
@@ -60,11 +61,12 @@
         </div>
 
         {{-- Search bar --}}
-        <div>
+        <div class="flex items-center gap-2">
             <flux:input size="sm" icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
                 autocomplete="off" clearable 
                 class=""
                 />
+            <flux:button wire:click="generateStampCard" size="sm" variant="primary" color="amber" icon="arrow-down-on-square">Download</flux:button>
         </div>
     </div>
 

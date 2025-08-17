@@ -187,6 +187,37 @@ select:focus[data-flux-control] {
         );
     }
 
+    /* Top to bottom */
+    .metallic-updown-soft {
+        @apply relative bg-zinc-950 text-white overflow-hidden;
+    }
+
+    .metallic-updown-soft::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.08) 0%,
+            /* brighter at the top */ rgba(255, 255, 255, 0.02) 30%,
+            /* soft transition */ rgba(255, 255, 255, 0) 60% /* fades out */
+        );
+        pointer-events: none;
+        transition: background 0.3s ease;
+    }
+
+    .metallic-updown-soft:hover::before {
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.12) 0%,
+            /* brighter when hovered */ rgba(255, 255, 255, 0.04) 30%,
+            rgba(255, 255, 255, 0) 60%
+        );
+    }
+
     /* Attendance record */
     .radial-glow-card {
         @apply relative bg-zinc-950 text-white overflow-hidden;

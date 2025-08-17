@@ -100,13 +100,15 @@
             <div x-data="{ shown: false }" x-init="
                     @this.on('password-updated', () => {
                         shown = true;
-                        setTimeout(() => { shown = false }, 2000);
+                        setTimeout(() => { shown = false }, 3000);
                     })
                 " class="">
 
                 <!-- Button (default, shown when callout is hidden) -->
                 <template x-if="!shown">
-                    <flux:button variant="primary" wire:click="updateAdminKey" class="w-full">{{ __('Update Admin Key') }}</flux:button>
+                    <div class="flex items-start">
+                        <flux:button variant="primary" wire:click="updateAdminKey" class="">{{ __('Update Admin Key') }}</flux:button>
+                    </div>
                 </template>
 
                 <!-- Callout (shown temporarily when event fires) -->

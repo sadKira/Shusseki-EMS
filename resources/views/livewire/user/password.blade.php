@@ -36,7 +36,7 @@
             <div x-data="{ shown: false }" x-init="
                     @this.on('password-updated', () => {
                         shown = true;
-                        setTimeout(() => { shown = false }, 2000);
+                        setTimeout(() => { shown = false }, 3000);
                     })
                 " class="">
 

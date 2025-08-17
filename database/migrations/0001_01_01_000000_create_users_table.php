@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'approved'])->default('pending');
             $table->enum('account_status', ['active', 'inactive'])->default('active');
             $table->enum('tsuushin', ['member', 'not_member'])->default('not_member');
-            // $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

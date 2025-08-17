@@ -26,9 +26,9 @@ class DatabaseSeeder extends Seeder
             SchoolYearSeeder::class,
         ]);
 
-        User::factory(180)->create();
+        User::factory(30)->create();
     
-        Event::factory(15)->create();
+        Event::factory(7)->create();
 
         // Setting::create([
         //     'key' => 'current_school_year',
