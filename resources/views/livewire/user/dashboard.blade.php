@@ -8,7 +8,7 @@
 
             <div class="mb-5">
 
-                <flux:heading size="xl" class="max-lg:hidden font-bold whitespace-nowrap mb-5">Coverage Request</flux:heading>
+                <flux:heading size="xl" class="font-bold whitespace-nowrap mb-5">Coverage Request</flux:heading>
 
                 @foreach($upcomingEvents as $event)
                     
@@ -76,59 +76,11 @@
 
     @endif
 
-    
 
+    {{-- Header --}}
+    <flux:heading size="xl" class="font-bold whitespace-nowrap">Events this <span class="text-[var(--color-accent)]">{{ $selectedMonth }}</span></flux:heading>
 
-
-
-    <flux:heading size="xl" class="max-lg:hidden font-bold whitespace-nowrap">Events this {{ $selectedMonth }}</flux:heading>
-
-    {{-- Mobile view --}}
-    <div class="flex items-center justify-between lg:hidden whitespace-nowrap">
-        <flux:heading size="xl" class="font-bold">Events this {{ $selectedMonth }}</flux:heading>
-
-        <!-- Desktop User Menu -->
-        <flux:dropdown position="top" align="end">
-            
-            <flux:button icon:trailing="bars-3" variant="ghost">Menu</flux:button>
-
-            <flux:menu>
-                <flux:menu.radio.group>
-                    <div class="p-0 text-sm font-normal">
-                        <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <flux:profile circle class="cursor-pointer" 
-                                :initials="auth()->user()->initials()"
-                                avatar:color="auto"
-                                :chevron="false"
-                                {{-- color:seed="{{ auth()->user()->id }}" --}}
-                                />
-
-                            <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight">
-                                <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                <span class="truncate text-xs">ID: {{ auth()->user()->student_id }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </flux:menu.radio.group>
-
-                <flux:menu.separator />
-                
-                <flux:menu.item icon="home" :href="route('dashboard')" wire:navigate>Home</flux:menu.item>
-                <flux:menu.item icon="calendar" :href="route('events')" wire:navigate>Event Calendar</flux:menu.item>
-                <flux:menu.item icon="newspaper" :href="route('attendance_record')" wire:navigate>Attendance Record</flux:menu.item>
-                <flux:menu.item icon="user" :href="route('user_main_profile')" wire:navigate>Profile</flux:menu.item>
-
-                <flux:menu.separator />
-
-                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                    @csrf
-                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                        {{ __('Log Out') }}
-                    </flux:menu.item>
-                </form>
-            </flux:menu>
-        </flux:dropdown>
-    </div>
+   
 
     {{-- Events for the month --}}
     <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mt-5">

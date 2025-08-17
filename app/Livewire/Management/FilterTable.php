@@ -11,6 +11,9 @@ use App\Enums\AccountStatus;
 use Flux\Flux;
 use Illuminate\Support\Facades\Cache;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AccountApprove;
+
 class FilterTable extends Component
 {
     use WithPagination;
@@ -53,6 +56,7 @@ class FilterTable extends Component
         $this->selected = [];
         $this->selectPage = false;
         $this->selectAll = false;
+        $this->search = '';
     }
 
 
@@ -63,8 +67,22 @@ class FilterTable extends Component
         $user = User::find($userId);
         $user->update(['account_status' => 'inactive']);
 
+        $this->cancelSelection();
+
         // Close modal
         Flux::modals()->close();
+
+    }
+
+    // Test Email
+    public function sendEmail($userId)
+    {
+        $user = User::find($userId);
+
+        Mail::to($user->email)->queue(new AccountApprove($user));
+
+        $this->cancelSelection();
+
 
     }
 
@@ -144,6 +162,8 @@ class FilterTable extends Component
         $user = User::find($userId);
         $user->update(['account_status' => 'active']);
 
+        $this->cancelSelection();   
+
         // Close modal
         Flux::modals()->close();
 
@@ -183,6 +203,8 @@ class FilterTable extends Component
         $user = User::find($userId);
         $user->update(['tsuushin' => 'member']);
 
+        $this->cancelSelection();
+
         // Close modal
         Flux::modals()->close();
 
@@ -193,6 +215,8 @@ class FilterTable extends Component
     {
         $user = User::find($userId);
         $user->update(['tsuushin' => 'not_member']);
+
+        $this->cancelSelection();
 
         // Close modal
         Flux::modals()->close();

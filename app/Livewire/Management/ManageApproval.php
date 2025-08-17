@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Management;
 
+use App\Mail\AccountApprove;
 use Livewire\Component;
 use App\Models\User;
 use Livewire\WithPagination;
 use Flux\Flux;
+
+use Illuminate\Support\Facades\Mail;
 
 class ManageApproval extends Component
 {
@@ -23,7 +26,9 @@ class ManageApproval extends Component
     {
         $user = User::find($userId);
         $user->update(['status' => 'approved']);
-        session()->flash('message', "{$user->name} has been approved.");
+
+        Mail::to($user->email)->queue(new AccountApprove($user));
+
         $this->dispatch('refreshPendingCount');
 
         // Close modal

@@ -12,7 +12,7 @@
     <title>Attendance Report - {{ $selectedSchoolYear }}</title>
     <style>
         body {
-            font-family: "Hanken Grotesk", "sans-serif";
+            font-family: Hanken Grotesk, sans-serif;
             font-size: 12px;
             margin: 40px;
             color: #000;

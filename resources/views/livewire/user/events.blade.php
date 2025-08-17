@@ -13,53 +13,7 @@
 
     {{-- Mobile view --}}
     <div class="lg:hidden whitespace-nowrap space-y-3">
-
-        <div class="flex items-center justify-between">
-            <flux:heading size="xl" class="font-bold">Event Calendar</flux:heading>
-
-            <!-- Desktop User Menu -->
-            <flux:dropdown position="top" align="end">
-                
-                <flux:button icon:trailing="chevron-down" variant="ghost">Menu</flux:button>
-
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <flux:profile circle class="cursor-pointer" 
-                                    :initials="auth()->user()->initials()"
-                                    avatar:color="auto"
-                                    :chevron="false"
-                                    {{-- color:seed="{{ auth()->user()->id }}" --}}
-                                    />
-
-                                <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                    <span class="truncate text-xs">ID: {{ auth()->user()->student_id }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-                    
-                    <flux:menu.item icon="home" :href="route('dashboard')" wire:navigate>Home</flux:menu.item>
-                    <flux:menu.item icon="calendar" :href="route('events')" wire:navigate>Event Calendar</flux:menu.item>
-                    <flux:menu.item icon="newspaper" :href="route('attendance_record')" wire:navigate>Attendance Record</flux:menu.item>
-                    <flux:menu.item icon="user" :href="route('user_main_profile')" wire:navigate>Profile</flux:menu.item>
-
-                    <flux:menu.separator />
-
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown>
-        </div>
-
+        <flux:heading size="xl" class="font-bold">Event Calendar <span class="text-[var(--color-accent)]">{{ $selectedSchoolYear }}</span></flux:heading>
         {{-- Search --}}
         <div>
             <flux:input size="sm" icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"

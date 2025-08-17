@@ -38,11 +38,20 @@ use App\Livewire\Settings\SchoolYear;
 use App\Livewire\Settings\SuperadminPin;
 use Illuminate\Support\Facades\Route;
 
+use App\Mail\AccountApprove;
+use App\Models\User;
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
 // Route::get('/', Welcome::class)->name('home');
+
+Route::get('/mailable', function () {
+    $user = User::find(5);
+ 
+    return new AccountApprove($user);
+});
 
 // Testing
 Route::get('/test', function () {

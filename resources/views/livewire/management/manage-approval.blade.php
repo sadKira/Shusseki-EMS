@@ -169,7 +169,7 @@
                                                 @endphp
                                                 {!! $user->highlightText($output, $search) !!}
                                             </td>
-                                            <td class="px-6 py-4 flex justify-center">
+                                            <td class="px-6 py-4 flex items-center justify-center">
                                                 {{-- <button type="button"
                                                     class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Delete</button> --}}
 

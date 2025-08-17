@@ -449,10 +449,7 @@
                                                                     class="ml-13"></flux:button>
                                                                 <flux:menu>
 
-                                                                    <flux:modal.trigger :name="'inactive-solo-'.$user->id">
-                                                                        <flux:menu.item variant="danger" icon="user-minus">Mark as
-                                                                            Inactive</flux:menu.item>
-                                                                    </flux:modal.trigger>
+                                                                    <flux:menu.item variant="danger" icon="envelope" wire:click="sendEmail({{ $user->id }})">Send Email</flux:menu.item>
 
                                                                     @if ($tsuushinCount < 1)
                                                                         <flux:modal.trigger :name="'tag-tsuushin-'.$user->id">
@@ -460,6 +457,11 @@
                                                                                 Tsuushin</flux:menu.item>
                                                                         </flux:modal.trigger>
                                                                     @endif
+
+                                                                    <flux:modal.trigger :name="'inactive-solo-'.$user->id">
+                                                                        <flux:menu.item variant="danger" icon="user-minus">Mark as
+                                                                            Inactive</flux:menu.item>
+                                                                    </flux:modal.trigger>
 
                                                                     @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
                                                                         <flux:modal.trigger :name="'remove-tsuushin-'.$user->id">
