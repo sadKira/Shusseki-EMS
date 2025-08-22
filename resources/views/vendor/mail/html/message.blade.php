@@ -3,9 +3,6 @@
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
 <img src="{{ asset('images/Side_Lower.png') }}" class="logo" alt="{{ config('app.name', 'Shusseki New') }}" style="max-height: 100px; max-width: 200px; height: auto; width: auto; display: block; margin: 0 auto;">
-@else
-<div style="text-align: center; padding: 20px; font-size: 24px; font-weight: bold; color: #3d4852;">SHUSSEKI</div>
-@endif
 </x-mail::header>
 </x-slot:header>
 

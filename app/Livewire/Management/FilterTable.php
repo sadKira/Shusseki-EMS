@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountApprove;
+use App\Mail\Test;
 
 class FilterTable extends Component
 {

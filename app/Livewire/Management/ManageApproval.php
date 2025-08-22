@@ -3,6 +3,8 @@
 namespace App\Livewire\Management;
 
 use App\Mail\AccountApprove;
+use App\Mail\AccountRejected;
+
 use Livewire\Component;
 use App\Models\User;
 use Livewire\WithPagination;
@@ -39,7 +41,11 @@ class ManageApproval extends Component
     public function reject($userId)
     {
         $user = User::findOrFail($userId);
+        
+        Mail::to($user->email)->queue(new AccountRejected());
+
         $user->delete();
+        
         $this->dispatch('refreshPendingCount');
 
         // Close modal
@@ -85,9 +91,19 @@ class ManageApproval extends Component
     // Approve selected
     public function bulkApprove()
     {
-        User::whereIn('id', $this->selected)->update(['status' => 'approved']);
+        // Fetch selected users
+        $users = User::whereIn('id', $this->selected)->get();
+
+        // Approve selected
+        foreach ($users as $index => $user) {
+            $user->update(['status' => 'approved']);
+
+            // Send email
+            Mail::to($user->email)
+            ->later(now()->addSeconds($index * 10), new AccountApprove($user));
+        }
+
         $this->cancelSelection();
-        session()->flash('message', 'Selected users approved successfully.');
         $this->dispatch('refreshPendingCount');
 
         // Close modal
@@ -97,7 +113,20 @@ class ManageApproval extends Component
     // Reject selected
     public function bulkReject()
     {
-        User::whereIn('id', $this->selected)->delete();
+        // Fetch selected users
+        $users = User::whereIn('id', $this->selected)->get();
+
+        // Reject selected
+        foreach ($users as $index => $user) {
+
+            // Send email
+            Mail::to($user->email)
+            ->later(now()->addSeconds($index * 10), new AccountRejected());
+
+            $user->delete();
+
+        }
+
         $this->cancelSelection();
         $this->dispatch('refreshPendingCount');
 
@@ -108,12 +137,22 @@ class ManageApproval extends Component
     // Bulk appprove
     public function totalbulkApprove()
     {
-        User::where('status', 'pending')
+        // Fetch users
+        $users = User::where('status', 'pending')
         ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
-        ->update(['status' => 'approved']);
+        ->get();
+
+        // Approve all users
+        foreach ($users as $index => $user) {
+            $user->update(['status' => 'approved']);
+
+            // Send email
+            Mail::to($user->email)
+            ->later(now()->addSeconds($index * 10), new AccountApprove($user));
+        }
+
 
         $this->cancelSelection();
-
         $this->dispatch('refreshPendingCount');
 
         // Close modal
@@ -124,10 +163,23 @@ class ManageApproval extends Component
     // Bulk reject
     public function totalbulkReject()
     {
-        User::where('status', 'pending')
-        ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
-        ->delete();
 
+        // Fetch users
+        $users = User::where('status', 'pending')
+        ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
+        ->get();
+
+        // Reject all users
+        foreach ($users as $index => $user) {
+
+            // Send email
+            Mail::to($user->email)
+            ->later(now()->addSeconds($index * 10), new AccountRejected());
+
+            $user->delete();
+
+        }
+        
         $this->cancelSelection();
 
         $this->dispatch('refreshPendingCount');

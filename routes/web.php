@@ -39,6 +39,8 @@ use App\Livewire\Settings\SuperadminPin;
 use Illuminate\Support\Facades\Route;
 
 use App\Mail\AccountApprove;
+use App\Mail\AccountRejected;
+use App\Mail\Test;
 use App\Models\User;
 
 Route::get('/', function () {
@@ -48,9 +50,9 @@ Route::get('/', function () {
 // Route::get('/', Welcome::class)->name('home');
 
 Route::get('/mailable', function () {
-    $user = User::find(5);
+    // $user = User::find(5);
  
-    return new AccountApprove($user);
+    return new AccountRejected();
 });
 
 // Testing

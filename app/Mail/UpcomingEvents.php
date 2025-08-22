@@ -9,18 +9,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class AccountApprove extends Mailable
+class UpcomingEvents extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $user;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user = $user;
+        //
     }
 
     /**
@@ -29,7 +27,7 @@ class AccountApprove extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Account Approved',
+            subject: 'Upcoming Events',
         );
     }
 
@@ -39,7 +37,7 @@ class AccountApprove extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.account-approve',
+            view: 'view.name',
         );
     }
 

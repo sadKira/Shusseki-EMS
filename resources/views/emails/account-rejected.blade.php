@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
 
-    <title>Account Approved</title>
+    <title>Account Rejected</title>
     <style>
         body {
             margin: 0;
@@ -25,18 +25,14 @@
                 rgba(255, 255, 255, 0.02) 30%,
                 #0C0A09 100%
             ), #0C0A09;
-
-
             color: #e5e7eb;
         }
 
         .container {
             max-width: 600px;
             margin: 30px auto;
-            background: transparent; /* fully transparent */
-            /* border-radius: 14px; */
+            background: transparent;
             overflow: hidden;
-            /* border: 1px solid #2a2f3a; */
         }
 
         .header {
@@ -50,7 +46,7 @@
         }
 
         .header h2 {
-            color: #ffffff;
+            color: #f87171; /* red tone for rejection */
             font-weight: 600;
             margin: 0;
         }
@@ -76,7 +72,7 @@
         .button {
             display: inline-block;
             padding: 12px 22px;
-            background: #E7A801;
+            background: #9CA3AF;
             color: #000000 !important;
             text-decoration: none;
             border-radius: 8px;
@@ -90,7 +86,7 @@
             font-size: 12px;
             color: #6b7280;
             border-top: 1px solid #2a2f3a;
-            background: transparent; /* keep transparent */
+            background: transparent;
         }
     </style>
 </head>
@@ -100,21 +96,28 @@
         <!-- Header -->
         <div class="header">
             <img src="{{ asset('images/Side_White.svg') }}" alt="Logo">
-            <h2>Account Approved</h2>
+            <h2>Account Rejected</h2>
         </div>
 
         <!-- Content -->
         <div class="content">
-            <h1>Hi {{ $user->name }},</h1>
+            <h1>Hello,</h1>
             <p>
-                Great news — your account has been <strong>approved</strong> 🎉
+                Unfortunately, your account registration has been <strong>rejected</strong>.
             </p>
             <p>
-                You can now log in and start exploring everything we’ve prepared for you.
+                Common reasons for rejection may include:
             </p>
-            <p style="text-align: center;">
-                <a href="{{ url('/') }}" class="button">Visit Shusseki</a>
+            <ul>
+                <li>Incorrect or incomplete account details</li>
+                <li>Not being a currently enrolled student</li>
+            </ul>
+            <p>
+                If you believe this is a mistake or would like to know more, you may approach the <strong>SASO Director</strong> for clarification and assistance.
             </p>
+            {{-- <p style="text-align: center;">
+                <a href="{{ url('/') }}" class="button">Return to Shusseki</a>
+            </p> --}}
         </div>
 
         <!-- Footer -->
