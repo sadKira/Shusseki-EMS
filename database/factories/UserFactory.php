@@ -31,7 +31,7 @@ class UserFactory extends Factory
                 '1st Year',
                 '2nd Year',
                 '3rd Year',
-                '4th year',
+                '4th Year',
             ]),
 
             'course' => fake()->randomElement([

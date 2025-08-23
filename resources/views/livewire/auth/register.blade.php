@@ -18,12 +18,13 @@
             placeholder="email@example.com" />
 
         <!-- Student ID -->
-        <flux:input wire:model.defer="student_id" :label="__('Student ID')" type="text" required :placeholder="__('Student ID')"  mask="9999999" />
+        <flux:input wire:model.defer="student_id" :label="__('Student ID')" type="text" required :placeholder="__('Enter 7-Digit ID')"  mask="9999999" />
 
         {{-- Year Level & Course --}}
         <div class="grid grid-cols-2 gap-x-4 gap-y-6">
-            <flux:select wire:model.defer="year_level" :label="__('Year level')" :placeholder="__('Your year level')"
-                required>
+            <flux:select wire:model.defer="year_level" :label="__('Year level')" :placeholder="__('Your Year Level')"
+                >
+                {{-- <flux:select.option value="">Your Year Level</flux:select.option> --}}
                 <flux:select.option value="1st Year">1st Year</flux:select.option>
                 <flux:select.option value="2nd Year">2nd Year</flux:select.option>
                 <flux:select.option value="3rd Year">3rd Year</flux:select.option>

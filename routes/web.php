@@ -40,8 +40,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Mail\AccountApprove;
 use App\Mail\AccountRejected;
-use App\Mail\Test;
+use App\Mail\EventReminder;
 use App\Models\User;
+use App\Models\Event;
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,9 +51,10 @@ Route::get('/', function () {
 // Route::get('/', Welcome::class)->name('home');
 
 Route::get('/mailable', function () {
-    // $user = User::find(5);
+    $user = User::find(5);
+    $event = Event::find(5);
  
-    return new AccountRejected();
+    return new EventReminder($event, $user);
 });
 
 // Testing

@@ -1,24 +1,47 @@
 <div>
-    {{-- App Header --}}
-    <div class="relative mb-10">
-        {{-- Breadcrumbs --}}
-        <div class="flex items-center justify-between">
-            <div>
-                <div class="mt-2">
-                    <flux:breadcrumbs>
-                        <flux:breadcrumbs.item :href="route('admin_dashboard')" wire:navigate>Home
-                        </flux:breadcrumbs.item>
-                        <flux:breadcrumbs.item :href="route('manage_students')" wire:navigate>Students
-                        </flux:breadcrumbs.item>
-                        <flux:breadcrumbs.item :href="route('attendance_records')" :accent="true" wire:navigate>
-                            <span class="text-[var(--color-accent)]">Attendance Records<span>
-                        </flux:breadcrumbs.item>
-                    </flux:breadcrumbs>
+    <div class="flex items-center justify-between mb-10 w-full">
+        {{-- App Header --}}
+        <div class="relative">
+            {{-- Breadcrumbs --}}
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="mt-2">
+                        <flux:breadcrumbs>
+                            <flux:breadcrumbs.item :href="route('admin_dashboard')" wire:navigate>Home
+                            </flux:breadcrumbs.item>
+                            <flux:breadcrumbs.item :href="route('manage_students')" wire:navigate>Students
+                            </flux:breadcrumbs.item>
+                            <flux:breadcrumbs.item :href="route('attendance_records')" :accent="true" wire:navigate>
+                                <span class="text-[var(--color-accent)]">Attendance Records<span>
+                            </flux:breadcrumbs.item>
+                        </flux:breadcrumbs>
+                    </div>
+                    <flux:heading size="xl" level="1">Attendance Records</flux:heading>
                 </div>
-                <flux:heading size="xl" level="1">Attendance Records</flux:heading>
             </div>
         </div>
+
+        {{-- Buttons --}}
+        <div>
+            
+            @if ($this->missingAccountsCount > 0)
+                <div class="flex items-center gap-3">
+                    <flux:icon.exclamation-triangle class="text-amber-500" variant="outline" />
+                    <flux:button wire:click="appendMissingAccounts" 
+                            icon="user-plus" variant="primary" color="amber" size="sm">
+                        Fill Logs ({{ $this->missingAccountsCount }})
+                    </flux:button>
+                </div>
+            @else
+                <flux:button wire:click="appendMissingAccounts" 
+                        disabled icon="user-plus" variant="primary" color="amber" size="sm">
+                    Fill Logs ({{ $this->missingAccountsCount }})
+                </flux:button>
+            @endif
+        </div>
+    
     </div>
+
 
     {{-- Main --}}
     <div class="grid grid-cols-5 gap-3">
@@ -106,7 +129,7 @@
             {{-- Sanctioned Students --}}
             <div class="px-10 py-6 rounded-xl">
 
-                <flux:heading size="lg" class="mb-2">Sanctioned Students ({{ $sanctionedStudents->count() }})</flux:heading>
+                <flux:heading size="lg" class="mb-2">Sanctioned Students</flux:heading>
                 {{-- Content --}}
                 <div
                     class="h-60 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
@@ -173,7 +196,7 @@
 
                         {{-- Cards --}}
                         @forelse ($users as $user)
-                            <a href="{{route('view_student_record', $user)}}" wire:navigate class="mr-3 flex items-center justify-between p-4 rounded-xl cursor-pointer hover:bg-neutral-700 transition">
+                            <a href="{{route('view_student_record', $user)}}" wire:navigate style="border: 2px solid rgba(255, 255, 255, 0.06);" class="mr-3 flex items-center justify-between p-4 rounded-xl cursor-pointer hover:bg-neutral-700 transition">
                                 <div class="flex items-center gap-1">
 
                                     <flux:profile circle class="cursor-pointer" 
@@ -191,7 +214,8 @@
                                 </div>
 
                                 <div class="flex items-end gap-2">
-                                    @if ($student->late_count > 0 || $student->absent_count > 0)
+                            
+                                    @if ($user->late_count > 0 || $user->absent_count > 0)
                                         <flux:badge variant="solid" size="sm" color="red">Sanctioned</flux:badge>
                                     @endif
                                     {{-- @if ($student->absent_count > 0)

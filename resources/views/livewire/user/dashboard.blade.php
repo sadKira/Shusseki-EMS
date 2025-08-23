@@ -2,40 +2,43 @@
 
     {{-- Detects if user is a Tsuushin Member --}}
     @if (auth()->user()->tsuushin == \App\Enums\TsuushinRole::Member)
-                
+
         {{-- Upcoming Events --}}
         @if($upcomingEvents->isNotEmpty())
 
             <div class="mb-5">
 
-                <flux:heading size="xl" class="font-bold whitespace-nowrap mb-5">Coverage Request</flux:heading>
+                <div class="flex items-center gap-2 mb-5">
+                    <flux:icon.camera class="text-zinc-50" variant="solid" />
+                    <flux:heading size="xl" class="font-bold whitespace-nowrap">Tsuushin Coverage</flux:heading>
+                </div>
 
                 @foreach($upcomingEvents as $event)
-                    
+
                     {{-- Event Card --}}
                     <div class="relative z-50 w-auto h-auto">
 
                         {{-- Card Content --}}
-                        <div 
-                            class="relative grid min-h-30 md:min-h-44 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
-                                border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
-                                ">
+                        <div class="relative flex flex-col min-h-30 md:min-h-44 w-full overflow-hidden rounded-xl bg-zinc-950
+                                                        border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
+                                                        ">
                             <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
-                                style="background-image: url('{{ asset('storage/' . $event->image) }}');"
-                                {{-- style="background-image: url('https://picsum.photos/seed/{{ rand(0, 100000) }}/1080/566');" --}}
-                                >
-                                
-                                <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
+                                style="background-image: url('{{ asset('storage/' . $event->image) }}');">
+
+                                <div
+                                    class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
                                 </div>
                             </div>
 
                             {{-- Content Main --}}
-                            <div class="relative space-y-3 p-6 px-6 py-10 md:px-12 flex items-center justify-between">
-                                <div>
+                            <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 p-10 md:px-12 h-full min-h-[120px] md:min-h-[176px] w-full">
+                                <!-- Left details -->
+                                <div class="flex flex-col gap-3">
                                     <flux:text class="font-medium text-zinc-300">
                                         {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                                     </flux:text>
-                                    <h2 class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                    <h2
+                                        class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                                         {{ $event->title }}
                                     </h2>
 
@@ -56,13 +59,15 @@
                                     </div>
                                 </div>
 
-                                <div class="relative flex items-center justify-end h-full">
+                                <!-- Button -->
+                                <div class="flex items-center">
                                     <flux:button wire:click="approveRequest('{{ $event->id }}')" variant="primary" color="blue">
                                         Approve Coverage Request
                                     </flux:button>
                                 </div>
-
                             </div>
+
+
 
                         </div>
 
@@ -72,15 +77,40 @@
                 @endforeach
 
             </div>
+            
+        @else
+            {{-- Empty State --}}
+            <div class="mb-5">
+                <div class="flex items-center gap-2 mb-5">
+                    <flux:icon.camera class="text-zinc-50" variant="solid" />
+                    <flux:heading size="xl" class="font-bold whitespace-nowrap">Tsuushin Coverage</flux:heading>
+                </div>
+                
+                <div class="flex flex-col items-center justify-center py-8 px-6 text-center">
+                    <div class="">
+                        <flux:icon.calendar-days class="w-16 h-16 text-zinc-400 mx-auto mb-4" />
+                    </div>
+                    
+                    <flux:heading size="lg" class="text-zinc-300 mb-3">
+                        No Coverage Requests
+                    </flux:heading>
+                    
+                    {{-- <flux:text class="text-zinc-400 max-w-md leading-relaxed">
+                        There are currently no upcoming events that require coverage approval. 
+                        New requests will appear here when they become available.
+                    </flux:text> --}}
+                </div>
+            </div>
         @endif
 
     @endif
 
 
     {{-- Header --}}
-    <flux:heading size="xl" class="font-bold whitespace-nowrap">Events this <span class="text-[var(--color-accent)]">{{ $selectedMonth }}</span></flux:heading>
+    <flux:heading size="xl" class="font-bold whitespace-nowrap">Events this <span
+            class="text-[var(--color-accent)]">{{ $selectedMonth }}</span></flux:heading>
 
-   
+
 
     {{-- Events for the month --}}
     <div class="grid md:grid-cols-2 lg:grid-cols-2 gap-8 mt-5">
@@ -88,33 +118,28 @@
         @foreach ($events as $event)
 
             {{-- Event Card --}}
-            <div 
-
-                x-data="{ modalOpen: false }"
-                @keydown.escape.window="modalOpen = false"
-                class="relative z-50 w-auto h-auto"
-                >
+            <div x-data="{ modalOpen: false }" @keydown.escape.window="modalOpen = false"
+                class="relative z-50 w-auto h-auto">
 
                 {{-- Card Content --}}
-                <div 
-                    @click="modalOpen=true"
-                    class="relative grid min-h-50 md:min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
-                        border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
-                        cursor-pointer
-                        ">
+                <div @click="modalOpen=true" class="relative grid min-h-50 md:min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
+                                border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
+                                cursor-pointer
+                                ">
                     <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
-                        style="background-image: url('{{ asset('storage/' . $event->image) }}');"
-                        {{-- style="background-image: url('https://picsum.photos/seed/{{ rand(0, 100000) }}/1080/566');" --}}
-                        >
-                        
-                        <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
+                        style="background-image: url('{{ asset('storage/' . $event->image) }}');" {{--
+                        style="background-image: url('https://picsum.photos/seed/{{ rand(0, 100000) }}/1080/566');" --}}>
+
+                        <div
+                            class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
                         </div>
                     </div>
                     <div class="relative space-y-3 p-6 px-6 py-10 md:px-12">
                         <flux:text class="font-medium text-zinc-300">
                             {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                         </flux:text>
-                        <h2 class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                        <h2
+                            class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                             {{ $event->title }}
                         </h2>
 
@@ -147,17 +172,17 @@
                             @endphp
 
                             {{-- @if ($event->status == \App\Enums\EventStatus::NotFinished)
-                                <flux:heading size="sm" class="flex items-center gap-2">
-                                    End of Attendance: <span
-                                        class="text-[var(--color-accent)] underline">{{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
-                                </flux:heading>
+                            <flux:heading size="sm" class="flex items-center gap-2">
+                                End of Attendance: <span class="text-[var(--color-accent)] underline">{{
+                                    \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
+                            </flux:heading>
                             @endif --}}
 
                             {{-- Event status --}}
                             @if ($event->status != \App\Enums\EventStatus::Postponed)
                                 @if ($now->between($start, $end))
                                     <flux:badge color="amber" class="" variant="solid"><span class="text-black">
-                                        Event In Progress</span></flux:badge>
+                                            Event In Progress</span></flux:badge>
                                 @elseif ($event->status == \App\Enums\EventStatus::NotFinished)
                                     <flux:heading size="sm" class="flex items-center gap-2">
                                         End of Attendance: <span
@@ -167,15 +192,15 @@
                             @endif
 
                             @if ($event->status == \App\Enums\EventStatus::Finished)
-                                <flux:badge color="green" class="" variant="solid"><span
-                                        class="text-black">Event Ended</span></flux:badge>
+                                <flux:badge color="green" class="" variant="solid"><span class="text-black">Event Ended</span>
+                                </flux:badge>
                             @endif
 
                             @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                <flux:badge color="red" class="" variant="solid"><span
-                                        class="text-white">Event Postponed</span></flux:badge>
+                                <flux:badge color="red" class="" variant="solid"><span class="text-white">Event Postponed</span>
+                                </flux:badge>
                             @endif
-                            
+
                         </div>
                     </div>
 
@@ -183,24 +208,19 @@
 
                 {{-- Modal Content --}}
                 <template x-teleport="body">
-                    <div x-show="modalOpen" class="fixed top-0 left-0 z-[99] flex items-center justify-center w-screen h-screen" x-cloak>
-                        
+                    <div x-show="modalOpen"
+                        class="fixed top-0 left-0 z-[99] flex items-center justify-center w-screen h-screen" x-cloak>
+
                         <!-- Background overlay -->
-                        <div x-show="modalOpen" 
-                            x-transition:enter="ease-out duration-300"
-                            x-transition:enter-start="opacity-0"
-                            x-transition:enter-end="opacity-100"
-                            x-transition:leave="ease-in duration-300"
-                            x-transition:leave-start="opacity-100"
-                            x-transition:leave-end="opacity-0"
-                            @click="modalOpen=false" 
+                        <div x-show="modalOpen" x-transition:enter="ease-out duration-300"
+                            x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                            x-transition:leave="ease-in duration-300" x-transition:leave-start="opacity-100"
+                            x-transition:leave-end="opacity-0" @click="modalOpen=false"
                             class="absolute inset-0 w-full h-full bg-opacity-10">
                         </div>
 
                         <!-- Modal container -->
-                        <div x-show="modalOpen"
-                            x-trap.inert.noscroll="modalOpen"
-                            x-transition:enter="ease-out duration-300"
+                        <div x-show="modalOpen" x-trap.inert.noscroll="modalOpen" x-transition:enter="ease-out duration-300"
                             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
                             x-transition:leave="ease-in duration-200"
@@ -211,31 +231,32 @@
                             <!-- Event Modal -->
                             <div class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-4 sm:px-0">
                                 <div class="relative w-full sm:max-w-xl max-w-md rounded-xl overflow-hidden shadow-2xl">
-                                    
+
                                     <!-- Background Image -->
                                     <div class="relative h-96">
-                                        <img src="{{ asset('storage/' . $event->image) }}" 
-                                            alt="Event Image"
+                                        <img src="{{ asset('storage/' . $event->image) }}" alt="Event Image"
                                             class="absolute inset-0 w-full h-full object-cover">
 
                                         <!-- Close Button (kept above everything) -->
-                                        <button @click="modalOpen=false" 
+                                        <button @click="modalOpen=false"
                                             class="pointer-events-auto absolute top-4 right-4 flex items-center justify-center w-8 h-8 text-zinc-50 bg-black rounded-full hover:text-black hover:bg-zinc-50 z-20">
-                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" 
+                                            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" 
+                                                <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M6 18L18 6M6 6l12 12" />
-                                            </svg>  
+                                            </svg>
                                         </button>
 
                                         <!-- Dark Overlay (allows clicks through) -->
                                         <div class="absolute inset-0 bg-black/60 pointer-events-none"></div>
 
                                         <!-- Centered Event Details -->
-                                        <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-zinc-50 px-6 md:px-4 sm:px-0 space-y-3">
+                                        <div
+                                            class="relative z-10 flex flex-col items-center justify-center h-full text-center text-zinc-50 px-6 md:px-4 sm:px-0 space-y-3">
                                             <h2 class="font-bold text-2xl">{{ $event->title }}</h2>
 
-                                            <div class="grid grid-cols-2 space-y-3 gap-x-7 md:gap-x-5 sm:gap-x-0 whitespace-nowrap">
+                                            <div
+                                                class="grid grid-cols-2 space-y-3 gap-x-7 md:gap-x-5 sm:gap-x-0 whitespace-nowrap">
                                                 {{-- Date --}}
                                                 <div class="gap-2">
                                                     <div class="flex items-center justify-start gap-2">
@@ -259,7 +280,8 @@
                                                     <div class="flex items-center justify-end gap-2">
                                                         <flux:icon.calendar class="size-4 opacity-0" />
                                                         <flux:text class="text-zinc-300">
-                                                            {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} -
+                                                            {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }}
+                                                            -
                                                             {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
                                                         </flux:text>
                                                     </div>
@@ -282,7 +304,8 @@
                                                 {{-- Attendance End --}}
                                                 <div class="gap-2">
                                                     <div class="flex items-center justify-end gap-2">
-                                                        <flux:icon.information-circle variant="solid" class="text-zinc-50 size-4" />
+                                                        <flux:icon.information-circle variant="solid"
+                                                            class="text-zinc-50 size-4" />
                                                         <flux:heading size="lg">End of Attendance</flux:heading>
                                                     </div>
                                                     <div class="flex items-center justify-end gap-2">
@@ -310,7 +333,7 @@
                                                         $log = $attendanceLogs->get($event->id);
                                                     @endphp
 
-                                                    
+
 
                                                     @if ($log)
 
@@ -350,7 +373,7 @@
                                                                 <span class="text-white">Event Postponed</span>
                                                             </flux:badge>
                                                         @endif
-                                                      
+
                                                     @else
                                                         @if($event->status == \App\Enums\EventStatus::NotFinished)
                                                             @if ($now->between($start, $end))
@@ -374,9 +397,9 @@
                                                                 Absent
                                                             </flux:badge>
                                                         @endif
-                                                        
+
                                                     @endif
-                                                    
+
                                                 </div>
                                             </div>
                                         </div>

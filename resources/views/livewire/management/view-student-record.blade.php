@@ -4,6 +4,7 @@
 
         <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('attendance_records')" wire:navigate>Return
         </flux:button>
+
     </div>
 
     {{-- Event content --}}
@@ -14,7 +15,7 @@
             <div class="flex items-center gap-x-6">
 
                 {{-- Event details content --}}
-                <div class="space-y-3 text-wrap">
+                <div class="space-y-3 whitespace-nowrap">
                     <flux:text class="mb-4" variant="strong">Academic Year <span
                             class="text-[var(--color-accent)]">{{ $selectedSchoolYear }}</span></flux:text>
 
@@ -69,32 +70,21 @@
                         <flux:text class="text-white">{{ $user->course }}</flux:text>
                     </div>
 
-
-                    {{-- <flux:heading class="flex items-center gap-2 mt-4">
-                        End of Time In Period: <span class="text-[var(--color-accent)]">{{
-                            \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
-
-                        <flux:tooltip position="bottom" toggleable>
-                            <flux:button icon="information-circle" variant="ghost" />
-                            <flux:tooltip.content class="max-w-[20rem] space-y-2">
-                                <p>Students are expected to scan their</p>
-                                <p>QR codes before the end of the time in period.</p>
-                            </flux:tooltip.content>
-                        </flux:tooltip>
-                    </flux:heading> --}}
-
-
+                    <flux:button wire:click="generateStampCard" class="w-full mt-5" variant="primary" color="amber" icon="arrow-down-on-square">Download as PDF</flux:button>
 
                 </div>
+
                 <flux:separator class="" vertical />
+
             </div>
 
         </div>
 
         <!-- Attendance Record -->
+        
+        
         <div class="lg:col-span-3 px-10 py-6 content-center space-y-3
-            h-100 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700
-            ">
+            h-100 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
 
             @foreach ($events as $event)
                 {{-- Event Card --}}
@@ -223,34 +213,39 @@
 
                                     </div>
 
-                                    <flux:dropdown position="left" align="end">
+                                    @if ($log)
+                                        <flux:dropdown position="left" align="end">
 
-                                        <flux:button variant="filled" size="sm" icon="ellipsis-horizontal"
-                                            tooltip="Override Status"></flux:button>
+                                            <flux:button variant="filled" size="sm" icon="ellipsis-horizontal"
+                                                tooltip="Override Status"></flux:button>
 
-                                        <flux:menu>
+                                            <flux:menu>
 
-                                            <flux:modal.trigger :name="'mark-present-'.$user->id.'-'.$event->id">
-                                                <flux:menu.item>
-                                                    Present
-                                                </flux:menu.item>
-                                            </flux:modal.trigger>
+                                                <flux:modal.trigger :name="'mark-present-'.$user->id.'-'.$event->id">
+                                                    <flux:menu.item>
+                                                        Present
+                                                    </flux:menu.item>
+                                                </flux:modal.trigger>
 
-                                            <flux:modal.trigger :name="'mark-late-'.$user->id.'-'.$event->id">
-                                                <flux:menu.item>
-                                                    Late
-                                                </flux:menu.item>
-                                            </flux:modal.trigger>
+                                                <flux:modal.trigger :name="'mark-late-'.$user->id.'-'.$event->id">
+                                                    <flux:menu.item>
+                                                        Late
+                                                    </flux:menu.item>
+                                                </flux:modal.trigger>
 
-                                            <flux:modal.trigger :name="'mark-absent-'.$user->id.'-'.$event->id">
-                                                <flux:menu.item>
-                                                    Absent
-                                                </flux:menu.item>
-                                            </flux:modal.trigger>
+                                                <flux:modal.trigger :name="'mark-absent-'.$user->id.'-'.$event->id">
+                                                    <flux:menu.item>
+                                                        Absent
+                                                    </flux:menu.item>
+                                                </flux:modal.trigger>
 
-                                        </flux:menu>
+                                            </flux:menu>
 
-                                    </flux:dropdown>
+                                        </flux:dropdown>
+                                    @else
+                                        <flux:button disabled variant="ghost" size="sm" icon="ellipsis-horizontal"
+                                                tooltip="User has no log"></flux:button>
+                                    @endif
 
                                     {{-- Mark late modal --}}
                                     <flux:modal :name="'mark-late-'.$user->id.'-'.$event->id" class="min-w-[22rem]" :dismissible="false">
@@ -258,7 +253,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Late?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as Late.
+                                                    <p>You're about to mark {{ $user->name ?? 'Student' }} as Late.
                                                     </p>
                                                 </flux:text>
                                             </div>
@@ -280,7 +275,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Present?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                    <p>You're about to mark {{ $user->name ?? 'Student' }} as
                                                         Present.</p>
                                                 </flux:text>
                                             </div>
@@ -290,7 +285,7 @@
                                                     <flux:button variant="ghost">Cancel</flux:button>
                                                 </flux:modal.close>
                                                 <flux:button variant="primary" color="green"
-                                                    wire:click="markPresent({{ $user->user_id }})">Mark Present
+                                                    wire:click="markPresent({{ $user->id }}, {{ $event->id }})">Mark Present
                                                 </flux:button>
                                             </div>
                                         </div>
@@ -302,7 +297,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Absent?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as Absent.
+                                                    <p>You're about to mark {{ $user->name ?? 'Student' }} as Absent.
                                                     </p>
                                                 </flux:text>
                                             </div>
@@ -311,7 +306,7 @@
                                                 <flux:modal.close>
                                                     <flux:button variant="ghost">Cancel</flux:button>
                                                 </flux:modal.close>
-                                                <flux:button variant="danger" wire:click="markAbsent({{ $user->user_id }})">
+                                                <flux:button variant="danger" wire:click="markAbsent({{ $user->id }}, {{ $event->id }})">
                                                     Mark Absent</flux:button>
                                             </div>
                                         </div>

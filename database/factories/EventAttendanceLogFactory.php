@@ -32,6 +32,14 @@ class EventAttendanceLogFactory extends Factory
             $scenario = 'absent';
         }
 
+        return $this->generateAttendanceData($scenario);
+    }
+
+    /**
+     * Generate attendance data based on scenario
+     */
+    private function generateAttendanceData($scenario): array
+    {
         // Handle different attendance scenarios
         if ($scenario === 'absent') {
             return [
@@ -47,7 +55,7 @@ class EventAttendanceLogFactory extends Factory
         $eventStartTime = Carbon::createFromTime(8, 30); // 8:30 AM
         $eventEndTime = Carbon::createFromTime(16, 0); // 4:00 PM
 
-        if ($scenario === 'on_time') {
+        if ($scenario === 'on_time' || $scenario === 'present') {
             // Generate timestamps for today with the calculated times
             $today = now()->format('Y-m-d');
             $timeIn = $eventTimeIn->copy()->addMinutes(rand(0, 30));
@@ -79,5 +87,15 @@ class EventAttendanceLogFactory extends Factory
             'time_out' => null,
             'attendance_status' => 'absent'
         ];
+    }
+
+    /**
+     * Configure the factory to use a specific attendance status
+     */
+    public function withStatus($status): static
+    {
+        return $this->state(function (array $attributes) use ($status) {
+            return $this->generateAttendanceData($status);
+        });
     }
 }

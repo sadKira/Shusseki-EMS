@@ -159,7 +159,7 @@ class AdminDashboard extends Component
         $hasEvents = $events->isNotEmpty();
 
         // Generate PDF
-        $pdf = Pdf::loadView('generate-report', [
+        $pdf = Pdf::loadView('reports.generate-report', [
             'selectedSchoolYear' => $this->selectedSchoolYear,
             'monthlySummary' => $monthlySummary,
             'presentPercent' => $presentPercent,

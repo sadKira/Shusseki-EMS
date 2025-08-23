@@ -13,6 +13,8 @@ use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ViewStudentRecord extends Component
 {
@@ -30,6 +32,92 @@ class ViewStudentRecord extends Component
         $this->selectedSchoolYear = Setting::getSchoolYear();
     }
 
+    // Generate PDF
+    public function generateStampCard()
+    {
+        [$startYear, $endYear] = explode('-', $this->selectedSchoolYear);
+        $startDate = Carbon::create($startYear, 7, 1);
+        $endDate   = Carbon::create($endYear, 6, 30);
+
+        // Load only the current user's logs for each event
+        $events = Event::with(['attendanceLogs' => function ($query) {
+            $query->where('user_id', $this->user->id);
+        }])
+            ->where('school_year', $this->selectedSchoolYear)
+            ->whereBetween('date', [$startDate, $endDate])
+            ->where('status', EventStatus::Finished->value)
+            ->orderBy('date', 'asc')
+            ->get();
+
+        $totalEvents  = $events->count();
+        $hasEvents    = $events->isNotEmpty();
+
+        // ---- Summary counts ----
+        $presentCount = 0;
+        $lateCount    = 0;
+        $absentCount  = 0; // includes "no log"
+
+        $normalize = function ($status) {
+            if (is_object($status)) {
+                if (property_exists($status, 'value')) {
+                    $status = $status->value;
+                } elseif (property_exists($status, 'name')) {
+                    $status = $status->name;
+                } elseif (method_exists($status, 'value')) {
+                    $status = $status->value();
+                } elseif (method_exists($status, 'name')) {
+                    $status = $status->name();
+                }
+            }
+            return strtolower((string) $status);
+        };
+
+        foreach ($events as $event) {
+            $log = $event->attendanceLogs->first();
+            $status = $normalize($log?->attendance_status);
+
+            switch ($status) {
+                case 'present':
+                    $presentCount++;
+                    break;
+                case 'late':
+                    $lateCount++;
+                    break;
+                case 'absent':
+                    $absentCount++;
+                    break;
+                default:
+                    // No log or unrecognized -> absent
+                    $absentCount++;
+                    break;
+            }
+        }
+
+        $attendedCount = $presentCount + $lateCount;
+
+        // User name
+        $userName = str_replace(' ', '_', $this->user->name);
+
+        $pdf = Pdf::loadView('reports.generate-stampcard-admin', [
+            'user' => $this->user,
+            'selectedSchoolYear' => $this->selectedSchoolYear,
+            'events'             => $events,
+            'hasEvents'          => $hasEvents,
+
+            // summary numbers
+            'totalEvents'   => $totalEvents,
+            'presentCount'  => $presentCount,
+            'lateCount'     => $lateCount,
+            'absentCount'   => $absentCount,
+            'attendedCount' => $attendedCount,
+            'userName' => $userName,
+        ]);
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, "{$userName}_StampCard_{$this->selectedSchoolYear}.pdf");
+    }
+
     // Update student status
     public function markLate($userId, $eventId)
     {
@@ -43,23 +131,25 @@ class ViewStudentRecord extends Component
 
     }
 
-    public function markPresent($userId)
+    public function markPresent($userId, $eventId)
     {
         // Close initial modal
         Flux::modals()->close();
         $this->pendingAction = 'markPresent';
         $this->pendingUserId = $userId;
+        $this->pendingEventId = $eventId;
         
         Flux::modal('admin-key')->show();
         
     }
 
-    public function markAbsent($userId)
+    public function markAbsent($userId, $eventId)
     {
         // Close initial modal
         Flux::modals()->close();
         $this->pendingAction = 'markAbsent';
         $this->pendingUserId = $userId;
+        $this->pendingEventId = $eventId;
         
         Flux::modal('admin-key')->show();
 

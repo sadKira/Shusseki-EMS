@@ -29,6 +29,7 @@ class AttendanceRecord extends Component
         $this->selectedSchoolYear = Setting::getSchoolYear();
     }
 
+    // Generate PDF
     public function generateStampCard()
     {
         [$startYear, $endYear] = explode('-', $this->selectedSchoolYear);
@@ -94,7 +95,7 @@ class AttendanceRecord extends Component
         // User name
         $userName = str_replace(' ', '_', Auth::user()->name);
 
-        $pdf = Pdf::loadView('generate-stampcard', [
+        $pdf = Pdf::loadView('reports.generate-stampcard', [
             'selectedSchoolYear' => $this->selectedSchoolYear,
             'events'             => $events,
             'hasEvents'          => $hasEvents,

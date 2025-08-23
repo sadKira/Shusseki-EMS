@@ -11,6 +11,8 @@ use Flux\Flux;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Event;
 use App\Enums\EventStatus;
+use App\Enums\UserApproval;
+use App\Enums\AttendanceStatus;
 use App\Models\EventAttendanceLog;
 use App\Models\SchoolYear;
 
@@ -89,13 +91,85 @@ class StudentRecord extends Component
         ];
     }
 
+    // Append missing users
+    public function appendMissingAccounts()
+    {
+        // Fetch all active users (who should have logs)
+        $activeUsers = User::where('role', 'user')
+            ->where('status', UserApproval::Approved)
+            ->where('account_status', AccountStatus::Active)
+            ->pluck('id'); // we only need IDs
+
+        // Get all finished events in the selected school year
+        $events = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::Finished)
+            ->pluck('id'); // only IDs
+
+        $now = now();
+        $toInsert = [];
+
+        foreach ($events as $eventId) {
+            // Get already logged user_ids for this event
+            $loggedUserIds = EventAttendanceLog::where('event_id', $eventId)
+                ->pluck('user_id')
+                ->toArray();
+
+            // Get missing users (diff between active users and logged ones)
+            $missingUserIds = $activeUsers->diff($loggedUserIds);
+
+            // Prepare absent logs for bulk insert
+            foreach ($missingUserIds as $userId) {
+                $toInsert[] = [
+                    'event_id' => $eventId,
+                    'user_id' => $userId,
+                    'attendance_status' => AttendanceStatus::Absent,
+                    'time_in' => null,
+                    'time_out' => null,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+        }
+
+        // Insert all missing records in bulk
+        if (!empty($toInsert)) {
+            EventAttendanceLog::insert($toInsert);
+        }
+
+        // Optional: return count of created logs
+        return count($toInsert);
+    }
 
 
+
+    // Computed property for missing accounts
+    public function getMissingAccountsCountProperty()
+    {
+        $activeUsers = User::where('role', 'user')
+            ->where('status', UserApproval::Approved)
+            ->where('account_status', AccountStatus::Active)
+            ->pluck('id')
+            ->toArray();
+
+        $events = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::Finished)
+            ->get();
+
+        $missingCount = 0;
+
+        foreach ($events as $event) {
+            $loggedUserIds = $event->attendanceLogs()->pluck('user_id')->toArray();
+
+            // Add count of users not logged in this event
+            $missingCount += count(array_diff($activeUsers, $loggedUserIds));
+        }
+
+        return $missingCount;
+    }
 
 
     public function render()
     {
-
         // Base query: approved users with role = user
         $baseQuery = User::where('status', 'approved')
             ->where('role', 'user');
@@ -108,7 +182,6 @@ class StudentRecord extends Component
             ->where('account_status', 'active')
             ->count();
 
-
         // Build the filtered query for display (Student List)
         $filteredQueryList = (clone $baseQuery)
             ->where('account_status', 'active')
@@ -119,7 +192,6 @@ class StudentRecord extends Component
         $filteredQuery = (clone $baseQuery)
             ->where('account_status', 'active')
             ->orderBy('name', 'asc');
-        // ->orderBy($this->sortField, $this->sortDirection);
 
         // Get all finished events for the selected school year
         $finishedEvents = Event::where('school_year', $this->selectedSchoolYear)
@@ -131,35 +203,39 @@ class StudentRecord extends Component
             ->get()
             ->groupBy('user_id');
 
-        // Determine sanctioned students with their late & absent counts
+        // Add counts to ALL users in Student List
+        $users = $filteredQueryList->get()->map(function ($student) use ($attendanceLogs) {
+            $logs = $attendanceLogs->get($student->id, collect());
+
+            $student->late_count = $logs->where('attendance_status', 'late')->count();
+            $student->absent_count = $logs->where('attendance_status', 'absent')->count();
+
+            return $student;
+        });
+
+        // Determine sanctioned students
         $sanctionedStudents = $filteredQuery->get()->map(function ($student) use ($finishedEvents, $attendanceLogs) {
             $logs = $attendanceLogs->get($student->id, collect());
 
             // If no logs for all events → missing events count as absent
             $absentCount = $finishedEvents->count() - $logs->count();
-
-            // Add absents from logs with 'absent' status
             $absentCount += $logs->where('attendance_status', 'absent')->count();
 
-            // Late count
             $lateCount = $logs->where('attendance_status', 'late')->count();
 
-            // Add the counts to the student model
             $student->late_count = $lateCount;
             $student->absent_count = $absentCount;
 
             return $student;
         })->filter(function ($student) {
-            // Only return if they have at least 1 late or absent
             return $student->late_count > 0 || $student->absent_count > 0;
         });
-
 
         // Doughnut chart
         $attendanceDoughnutData = $this->getAttendanceDoughnutData();
 
         return view('livewire.management.student-record', [
-            'users' => $filteredQueryList->get(),
+            'users' => $users, // has late/absent counts
             'totalApproved' => $totalApproved,
             'activeCount' => $activeCount,
             'schoolYear' => $this->selectedSchoolYear,
