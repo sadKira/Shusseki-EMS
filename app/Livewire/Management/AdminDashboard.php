@@ -179,16 +179,17 @@ class AdminDashboard extends Component
 
     public function render()
     {
-        $baseQuery = Event::query();
+        $baseQuery = Event::query(); 
 
         $filteredQuery = (clone $baseQuery)
             ->where('school_year', $this->selectedSchoolYear)
-            ->when($this->selectedMonth !== null, function ($query) {
-                $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
-                $query->whereMonth('date', $monthNumber);
-            })
-            ->whereYear('date', now()->year)
-            ->where('status', '!=', EventStatus::Postponed->value);
+            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
+            ->whereYear('date', now()->year);
+
+            // ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
+            //     $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
+            //     $query->whereMonth('date', $monthNumber);
+            // });
 
         // Count of filtered events
         $filteredEventCount = (clone $filteredQuery)->count();
@@ -198,7 +199,14 @@ class AdminDashboard extends Component
             ->where('status', '!=', EventStatus::Postponed->value)
             ->count();
 
-        // events query
+        // Count of events for the month where status is not postponed
+        $nonPostponedEventCountMonth = Event::where('school_year', $this->selectedSchoolYear)
+            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
+            ->whereYear('date', now()->year)
+            ->where('status', '!=', EventStatus::Postponed->value)
+            ->count();
+
+        // events query and order
         $events = $filteredQuery
             ->orderByRaw("
                 CASE 
@@ -235,6 +243,7 @@ class AdminDashboard extends Component
             'events' => $events,
             'eventCount' => $filteredEventCount,
             'nonPostponedEventCount' => $nonPostponedEventCount,
+            'nonPostponedEventCountMonth' => $nonPostponedEventCountMonth,
             'finishedCount' => $finishedCount,
             'postponedCount' => $postponedCount,
             'untrackedCount' => $untrackedCount,

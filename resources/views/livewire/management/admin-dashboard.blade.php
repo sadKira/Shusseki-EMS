@@ -1,5 +1,5 @@
 <div>
-    <div class="flex items-center justify-between mb-10 w-full">
+    <div class="flex items-center justify-between mb-3 w-full">
 
         {{-- App Header --}}
         <div class="relative">
@@ -29,16 +29,10 @@
             </div> --}}
 
             <flux:button icon="calendar-date-range" variant="ghost">A.Y. {{ $selectedSchoolYear }}</flux:button>
-            <flux:button 
-                onclick="setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 4000)" 
-                wire:click="generateYearlyReport" 
-                size="sm" 
-                icon="cloud-arrow-down" 
-                variant="primary" 
-                color="amber"
-                    >
-                    Generate Report
-                    
+            <flux:button onclick="setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 4000)"
+                wire:click="generateYearlyReport" size="sm" icon="cloud-arrow-down" variant="primary" color="amber">
+                Generate Report
+
             </flux:button>
         </div>
 
@@ -48,13 +42,19 @@
     <div class="flex flex-col gap-3 ">
 
         {{-- Row 1 --}}
-        <div class="grid grid-cols-4 gap-3 whitespace-nowrap">
+        <div class="flex gap-3 whitespace-nowrap w-full">
 
-            {{-- Events in this school year --}}
-            <div class="metallic-card-soft rounded-xl px-7 py-6 flex items-center justify-between">
-                <div>
-                    <div class="flex flex-col whitespace-nowrap">
+            {{-- left side --}}
+            <div class="grid grid-cols-2 gap-3 flex-shrink-0" style="width: 40%;">
 
+                {{-- Events in this school year --}}
+                <div class="rounded-xl px-5 py-4 flex flex-col justify-between"
+                    style="border: 2px solid rgba(255, 255, 255, 0.06);"
+                    >
+                    <flux:icon.rectangle-group class="size-7 text-[var(--color-accent)]" variant="outline" />
+
+                    <div class="flex flex-col whitespace-nowrap mt-3">
+                        <flux:text>A.Y. {{ $selectedSchoolYear }}</flux:text>
                         @if ($nonPostponedEventCount > 1)
                             <flux:heading size="xl" level="1">{{ $nonPostponedEventCount }} Events</flux:heading>
                         @elseif($nonPostponedEventCount == 1)
@@ -64,16 +64,16 @@
                         @endif
 
                     </div>
-                    <flux:text>This Academic Year</flux:text>
+
                 </div>
 
-                <flux:icon.rectangle-group class="size-10 text-[var(--color-accent)]" variant="outline" />
-            </div>
-
-            {{-- Attendance Rate --}}
-            <div class="metallic-card-soft rounded-xl px-7 py-6 flex items-center justify-between whitespace-nowrap">
-                <div>
-                    <div class="flex items-center gap-1">
+                {{-- Attendance Rate --}}
+                <div
+                    class="rounded-xl px-5 py-4 flex flex-col justify-between whitespace-nowrap"
+                    style="border: 2px solid rgba(255, 255, 255, 0.06);"
+                    >
+                    <flux:icon.percent-badge class="text-[var(--color-accent)] size-7" variant="outline" />
+                    <div class="flex flex-col mt-3">
 
                         @php
                             $presentTotal = array_sum($attendanceTrendData['present']);
@@ -86,192 +86,246 @@
                             $latePercent = $grandTotal > 0 ? round(($lateTotal / $grandTotal) * 100, 1) : 0;
                             $absentPercent = $grandTotal > 0 ? round(($absentTotal / $grandTotal) * 100, 1) : 0;
                         @endphp
-
+                        <flux:text>Attendance Rate</flux:text>
                         <flux:heading size="xl" level="1">{{ $presentPercent }}%</flux:heading>
-                        {{-- <flux:icon.plus class="text-green-500" variant="micro" /> --}}
+                        {{--
+                        <flux:icon.plus class="text-green-500" variant="micro" /> --}}
 
                     </div>
-                    <flux:text>Attendance Rate</flux:text>
+
+
                 </div>
 
-                <flux:icon.percent-badge class="text-[var(--color-accent)] size-10" variant="outline" />
+                {{-- Total Events for the month --}}
+                <a href="{{ route('manage_events') }}" wire:navigate
+                    class="rounded-xl px-5 py-4 flex flex-col justify-between"
+                    style="border: 2px solid rgba(255, 255, 255, 0.06);"
+                    >
+
+                    <div class="flex items-center justify-between">
+                        {{-- <flux:icon.calendar-days class="text-[var(--color-accent)] size-7" variant="outline" /> --}}
+                        <flux:badge variant="pill" size="sm" icon:trailing="arrow-up-right">View Bin</flux:badge>
+                    </div>
+                    <div class="flex flex-col whitespace-nowrap mt-3">
+                        <flux:text>This Month</flux:text>
+                        @if ($nonPostponedEventCountMonth > 1)
+                            <flux:heading size="xl" level="1">{{ $nonPostponedEventCountMonth }} Events</flux:heading>
+                        @elseif($nonPostponedEventCountMonth == 1)
+                            <flux:heading size="xl" level="1">{{ $nonPostponedEventCountMonth }} Event</flux:heading>
+                        @else
+                            <flux:heading size="xl" level="1">No Events</flux:heading>
+                        @endif
+
+                    </div>
+
+                </a>
+
+                {{-- Pending Approval --}}
+                <a href="{{ route('manage_approval') }}" wire:navigate
+                    class="rounded-xl px-5 py-4 flex flex-col justify-between"
+                    style="border: 2px solid rgba(255, 255, 255, 0.06);"
+                    >
+                    <div class="flex items-center justify-between">
+                        {{-- <flux:icon.exclamation-circle class="text-[var(--color-accent)] size-7" variant="outline" /> --}}
+                        <flux:badge variant="pill" size="sm" icon:trailing="arrow-up-right">View Pending</flux:badge>
+                    </div>
+
+                    <div class="flex flex-col whitespace-nowrap mt-3">
+                        <flux:text>Pending Approval</flux:text>
+                        @if ($pendingCount > 1)
+                            <flux:heading size="xl" level="1">{{ $pendingCount }} Accounts</flux:heading>
+                        @elseif($pendingCount == 1)
+                            <flux:heading size="xl" level="1">{{ $pendingCount }} Account</flux:heading>
+                        @else
+                            <flux:heading size="xl" level="1">No Pending</flux:heading>
+                        @endif
+                    </div>
+                </a>
             </div>
 
-            {{-- Total Events for the month --}}
-            <flux:tooltip content="Navigate to Manage Events">
-                <a href="{{ route('manage_events') }}" wire:navigate
-                    class="metallic-card-soft rounded-xl px-7 py-6 flex items-center justify-between">
-                    <div class="">
-                        <div class="flex flex-col whitespace-nowrap">
-                            @if ($eventCount > 1)
-                                <flux:heading size="xl" level="1">{{ $eventCount }} Events</flux:heading>
-                            @elseif($eventCount == 1)
-                                <flux:heading size="xl" level="1">{{ $eventCount }} Event</flux:heading>
-                            @else
-                                <flux:heading size="xl" level="1">No Events</flux:heading>
-                            @endif
+            {{-- right side --}}
+            <div class="flex-grow">
 
+                {{-- Attendance Trends --}}
+                <div
+                    class="flex flex-col gap-4 vertical-glow-card vertical-glow-white px-5 py-4 rounded-xl whitespace-nowrap h-full">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <flux:text>Attendance Trend</flux:text>
+                            <div class="flex item-center gap-2">
+                                <flux:heading size="xl" level="1" class="">{{ $selectedSchoolYear }}</flux:heading>
+                                {{-- <flux:button icon="chevron-down" variant="ghost" size="sm"></flux:button> --}}
+                            </div>
                         </div>
-                        <div class="flex items-center gap-1">
-                            <flux:text>This Month</flux:text>
-                            <flux:icon.arrow-top-right-on-square class="text-zinc-400" variant="micro" />
+
+                        {{-- Chart Legend --}}
+                        @php
+                            $presentTotal = array_sum($attendanceTrendData['present']);
+                            $lateTotal = array_sum($attendanceTrendData['late']);
+                            $absentTotal = array_sum($attendanceTrendData['absent']);
+                            $grandTotal = $presentTotal + $lateTotal + $absentTotal;
+                            $presentFinal = $presentTotal + $lateTotal;
+
+                            $presentPercent = $grandTotal > 0 ? round(($presentFinal / $grandTotal) * 100, 1) : 0;
+                            $latePercent = $grandTotal > 0 ? round(($lateTotal / $grandTotal) * 100, 1) : 0;
+                            $absentPercent = $grandTotal > 0 ? round(($absentTotal / $grandTotal) * 100, 1) : 0;
+                        @endphp
+
+                        <div class="flex items-center gap-2">
+                            <flux:badge size="sm" color="green" icon="plus">{{ $presentPercent }}% Present</flux:badge>
+                            <flux:badge size="sm" color="amber" icon="exclamation-circle">{{ $latePercent }}% Late
+                            </flux:badge>
+                            <flux:badge size="sm" color="red" icon="minus">{{ $absentPercent }}% Absent</flux:badge>
                         </div>
+
                     </div>
 
-                    <flux:icon.calendar-days class="text-[var(--color-accent)] size-10" variant="outline" />
-                </a>
-            </flux:tooltip>
-
-            {{-- Pending Approval --}}
-            <flux:tooltip content="Navigate to Student Approval">
-                <a href="{{ route('manage_approval') }}" wire:navigate
-                    class="metallic-card-soft rounded-xl px-7 py-6 flex items-center justify-between">
-                    <div class="">
-                        <div class="flex flex-col whitespace-nowrap">
-                            @if ($pendingCount > 1)
-                                <flux:heading size="xl" level="1">{{ $pendingCount }} Accounts</flux:heading>
-                            @elseif($pendingCount == 1)
-                                <flux:heading size="xl" level="1">{{ $pendingCount }} Account</flux:heading>
-                            @else
-                                <flux:heading size="xl" level="1">No Pending</flux:heading>
-                            @endif
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <flux:text>Pending Approval</flux:text>
-                            <flux:icon.arrow-top-right-on-square class="text-zinc-400" variant="micro" />
-                        </div>
+                    {{-- Chart --}}
+                    <div class="relative h-44 w-full">
+                        @if($attendanceTrendData['hasEvents'])
+                            <canvas id="monthlyAttendanceTrendChart" class="w-full h-full"></canvas>
+                        @else
+                            <canvas id="monthlyAttendanceTrendChart" class="w-full h-full"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center text-zinc-400 text-lg ">
+                                No events
+                            </div>
+                        @endif
                     </div>
-
-                    <flux:icon.exclamation-circle class="text-[var(--color-accent)] size-10" variant="outline" />
-                </a>
-            </flux:tooltip>
+                </div>
+            </div>
 
         </div>
 
         {{-- Row 2 --}}
-        <div class="flex items-stretch gap-3">
+        <div class="flex gap-3 whitespace-nowrap w-full">
 
-            {{-- Attendance Trends --}}
-            <div class="flex flex-col gap-7 metallic-card-soft px-7 py-6 rounded-xl whitespace-nowrap">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <flux:text>Attendance Trend</flux:text>
-                        <div class="flex item-center gap-2">
-                            <flux:heading size="xl" level="1" class="">{{ $selectedSchoolYear }}</flux:heading>
-                            {{-- <flux:button icon="chevron-down" variant="ghost" size="sm"></flux:button> --}}
-                        </div>
+
+            {{-- Event This month --}}
+            <div class="vertical-glow-card vertical-glow-white rounded-xl px-5 py-4 whitespace-nowrap flex-grow"
+                {{-- style="border: 2px solid rgba(255, 255, 255, 0.06);" --}}
+                >
+            
+                {{-- <flux:text class="mb-2 text-white">Events This Month</flux:text> --}}
+                 <flux:heading size="lg" class="mb-2">Events This Month</flux:heading>
+
+                {{-- Events content --}}
+                <div
+                    class="h-44 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
+                    <div class="flex flex-col gap-2 w-full">
+
+                        {{-- Mini long bars --}}
+                        @forelse ($events as $event)
+                            <a  href="{{route('view_event', $event)}}"
+                                class=" p-4 mr-4 flex items-center justify-between rounded-xl cursor-pointer hover:bg-neutral-700 transition"
+                                style="border: 2px solid rgba(255, 255, 255, 0.06);"
+                                >
+                                <div class="flex items-center gap-3">
+                                    <div class="">
+                                        <flux:text variant="strong">{{ $event->title }}</flux:text>
+                                        <flux:text variant="subtle">
+                                            {{ \Carbon\Carbon::parse($event->date)->format('Y, F j') }} |
+                                            {{  \Carbon\Carbon::parse($event->start_time)->format('g:i A') }} -
+                                            {{ \Carbon\Carbon::parse($event->end_time)->format('g:i A') }}
+                                        </flux:text>
+                                    </div>
+                                </div>
+                                <div class="flex-items-center">
+
+                                    @php
+                                        $timezone = 'Asia/Manila';
+                                        $now = now()->timezone($timezone);
+
+                                        // Combine date and time into Carbon instances
+                                        $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
+                                        $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
+                                    @endphp
+                                    
+                                    {{-- Event status badges --}}
+                                    @if ($event->status == \App\Enums\EventStatus::Finished)
+                                        <flux:badge color="green" class="mr-10" variant="solid">
+                                            <span class="text-black">Ended</span>
+                                        </flux:badge>
+                                    @elseif ($event->status == \App\Enums\EventStatus::Postponed)
+                                        <flux:badge color="red" class="mr-10" variant="solid">
+                                            <span class="text-white">Postponed</span>
+                                        </flux:badge>
+                                    @elseif ($now->between($start, $end))
+                                        <flux:badge color="amber" class="mr-10" variant="solid">
+                                            <span class="text-black">In Progress</span>
+                                        </flux:badge>
+                                    @elseif ($now->gt($end))
+                                        <flux:badge color="zinc" class="mr-10" variant="solid">
+                                            <span class="text-white">Untracked</span>
+                                        </flux:badge>
+                                    @endif
+
+                                    {{-- <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square"
+                                        :href="route('view_event', $event)" wire:navigate></flux:button> --}}
+                                </div>
+
+                            </a>
+                        @empty
+                            <x-empty-state />
+                        @endforelse
                     </div>
-
-                    {{-- Chart Legend --}}
-                    @php
-                        $presentTotal = array_sum($attendanceTrendData['present']);
-                        $lateTotal = array_sum($attendanceTrendData['late']);
-                        $absentTotal = array_sum($attendanceTrendData['absent']);
-                        $grandTotal = $presentTotal + $lateTotal + $absentTotal;
-                        $presentFinal = $presentTotal + $lateTotal;
-
-                        $presentPercent = $grandTotal > 0 ? round(($presentFinal / $grandTotal) * 100, 1) : 0;
-                        $latePercent = $grandTotal > 0 ? round(($lateTotal / $grandTotal) * 100, 1) : 0;
-                        $absentPercent = $grandTotal > 0 ? round(($absentTotal / $grandTotal) * 100, 1) : 0;
-                    @endphp
-
-                    <div class="flex items-center gap-2">
-                        <flux:badge size="sm" color="green" icon="plus">{{ $presentPercent }}% Present</flux:badge>
-                        <flux:badge size="sm" color="amber" icon="exclamation-circle">{{ $latePercent }}% Late
-                        </flux:badge>
-                        <flux:badge size="sm" color="red" icon="minus">{{ $absentPercent }}% Absent</flux:badge>
-                    </div>
-
                 </div>
+            </div>
 
-                {{-- Chart --}}
-                <div class="relative h-64 w-full">
-                    @if($attendanceTrendData['hasEvents'])
-                        <canvas id="monthlyAttendanceTrendChart" class="w-full h-full"></canvas>
+            {{-- right side cards --}}
+            <div class="grid grid-cols-3 gap-3 flex-shrink-0" style="width: 40%;">
+
+                {{-- Untracked Events --}}
+                <div
+                    class="rounded-xl px-5 py-3 flex flex-col items-center justify-center"
+                    style="border: 2px solid rgba(255, 255, 255, 0.06);"
+                    >
+                    <flux:icon.ellipsis-horizontal-circle class="size-10 text-zinc-50" variant="outline" />
+                    <flux:text class="text-xs mt-4">Untracked</flux:text>
+                    @if ($untrackedCount > 1)
+                        <flux:heading size="lg" level="1" class="underline">{{ $untrackedCount }} Events</flux:heading>
+                    @elseif($untrackedCount == 1)
+                        <flux:heading size="lg" level="1" class="underline">{{ $untrackedCount }} Event</flux:heading>
                     @else
-                        <canvas id="monthlyAttendanceTrendChart" class="w-full h-full"></canvas>
-                        <div class="absolute inset-0 flex items-center justify-center text-zinc-400 text-lg ">
-                            No events 
-                        </div>
+                        <flux:heading size="lg" level="1">No Events</flux:heading>
                     @endif
+
                 </div>
+
+                {{-- Finished Events --}}
+                <div
+                    class="rounded-xl px-5 py-3 flex flex-col items-center justify-center"
+                    style="border: 2px solid rgba(255, 255, 255, 0.06);"
+                    >
+                    <flux:icon.check-circle class="size-10 text-green-500" variant="outline" />
+                    <flux:text class="text-xs mt-4">Finished</flux:text>
+                    @if ($finishedCount > 1)
+                        <flux:heading size="lg" level="1" class="">{{ $finishedCount }} Events</flux:heading>
+                    @elseif($finishedCount == 1)
+                        <flux:heading size="lg" level="1" class="">{{ $finishedCount }} Event</flux:heading>
+                    @else
+                        <flux:heading size="lg" level="1">No Events</flux:heading>
+                    @endif
+
+                </div>
+
+                {{-- Postponed Events --}}
+                <div
+                    class="rounded-xl px-5 py-3 flex flex-col items-center justify-center"
+                    style="border: 2px solid rgba(255, 255, 255, 0.06);"
+                    >
+                    <flux:icon.x-circle class="size-10 text-red-500" variant="outline" />
+                    <flux:text class="text-xs mt-4">Postponed</flux:text>
+                    @if ($postponedCount > 1)
+                        <flux:heading size="lg" level="1" class="">{{ $postponedCount }} Events</flux:heading>
+                    @elseif($postponedCount == 1)
+                        <flux:heading size="lg" level="1" class="">{{ $postponedCount }} Event</flux:heading>
+                    @else
+                        <flux:heading size="lg" level="1">No Events</flux:heading>
+                    @endif
+
+                </div>
+
             </div>
-
-            {{-- Event Status --}}
-            <div class="metallic-card-soft rounded-xl px-7 py-6 whitespace-nowrap flex-grow">
-                <div class="flex items-center justify-between">
-                    <flux:text>Event Status Overview</flux:text>
-                    {{-- <flux:icon.information-circle variant="micro" class="text-[var(--color-accent)]" /> --}}
-                </div>
-
-                {{-- Mini cards content --}}
-                <div class="flex flex-col space-y-3 mt-5">
-
-                    {{-- Finished --}}
-                    <div class="relative event-status-finished p-4 rounded-xl shadow-inner">
-
-                        {{-- svg --}}
-                        <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
-                            <flux:icon name="check-circle" class="w-36 h-36" />
-                        </div>
-
-                        {{-- Content --}}
-                        <div class="relative z-10">
-                            <flux:text class="text-zinc-50">Finished</flux:text>
-                            @if ($finishedCount > 1)
-                                <flux:heading size="xl" level="1" class="">{{ $finishedCount }} Events</flux:heading>
-                            @elseif($finishedCount == 1)
-                                <flux:heading size="xl" level="1" class="">{{ $finishedCount }} Events</flux:heading>
-                            @else
-                                <flux:heading size="xl" level="1">No Events</flux:heading>
-                            @endif
-                        </div>
-                    </div>
-
-                    {{-- Postponed --}}
-                    <div class="relative event-status-postponed p-4 rounded-xl shadow-inner">
-
-                        {{-- svg --}}
-                        <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
-                            <flux:icon name="x-circle" class="w-36 h-36" />
-                        </div>
-
-                        {{-- Content --}}
-                        <div class="relative z-10">
-                            <flux:text class="text-zinc-50">Postponed</flux:text>
-                            @if ($postponedCount > 1)
-                                <flux:heading size="xl" level="1" class="">{{ $postponedCount }} Events</flux:heading>
-                            @elseif($postponedCount == 1)
-                                <flux:heading size="xl" level="1" class="">{{ $postponedCount }} Events</flux:heading>
-                            @else
-                                <flux:heading size="xl" level="1">No Events</flux:heading>
-                            @endif
-                        </div>
-                    </div>
-
-                    {{-- Untracked --}}
-                    <div class="relative event-status-untracked p-4 rounded-xl shadow-inner">
-
-                        {{-- svg --}}
-                        <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
-                            <flux:icon name="ellipsis-horizontal-circle" class="w-36 h-36" />
-                        </div>
-
-                        {{-- Content --}}
-                        <div class="relative z-10">
-                            <flux:text class="text-zinc-50">Untracked</flux:text>
-                            @if ($untrackedCount > 1)
-                                <flux:heading size="xl" level="1" class="">{{ $untrackedCount }} Events</flux:heading>
-                            @elseif($untrackedCount == 1)
-                                <flux:heading size="xl" level="1" class="">{{ $untrackedCount }} Events</flux:heading>
-                            @else
-                                <flux:heading size="xl" level="1">No Events</flux:heading>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-
 
         </div>
 
@@ -321,9 +375,9 @@
                             backgroundColor: 'rgba(245,158,11,0.1)',
                             fill: false,
                             tension: 0.4,
-                            borderDash:[5,5],
+                            borderDash: [5, 5],
                             borderWidth: 2
-                            
+
                         },
                         {
                             label: 'Absent',

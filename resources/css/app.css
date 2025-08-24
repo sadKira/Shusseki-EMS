@@ -353,7 +353,7 @@ select:focus[data-flux-control] {
         background: radial-gradient(
             circle at bottom center,
             rgba(255, 255, 255, 0.06) 0%,
-            rgba(255, 255, 255, 0) 96%
+            rgba(255, 255, 255, 0) 100%
         );
         pointer-events: none;
         transition: background 0.3s ease;
@@ -364,7 +364,7 @@ select:focus[data-flux-control] {
         background: radial-gradient(
             circle at bottom center,
             rgba(255, 255, 255, 0.09) 0%,
-            rgba(255, 255, 255, 0) 96%
+            rgba(255, 255, 255, 0) 100%
         );
     }
 
@@ -405,18 +405,18 @@ select:focus[data-flux-control] {
         background: radial-gradient(
             circle at bottom center,
             rgba(34, 197, 94, 0.06) 0%,
-            rgba(34, 197, 94, 0) 70%
+            rgba(34, 197, 94, 0) 100%
         );
         pointer-events: none;
         transition: background 0.3s ease;
-        border: 1px solid rgba(34, 197, 94, 0.3);
+        /* border: 1px solid rgba(34, 197, 94, 0.3); */
     }
 
     .vertical-glow-green:hover::before {
         background: radial-gradient(
             circle at bottom center,
             rgba(34, 197, 94, 0.09) 0%,
-            rgba(34, 197, 94, 0) 70%
+            rgba(34, 197, 94, 0) 100%
         );
     }
 
@@ -431,18 +431,18 @@ select:focus[data-flux-control] {
         background: radial-gradient(
             circle at bottom center,
             rgba(239, 68, 68, 0.06) 0%,
-            rgba(239, 68, 68, 0) 70%
+            rgba(239, 68, 68, 0) 100%
         );
         pointer-events: none;
         transition: background 0.3s ease;
-        border: 1px solid rgba(239, 68, 68, 0.3);
+        /* border: 1px solid rgba(239, 68, 68, 0.3); */
     }
 
     .vertical-glow-red:hover::before {
         background: radial-gradient(
             circle at bottom center,
             rgba(239, 68, 68, 0.09) 0%,
-            rgba(239, 68, 68, 0) 70%
+            rgba(239, 68, 68, 0) 100%
         );
     }
 

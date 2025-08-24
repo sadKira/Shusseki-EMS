@@ -105,6 +105,7 @@ class ManageEvents extends Component
         // Count of filtered events
         $filteredEventCount = (clone $filteredQuery)->count();
 
+        // Order of events
         $events = $filteredQuery
             ->orderByRaw("
                 CASE 
