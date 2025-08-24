@@ -82,9 +82,9 @@ Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
 Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(function () {
     // Protected routes
     Route::get('admin/dashboard', AdminDashboard::class)->name('admin_dashboard');
-    Route::get('admin/events', ManageEvents::class)->name('manage_events');
+    Route::get('admin/event-bin', ManageEvents::class)->name('manage_events');
 
-    Route::get('admin/events/{event}', ViewEvent::class)->name('view_event');
+    Route::get('admin/event-bin/{event}', ViewEvent::class)->name('view_event');
     Route::get('admin/event-timeline/{event}', ViewEvent::class)->name('view_event_timeline');
     Route::get('admin/attendance-record/{user}', ViewStudentRecord::class)->name('view_student_record');
     
