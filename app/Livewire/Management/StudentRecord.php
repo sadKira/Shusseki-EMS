@@ -25,6 +25,7 @@ class StudentRecord extends Component
     use WithPagination;
 
     public $search = '';
+    public $sanctionedSearch = '';
     public $selectedStatus = 'Active Accounts';
     public $selectedStatus_level = 'All';
     public $selectedStatus_course = 'All';
@@ -191,6 +192,12 @@ class StudentRecord extends Component
         // Build the filtered query for display (Sanctioned)
         $filteredQuery = (clone $baseQuery)
             ->where('account_status', 'active')
+            ->search($this->sanctionedSearch)
+            ->orderBy('name', 'asc');
+
+        // Build the filtered query for display (Sanctioned - Count)
+        $filteredQueryCount = (clone $baseQuery)
+            ->where('account_status', 'active')
             ->orderBy('name', 'asc');
 
         // Get all finished events for the selected school year
@@ -231,6 +238,24 @@ class StudentRecord extends Component
             return $student->late_count > 0 || $student->absent_count > 0;
         });
 
+        // Determine sanctioned students count
+        $sanctionedStudentsCount = $filteredQueryCount->get()->map(function ($student) use ($finishedEvents, $attendanceLogs) {
+            $logs = $attendanceLogs->get($student->id, collect());
+
+            // If no logs for all events → missing events count as absent
+            $absentCount = $finishedEvents->count() - $logs->count();
+            $absentCount += $logs->where('attendance_status', 'absent')->count();
+
+            $lateCount = $logs->where('attendance_status', 'late')->count();
+
+            $student->late_count = $lateCount;
+            $student->absent_count = $absentCount;
+
+            return $student;
+        })->filter(function ($student) {
+            return $student->late_count > 0 || $student->absent_count > 0;
+        });
+
         // Doughnut chart
         $attendanceDoughnutData = $this->getAttendanceDoughnutData();
 
@@ -241,6 +266,7 @@ class StudentRecord extends Component
             'schoolYear' => $this->selectedSchoolYear,
             'attendanceDoughnutData' => $attendanceDoughnutData,
             'sanctionedStudents' => $sanctionedStudents,
+            'sanctionedStudentsCount' => $sanctionedStudentsCount,
             'sanctionedCount' => $sanctionedStudents->count(),
         ]);
     }

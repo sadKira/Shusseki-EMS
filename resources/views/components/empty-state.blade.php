@@ -51,6 +51,6 @@
         </defs>
     </svg>
     <div class="max-w-sm mx-auto">
-        <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">No Events for this month</p>
+        <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">No Events for this Month</p>
     </div>
 </div>

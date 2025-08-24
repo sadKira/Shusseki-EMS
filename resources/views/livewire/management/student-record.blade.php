@@ -116,7 +116,7 @@
                         <flux:text>Sanctioned Students</flux:text>
                         <flux:heading size="xl" level="1">
 
-                            {{ $sanctionedStudents->count() }}
+                            {{ $sanctionedStudentsCount->count() }}
 
                         </flux:heading>
 
@@ -129,7 +129,14 @@
             {{-- Sanctioned Students --}}
             <div class="px-10 py-6 rounded-xl">
 
-                <flux:heading size="lg" class="mb-2">Sanctioned Students</flux:heading>
+                <div class="flex items-center justify-between mb-3">
+                    <flux:heading size="lg" class="">Sanctioned Students</flux:heading>
+                    <div class="">
+                        <flux:input size="sm" icon="magnifying-glass" placeholder="Search Sanctioned..." wire:model.live.debounce.300ms="sanctionedSearch"
+                                    autocomplete="off" clearable />
+                    </div>
+                </div>
+                
                 {{-- Content --}}
                 <div
                     class="h-60 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
@@ -186,7 +193,7 @@
             <div class="px-6 py-6 rounded-xl metallic-card-soft space-y-3">
 
                 <flux:heading size="xl">Student List</flux:heading>
-                <flux:input size="sm" icon="magnifying-glass" placeholder="Search..." wire:model.live.debounce.300ms="search"
+                <flux:input size="sm" icon="magnifying-glass" placeholder="Search Students..." wire:model.live.debounce.300ms="search"
                                 autocomplete="off" clearable />
 
                 {{-- Content --}}

@@ -239,14 +239,37 @@ class AdminDashboard extends Component
             })
             ->count();
 
+        $untrackedEvents = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::NotFinished->value)
+            ->where(function ($query) use ($now) {
+                $query->whereDate('date', '<', $now->toDateString())
+                    ->orWhere(function ($q) use ($now) {
+                        $q->whereDate('date', $now->toDateString())
+                            ->whereTime('end_time', '<', $now->toTimeString());
+                    });
+            })
+            ->get();
+
+        $finishedEvents = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::Finished->value)
+            ->get();
+
+        $postponedEvents = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::Postponed->value)
+            ->get();
+
         return view('livewire.management.admin-dashboard', [
             'events' => $events,
             'eventCount' => $filteredEventCount,
             'nonPostponedEventCount' => $nonPostponedEventCount,
             'nonPostponedEventCountMonth' => $nonPostponedEventCountMonth,
             'finishedCount' => $finishedCount,
+            'finishedEvents' => $finishedEvents,
             'postponedCount' => $postponedCount,
+            'postponedEvents' => $postponedEvents,
             'untrackedCount' => $untrackedCount,
+            'untrackedEvents' => $untrackedEvents,
+            
         ]);
     }
 }
