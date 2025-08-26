@@ -70,7 +70,7 @@ class CreateEvent extends Component
                 'image' => $imagePath,
             ]);
 
-            return redirect()->route('manage_events');
+            return redirect()->route('event_timeline');
         // } catch (\Exception $e) {
         //     dd($e->getMessage());
         // }

@@ -13,68 +13,70 @@
                     <flux:heading size="xl" class="font-bold whitespace-nowrap">Tsuushin Coverage</flux:heading>
                 </div>
 
-                @foreach($upcomingEvents as $event)
+                <div class="flex flex-col gap-4">
+                    @foreach($upcomingEvents as $event)
 
-                    {{-- Event Card --}}
-                    <div class="relative z-50 w-auto h-auto">
+                        {{-- Event Card --}}
+                        <div class="relative z-50 w-auto h-auto">
 
-                        {{-- Card Content --}}
-                        <div class="relative flex flex-col min-h-30 md:min-h-44 w-full overflow-hidden rounded-xl bg-zinc-950
-                                                        border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
-                                                        ">
-                            <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
-                                style="background-image: url('{{ asset('storage/' . $event->image) }}');">
+                            {{-- Card Content --}}
+                            <div class="relative flex flex-col min-h-30 md:min-h-44 w-full overflow-hidden rounded-xl bg-zinc-950
+                                                            border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
+                                                            ">
+                                <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
+                                    style="background-image: url('{{ asset('storage/' . $event->image) }}');">
 
-                                <div
-                                    class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
-                                </div>
-                            </div>
-
-                            {{-- Content Main --}}
-                            <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 p-10 md:px-12 h-full min-h-[120px] md:min-h-[176px] w-full">
-                                <!-- Left details -->
-                                <div class="flex flex-col gap-3">
-                                    <flux:text class="font-medium text-zinc-300">
-                                        {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
-                                    </flux:text>
-                                    <h2
-                                        class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
-                                        {{ $event->title }}
-                                    </h2>
-
-                                    <div class="space-y-1">
-                                        <div class="flex items-center gap-1">
-                                            <flux:icon.clock variant="solid" class="text-zinc-300 size-4" />
-                                            <flux:heading size="sm" class="text-zinc-300">
-                                                {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} -
-                                                {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
-                                            </flux:heading>
-                                        </div>
-                                        <div class="flex items-center gap-1">
-                                            <flux:icon.map-pin variant="solid" class="text-zinc-300 size-4" />
-                                            <flux:heading size="sm" class="text-zinc-300">
-                                                {{ $event->location }}
-                                            </flux:heading>
-                                        </div>
+                                    <div
+                                        class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
                                     </div>
                                 </div>
 
-                                <!-- Button -->
-                                <div class="flex items-center">
-                                    <flux:button wire:click="approveRequest('{{ $event->id }}')" variant="primary" color="blue">
-                                        Approve Coverage Request
-                                    </flux:button>
-                                </div>
-                            </div>
+                                {{-- Content Main --}}
+                                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 p-10 md:px-12 h-full min-h-[120px] md:min-h-[176px] w-full">
+                                    <!-- Left details -->
+                                    <div class="flex flex-col gap-3">
+                                        <flux:text class="font-medium text-zinc-300">
+                                            {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
+                                        </flux:text>
+                                        <h2
+                                            class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                            {{ $event->title }}
+                                        </h2>
 
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-1">
+                                                <flux:icon.clock variant="solid" class="text-zinc-300 size-4" />
+                                                <flux:heading size="sm" class="text-zinc-300">
+                                                    {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} -
+                                                    {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                                                </flux:heading>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <flux:icon.map-pin variant="solid" class="text-zinc-300 size-4" />
+                                                <flux:heading size="sm" class="text-zinc-300">
+                                                    {{ $event->location }}
+                                                </flux:heading>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Button -->
+                                    <div class="flex items-center">
+                                        <flux:button wire:click="approveRequest('{{ $event->id }}')" variant="primary" color="blue">
+                                            Approve Coverage Request
+                                        </flux:button>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
 
 
                         </div>
 
-
-                    </div>
-
-                @endforeach
+                    @endforeach
+                </div>
 
             </div>
             

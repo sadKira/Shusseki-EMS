@@ -7,7 +7,20 @@
     </div>
     
     <!-- Session Status -->
-    <x-auth-session-status class="text-center" :status="session('status')" />
+    {{-- <x-auth-session-status class="text-center" :status="session('status')" /> --}}
+    <div x-data="{ shown: false }" x-init="
+            @this.on('forgot-password', () => {
+                shown = true;
+                {{-- setTimeout(() => { shown = false }, 3000); --}}
+            })
+        " class="">
+
+        <!-- Callout (shown temporarily when event fires) -->
+        <template x-if="shown">
+            <flux:callout variant="success" icon="check-circle" heading="A reset link will be sent if the account exists" />
+        </template>
+
+    </div>
 
     <form wire:submit="sendPasswordResetLink" class="flex flex-col gap-6">
         <!-- Email Address -->

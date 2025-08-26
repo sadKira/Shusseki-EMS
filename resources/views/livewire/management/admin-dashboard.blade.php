@@ -29,7 +29,7 @@
             </div> --}}
 
             <flux:button icon="calendar-date-range" variant="ghost">A.Y. {{ $selectedSchoolYear }}</flux:button>
-            <flux:button onclick="setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 4000)"
+            <flux:button onclick="setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 5000)"
                 wire:click="generateYearlyReport" size="sm" icon="cloud-arrow-down" variant="primary" color="amber">
                 Generate Report
 
@@ -48,7 +48,7 @@
             <div class="grid grid-cols-2 gap-3 flex-shrink-0" style="width: 40%;">
 
                 {{-- Events in this school year --}}
-                <div class="rounded-xl px-5 py-4 flex flex-col justify-between"
+                <div class="rounded-xl px-5 py-4 flex flex-col justify-between metallic-card-soft-2nd"
                     style="border: 2px solid rgba(255, 255, 255, 0.06);">
                     <flux:icon.rectangle-group class="size-7 text-[var(--color-accent)]" variant="outline" />
 
@@ -67,7 +67,7 @@
                 </div>
 
                 {{-- Attendance Rate --}}
-                <div class="rounded-xl px-5 py-4 flex flex-col justify-between whitespace-nowrap"
+                <div class="rounded-xl px-5 py-4 flex flex-col justify-between whitespace-nowrap metallic-card-soft-2nd"
                     style="border: 2px solid rgba(255, 255, 255, 0.06);">
                     <flux:icon.percent-badge class="text-[var(--color-accent)] size-7" variant="outline" />
                     <div class="flex flex-col mt-3">
@@ -95,7 +95,7 @@
 
                 {{-- Total Events for the month --}}
                 <a href="{{ route('manage_events') }}" wire:navigate
-                    class="rounded-xl px-5 py-4 flex flex-col justify-between"
+                    class="rounded-xl px-5 py-4 flex flex-col justify-between metallic-card-soft-2nd"
                     style="border: 2px solid rgba(255, 255, 255, 0.06);">
 
                     <div class="flex items-center justify-between">
@@ -118,26 +118,53 @@
                 </a>
 
                 {{-- Pending Approval --}}
-                <a href="{{ route('manage_approval') }}" wire:navigate
-                    class="rounded-xl px-5 py-4 flex flex-col justify-between"
-                    style="border: 2px solid rgba(255, 255, 255, 0.06);">
-                    <div class="flex items-center justify-between">
-                        {{-- <flux:icon.exclamation-circle class="text-[var(--color-accent)] size-7"
-                            variant="outline" /> --}}
-                        <flux:badge variant="pill" size="sm" icon:trailing="arrow-up-right">View Pending</flux:badge>
-                    </div>
+                @can('SA')
+                
+                    <a href="{{ route('manage_approval') }}" wire:navigate
+                        class="rounded-xl px-5 py-4 flex flex-col justify-between metallic-card-soft-2nd"
+                        style="border: 2px solid rgba(255, 255, 255, 0.06);">
+                        <div class="flex items-center justify-between">
+                            {{-- <flux:icon.exclamation-circle class="text-[var(--color-accent)] size-7"
+                                variant="outline" /> --}}
+                            <flux:badge variant="pill" size="sm" icon:trailing="arrow-up-right">View Pending</flux:badge>
+                        </div>
 
-                    <div class="flex flex-col whitespace-nowrap mt-3">
-                        <flux:text>Pending Approval</flux:text>
-                        @if ($pendingCount > 1)
-                            <flux:heading size="xl" level="1">{{ $pendingCount }} Accounts</flux:heading>
-                        @elseif($pendingCount == 1)
-                            <flux:heading size="xl" level="1">{{ $pendingCount }} Account</flux:heading>
-                        @else
-                            <flux:heading size="xl" level="1">No Pending</flux:heading>
-                        @endif
+                        <div class="flex flex-col whitespace-nowrap mt-3">
+                            <flux:text>Pending Approval</flux:text>
+                            @if ($pendingCount > 1)
+                                <flux:heading size="xl" level="1">{{ $pendingCount }} Accounts</flux:heading>
+                            @elseif($pendingCount == 1)
+                                <flux:heading size="xl" level="1">{{ $pendingCount }} Account</flux:heading>
+                            @else
+                                <flux:heading size="xl" level="1">No Pending</flux:heading>
+                            @endif
+                        </div>
+                    </a>
+
+                @endcan
+                @can('A')
+                    <div 
+                        class="rounded-xl px-5 py-4 flex flex-col justify-between metallic-card-soft-2nd"
+                        style="border: 2px solid rgba(255, 255, 255, 0.06);">
+                        <div class="flex items-center justify-between">
+                            <flux:icon.exclamation-circle class="text-[var(--color-accent)] size-7"
+                                variant="outline" />
+                         
+                            {{-- <flux:badge variant="pill" size="sm" icon:trailing="x-mark">Super Admin Only</flux:badge> --}}
+                        </div>
+
+                        <div class="flex flex-col whitespace-nowrap mt-3">
+                            <flux:text>Pending Approval</flux:text>
+                            @if ($pendingCount > 1)
+                                <flux:heading size="xl" level="1">{{ $pendingCount }} Accounts</flux:heading>
+                            @elseif($pendingCount == 1)
+                                <flux:heading size="xl" level="1">{{ $pendingCount }} Account</flux:heading>
+                            @else
+                                <flux:heading size="xl" level="1">No Pending</flux:heading>
+                            @endif
+                        </div>
                     </div>
-                </a>
+                @endcan
             </div>
 
             {{-- right side --}}
@@ -271,7 +298,7 @@
 
                 {{-- Untracked Events --}}
                 <flux:modal.trigger name="view-untracked">
-                    <div class="cursor-pointer rounded-xl px-5 py-3 flex flex-col items-center justify-center"
+                    <div class="cursor-pointer rounded-xl px-5 py-3 flex flex-col items-center justify-center vertical-glow-card-2nd vertical-glow-white-2nd"
                         style="border: 2px solid rgba(255, 255, 255, 0.06);">
                         <flux:icon.ellipsis-horizontal-circle class="size-10 text-zinc-50" variant="outline" />
                         <flux:text class="text-xs mt-4">Untracked</flux:text>
@@ -288,7 +315,7 @@
 
                 {{-- Finished Events --}}
                 <flux:modal.trigger name="view-finished">
-                    <div class="cursor-pointer rounded-xl px-5 py-3 flex flex-col items-center justify-center"
+                    <div class="cursor-pointer rounded-xl px-5 py-3 flex flex-col items-center justify-center vertical-glow-card-2nd vertical-glow-green-2nd"
                         style="border: 2px solid rgba(255, 255, 255, 0.06);">
                         <flux:icon.check-circle class="size-10 text-green-500" variant="outline" />
                         <flux:text class="text-xs mt-4">Finished</flux:text>
@@ -305,7 +332,7 @@
 
                 {{-- Postponed Events --}}
                 <flux:modal.trigger name="view-postponed">
-                    <div class="cursor-pointer rounded-xl px-5 py-3 flex flex-col items-center justify-center"
+                    <div class="cursor-pointer rounded-xl px-5 py-3 flex flex-col items-center justify-center vertical-glow-card-2nd vertical-glow-red-2nd"
                         style="border: 2px solid rgba(255, 255, 255, 0.06);">
                         <flux:icon.x-circle class="size-10 text-red-500" variant="outline" />
                         <flux:text class="text-xs mt-4">Postponed</flux:text>

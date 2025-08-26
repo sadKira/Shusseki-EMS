@@ -361,12 +361,25 @@
                                         <th scope="col"
                                             class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             Course</th>
-                                        @if ($selection)
-                                            <th scope="col"
-                                                class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
-                                                Action</th>
-                                        @else
-                                        @endif
+                                        @can('SA')
+                                        
+                                            @if ($selection)
+                                                <th scope="col"
+                                                    class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                    Action</th>
+                                            @else
+                                            @endif
+
+                                        @endcan
+                                        @can('A')
+                                            @if ($selectedStatus == 'Active Accounts')
+                                                <th scope="col"
+                                                    class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                    Action</th>
+                                            @endif
+                                        @endcan
+
+
                                     </tr>
                                 </thead>
 
@@ -384,7 +397,7 @@
                                             <td
                                                 class="!flex gap-2 px-6 py-4 text-sm font-medium text-gray-800 dark:text-neutral-200">
 
-                                                <flux:profile circle class="cursor-pointer" 
+                                                <flux:profile circle class="" 
                                                 avatar:name="{{ $user->name }}"
                                                 avatar:color="auto"
                                                 :chevron="false"
@@ -392,12 +405,12 @@
                                                 />
                                                 <div class="!flex !flex-col">
                                                     <div class="flex items-center gap-2">
-                                                        <div class="font-bold">{!! $user->highlightField('name', $search) !!}</div>
+                                                        <div class="font-bold">{{ $user->name }}</div>
                                                         @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
                                                             <flux:badge variant="solid" size="sm" color="blue">MKD Tsuushin</flux:badge>
                                                         @endif
                                                     </div>
-                                                    <div class="text-zinc-400">{!! $user->highlightField('email', $search) !!}</div>
+                                                    <div class="text-zinc-400">{{ $user->email }}</div>
                                                 </div>
                                             </td>
                                             <td
@@ -419,7 +432,7 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-200">
-                                                <span class="{{ $selectedStatus_level != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{!! $user->highlightField('year_level', $search) !!}</span>
+                                                <span class="{{ $selectedStatus_level != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">{{ $user->year_level }}</span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-neutral-200">
                                                 @php
@@ -436,7 +449,7 @@
 
                                                 @endphp
                                                 <span class="{{ $selectedStatus_course != 'All' ? 'text-[var(--color-amber-400)]' : '' }}">
-                                                {!! $user->highlightText($output, $search) !!}
+                                                {{ $output }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 ">
@@ -449,8 +462,6 @@
                                                                     class="ml-13"></flux:button>
                                                                 <flux:menu>
 
-                                                                    <flux:menu.item variant="danger" icon="envelope" wire:click="sendEmail({{ $user->id }})">Send Email</flux:menu.item>
-
                                                                     @if ($tsuushinCount < 1)
                                                                         <flux:modal.trigger :name="'tag-tsuushin-'.$user->id">
                                                                             <flux:menu.item icon="camera">Tag as
@@ -458,10 +469,12 @@
                                                                         </flux:modal.trigger>
                                                                     @endif
 
-                                                                    <flux:modal.trigger :name="'inactive-solo-'.$user->id">
-                                                                        <flux:menu.item variant="danger" icon="user-minus">Mark as
-                                                                            Inactive</flux:menu.item>
-                                                                    </flux:modal.trigger>
+                                                                    @if ($user->tsuushin != \App\Enums\TsuushinRole::Member)
+                                                                        <flux:modal.trigger :name="'inactive-solo-'.$user->id">
+                                                                            <flux:menu.item variant="danger" icon="user-minus">Mark as
+                                                                                Inactive</flux:menu.item>
+                                                                        </flux:modal.trigger>
+                                                                    @endif
 
                                                                     @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
                                                                         <flux:modal.trigger :name="'remove-tsuushin-'.$user->id">
@@ -491,6 +504,51 @@
                                                         @endif
                                                     @else
                                                     @endif
+                                                @endcan
+
+                                                @can('A')
+
+                                                    @if ($selectedStatus == 'Active Accounts')
+
+                                                        @if ($tsuushinCount < 1)
+                                                            <flux:dropdown position="left" align="end">
+                                                                <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
+                                                                    class="ml-13"></flux:button>
+                                                                <flux:menu>
+
+                                                                    @if ($tsuushinCount < 1)
+                                                                        <flux:modal.trigger :name="'tag-tsuushin-'.$user->id">
+                                                                            <flux:menu.item icon="camera">Tag as
+                                                                                Tsuushin</flux:menu.item>
+                                                                        </flux:modal.trigger>
+                                                                    @endif
+
+                                                                </flux:menu>
+                                                            </flux:dropdown>
+                                                        @else
+                                                            @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
+                                                                <flux:dropdown position="left" align="end">
+                                                                    <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
+                                                                    class="ml-13"></flux:button>
+                                                                    <flux:menu>
+
+                                                                        @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
+                                                                            <flux:modal.trigger :name="'remove-tsuushin-'.$user->id">
+                                                                                <flux:menu.item variant="danger" icon="minus-circle">Remove
+                                                                                    Tsuushin Tag</flux:menu.item>
+                                                                            </flux:modal.trigger>
+                                                                        @endif
+
+                                                                    </flux:menu>
+                                                                </flux:dropdown>
+                                                            @else
+                                                                <flux:button icon="ellipsis-horizontal" variant="subtle" disabled size="xs"
+                                                                class="ml-13"></flux:button>
+                                                            @endif
+                                                        @endif
+
+                                                    @endif
+                                                    
                                                 @endcan
 
                                                 {{-- Mark inactive modal --}}

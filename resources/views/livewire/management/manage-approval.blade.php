@@ -138,19 +138,19 @@
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                                                {!! $user->highlightField('name', $search) !!}
+                                                {{ $user->name }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                {!! $user->highlightField('student_id', $search) !!}
+                                                {{ $user->student_id }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                {!! $user->highlightField('email', $search) !!}
+                                                {{ $user->email }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                {!! $user->highlightField('year_level', $search) !!}
+                                                {{ $user->year_level }}
                                             </td>
                                             <td
                                                 class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
@@ -167,7 +167,7 @@
                                                     };
 
                                                 @endphp
-                                                {!! $user->highlightText($output, $search) !!}
+                                                {{ $output }}
                                             </td>
                                             <td class="px-6 py-4 flex items-center justify-center">
                                                 {{-- <button type="button"

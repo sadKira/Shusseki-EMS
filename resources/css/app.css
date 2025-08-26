@@ -163,6 +163,14 @@ select:focus[data-flux-control] {
             0 2px 6px rgba(0, 0, 0, 0.7); */
     }
 
+    .metallic-card-soft-2nd {
+        /* @apply relative rounded-2xl p-4 bg-[#11100e] text-white overflow-hidden; */
+        @apply relative bg-zinc-950 overflow-hidden;
+        /* border: 1px solid rgba(255, 255, 255, 0.06); */
+        /* box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.05),
+            0 2px 6px rgba(0, 0, 0, 0.7); */
+    }
+
     .metallic-card-soft::before {
         content: "";
         position: absolute;
@@ -180,6 +188,30 @@ select:focus[data-flux-control] {
     }
 
     .metallic-card-soft:hover::before {
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0) 40%
+        );
+    }
+
+    .metallic-card-soft-2nd::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0) 40%
+        );
+        pointer-events: none;
+        transition: background 2s ease;
+    }
+
+    .metallic-card-soft-2nd:hover::before {
         background: linear-gradient(
             135deg,
             rgba(255, 255, 255, 0.08) 0%,
@@ -342,6 +374,11 @@ select:focus[data-flux-control] {
         @apply relative bg-zinc-950 text-white overflow-hidden;
     }
 
+    .vertical-glow-card-2nd {
+        @apply relative overflow-hidden;
+    }
+
+
     /* White Glow */
     .vertical-glow-white::before {
         content: "";
@@ -361,6 +398,28 @@ select:focus[data-flux-control] {
     }
 
     .vertical-glow-white:hover::before {
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(255, 255, 255, 0.09) 0%,
+            rgba(255, 255, 255, 0) 100%
+        );
+    }
+
+
+    .vertical-glow-white-2nd::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+   
+        pointer-events: none;
+        transition: background 0.3s ease;
+        /* border: 1px solid rgba(255, 255, 255, 0.06); */
+    }
+
+    .vertical-glow-white-2nd:hover::before {
         background: radial-gradient(
             circle at bottom center,
             rgba(255, 255, 255, 0.09) 0%,
@@ -420,6 +479,27 @@ select:focus[data-flux-control] {
         );
     }
 
+    .vertical-glow-green-2nd::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        
+        pointer-events: none;
+        transition: background 0.3s ease;
+        /* border: 1px solid rgba(34, 197, 94, 0.3); */
+    }
+
+    .vertical-glow-green-2nd:hover::before {
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(34, 197, 94, 0.09) 0%,
+            rgba(34, 197, 94, 0) 100%
+        );
+    }
+
     /* Red Glow */
     .vertical-glow-red::before {
         content: "";
@@ -439,6 +519,27 @@ select:focus[data-flux-control] {
     }
 
     .vertical-glow-red:hover::before {
+        background: radial-gradient(
+            circle at bottom center,
+            rgba(239, 68, 68, 0.09) 0%,
+            rgba(239, 68, 68, 0) 100%
+        );
+    }
+
+    .vertical-glow-red-2nd::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        
+        pointer-events: none;
+        transition: background 0.3s ease;
+        /* border: 1px solid rgba(239, 68, 68, 0.3); */
+    }
+
+    .vertical-glow-red-2nd:hover::before {
         background: radial-gradient(
             circle at bottom center,
             rgba(239, 68, 68, 0.09) 0%,

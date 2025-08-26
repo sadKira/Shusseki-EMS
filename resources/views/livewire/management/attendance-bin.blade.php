@@ -63,7 +63,14 @@
                                 {{ $event->location }}
                             </flux:heading>
                         </div>
+
+                        <flux:heading size="sm" class="flex items-center gap-2 mt-3">
+                            End of Attendance: <span
+                                class="text-[var(--color-accent)] underline">{{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
+                        </flux:heading>
                     </div>
+
+
 
                 </div>
 

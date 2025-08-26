@@ -16,8 +16,54 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+// Test command for email reminders
+Artisan::command('test:email-reminders {--days=3} {--limit=5}', function () {
+    $days = (int) $this->option('days') ?: 3;
+    $limit = (int) $this->option('limit') ?: 5;
+    
+    $this->info("Testing email reminders for events {$days} days from now...");
+    
+    // Find events that will happen X days from now
+    $upcomingEvents = Event::whereBetween('date', [
+        now()->addDay()->startOfDay(),
+        now()->addDays($days)->endOfDay(),
+    ])
+    ->where('status', '!=', EventStatus::Postponed)
+    ->where('school_year', Setting::getSchoolYear())
+    ->get();
+
+    $this->info("Found {$upcomingEvents->count()} upcoming events.");
+
+    foreach ($upcomingEvents as $event) {
+        $this->line("Processing event: {$event->name} on {$event->date}");
+        
+        // Get limited number of users for testing
+        $users = User::where('role', 'user')
+        ->where('status', 'approved')
+        ->where('account_status', 'active')
+        ->limit($limit)
+        ->get();
+        
+        $this->info("Sending to {$users->count()} users (limited for testing):");
+        
+        foreach ($users as $index => $user) {
+            $this->line("  - {$user->name} ({$user->email})");
+            
+            // Send immediately for testing (no delay)
+            Mail::to($user->email)->send(new EventReminder($event, $user));
+        }
+        
+        $this->newLine();
+    }
+    
+    $this->info('Test email reminders sent!');
+})->purpose('Test email reminders for upcoming events');
+
 
 // Schedule::command('events:mark-untracked')->everyMinute();
+
+// Clearing expired password reset tokens in the db
+Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 
 Schedule::call(function () {
 
