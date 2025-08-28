@@ -98,6 +98,7 @@ http://nicolasgallagher.com/micro-clearfix-hack/
     left: 0;
     top: 5px;
     opacity: 0;
+    background: var(--main-bg-color) !important;
 }
 
 .pika-prev,

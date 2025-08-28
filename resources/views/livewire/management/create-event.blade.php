@@ -47,16 +47,16 @@
                                         </div>
 
                                         <div class="col-span-3">
-                                            <div class="flex items-center gap-1">
+                                            <div class="flex items-start gap-1">
                                                 <flux:input id="tp_input_time_in" wire:model="time_in"
-                                                    placeholder="Time In Period" label="End of Time In Period"
+                                                    placeholder="End of Time In" label="End of Time In Period"
                                                     type="text" mask="99:99 aa" required autocomplete="off" readonly />
                                                 <x-time-picker-time-in />
                                             </div>
                                         </div>
 
                                         <div class="col-span-3">
-                                            <div class="flex items-center gap-1">
+                                            <div class="flex items-start gap-1">
                                                 <flux:input id="tp_input" wire:model="start_time"
                                                     placeholder="Select Start Time" label="Start Time" type="text"
                                                     mask="99:99 aa" required autocomplete="off" readonly />
@@ -65,7 +65,7 @@
                                         </div>
 
                                         <div class="col-span-3">
-                                            <div class="flex items-center gap-1">
+                                            <div class="flex items-start gap-1">
                                                 <flux:input id="tp_input_2" wire:model="end_time"
                                                     placeholder="Select End Time" label="End Time" type="text"
                                                     mask="99:99 aa" required autocomplete="off" readonly />
@@ -87,7 +87,7 @@
                                 <flux:button type="submit" variant="primary" class="w-full">
                                     {{ __('Create Event') }}
                                 </flux:button>
-                                <flux:button variant="filled" wire:navigate href="{{ route('manage_events') }}"
+                                <flux:button variant="filled" wire:navigate href="{{ route('event_timeline') }}"
                                     class="w-full">
                                     {{ __('Cancel') }}
                                 </flux:button>

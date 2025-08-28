@@ -199,7 +199,13 @@
                                 <flux:modal.trigger name="resume-ev">
                                     <flux:button variant="primary" color="green" icon:trailing="check">Resume Event</flux:button>
                                 </flux:modal.trigger>
-                                <flux:button variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
+                                
+                                @if (request()->routeIs(['view_event_timeline']))
+                                    <flux:button variant="filled" icon:trailing="pencil-square" :href="route('edit_event_timeline', $event)" wire:navigate>Edit Event</flux:button>
+                                @else
+                                    <flux:button variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
+                                @endif
+
                             @endcan
                             @can('A')
                                 <flux:button variant="filled" icon:trailing="lock-closed" color="amber">Event is Postponed</flux:button>
@@ -215,7 +221,11 @@
 
                             @can('SA')
                                 <div class="flex items-center justify-between gap-2">    
-                                    <flux:button class="flex-grow" variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
+                                    @if (request()->routeIs(['view_event_timeline']))
+                                        <flux:button class="w-full" variant="filled" icon:trailing="pencil-square" :href="route('edit_event_timeline', $event)" wire:navigate>Edit Event</flux:button>
+                                    @else
+                                        <flux:button class="w-full" variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
+                                    @endif
                                 
                                     <flux:modal.trigger name="postpone-ev">
                                         <flux:tooltip content="Postpone Event" position="bottom">
@@ -225,7 +235,11 @@
                                 </div> 
                             @endcan
                             @can('A')
-                                <flux:button variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
+                                @if (request()->routeIs(['view_event_timeline']))
+                                    <flux:button class="w-full" variant="filled" icon:trailing="pencil-square" :href="route('edit_event_timeline', $event)" wire:navigate>Edit Event</flux:button>
+                                @else
+                                    <flux:button class="w-full" variant="filled" icon:trailing="pencil-square" :href="route('edit_event', $event)" wire:navigate>Edit Event</flux:button>
+                                @endif
                             @endcan
 
                         @elseif ($event->status == \App\Enums\EventStatus::Finished)

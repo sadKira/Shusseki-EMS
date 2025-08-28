@@ -42,7 +42,7 @@
                 {{-- Selection --}}
                 <div class="flex items-center justify-between">
                     
-                    <flux:input class="max-w-xs" icon="magnifying-glass" placeholder="Search..."  wire:model.live.debounce.150ms="search" autocomplete="off" clearable/>
+                    <flux:input class="max-w-xs" icon="magnifying-glass" placeholder="Search Pending"  wire:model.live.debounce.150ms="search" autocomplete="off" clearable/>
 
                     <div class="flex items-center">
                         {{-- Selection Count Button --}}
@@ -120,7 +120,7 @@
                                             class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             Course</th>
                                         <th scope="col"
-                                            class="px-6 py-3 text-end text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                            class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
                                             Action</th>
                                     </tr>
                                 </thead>

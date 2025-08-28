@@ -23,6 +23,12 @@ class ManageApproval extends Component
     public $selectAll = false;
     public $selectPage = false;
 
+    // Reset pagination when search changes
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     // Approval
     public function approve($userId)
     {

@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\Setting;
 use App\Enums\AccountStatus;
+use App\Enums\TsuushinRole;
 use Flux\Flux;
 use Illuminate\Support\Facades\Cache;
 
@@ -41,6 +42,15 @@ class FilterTable extends Component
     public $selected = [];
     public $selectAll = false;
     public $selectPage = false;
+
+    // Reset pagination when search changes
+    public function updatingSearch()
+    {
+        $this->resetPage();
+        $this->selected = [];
+        $this->selectPage = false;
+        $this->selectAll = false;
+    }
 
     // Multi selection
     public function updatedSelectPage($value)
@@ -90,7 +100,9 @@ class FilterTable extends Component
     // Mark selected as inactive
     public function bulkmarkInactive()
     {
-        User::whereIn('id', $this->selected)->update(['account_status' => 'inactive']);
+        User::whereIn('id', $this->selected)
+        // ->where('tsuushin', TsuushinRole::NotMember)
+        ->update(['account_status' => 'inactive']);
         $this->cancelSelection();
         $this->toggleSelection();
 
@@ -105,6 +117,7 @@ class FilterTable extends Component
         User::where('account_status', 'active')
         ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
         ->whereNotIn('status', ['pending'])
+        ->where('tsuushin', TsuushinRole::NotMember)
         ->update(['account_status' => 'inactive']);
         session()->flash('message', 'All pending users rejected and deleted.');
 

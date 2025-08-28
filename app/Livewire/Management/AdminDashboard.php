@@ -168,11 +168,11 @@ class AdminDashboard extends Component
             'hasEvents' => $hasEvents,
         ]);
 
-        // return $pdf->download("Attendance_Report_{$this->selectedSchoolYear}.pdf");
-
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, "Attendance_Report_{$this->selectedSchoolYear}.pdf");
+
+        
     }
 
 

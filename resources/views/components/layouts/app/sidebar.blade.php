@@ -56,11 +56,11 @@
             <flux:navlist.group :heading="__('Events')" class="grid">
                 @can('manage')
                     <flux:navlist.item icon="list-bullet" :href="route('event_timeline')"
-                        :current="request()->routeIs(['event_timeline', 'view_event_timeline'])" wire:navigate>
+                        :current="request()->routeIs(['event_timeline', 'view_event_timeline', 'create_event', 'edit_event_timeline'])" wire:navigate>
                         {{ __('Event Timeline') }}
                     </flux:navlist.item>
                     <flux:navlist.item icon="calendar" :href="route('manage_events')"
-                        :current="request()->routeIs(['manage_events', 'create_event', 'view_event', 'edit_event'])" wire:navigate>
+                        :current="request()->routeIs(['manage_events', 'view_event', 'edit_event'])" wire:navigate>
                         {{ __('Events Bin') }}
                     </flux:navlist.item>
                 @endcan
@@ -265,6 +265,7 @@
 
             const picker = new Pikaday({
                 field,
+                // showMonthAfterYear: true,
                 onSelect: function (date) {
                     const luxonDate = DateTime.fromJSDate(date);
                     field.value = luxonDate.toFormat('LLLL dd, yyyy');

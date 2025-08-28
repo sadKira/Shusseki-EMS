@@ -109,6 +109,7 @@ class AppServiceProvider extends ServiceProvider
                     'view_event' => 'View Event',
                     'view_event_timeline' => 'View Event',
                     'edit_event' => 'Edit Event',
+                    'edit_event_timeline' => 'Edit Event',
                     'attendance_bin' => 'Attendance Bin',
                     'settings.profile' => 'Settings',
                     'settings.password' => 'Settings',

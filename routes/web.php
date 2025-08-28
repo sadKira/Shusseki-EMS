@@ -15,6 +15,7 @@ use App\Livewire\Management\ManageApproval;
 use App\Livewire\Management\CreateEvent;
 use App\Livewire\Management\ViewEvent;
 use App\Livewire\Management\EditEvent;
+use App\Livewire\Management\EditEventTimeline;
 use App\Livewire\Management\AttendanceBin;
 use App\Livewire\Management\BufferView;
 use App\Livewire\Management\EventList;
@@ -48,8 +49,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Route::get('/', Welcome::class)->name('home');
-
+// Mail testing
 Route::get('/mailable', function () {
     $user = User::find(5);
     $event = Event::find(5);
@@ -96,7 +96,8 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/attendance-record',StudentRecord::class)->name('attendance_records');
     
     Route::get('admin/create-event', CreateEvent::class)->name('create_event');
-    Route::get('admin/edit-event/{event}', EditEvent::class)->name('edit_event');
+    Route::get('admin/event-bin/edit-event/{event}', EditEvent::class)->name('edit_event');
+    Route::get('admin/event-timeline/edit-event/{event}', EditEventTimeline::class)->name('edit_event_timeline');
 
     Route::get('admin/buffer-view', BufferView::class)->name('buffer_view');
 });

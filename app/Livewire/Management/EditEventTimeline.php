@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Flux\Flux;
 use Illuminate\Validation\Rule;
 
-class EditEvent extends Component
+class EditEventTimeline extends Component
 {
     use WithFileUploads;
     public $event;
@@ -78,13 +78,13 @@ class EditEvent extends Component
         ]);
 
             
-        return redirect()->route('view_event', $this->event);
+        return redirect()->route('view_event_timeline', $this->event);
         
     }
 
 
     public function render()
     {
-        return view('livewire.management.edit-event');
+        return view('livewire.management.edit-event-timeline');
     }
 }

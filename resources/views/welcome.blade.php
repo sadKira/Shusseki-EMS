@@ -40,30 +40,7 @@
 
         <flux:navbar class="-mb-px">
 
-            @php
-                $user = auth()->user();
-                $dashboardRoute = route('login'); // default for guests
-                if ($user) {
-                    $dashboardRoute = match($user->role) {
-                        \App\Enums\UserRole::Super_Admin, \App\Enums\UserRole::Admin => route('admin_dashboard'),
-                        \App\Enums\UserRole::Tsuushin => route('dashboard'),
-                        default => route('dashboard'),
-                    };
-                }
-
-            @endphp
-
-            @auth
-                <flux:button variant="ghost" size="sm"  href="{{ $dashboardRoute }}">
-                    <span class="text-[var(--color-accent)] flex items-center gap-2">
-                        Return to Dashboard
-                        <flux:icon.arrow-uturn-left variant="mini" class="text-[var(--color-accent)]" />
-                    </span>
-                </flux:button>
-            @else
-                <flux:button variant="ghost" size="sm" href="https://www.facebook.com/mindanaointernationalcollege/" icon:trailing="arrow-up-right" target="_blank">Learn about MKD</flux:button>
-                <flux:button variant="ghost" size="sm" href="{{ $dashboardRoute }}"><span class="text-[var(--color-accent)]">Login</span></flux:button>
-            @endauth
+            <flux:button variant="ghost" size="sm" href="https://www.facebook.com/mindanaointernationalcollege/" icon:trailing="arrow-up-right" target="_blank">Learn about MKD</flux:button>
             
         </flux:navbar>
         
@@ -98,9 +75,43 @@
                 <p class="mt-6 mb-8 text-base sm:text-lg lg:text-xl sm:mb-12 text-zinc-50 max-w-2xl">
                     Empowering organizers and students through modern, intuitive tools. With—SHUSSEKI
                 </p>
-                <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-                    <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-[var(--color-accent)] text-zinc-950 hover:bg-gold/90 transition-colors duration-200">
-                        Get Started</a>
+                <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start gap-3 lg:gap-0">
+                    {{-- <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-[var(--color-accent)] text-zinc-950 hover:bg-gold/90 transition-colors duration-200">
+                        Get Started</a> --}}
+
+                    @php
+                        $user = auth()->user();
+                        $dashboardRoute = route('login'); // default for guests
+                        if ($user) {
+                            $dashboardRoute = match($user->role) {
+                                \App\Enums\UserRole::Super_Admin, \App\Enums\UserRole::Admin => route('admin_dashboard'),
+                                \App\Enums\UserRole::Tsuushin => route('dashboard'),
+                                default => route('dashboard'),
+                            };
+                        }
+
+                    @endphp
+
+                    @auth
+                        {{-- <flux:button variant="ghost" size="sm"  href="{{ $dashboardRoute }}">
+                            <span class="text-[var(--color-accent)] flex items-center gap-2">
+                                Return to Dashboard
+                                <flux:icon.arrow-uturn-left variant="mini" class="text-[var(--color-accent)]" />
+                            </span>
+                        </flux:button> --}}
+
+                        <a href="{{ $dashboardRoute }}" class="inline-flex items-center justify-center px-7 py-3 text-sm font-bold hover:font-medium tracking-wide text-amber-500 hover:text-black transition-colors duration-200 border border-amber-500 bg-black-10 rounded-md hover:bg-amber-500 focus:ring-2 focus:ring-offset-2 focus:ring-amber-600 focus:shadow-outline focus:outline-none">
+                            Return to Home
+                        </a>
+                    @else
+                        <a href="{{ route('register') }}" class="min-w-40 inline-flex items-center justify-center px-7 py-3 text-sm font-medium tracking-wide text-black border border-amber-500 hover:border-amber-600 transition-colors duration-200 bg-amber-500 rounded-md hover:bg-amber-600 focus:ring-2 focus:ring-offset-2 focus:ring-amber-600 focus:shadow-outline focus:outline-none">
+                            Get Started
+                        </a>
+                        <a href="{{ $dashboardRoute }}" class="min-w-40 inline-flex items-center justify-center px-7 py-3 text-sm font-bold hover:font-medium tracking-wide text-amber-500 hover:text-black transition-colors duration-200 border border-amber-500 bg-black-10 rounded-md hover:bg-amber-500 focus:ring-2 focus:ring-offset-2 focus:ring-amber-600 focus:shadow-outline focus:outline-none">
+                            Login
+                        </a>
+                    @endauth
+                   
                 </div>
                 <div class="flex items-center justify-left gap-3">   
                     {{-- <flux:button variant="primary" color="amber">Get Started</flux:button> --}}

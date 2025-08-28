@@ -29,8 +29,11 @@
             </div> --}}
 
             <flux:button icon="calendar-date-range" variant="ghost">A.Y. {{ $selectedSchoolYear }}</flux:button>
-            <flux:button onclick="setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 5000)"
-                wire:click="generateYearlyReport" size="sm" icon="cloud-arrow-down" variant="primary" color="amber">
+            <flux:button x-on:click="$wire.generateYearlyReport().then(() => {
+                    setTimeout(() => window.location.href='{{ route('admin_dashboard') }}', 2000);
+                })" wire:click="generateYearlyReport" size="sm" icon="cloud-arrow-down" variant="primary"
+                color="amber">
+
                 Generate Report
 
             </flux:button>
@@ -119,7 +122,7 @@
 
                 {{-- Pending Approval --}}
                 @can('SA')
-                
+
                     <a href="{{ route('manage_approval') }}" wire:navigate
                         class="rounded-xl px-5 py-4 flex flex-col justify-between metallic-card-soft-2nd"
                         style="border: 2px solid rgba(255, 255, 255, 0.06);">
@@ -143,14 +146,13 @@
 
                 @endcan
                 @can('A')
-                    <div 
-                        class="rounded-xl px-5 py-4 flex flex-col justify-between metallic-card-soft-2nd"
+                    <div class="rounded-xl px-5 py-4 flex flex-col justify-between metallic-card-soft-2nd"
                         style="border: 2px solid rgba(255, 255, 255, 0.06);">
                         <div class="flex items-center justify-between">
-                            <flux:icon.exclamation-circle class="text-[var(--color-accent)] size-7"
-                                variant="outline" />
-                         
-                            {{-- <flux:badge variant="pill" size="sm" icon:trailing="x-mark">Super Admin Only</flux:badge> --}}
+                            <flux:icon.exclamation-circle class="text-[var(--color-accent)] size-7" variant="outline" />
+
+                            {{-- <flux:badge variant="pill" size="sm" icon:trailing="x-mark">Super Admin Only</flux:badge>
+                            --}}
                         </div>
 
                         <div class="flex flex-col whitespace-nowrap mt-3">
@@ -209,10 +211,9 @@
                         @if($attendanceTrendData['hasEvents'])
                             <canvas id="monthlyAttendanceTrendChart" class="w-full h-full"></canvas>
                         @else
-                            <canvas id="monthlyAttendanceTrendChart" class="w-full h-full"></canvas>
-                            <div class="absolute inset-0 flex items-center justify-center text-zinc-400 text-lg ">
-                                No events
-                            </div>
+                            {{-- <canvas id="monthlyAttendanceTrendChart" class="w-full h-full"></canvas> --}}
+                            {{-- Show empty state when no attendance data exists --}}
+                            <x-attendance-trend-empty-state :selected-school-year="$selectedSchoolYear" />
                         @endif
                     </div>
                 </div>
@@ -231,66 +232,76 @@
                 {{-- <flux:text class="mb-2 text-white">Events This Month</flux:text> --}}
                 <flux:heading size="lg" class="mb-2">Events This Month</flux:heading>
 
+
                 {{-- Events content --}}
-                <div
-                    class="h-44 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
-                    <div class="flex flex-col gap-2 w-full">
+                @if ($events->count() < 1)
+                    {{-- Show empty state when no events exist for the selected month --}}
+                    <x-dashboard-events-empty-state :selected-month="$selectedMonth"
+                        :selected-school-year="$selectedSchoolYear" />
 
-                        {{-- Mini long bars --}}
-                        @forelse ($events as $event)
-                            <a href="{{route('view_event', $event)}}" wire:navigate
-                                class=" p-4 mr-4 flex items-center justify-between rounded-xl cursor-pointer hover:bg-neutral-700 transition"
-                                style="border: 2px solid rgba(255, 255, 255, 0.06);">
-                                <div class="flex items-center gap-3">
-                                    <div class="">
-                                        <flux:text variant="strong">{{ $event->title }}</flux:text>
-                                        <flux:text variant="subtle">
-                                            {{ \Carbon\Carbon::parse($event->date)->format('Y, F j') }} |
-                                            {{  \Carbon\Carbon::parse($event->start_time)->format('g:i A') }} -
-                                            {{ \Carbon\Carbon::parse($event->end_time)->format('g:i A') }}
-                                        </flux:text>
+                @else
+                    <div
+                        class="h-44 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
+                        <div class="flex flex-col gap-2 w-full">
+
+                            {{-- Mini long bars --}}
+                            @foreach ($events as $event)
+
+                                <a href="{{route('view_event_timeline', $event)}}" wire:navigate
+                                    class=" p-4 mr-4 flex items-center justify-between rounded-xl cursor-pointer hover:bg-neutral-700 transition"
+                                    style="border: 2px solid rgba(255, 255, 255, 0.06);">
+                                    <div class="flex items-center gap-3">
+                                        <div class="">
+                                            <flux:text variant="strong">{{ $event->title }}</flux:text>
+                                            <flux:text variant="subtle">
+                                                {{ \Carbon\Carbon::parse($event->date)->format('Y, F j') }} |
+                                                {{  \Carbon\Carbon::parse($event->start_time)->format('g:i A') }} -
+                                                {{ \Carbon\Carbon::parse($event->end_time)->format('g:i A') }}
+                                            </flux:text>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex-items-center">
+                                    <div class="flex-items-center">
 
-                                    @php
-                                        $timezone = 'Asia/Manila';
-                                        $now = now()->timezone($timezone);
+                                        @php
+                                            $timezone = 'Asia/Manila';
+                                            $now = now()->timezone($timezone);
 
-                                        // Combine date and time into Carbon instances
-                                        $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
-                                        $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
-                                    @endphp
+                                            // Combine date and time into Carbon instances
+                                            $start = \Carbon\Carbon::parse($event->date . ' ' . $event->start_time, $timezone);
+                                            $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
+                                        @endphp
 
-                                    {{-- Event status badges --}}
-                                    @if ($event->status == \App\Enums\EventStatus::Finished)
-                                        <flux:badge color="green" class="mr-10" variant="solid">
-                                            <span class="text-black">Ended</span>
-                                        </flux:badge>
-                                    @elseif ($event->status == \App\Enums\EventStatus::Postponed)
-                                        <flux:badge color="red" class="mr-10" variant="solid">
-                                            <span class="text-white">Postponed</span>
-                                        </flux:badge>
-                                    @elseif ($now->between($start, $end))
-                                        <flux:badge color="amber" class="mr-10" variant="solid">
-                                            <span class="text-black">In Progress</span>
-                                        </flux:badge>
-                                    @elseif ($now->gt($end))
-                                        <flux:badge color="zinc" class="mr-10" variant="solid">
-                                            <span class="text-white">Untracked</span>
-                                        </flux:badge>
-                                    @endif
+                                        {{-- Event status badges --}}
+                                        @if ($event->status == \App\Enums\EventStatus::Finished)
+                                            <flux:badge color="green" class="mr-10" variant="solid">
+                                                <span class="text-black">Ended</span>
+                                            </flux:badge>
+                                        @elseif ($event->status == \App\Enums\EventStatus::Postponed)
+                                            <flux:badge color="red" class="mr-10" variant="solid">
+                                                <span class="text-white">Postponed</span>
+                                            </flux:badge>
+                                        @elseif ($now->between($start, $end))
+                                            <flux:badge color="amber" class="mr-10" variant="solid">
+                                                <span class="text-black">In Progress</span>
+                                            </flux:badge>
+                                        @elseif ($now->gt($end))
+                                            <flux:badge color="zinc" class="mr-10" variant="solid">
+                                                <span class="text-white">Untracked</span>
+                                            </flux:badge>
+                                        @endif
 
-                                    {{-- <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square"
-                                        :href="route('view_event', $event)" wire:navigate></flux:button> --}}
-                                </div>
+                                        {{-- <flux:button tooltip="View Event" variant="ghost" icon="arrow-top-right-on-square"
+                                            :href="route('view_event', $event)" wire:navigate></flux:button> --}}
+                                    </div>
 
-                            </a>
-                        @empty
-                            <x-empty-state />
-                        @endforelse
+                                </a>
+
+                            @endforeach
+
+                        </div>
                     </div>
-                </div>
+                @endif
+
             </div>
 
             {{-- right side cards --}}
@@ -365,7 +376,7 @@
                     <div class="flex flex-col gap-2 w-full">
                         {{-- Mini long bars --}}
                         @foreach ($untrackedEvents as $event)
-                            <a href="{{route('view_event', $event)}}" wire:navigate
+                            <a href="{{route('view_event_timeline', $event)}}" wire:navigate
                                 class=" p-4 mr-4 flex items-center justify-between rounded-xl cursor-pointer hover:bg-neutral-700 transition"
                                 style="border: 2px solid rgba(255, 255, 255, 0.06);">
                                 <div class="flex items-center gap-3">
@@ -466,7 +477,9 @@
                         </defs>
                     </svg>
                     <div class="max-w-sm mx-auto">
-                        <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">No Untracked Events</p>
+                        <h3 class="text-sm font-medium text-gray-900 dark:text-neutral-400 mb-2">
+                            No Untracked Events
+                        </h3>
                     </div>
                 </div>
             @endif
@@ -485,7 +498,7 @@
                     <div class="flex flex-col gap-2 w-full">
                         {{-- Mini long bars --}}
                         @foreach ($finishedEvents as $event)
-                            <a href="{{route('view_event', $event)}}" wire:navigate
+                            <a href="{{route('view_event_timeline', $event)}}" wire:navigate
                                 class=" p-4 mr-4 flex items-center justify-between rounded-xl cursor-pointer hover:bg-neutral-700 transition"
                                 style="border: 2px solid rgba(255, 255, 255, 0.06);">
                                 <div class="flex items-center gap-3">
@@ -586,7 +599,9 @@
                         </defs>
                     </svg>
                     <div class="max-w-sm mx-auto">
-                        <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">No Finished Events</p>
+                        <h3 class="text-sm font-medium text-gray-900 dark:text-neutral-400 mb-2">
+                            No Finished Events
+                        </h3>
                     </div>
                 </div>
             @endif
@@ -605,7 +620,7 @@
                     <div class="flex flex-col gap-2 w-full">
                         {{-- Mini long bars --}}
                         @foreach ($postponedEvents as $event)
-                            <a href="{{route('view_event', $event)}}" wire:navigate
+                            <a href="{{route('view_event_timeline', $event)}}" wire:navigate
                                 class=" p-4 mr-4 flex items-center justify-between rounded-xl cursor-pointer hover:bg-neutral-700 transition"
                                 style="border: 2px solid rgba(255, 255, 255, 0.06);">
                                 <div class="flex items-center gap-3">
@@ -706,12 +721,23 @@
                         </defs>
                     </svg>
                     <div class="max-w-sm mx-auto">
-                        <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">No Postponed Events</p>
+                        <h3 class="text-sm font-medium text-gray-900 dark:text-neutral-400 mb-2">
+                            No Postponed Events
+                        </h3>
                     </div>
                 </div>
             @endif
         </div>
     </flux:modal>
+
+    {{-- Redirect user after pdf export --}}
+    <script>
+        Livewire.on('reportExported', () => {
+            setTimeout(() => {
+                window.location.href = "{{ route('admin_dashboard') }}";
+            }, 2000); // adjust delay as needed
+        });
+    </script>
 
     <script>
         let attendanceTrendChartInstance = null;
