@@ -57,13 +57,6 @@ Route::get('/mailable', function () {
     return new EventReminder($event, $user);
 });
 
-// Testing
-Route::get('/test', function () {
-    return view('buffer');
-});
-Route::get('/error', function () {
-    return view('error');
-});
 
 // Token refreshing
 Route::get('/refresh-csrf', function () {
