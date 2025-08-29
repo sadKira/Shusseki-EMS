@@ -4,6 +4,7 @@ namespace App\Livewire\Management;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 use App\Models\Event;
 use App\Models\Setting;
@@ -39,31 +40,35 @@ class EventList extends Component
         $startYear = (int) $startYear;
         $endYear = (int) $endYear;
 
-        // Detect earliest month in the school year
-        $firstEventInStartYear = Event::where('school_year', $schoolYear)
-            ->whereYear('date', $startYear)
-            ->orderBy('date', 'asc')
-            ->first();
+        // Detect earliest month in the school year (cached)
+        $startMonth = Cache::remember("events:first_month:{$schoolYear}", 3600, function () use ($schoolYear, $startYear) {
+            $firstEventInStartYear = Event::where('school_year', $schoolYear)
+                ->whereYear('date', $startYear)
+                ->orderBy('date', 'asc')
+                ->first();
 
-        if ($firstEventInStartYear) {
-            $startMonth = (int) Carbon::parse($firstEventInStartYear->date)->month;
-        } else {
-            // fallback: earliest event in school year (could be in second year)
+            if ($firstEventInStartYear) {
+                return (int) Carbon::parse($firstEventInStartYear->date)->month;
+            }
+
             $firstEvent = Event::where('school_year', $schoolYear)
                 ->orderBy('date', 'asc')
                 ->first();
 
-            $startMonth = $firstEvent 
-                ? (int) Carbon::parse($firstEvent->date)->month 
+            return $firstEvent
+                ? (int) Carbon::parse($firstEvent->date)->month
                 : 7; // default July fallback
-        }
+        });
 
-        // Get events for that school year and sort starting from earliest month
-        $events = Event::where('school_year', $schoolYear)
-            ->search($this->search)
-            ->get()
+        // Get events for that school year (cached per school year + search) then sort starting from earliest month
+        $searchKey = $this->search ? ':s:' . md5($this->search) : '';
+        $events = Cache::remember("events:list:{$schoolYear}{$searchKey}", 300, function () use ($schoolYear) {
+            return Event::where('school_year', $schoolYear)
+                ->search($this->search)
+                ->get();
+        })
             ->sortBy(function ($event) use ($startYear, $startMonth) {
-                $date = \Carbon\Carbon::parse($event->date);
+                $date = Carbon::parse($event->date);
 
                 // Adjust year for ordering so earliest month is considered "start"
                 $adjustedYear = $date->year;
@@ -79,7 +84,7 @@ class EventList extends Component
         
         // Group by date
         return $events->groupBy(function ($event) {
-             return \Carbon\Carbon::parse($event->date)->format('F Y');
+             return Carbon::parse($event->date)->format('F Y');
         });
     }
 

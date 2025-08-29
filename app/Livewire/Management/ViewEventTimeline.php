@@ -8,7 +8,7 @@ use App\Models\EventAttendanceLog;
 use App\Enums\EventStatus;
 use Flux\Flux;
 
-class ViewEvent extends Component
+class ViewEventTimeline extends Component
 {
 
     public $event;
@@ -29,7 +29,7 @@ class ViewEvent extends Component
 
         Flux::modals()->close();
 
-        return redirect()->route('view_event', $this->event);
+        return redirect()->route('view_event_timeline', $this->event);
     }
 
     public function markEventAsResumed() 
@@ -40,9 +40,8 @@ class ViewEvent extends Component
 
         Flux::modals()->close();
 
-        return redirect()->route('view_event', $this->event);
+        return redirect()->route('view_event_timeline', $this->event);
     }
-
     public function render()
     {
         // Attendance stats
@@ -59,7 +58,7 @@ class ViewEvent extends Component
         $latePercentage    = ($lateCount / $totalForPercentage) * 100;
         $absentPercentage  = ($absentCount / $totalForPercentage) * 100;
 
-        return view('livewire.management.view-event', [
+        return view('livewire.management.view-event-timeline', [
             'totalAttendees'   => $totalAttendees,
             'presentCount'     => $presentCount,
             'lateCount'        => $lateCount,

@@ -9,6 +9,8 @@ use App\Models\Event;
 use App\Enums\EventStatus;
 use App\Models\EventAttendanceLog;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
 
@@ -37,18 +39,28 @@ class AdminDashboard extends Component
     // Attendance trend chart
     public function getAttendanceTrendData()
     {
-        $schoolYear = Setting::getSchoolYear();
-        [$startYear, $endYear] = explode('-', $schoolYear);
-        $startYear = (int)$startYear;
-        $endYear = (int)$endYear;
+        $schoolYear = $this->selectedSchoolYear;
 
-        // Get the first event in the school year to determine start month
-        $firstEvent = Event::where('school_year', $schoolYear)
-            ->orderBy('date', 'asc')
-            ->first();
+        return Cache::remember("dashboard:trend:{$schoolYear}", 1800, function () use ($schoolYear) {
+            [$syStart, $syEnd] = explode('-', $schoolYear);
+            $syStart = (int) $syStart;
+            $syEnd = (int) $syEnd;
 
-        $startMonth = $firstEvent ? (int)\Carbon\Carbon::parse($firstEvent->date)->month : 7; // Default to July if no events
+            // Find earliest finished event date within the school year; fallback to July of start year
+            $firstDate = Event::where('school_year', $schoolYear)
+                ->where('status', EventStatus::Finished->value)
+                ->min('date');
 
+            if ($firstDate) {
+                $first = Carbon::parse($firstDate);
+                $startMonth = (int) $first->month;
+                $startYear = (int) $first->year;
+            } else {
+                $startMonth = 7;
+                $startYear = $syStart;
+            }
+
+            // Build 12-month rolling window from the detected start month/year
         $months = [];
         $years = [];
         $monthYearPairs = [];
@@ -57,39 +69,52 @@ class AdminDashboard extends Component
 
         // Build 12 months starting from the start month
         for ($i = 0; $i < 12; $i++) {
-            $monthName = \Carbon\Carbon::create($currentYear, $currentMonth, 1)->format('M');
-            $months[] = $monthName;
+                $months[] = Carbon::create($currentYear, $currentMonth, 1)->format('M');
             $years[] = $currentYear;
             $monthYearPairs[] = ['month' => $currentMonth, 'year' => $currentYear];
 
             $currentMonth++;
             if ($currentMonth > 12) {
                 $currentMonth = 1;
-                $currentYear = $endYear;
+                    // switch to the end year if we roll over
+                    $currentYear = $syEnd;
+                }
             }
-        }
 
-        $present = [];
-        $late = [];
-        $absent = [];
+            // Aggregate attendance logs grouped by month and status in a single query
+            $windowStart = Carbon::create($startYear, $startMonth, 1)->startOfDay();
+            $windowEnd = $windowStart->copy()->addMonths(12)->endOfDay();
 
-        foreach ($monthYearPairs as $pair) {
-            $events = Event::where('school_year', $schoolYear)
-                ->whereMonth('date', $pair['month'])
-                ->whereYear('date', $pair['year'])
-                ->where('status', EventStatus::Finished->value)
+            $rows = DB::table('events')
+                ->join('event_attendance_logs', 'event_attendance_logs.event_id', '=', 'events.id')
+                ->selectRaw('YEAR(events.date) as y, MONTH(events.date) as m, event_attendance_logs.attendance_status as s, COUNT(*) as c')
+                ->where('events.school_year', $schoolYear)
+                ->whereBetween('events.date', [$windowStart->toDateString(), $windowEnd->toDateString()])
+                ->where('events.status', EventStatus::Finished->value)
+                ->groupBy('y', 'm', 's')
+                ->orderBy('y')
+                ->orderBy('m')
                 ->get();
 
-            $monthPresent = $monthLate = $monthAbsent = 0;
-            foreach ($events as $event) {
-                $logs = EventAttendanceLog::where('event_id', $event->id)->get();
-                $monthPresent += $logs->where('attendance_status', 'present')->count();
-                $monthLate += $logs->where('attendance_status', 'late')->count();
-                $monthAbsent += $logs->where('attendance_status', 'absent')->count();
-            }
-            $present[] = $monthPresent;
-            $late[] = $monthLate;
-            $absent[] = $monthAbsent;
+            $present = array_fill(0, 12, 0);
+            $late = array_fill(0, 12, 0);
+            $absent = array_fill(0, 12, 0);
+
+            // Map row month/year to index in our 12-month window
+            foreach ($rows as $r) {
+                $index = null;
+                for ($i = 0; $i < 12; $i++) {
+                    $labelMonth = Carbon::create($years[$i], Carbon::parse("1 {$months[$i]} {$years[$i]}")->month, 1)->month;
+                    if ((int) $years[$i] === (int) $r->y && (int) $labelMonth === (int) $r->m) {
+                        $index = $i;
+                        break;
+                    }
+                }
+                if ($index === null) continue;
+
+                if ($r->s === 'present') $present[$index] += (int) $r->c;
+                if ($r->s === 'late') $late[$index] += (int) $r->c;
+                if ($r->s === 'absent') $absent[$index] += (int) $r->c;
         }
 
         $hasEvents = array_sum($present) + array_sum($late) + array_sum($absent) > 0;
@@ -102,6 +127,7 @@ class AdminDashboard extends Component
             'absent' => $absent,
             'hasEvents' => $hasEvents,
         ];
+        });
     }
 
 
@@ -109,8 +135,22 @@ class AdminDashboard extends Component
     public function generateYearlyReport()
     {
         [$startYear, $endYear] = explode('-', $this->selectedSchoolYear);
-        $startDate = Carbon::create($startYear, 7, 1); // School year starts July
-        $endDate = Carbon::create($endYear, 6, 30);    // Ends June next year
+
+        // Dynamically detect earliest finished event month within the school year; fallback to July of start year
+        $firstDate = Event::where('school_year', $this->selectedSchoolYear)
+            ->where('status', EventStatus::Finished->value)
+            ->min('date');
+
+        if ($firstDate) {
+            $first = Carbon::parse($firstDate);
+            $startDate = $first->copy()->startOfMonth();
+        } else {
+            // Fallback to traditional school year window (July -> June)
+            $startDate = Carbon::create((int) $startYear, 7, 1)->startOfDay();
+        }
+
+        // Build a 12-month window from the detected start
+        $endDate = $startDate->copy()->addMonths(12)->subDay();
 
         // Fetch events within the school year
         $events = Event::with('attendanceLogs')
@@ -175,39 +215,57 @@ class AdminDashboard extends Component
         
     }
 
+    public function refreshChart()
+    {
+        // This will update $attendanceTrendData
+        $this->attendanceTrendData = $this->getAttendanceTrendData();
+
+        // Dispatch event with new data to JavaScript
+        $this->dispatch('chart-data-updated', data: $this->attendanceTrendData);
+        
+    }
+
 
 
     public function render()
     {
         $baseQuery = Event::query(); 
 
+        // Cached counts (5–10 min TTL)
+        $yearKey = $this->selectedSchoolYear;
+        $monthNum = Carbon::parse("1 {$this->selectedMonth}")->month;
+        $yearNow = now()->year;
+
         $filteredQuery = (clone $baseQuery)
             ->where('school_year', $this->selectedSchoolYear)
             ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
             ->whereYear('date', now()->year);
 
-            // ->when($this->selectedMonth !== 'All' && $this->selectedMonth !== null, function ($query) {
-            //     $monthNumber = Carbon::parse("1 {$this->selectedMonth}")->month;
-            //     $query->whereMonth('date', $monthNumber);
-            // });
-
         // Count of filtered events
-        $filteredEventCount = (clone $filteredQuery)->count();
+        $filteredEventCount = Cache::remember("dashboard:counts:filtered:{$yearKey}:{$yearNow}-{$monthNum}", 120, function () use ($filteredQuery) {
+            return (clone $filteredQuery)->count();
+        });
+
 
         // Count of events for the school year where status is not postponed
-        $nonPostponedEventCount = Event::where('school_year', $this->selectedSchoolYear)
+        $nonPostponedEventCount = Cache::remember("dashboard:counts:non_postponed_total:{$yearKey}", 600, function () use ($yearKey) {
+            return Event::where('school_year', $yearKey)
             ->where('status', '!=', EventStatus::Postponed->value)
             ->count();
+        });
 
         // Count of events for the month where status is not postponed
-        $nonPostponedEventCountMonth = Event::where('school_year', $this->selectedSchoolYear)
-            ->whereMonth('date', Carbon::parse("1 {$this->selectedMonth}")->month)
-            ->whereYear('date', now()->year)
+        $nonPostponedEventCountMonth = Cache::remember("dashboard:counts:non_postponed_month:{$yearKey}:{$yearNow}-{$monthNum}", 600, function () use ($yearKey, $monthNum, $yearNow) {
+            return Event::where('school_year', $yearKey)
+                ->whereMonth('date', $monthNum)
+                ->whereYear('date', $yearNow)
             ->where('status', '!=', EventStatus::Postponed->value)
             ->count();
+        });
 
         // events query and order
-        $events = $filteredQuery
+        $events = Cache::remember("dashboard:lists:month_events:{$yearKey}:{$yearNow}-{$monthNum}", 120, function () use ($filteredQuery) {
+            return $filteredQuery
             ->orderByRaw("
                 CASE 
                     WHEN status = ? THEN 2
@@ -216,30 +274,13 @@ class AdminDashboard extends Component
                 END", [EventStatus::Postponed->value, EventStatus::Finished->value])
             ->orderBy('date', $this->sortDirection ?? 'asc')
             ->get();
+        });
 
         // event count
         $now = now();
 
-        $finishedCount = Event::where('school_year', $this->selectedSchoolYear)
-            ->where('status', EventStatus::Finished->value)
-            ->count();
-
-        $postponedCount = Event::where('school_year', $this->selectedSchoolYear)
-            ->where('status', EventStatus::Postponed->value)
-            ->count();
-
-        $untrackedCount = Event::where('school_year', $this->selectedSchoolYear)
-            ->where('status', EventStatus::NotFinished->value)
-            ->where(function ($query) use ($now) {
-                $query->whereDate('date', '<', $now->toDateString())
-                    ->orWhere(function ($q) use ($now) {
-                        $q->whereDate('date', $now->toDateString())
-                            ->whereTime('end_time', '<', $now->toTimeString());
-                    });
-            })
-            ->count();
-
-        $untrackedEvents = Event::where('school_year', $this->selectedSchoolYear)
+        $untrackedEvents = Cache::remember("dashboard:lists:untracked:{$yearKey}:{$now->toDateString()}", 300, function () use ($yearKey, $now) {
+            return Event::where('school_year', $yearKey)
             ->where('status', EventStatus::NotFinished->value)
             ->where(function ($query) use ($now) {
                 $query->whereDate('date', '<', $now->toDateString())
@@ -249,25 +290,27 @@ class AdminDashboard extends Component
                     });
             })
             ->get();
+        });
 
-        $finishedEvents = Event::where('school_year', $this->selectedSchoolYear)
+        $finishedEvents = Cache::remember("dashboard:lists:finished:{$yearKey}", 300, function () use ($yearKey) {
+            return Event::where('school_year', $yearKey)
             ->where('status', EventStatus::Finished->value)
             ->get();
+        });
 
-        $postponedEvents = Event::where('school_year', $this->selectedSchoolYear)
+        $postponedEvents = Cache::remember("dashboard:lists:postponed:{$yearKey}", 300, function () use ($yearKey) {
+            return Event::where('school_year', $yearKey)
             ->where('status', EventStatus::Postponed->value)
             ->get();
+        });
 
         return view('livewire.management.admin-dashboard', [
             'events' => $events,
             'eventCount' => $filteredEventCount,
             'nonPostponedEventCount' => $nonPostponedEventCount,
             'nonPostponedEventCountMonth' => $nonPostponedEventCountMonth,
-            'finishedCount' => $finishedCount,
             'finishedEvents' => $finishedEvents,
-            'postponedCount' => $postponedCount,
             'postponedEvents' => $postponedEvents,
-            'untrackedCount' => $untrackedCount,
             'untrackedEvents' => $untrackedEvents,
             
         ]);

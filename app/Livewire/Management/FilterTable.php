@@ -298,22 +298,30 @@ class FilterTable extends Component
         $baseQuery = User::where('status', 'approved')
             ->where('role', 'user');
 
-        // Get total approved users count
-        $totalApproved = (clone $baseQuery)->count();
+        // Get total approved users count (cached)
+        $totalApproved = Cache::remember('students:counts:approved', 600, function () use ($baseQuery) {
+            return (clone $baseQuery)->count();
+        });
 
-        // Count of active and inactive users among approved users
-        $activeCount = (clone $baseQuery)
-            ->where('account_status', 'active')
-            ->count();
+        // Count of active and inactive users among approved users (cached)
+        $activeCount = Cache::remember('students:counts:active', 600, function () use ($baseQuery) {
+            return (clone $baseQuery)
+                ->where('account_status', 'active')
+                ->count();
+        });
 
-        $inactiveCount = (clone $baseQuery)
-            ->where('account_status', 'inactive')
-            ->count();
+        $inactiveCount = Cache::remember('students:counts:inactive', 600, function () use ($baseQuery) {
+            return (clone $baseQuery)
+                ->where('account_status', 'inactive')
+                ->count();
+        });
 
-        // Tsuushin Member Count
-        $tsuushinCount = (clone $baseQuery)
-            ->where('tsuushin', 'member')
-            ->count();
+        // Tsuushin Member Count (cached)
+        $tsuushinCount = Cache::remember('students:counts:tsuushin', 600, function () use ($baseQuery) {
+            return (clone $baseQuery)
+                ->where('tsuushin', 'member')
+                ->count();
+        });
 
         // Build the filtered query for display
         $filteredQuery = (clone $baseQuery)

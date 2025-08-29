@@ -3,7 +3,15 @@
 namespace App\Providers;
 
 use App\Enums\UserRole;
+
 use App\Models\User;
+use App\Models\Event;
+use App\Models\EventAttendanceLog;
+
+use App\Observers\EventObserver;
+use App\Observers\EventAttendanceLogObserver;
+use App\Observers\UserObserver;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -74,12 +82,25 @@ class AppServiceProvider extends ServiceProvider
         // Prevent lazy loading
         Model::preventLazyLoading();
 
+        // Cache Observers
+        Event::observe(EventObserver::class);
+        EventAttendanceLog::observe(EventAttendanceLogObserver::class);
+        User::observe(UserObserver::class);
+
 
         /**
          * Notification badges
          */
 
-        View::composer(['components.layouts.app.sidebar', 'livewire.management.manage-approval', 'livewire.management.admin-dashboard'], function ($view) {
+        View::composer(['components.layouts.app.sidebar',
+            'livewire.management.manage-approval',
+            'livewire.management.admin-dashboard',
+            // 'livewire.management.manage-events',
+            // 'livewire.management.manage-students',
+            // 'livewire.management.event-list',
+            // 'livewire.management.student-record',
+        
+            ], function ($view) {
             $pendingCount = User::where('status', 'pending')->count();
             $view->with('pendingCount', $pendingCount);
         });
@@ -111,6 +132,7 @@ class AppServiceProvider extends ServiceProvider
                     'edit_event' => 'Edit Event',
                     'edit_event_timeline' => 'Edit Event',
                     'attendance_bin' => 'Attendance Bin',
+                    'attendance_bin_timeline' => 'Attendance Bin',
                     'settings.profile' => 'Settings',
                     'settings.password' => 'Settings',
                     'settings.schoolyear' => 'Settings',

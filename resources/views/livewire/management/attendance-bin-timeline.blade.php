@@ -78,7 +78,7 @@
 
             {{-- Close attendance bin --}}
             <div class="grid">
-                <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)">
+                <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event_timeline', $event)">
                     Leave Attendance Bin</flux:button>
                 <flux:modal.trigger name="close-AB">
                     <flux:button variant="primary" color="amber" icon:trailing="shield-check" class="mt-3">Close
@@ -459,7 +459,7 @@
                 @enderror
             </div>
             <div class="flex justify-center">
-                <div ="opacity-100" wire:target="verifyAdminKey" class="opacity-0 transition-opacity duration-300"wire:loading.class>
+                <div wire:loading.class="opacity-100" wire:target="verifyAdminKey" class="opacity-0 transition-opacity duration-300">
                     <flux:icon.loading class="text-zinc-50" />
                 </div>
             </div>

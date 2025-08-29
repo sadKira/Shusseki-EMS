@@ -144,7 +144,7 @@
                         <flux:text>Sanctioned Students</flux:text>
                         <flux:heading size="xl" level="1">
 
-                            {{ $sanctionedStudentsCount->count() }}
+                            {{ $sanctionedStudents->count() }}
 
                         </flux:heading>
 
@@ -407,10 +407,9 @@
 
                                         @if ($user->late_count > 0 || $user->absent_count > 0)
                                             <flux:badge variant="solid" size="sm" color="red">Sanctioned</flux:badge>
+
                                         @endif
-                                        {{-- @if ($student->absent_count > 0)
-                                        <flux:badge variant="solid" size="sm" color="red">Sanctioned</flux:badge>
-                                        @endif --}}
+                                      
                                     </div>
 
 

@@ -11,6 +11,7 @@ use Livewire\WithPagination;
 use Flux\Flux;
 
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
 
 class ManageApproval extends Component
 {
@@ -37,6 +38,9 @@ class ManageApproval extends Component
 
         Mail::to($user->email)->queue(new AccountApprove($user));
 
+        // Clear the pending count cache
+        Cache::forget('students:counts:pending');
+        
         $this->dispatch('refreshPendingCount');
 
         // Close modal
@@ -51,6 +55,9 @@ class ManageApproval extends Component
         Mail::to($user->email)->queue(new AccountRejected());
 
         $user->delete();
+        
+        // Clear the pending count cache
+        Cache::forget('students:counts:pending');
         
         $this->dispatch('refreshPendingCount');
 
@@ -82,7 +89,6 @@ class ManageApproval extends Component
 
     public function selectAll()
     {
-
         $this->selectAll = true;
         $this->selected = $this->usersQuery->pluck('id')->map(fn($id) => (string) $id)->toArray();
     }
@@ -109,6 +115,9 @@ class ManageApproval extends Component
             ->later(now()->addSeconds($index * 10), new AccountApprove($user));
         }
 
+        // Clear the pending count cache
+        Cache::forget('students:counts:pending');
+        
         $this->cancelSelection();
         $this->dispatch('refreshPendingCount');
 
@@ -124,15 +133,16 @@ class ManageApproval extends Component
 
         // Reject selected
         foreach ($users as $index => $user) {
-
             // Send email
             Mail::to($user->email)
             ->later(now()->addSeconds($index * 10), new AccountRejected());
 
             $user->delete();
-
         }
 
+        // Clear the pending count cache
+        Cache::forget('students:counts:pending');
+        
         $this->cancelSelection();
         $this->dispatch('refreshPendingCount');
 
@@ -140,7 +150,7 @@ class ManageApproval extends Component
         Flux::modals()->close();
     }
 
-    // Bulk appprove
+    // Bulk approve
     public function totalbulkApprove()
     {
         // Fetch users
@@ -157,19 +167,19 @@ class ManageApproval extends Component
             ->later(now()->addSeconds($index * 10), new AccountApprove($user));
         }
 
+        // Clear the pending count cache
+        Cache::forget('students:counts:pending');
 
         $this->cancelSelection();
         $this->dispatch('refreshPendingCount');
 
         // Close modal
         Flux::modals()->close();
-
     }
 
     // Bulk reject
     public function totalbulkReject()
     {
-
         // Fetch users
         $users = User::where('status', 'pending')
         ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
@@ -177,14 +187,15 @@ class ManageApproval extends Component
 
         // Reject all users
         foreach ($users as $index => $user) {
-
             // Send email
             Mail::to($user->email)
             ->later(now()->addSeconds($index * 10), new AccountRejected());
 
             $user->delete();
-
         }
+        
+        // Clear the pending count cache
+        Cache::forget('students:counts:pending');
         
         $this->cancelSelection();
 
@@ -192,14 +203,18 @@ class ManageApproval extends Component
 
         // Close modal
         Flux::modals()->close();
-        
     }
 
     public function render()
     {
+        // Get cached pending count (like FilterTable does)
+        $pendingCount = Cache::remember('students:counts:pending', 300, function () {
+            return User::where('status', 'pending')->count();
+        });
+
         return view('livewire.management.manage-approval', [
             'users' => $this->users,
-            'pendingCount' => $this->usersQuery->count(),
+            'pendingCount' => $pendingCount,
         ]);
     }
 }

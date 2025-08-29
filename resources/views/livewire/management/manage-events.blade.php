@@ -1,6 +1,7 @@
 <div>
     {{-- App Header --}}
-    <div class=" relative mb-10 w-full">
+    <div class="flex items-center justify-between mb-10 w-full">
+
         {{-- Breadcrumbs --}}
         <div class="flex items-center justify-between">
             <div>
@@ -17,7 +18,14 @@
                 </div>
                 <flux:heading size="xl" level="1">Events Bin</flux:heading>
             </div>
+            
         </div>
+
+        {{-- Refresh --}}
+        <div wire:loading.class="opacity-100" class="opacity-0 transition-opacity duration-300">
+            <flux:button icon="loading" variant="ghost">Refreshing</flux:button>
+        </div>
+
     </div>
 
 
@@ -26,7 +34,7 @@
     <div class="flex flex-col gap-3">
 
         {{-- Sub Headings --}}
-        <div class="whitespace-nowrap flex gap-20 items-center justify-center-safe px-7">
+        <div class="whitespace-nowrap flex gap-20 items-center justify-center-safe px-7"  wire:poll.15s.visible >
 
             {{-- Current Month --}}
             <div class="min-w-30 whitespace-nowrap grid justify-items-center">
@@ -58,7 +66,7 @@
         {{-- Events for the month --}}
 
         @if ($events->count() < 1)
-            <div class="flex flex-col items-center justify-center w-full">
+            <div class="flex flex-col items-center justify-center w-full" >
                 {{-- Show empty state when no events exist for the selected month --}}
                 <x-manage-events-empty-state 
                     :selected-month="$selectedMonth" 
@@ -66,7 +74,7 @@
                 />
             </div>
         @else
-            <div class="px-10 py-6 grid md:grid-cols-2 lg:grid-cols-2 gap-8 mt-5">
+            <div class="px-10 py-6 grid md:grid-cols-2 lg:grid-cols-2 gap-8 mt-5"  wire:poll.30s.visible >
 
                 {{-- Events content --}}
 

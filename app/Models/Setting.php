@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Setting extends Model
 {
@@ -15,22 +16,37 @@ class Setting extends Model
 
     public static function getAvailableSchoolYears()
     {
-        return SchoolYear::orderByDesc('year')->pluck('year')->toArray();
+        return Cache::remember('school_years:list', 86400, function () {
+            return SchoolYear::orderByDesc('year')->pluck('year')->toArray();
+        });
+
+        // return SchoolYear::orderByDesc('year')->pluck('year')->toArray();
+        
     }
 
     // Obtain school year
     public static function getSchoolYear()
     {
-        return static::where('key', 'current_school_year')->value('value');
+        return Cache::rememberForever('settings:current_school_year', function () {
+            return static::where('key', 'current_school_year')->value('value');
+        });
+
+        // return static::where('key', 'current_school_year')->value('value');
     }
 
     // Set school year
     public static function setSchoolYear($year)
     {
-        return static::updateOrCreate(
-            ['key' => 'current_school_year'],
-            ['value' => $year]
-        );
+        $result = static::updateOrCreate(['key' => 'current_school_year'], ['value' => $year]);
+        Cache::forget('settings:current_school_year');
+        Cache::forget('school_years:list'); // optional if you show “current year” in that list
+
+        return $result;
+
+        // return static::updateOrCreate(
+        //     ['key' => 'current_school_year'],
+        //     ['value' => $year]
+        // );
     }
 
     // Obtain admin key

@@ -14,9 +14,11 @@ use App\Livewire\Management\ManageStudents;
 use App\Livewire\Management\ManageApproval;
 use App\Livewire\Management\CreateEvent;
 use App\Livewire\Management\ViewEvent;
+use App\Livewire\Management\ViewEventTimeline;
 use App\Livewire\Management\EditEvent;
 use App\Livewire\Management\EditEventTimeline;
 use App\Livewire\Management\AttendanceBin;
+use App\Livewire\Management\AttendanceBinTimeline;
 use App\Livewire\Management\BufferView;
 use App\Livewire\Management\EventList;
 use App\Livewire\Management\StudentRecord;
@@ -78,14 +80,17 @@ Route::middleware(['auth', 'verified', 'role:super_admin,admin'])->group(functio
     Route::get('admin/event-bin', ManageEvents::class)->name('manage_events');
 
     Route::get('admin/event-bin/{event}', ViewEvent::class)->name('view_event');
-    Route::get('admin/event-timeline/{event}', ViewEvent::class)->name('view_event_timeline');
+    Route::get('admin/event-timeline/{event}', ViewEventTimeline::class)->name('view_event_timeline');
     Route::get('admin/attendance-record/{user}', ViewStudentRecord::class)->name('view_student_record');
     
     Route::get('admin/event-timeline', EventList::class)->name('event_timeline');
 
     Route::get('admin/students', ManageStudents::class)->name('manage_students');
     Route::get('admin/student-approval', ManageApproval::class)->name('manage_approval');
+
     Route::get('admin/attendance-bin/{event}', AttendanceBin::class)->name('attendance_bin');
+    Route::get('admin/view-attendance-bin/{event}', AttendanceBinTimeline::class)->name('attendance_bin_timeline');
+    
     Route::get('admin/attendance-record',StudentRecord::class)->name('attendance_records');
     
     Route::get('admin/create-event', CreateEvent::class)->name('create_event');
