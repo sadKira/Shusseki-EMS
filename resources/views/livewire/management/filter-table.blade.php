@@ -366,7 +366,7 @@
                                         
                                             @if ($selection)
                                                 <th scope="col"
-                                                    class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                    class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                                     Action</th>
                                             @else
                                             @endif
@@ -375,7 +375,7 @@
                                         @can('A')
                                             @if ($selectedStatus == 'Active Accounts')
                                                 <th scope="col"
-                                                    class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                    class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
                                                     Action</th>
                                             @endif
                                         @endcan
@@ -507,7 +507,7 @@
                                                             @if ($selectedStatus == 'Active Accounts')
                                                                 <flux:dropdown position="left" align="end">
                                                                     <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
-                                                                        class="ml-13"></flux:button>
+                                                                        class=""></flux:button>
                                                                     <flux:menu>
 
                                                                         @if ($tsuushinCount < 1)
@@ -536,7 +536,7 @@
                                                             @else
                                                                 <flux:dropdown position="left" align="end">
                                                                     <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
-                                                                        class="ml-13"></flux:button>
+                                                                        class=""></flux:button>
                                                                     <flux:menu>
 
                                                                         <flux:modal.trigger :name="'active-solo-'.$user->id">
@@ -561,7 +561,7 @@
                                                             @if ($tsuushinCount < 1)
                                                                 <flux:dropdown position="left" align="end">
                                                                     <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
-                                                                        class="ml-13"></flux:button>
+                                                                        class=""></flux:button>
                                                                     <flux:menu>
 
                                                                         @if ($tsuushinCount < 1)
@@ -577,7 +577,7 @@
                                                                 @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
                                                                     <flux:dropdown position="left" align="end">
                                                                         <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
-                                                                        class="ml-13"></flux:button>
+                                                                        class=""></flux:button>
                                                                         <flux:menu>
 
                                                                             @if ($user->tsuushin == \App\Enums\TsuushinRole::Member)
@@ -591,7 +591,7 @@
                                                                     </flux:dropdown>
                                                                 @else
                                                                     <flux:button icon="ellipsis-horizontal" variant="subtle" disabled size="xs"
-                                                                    class="ml-13"></flux:button>
+                                                                    class=""></flux:button>
                                                                 @endif
                                                             @endif
 
