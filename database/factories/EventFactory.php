@@ -68,12 +68,12 @@ class EventFactory extends Factory
                 ->format('H:i:s'),
             'school_year' => $schoolYear,
             'image' => fake()->randomElement([
-                'events/intrams.jfif',
-                'events/clubfair.jfif',
-                'events/galanight.jfif',
-                'events/nyuugakushiki.jfif',
-                'events/personnelsday.jfif',
-                'events/pjfest.jfif',
+                'images/intrams.jfif',
+                'images/clubfair.jfif',
+                'images/galanight.jfif',
+                'images/nyuugakushiki.jfif',
+                'images/personnelsday.jfif',
+                'images/pjfest.jfif',
             ]),
             'status' => fake()->randomElement([
                 'not_finished',
