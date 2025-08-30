@@ -52,7 +52,7 @@
 
         <div class="video-bg-wrapper">
             <video autoplay loop muted playsinline class="background-clip">
-                <source src="{{ asset('videos/shusseki-h264-latest.mp4') }}" type="video/mp4">
+                <source src="{{ asset('videos/mkdintro_4k_latest.mp4') }}" type="video/mp4">
             </video>
             <svg class="video-svg-mask" width="100vw" height="100vh" style="position:absolute;top:0;left:0;pointer-events:none;z-index:1;">
                 <defs>
