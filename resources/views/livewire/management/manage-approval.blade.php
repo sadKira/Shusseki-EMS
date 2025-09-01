@@ -126,125 +126,146 @@
                                 </thead>
 
                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                                    @forelse ($users as $user)
-                                        <tr wire:key="user-{{ $user->id }}" class="hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
-                                            <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                @if ($pendingCount > 1)
-                                                    <div class="flex items-center">
-                                                        <flux:checkbox value="{{ $user->id }}" wire:model.live="selected" />
+                                    @if($users->isEmpty())
+                                        @if(!empty($search))
+
+                                            <tr class="">
+                                                <td
+                                                    colspan="7" class="px-6 py-10 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
+                                                    <div class="flex justify-center items-center gap-2">
+                                                        <flux:icon.magnifying-glass variant="solid" class="text-zinc-50" />
+                                                        <flux:heading size="lg">No Pending Account Found</flux:heading>
                                                     </div>
-                                                @endif
-                                            </td>
-                                            <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
-                                                {{ $user->name }}
-                                            </td>
-                                            <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                {{ $user->student_id }}
-                                            </td>
-                                            <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                {{ $user->email }}
-                                            </td>
-                                            <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                {{ $user->year_level }}
-                                            </td>
-                                            <td
-                                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                                                @php
-                                                    
-                                                    $course = $user->course;
+                                                </td>
+                                            </tr> 
+                                        
+                                        @else
 
-                                                    $output = match(true) {
-                                                        $course == 'Bachelor of Arts in International Studies' => 'ABIS',
-                                                        $course == 'Bachelor of Science in Information Systems' => 'BSIS',
-                                                        $course == 'Bachelor of Human Services' => 'BHS',
-                                                        $course == 'Bachelor of Secondary Education' => 'BSED',
-                                                        default => 'Course',
-                                                    };
-
-                                                @endphp
-                                                {{ $output }}
-                                            </td>
-                                            <td class="px-6 py-4 flex items-center justify-center">
-                                                {{-- <button type="button"
-                                                    class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Delete</button> --}}
-
-                                                <flux:dropdown position="left" align="end">
-                                                    <flux:button variant="filled" size="xs" icon="ellipsis-horizontal"></flux:button>
-                                                    <flux:menu>
-
-                                                        <flux:modal.trigger :name="'approve-solo-'.$user->id">
-                                                            <flux:menu.item icon="check">
-                                                                Approve</flux:menu.item>
-                                                        </flux:modal.trigger>
-
-                                                        <flux:modal.trigger :name="'reject-solo-'.$user->id">
-                                                            <flux:menu.item icon="x-mark" variant="danger">
-                                                                Reject</flux:menu.item>
-                                                        </flux:modal.trigger>
-
-                                                    </flux:menu>
-                                                </flux:dropdown>
-
-                                                {{-- Approve modal --}}
-                                                <flux:modal :name="'approve-solo-'.$user->id" :dismissible="false"
-                                                    class="min-w-[22rem]">
-                                                    <div class="space-y-6">
-                                                        <div>
-                                                            <flux:heading size="lg">Approve User?</flux:heading>
-                                                            <flux:text class="mt-2">
-                                                                <p>You're about to approve {{ $user->name }}.</p>
-                                                            </flux:text>
-                                                        </div>
-                                                        <div class="flex gap-2">
-                                                            <flux:spacer />
-                                                            <flux:modal.close>
-                                                                <flux:button variant="ghost">Cancel</flux:button>
-                                                            </flux:modal.close>
-                                                            <flux:button variant="primary" color="amber"
-                                                                wire:click="approve({{ $user->id }})">Approve User</flux:button>
-                                                        </div>
+                                            <tr class="">
+                                                <td
+                                                    colspan="7" class="px-6 py-10 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
+                                                    <div class="flex justify-center items-center gap-2">
+                                                        <flux:icon.user-circle variant="solid" class="text-zinc-50" />
+                                                        <flux:heading size="lg">No Pending Accounts</flux:heading>
                                                     </div>
-                                                </flux:modal>
+                                                </td>
+                                            </tr>
 
-                                                {{-- Reject modal --}}
-                                                <flux:modal :name="'reject-solo-'.$user->id" :dismissible="false"
-                                                    class="min-w-[22rem]">
-                                                    <div class="space-y-6">
-                                                        <div>
-                                                            <flux:heading size="lg">Reject User?</flux:heading>
-                                                            <flux:text class="mt-2">
-                                                                <p>You're about to reject {{ $user->name }}.</p>
-                                                            </flux:text>
-                                                        </div>
-                                                        <div class="flex gap-2">
-                                                            <flux:spacer />
-                                                            <flux:modal.close>
-                                                                <flux:button variant="ghost">Cancel</flux:button>
-                                                            </flux:modal.close>
-                                                            <flux:button variant="danger" wire:click="reject({{ $user->id }})">
-                                                                Reject User</flux:button>
-                                                        </div>
-                                                    </div>
-                                                </flux:modal>
+                                        @endif
+                                    @else
 
-                                            </td>
-                                        </tr>       
-                                    @empty
-                                        <tr class="">
-                                            <td
-                                                colspan="7" class="px-6 py-10 whitespace-nowrap text-sm  text-gray-800 dark:text-neutral-200">
-                                                <div class="flex justify-center items-center gap-2">
-                                                    <flux:icon.user-circle variant="solid" class="text-zinc-50" />
-                                                    <flux:heading size="lg">No Pending Accounts</flux:heading>
-                                                </div>
-                                            </td>
-                                        </tr> 
-                                    @endforelse
+                                        @foreach ($users as $user)
+                                            <tr wire:key="user-{{ $user->id }}" class="hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                    @if ($pendingCount > 1)
+                                                        <div class="flex items-center">
+                                                            <flux:checkbox value="{{ $user->id }}" wire:model.live="selected" />
+                                                        </div>
+                                                    @endif
+                                                </td>
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                                    {{ $user->name }}
+                                                </td>
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                    {{ $user->student_id }}
+                                                </td>
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                    {{ $user->email }}
+                                                </td>
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                    {{ $user->year_level }}
+                                                </td>
+                                                <td
+                                                    class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
+                                                    @php
+                                                        
+                                                        $course = $user->course;
+
+                                                        $output = match(true) {
+                                                            $course == 'Bachelor of Arts in International Studies' => 'ABIS',
+                                                            $course == 'Bachelor of Science in Information Systems' => 'BSIS',
+                                                            $course == 'Bachelor of Human Services' => 'BHS',
+                                                            $course == 'Bachelor of Secondary Education' => 'BSED',
+                                                            default => 'Course',
+                                                        };
+
+                                                    @endphp
+                                                    {{ $output }}
+                                                </td>
+                                                <td class="px-6 py-4 flex items-center justify-center">
+                                                    {{-- <button type="button"
+                                                        class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400">Delete</button> --}}
+
+                                                    <flux:dropdown position="left" align="end">
+                                                        <flux:button variant="filled" size="xs" icon="ellipsis-horizontal"></flux:button>
+                                                        <flux:menu>
+
+                                                            <flux:modal.trigger :name="'approve-solo-'.$user->id">
+                                                                <flux:menu.item icon="check">
+                                                                    Approve</flux:menu.item>
+                                                            </flux:modal.trigger>
+
+                                                            <flux:modal.trigger :name="'reject-solo-'.$user->id">
+                                                                <flux:menu.item icon="x-mark" variant="danger">
+                                                                    Reject</flux:menu.item>
+                                                            </flux:modal.trigger>
+
+                                                        </flux:menu>
+                                                    </flux:dropdown>
+
+                                                    {{-- Approve modal --}}
+                                                    <flux:modal :name="'approve-solo-'.$user->id" :dismissible="false"
+                                                        class="min-w-[22rem]">
+                                                        <div class="space-y-6">
+                                                            <div>
+                                                                <flux:heading size="lg">Approve User?</flux:heading>
+                                                                <flux:text class="mt-2">
+                                                                    <p>You're about to approve {{ $user->name }}.</p>
+                                                                </flux:text>
+                                                            </div>
+                                                            <div class="flex gap-2">
+                                                                <flux:spacer />
+                                                                <flux:modal.close>
+                                                                    <flux:button variant="ghost">Cancel</flux:button>
+                                                                </flux:modal.close>
+                                                                <flux:button variant="primary" color="amber"
+                                                                    wire:click="approve({{ $user->id }})">Approve User</flux:button>
+                                                            </div>
+                                                        </div>
+                                                    </flux:modal>
+
+                                                    {{-- Reject modal --}}
+                                                    <flux:modal :name="'reject-solo-'.$user->id" :dismissible="false"
+                                                        class="min-w-[22rem]">
+                                                        <div class="space-y-6">
+                                                            <div>
+                                                                <flux:heading size="lg">Reject User?</flux:heading>
+                                                                <flux:text class="mt-2">
+                                                                    <p>You're about to reject {{ $user->name }}.</p>
+                                                                </flux:text>
+                                                            </div>
+                                                            <div class="flex gap-2">
+                                                                <flux:spacer />
+                                                                <flux:modal.close>
+                                                                    <flux:button variant="ghost">Cancel</flux:button>
+                                                                </flux:modal.close>
+                                                                <flux:button variant="danger" wire:click="reject({{ $user->id }})">
+                                                                    Reject User</flux:button>
+                                                            </div>
+                                                        </div>
+                                                    </flux:modal>
+
+                                                </td>
+                                            </tr>       
+                                    
+                                        @endforeach
+
+                                    @endif
 
                                 </tbody>
                             </table>

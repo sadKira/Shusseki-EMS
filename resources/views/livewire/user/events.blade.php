@@ -230,12 +230,23 @@
                                                 $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                                             @endphp
 
+                                            {{-- Event status --}}
+                                            @if ($event->status != \App\Enums\EventStatus::Postponed)
+                                                @if ($now->between($start, $end))
+                                                    <flux:badge color="amber" class="" variant="solid"><span class="text-black">
+                                                            Event In Progress</span></flux:badge>
+                                                @endif
+                                            @endif
+
+                                            @if ($event->status == \App\Enums\EventStatus::Finished)
+                                                <flux:badge color="green" class="" variant="solid"><span class="text-black">Event
+                                                        Ended</span>
+                                                </flux:badge>
+                                            @endif
+
                                             @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                                <flux:badge color="red" size="sm" variant="solid"><span class="text-white">Event
-                                                        Postponed</span></flux:badge>
-                                            @elseif($now->between($start, $end))
-                                                <flux:badge color="amber" class="" size="sm" variant="solid">
-                                                    <span class="text-black">In Progress</span>
+                                                <flux:badge color="red" class="" variant="solid"><span class="text-white">Event
+                                                        Postponed</span>
                                                 </flux:badge>
                                             @endif
 

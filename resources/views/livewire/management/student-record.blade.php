@@ -24,24 +24,30 @@
         {{-- Buttons --}}
         <div>
 
-            @if ($this->missingAccountsCount > 0)
-                <div class="flex items-center gap-3">
-                    <flux:icon.exclamation-triangle class="text-amber-500" variant="outline" />
-                    <flux:button wire:click="appendMissingAccounts" icon="user-plus" variant="primary" color="amber"
-                        size="sm">
-                        Fill Logs - {{ $this->missingAccountsCount }}
-                    </flux:button>
-                </div>
-            @else
-                <flux:tooltip content="No Missing Logs to Append" position="bottom">
-                    <div>
-                        <flux:button wire:click="appendMissingAccounts" disabled icon="user-plus" variant="filled" 
+            <div wire:loading>
+                <flux:button icon="loading" variant="ghost">Refreshing</flux:button>
+            </div>
+
+            <div wire:loading.remove class="flex items-center gap-3">
+                @if ($this->missingAccountsCount > 0)
+                    <div class="flex items-center gap-3">
+                        <flux:icon.exclamation-triangle class="text-amber-500" variant="outline" />
+                        <flux:button wire:click="appendMissingAccounts" icon="user-plus" variant="primary" color="amber"
                             size="sm">
-                            No Missing Logs
+                            Fill Logs - {{ $this->missingAccountsCount }}
                         </flux:button>
                     </div>
-                </flux:tooltip>
-            @endif
+                @else
+                    <flux:tooltip content="No Missing Logs to Append" position="bottom">
+                        <div>
+                            <flux:button wire:click="appendMissingAccounts" disabled icon="user-plus" variant="filled" 
+                                size="sm">
+                                No Missing Logs
+                            </flux:button>
+                        </div>
+                    </flux:tooltip>
+                @endif
+            </div>
         </div>
 
     </div>
@@ -54,7 +60,7 @@
         <div class="flex flex-col col-span-3 gap-3 flex-grow">
 
             {{-- Stats --}}
-            <div class="px-10 flex items-center justify-between">
+            <div class="px-10 flex items-center justify-center gap-5">
 
                 <div class="h-40 w-40" wire:ignore>
                     @if ($attendanceDoughnutData['hasEvents'])
@@ -101,7 +107,7 @@
                     </flux:badge>
                 </div> --}}
 
-                <div class="grid grid-cols-2 gap-1">
+                <div class="grid grid-cols-2 gap-1" wire:poll.30s.visible>
 
                     <div class="px-3 py-3 whitespace-nowrap grid justify-items-start">
 
@@ -155,13 +161,12 @@
             </div>
 
             {{-- Sanctioned Students --}}
-            <div class="px-10 py-6 rounded-xl">
+            <div class="px-10 py-6 rounded-xl" wire:poll.30s.visible>
 
-                @if($sanctionedStudents->isEmpty())
-                @else
+                @if($sanctionedStudentsCount->count() > 0)
                     <div class="flex items-center justify-between mb-3">
                         <flux:heading size="lg" class="">Sanctioned Students</flux:heading>
-                        @if($sanctionedStudents->count() > 1)
+                        @if($sanctionedStudents->count() > 1 || !empty($sanctionedSearch) )
                             <div class="">
                                 <flux:input size="sm" icon="magnifying-glass" placeholder="Search Sanctioned"
                                     wire:model.live.debounce.300ms="sanctionedSearch" autocomplete="off" clearable />
@@ -312,10 +317,10 @@
         <div class="flex flex-col col-span-2 gap-3">
 
             {{-- Student List --}}
-            <div class="px-6 py-6 rounded-xl metallic-card-soft space-y-3">
+            <div class="px-6 py-6 rounded-xl metallic-card-soft space-y-3" wire:poll.30s.visible>
 
                 <flux:heading size="xl">Student List</flux:heading>
-                @if($users->count() > 1)
+                @if($users->count() > 1 || !empty($search))
                     <flux:input size="sm" icon="magnifying-glass" placeholder="Search Student"
                         wire:model.live.debounce.300ms="search" autocomplete="off" clearable />
                 @endif

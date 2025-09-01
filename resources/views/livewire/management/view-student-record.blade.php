@@ -11,7 +11,7 @@
     <div class="grid grid-cols-5 gap-2 content-center">
 
         <!-- User Details -->
-        <div class="lg:col-span-2 px-10 py-6 flex justify-content">
+        <div class="col-span-2 px-10 py-6 flex justify-content">
             <div class="flex items-center gap-x-6">
 
                 {{-- Event details content --}}
@@ -70,7 +70,8 @@
                         <flux:text class="text-white">{{ $user->course }}</flux:text>
                     </div>
 
-                    <flux:button wire:click="generateStampCard" class="w-full mt-5" variant="primary" color="amber" icon="arrow-down-on-square">Download as PDF</flux:button>
+                    <flux:button wire:click="generateStampCard" class="w-full mt-5" variant="primary" color="amber"
+                        icon="arrow-down-on-square">Download as PDF</flux:button>
 
                 </div>
 
@@ -81,20 +82,21 @@
         </div>
 
         <!-- Attendance Record -->
-        
-        
-        <div class="lg:col-span-3 px-10 py-6 content-center space-y-3
+
+
+        <div
+            class="col-span-3 px-10 py-6 content-center space-y-3
             h-100 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
 
-            @foreach ($events as $event)
+            @forelse ($events as $event)
                 {{-- Event Card --}}
                 <div class="mr-3 relative z-50 w-auto h-auto">
 
                     {{-- Card Content --}}
                     <div class="relative min-h-45 md:min-h-17 lg:min-h-17 max-w-md sm:max-w-full overflow-hidden rounded-xl bg-zinc-950
-                                border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
-                                cursor-pointer
-                                ">
+                                        border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
+                                        {{-- cursor-pointer --}}
+                                        ">
                         <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
                             style="background-image: url('{{ asset('storage/' . $event->image) }}');">
 
@@ -243,12 +245,16 @@
 
                                         </flux:dropdown>
                                     @else
-                                        <flux:button disabled variant="ghost" size="sm" icon="ellipsis-horizontal"
-                                                tooltip="User has no log"></flux:button>
+                                        <flux:tooltip content="No log">
+                                            <div>
+                                                <flux:button disabled variant="filled" size="sm" icon="x-mark"></flux:button>
+                                            </div>
+                                        </flux:tooltip>
                                     @endif
 
                                     {{-- Mark late modal --}}
-                                    <flux:modal :name="'mark-late-'.$user->id.'-'.$event->id" class="min-w-[22rem]" :dismissible="false">
+                                    <flux:modal :name="'mark-late-'.$user->id.'-'.$event->id" class="min-w-[22rem]"
+                                        :dismissible="false">
                                         <div class="space-y-6">
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Late?</flux:heading>
@@ -262,7 +268,8 @@
                                                 <flux:modal.close>
                                                     <flux:button variant="ghost">Cancel</flux:button>
                                                 </flux:modal.close>
-                                                <flux:button variant="danger" wire:click="markLate({{ $user->id }}, {{ $event->id }})">
+                                                <flux:button variant="danger"
+                                                    wire:click="markLate({{ $user->id }}, {{ $event->id }})">
                                                     Mark Late</flux:button>
                                             </div>
                                         </div>
@@ -292,7 +299,8 @@
                                     </flux:modal>
 
                                     {{-- Mark absent modal --}}
-                                    <flux:modal :name="'mark-absent-'.$user->id.'-'.$event->id" class="min-w-[22rem]" :dismissible="false">
+                                    <flux:modal :name="'mark-absent-'.$user->id.'-'.$event->id" class="min-w-[22rem]"
+                                        :dismissible="false">
                                         <div class="space-y-6">
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Absent?</flux:heading>
@@ -306,12 +314,13 @@
                                                 <flux:modal.close>
                                                     <flux:button variant="ghost">Cancel</flux:button>
                                                 </flux:modal.close>
-                                                <flux:button variant="danger" wire:click="markAbsent({{ $user->id }}, {{ $event->id }})">
+                                                <flux:button variant="danger"
+                                                    wire:click="markAbsent({{ $user->id }}, {{ $event->id }})">
                                                     Mark Absent</flux:button>
                                             </div>
                                         </div>
                                     </flux:modal>
-                                    
+
                                 </div>
                             </div>
 
@@ -323,7 +332,73 @@
 
 
                 </div>
-            @endforeach
+            
+            @empty
+
+                {{-- Empty state for sanctioned students --}}
+                <div class="p-5 h-full flex flex-col justify-center items-center text-center">
+                    {{-- Card/ID icon illustration --}}
+                    <svg class="w-48 mx-auto mb-1" width="178" height="120" viewBox="0 0 178 120" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        {{-- Background card --}}
+                        <rect x="27" y="70.5" width="124" height="49" rx="7.5"
+                            class="fill-white dark:fill-neutral-800 stroke-gray-50 dark:stroke-neutral-700/10"
+                            stroke="currentColor" />
+
+                        {{-- Middle card --}}
+                        <rect x="19.5" y="48.5" width="139" height="49" rx="7.5"
+                            class="fill-white dark:fill-neutral-800 stroke-gray-100 dark:stroke-neutral-700/30"
+                            stroke="currentColor" />
+
+                        {{-- Foreground card with shadow --}}
+                        <g filter="url(#student-card-shadow)">
+                            <rect x="12" y="26" width="154" height="50" rx="8"
+                                class="fill-white dark:fill-neutral-800 stroke-gray-100 dark:stroke-neutral-700/60"
+                                stroke="currentColor" shape-rendering="crispEdges" />
+
+                            {{-- Card header strip --}}
+                            <rect x="12" y="26" width="154" height="14" rx="8"
+                                class="fill-gray-200 dark:fill-neutral-700" />
+
+                            {{-- Placeholder profile circle --}}
+                            <circle cx="38" cy="52" r="10" class="fill-gray-300 dark:fill-neutral-600" />
+
+                            {{-- Placeholder text lines --}}
+                            <rect x="58" y="44" width="70" height="6" rx="3" class="fill-gray-200 dark:fill-neutral-700" />
+                            <rect x="58" y="56" width="50" height="6" rx="3" class="fill-gray-200 dark:fill-neutral-700" />
+                        </g>
+
+                        {{-- Shadow filter definition --}}
+                        <defs>
+                            <filter id="student-card-shadow" x="0" y="20" width="178" height="94"
+                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feColorMatrix in="SourceAlpha" type="matrix"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                <feOffset dy="6" />
+                                <feGaussianBlur stdDeviation="6" />
+                                <feComposite in2="hardAlpha" operator="out" />
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.03 0" />
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+                            </filter>
+                        </defs>
+                    </svg>
+
+                    {{-- Content --}}
+                    <div class="max-w-sm mx-auto">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            No Records
+                        </h3>
+                        <p class="text-sm text-gray-600 dark:text-neutral-400">
+                            Attendance records will show up here.
+                        </p>
+                    </div>
+                </div>
+
+            @endforelse
+
 
 
         </div>
@@ -359,13 +434,14 @@
                         type="password" placeholder="○" data-hs-pin-input-item="">
 
                 </div>
-                
+
                 @error('current_admin_key')
                     <p class="mt-4 text-sm  text-red-600 flex justify-center">{{ $message }}</p>
                 @enderror
             </div>
             <div class="flex justify-center">
-                <div wire:loading.class="opacity-100" wire:target="verifyAdminKey" class="opacity-0 transition-opacity duration-300">
+                <div wire:loading.class="opacity-100" wire:target="verifyAdminKey"
+                    class="opacity-0 transition-opacity duration-300">
                     <flux:icon.loading class="text-zinc-50" />
                 </div>
             </div>
@@ -377,7 +453,7 @@
         function initAdminPinInputs() {
             const bindings = [
                 { id: 'pin-current', model: 'current_admin_key' },
-               
+
             ];
 
             if (!window.HSPinInput || typeof window.HSPinInput.autoInit !== 'function') {
@@ -403,7 +479,7 @@
                         @this.call('verifyAdminKey');
                     });
 
-                    
+
                 });
             });
 

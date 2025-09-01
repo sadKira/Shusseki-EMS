@@ -42,7 +42,7 @@ class StudentRecord extends Component
     public function getAttendanceDoughnutData()
     {
         $schoolYear = Setting::getSchoolYear();
-        
+
         // Cache the attendance doughnut data for 10 minutes (600 seconds)
         return Cache::remember("students:attendance:doughnut:{$schoolYear}", 600, function () use ($schoolYear) {
             // Get all finished events within the school year
@@ -139,7 +139,7 @@ class StudentRecord extends Component
         // Insert all missing records in bulk
         if (!empty($toInsert)) {
             EventAttendanceLog::insert($toInsert);
-            
+
             // Clear relevant caches after inserting missing logs
             $this->clearStudentRecordCaches();
         }
@@ -152,7 +152,7 @@ class StudentRecord extends Component
     public function getMissingAccountsCountProperty()
     {
         $schoolYear = $this->selectedSchoolYear;
-        
+
         // Cache the missing accounts count for 5 minutes (300 seconds)
         return Cache::remember("students:missing:count:{$schoolYear}", 300, function () use ($schoolYear) {
             $activeUsers = User::where('role', 'user')
@@ -182,7 +182,7 @@ class StudentRecord extends Component
     protected function clearStudentRecordCaches(): void
     {
         $schoolYear = $this->selectedSchoolYear;
-        
+
         Cache::forget("students:attendance:doughnut:{$schoolYear}");
         Cache::forget("students:missing:count:{$schoolYear}");
         Cache::forget("students:base:counts:{$schoolYear}");
@@ -193,7 +193,7 @@ class StudentRecord extends Component
     public function render()
     {
         $schoolYear = $this->selectedSchoolYear;
-        
+
         // Cache the base student counts for 5 minutes (300 seconds)
         $baseCounts = Cache::remember("students:base:counts:{$schoolYear}", 300, function () use ($schoolYear) {
             // Base query: approved users with role = user
@@ -257,7 +257,6 @@ class StudentRecord extends Component
         $users = $filteredQueryList->get()->map(function ($student) use ($attendanceLogs, $finishedEvents) {
             $logs = $attendanceLogs->get($student->id, collect());
 
-            // If no logs → treat missing events as absent
             $absentCount = $finishedEvents->count() - $logs->count();
             $absentCount += $logs->where('attendance_status', 'absent')->count();
 
@@ -269,10 +268,51 @@ class StudentRecord extends Component
             return $student;
         });
 
-        // Now sanctionedStudents is just a filter on users (no extra query)
-        $sanctionedStudents = $users->filter(function ($student) {
-            return $student->late_count > 0 || $student->absent_count > 0;
-        });
+        // Sanctioned Students (main)
+        $sanctionedStudents = (clone $baseQuery)
+            ->where('account_status', 'active')
+            ->search($this->sanctionedSearch)
+            ->get()
+            ->map(function ($student) use ($attendanceLogs, $finishedEvents) {
+                $logs = $attendanceLogs->get($student->id, collect());
+
+                $absentCount = $finishedEvents->count() - $logs->count();
+                $absentCount += $logs->where('attendance_status', 'absent')->count();
+
+                $lateCount = $logs->where('attendance_status', 'late')->count();
+
+                $student->late_count = $lateCount;
+                $student->absent_count = $absentCount;
+
+                return $student;
+            })
+            ->filter(function ($student) {
+                return $student->late_count > 0 || $student->absent_count > 0;
+            });
+
+        // Sanctioned Students (count)
+        $sanctionedStudentsCount = (clone $baseQuery)
+            ->where('account_status', 'active')
+            ->get()
+            ->map(function ($student) use ($attendanceLogs, $finishedEvents) {
+                $logs = $attendanceLogs->get($student->id, collect());
+
+                $absentCount = $finishedEvents->count() - $logs->count();
+                $absentCount += $logs->where('attendance_status', 'absent')->count();
+
+                $lateCount = $logs->where('attendance_status', 'late')->count();
+
+                $student->late_count = $lateCount;
+                $student->absent_count = $absentCount;
+
+                return $student;
+            })
+            ->filter(function ($student) {
+                return $student->late_count > 0 || $student->absent_count > 0;
+            });
+
+        
+
 
 
         // Doughnut chart
@@ -285,7 +325,7 @@ class StudentRecord extends Component
             'schoolYear' => $this->selectedSchoolYear,
             'attendanceDoughnutData' => $attendanceDoughnutData,
             'sanctionedStudents' => $sanctionedStudents,
-            'sanctionedCount' => $sanctionedStudents->count(),
+            'sanctionedStudentsCount' => $sanctionedStudentsCount,
         ]);
     }
 }

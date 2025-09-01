@@ -13,8 +13,10 @@ use Flux\Flux;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class ViewStudentRecord extends Component
 {
@@ -30,6 +32,17 @@ class ViewStudentRecord extends Component
     {
         $this->user = $user;
         $this->selectedSchoolYear = Setting::getSchoolYear();
+    }
+
+    protected function clearStudentRecordCaches(): void
+    {
+        $schoolYear = $this->selectedSchoolYear;
+
+        Cache::forget("students:attendance:doughnut:{$schoolYear}");
+        Cache::forget("students:missing:count:{$schoolYear}");
+        Cache::forget("students:base:counts:{$schoolYear}");
+        Cache::forget("events:finished:{$schoolYear}");
+        Cache::forget("attendance:logs:{$schoolYear}");
     }
 
     // Generate PDF
@@ -203,6 +216,9 @@ class ViewStudentRecord extends Component
                 ->where('user_id', $this->pendingUserId)
                 ->delete();
         }
+
+        // Always clear caches since logs changed
+        $this->clearStudentRecordCaches();
 
         $this->reset(['current_admin_key', 'pendingAction', 'pendingUserId']);
         $this->resetErrorBag();

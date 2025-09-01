@@ -29,7 +29,7 @@
                 <flux:button variant="filled" href="{{route('create_event')}}" icon="plus" wire:navigate>Create Event
                 </flux:button>
             @endif
-            @if($groupedEvents->count() > 1)
+            @if($groupedEvents->count() > 1 || !empty($search))
 
                 <flux:input icon="magnifying-glass" placeholder="Search Event" wire:model.live.debounce.300ms="search"
                     autocomplete="off" clearable class="" />
@@ -110,9 +110,9 @@
                                     </flux:button> --}}
                                     {{-- Card Content --}}
                                     <a href="{{route('view_event_timeline', $event)}}" wire:navigate class="relative min-h-17 w-full overflow-hidden rounded-xl bg-zinc-950
-                                                                border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
-                                                                cursor-pointer
-                                                                ">
+                                                                            border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
+                                                                            cursor-pointer
+                                                                            ">
                                         <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
                                             style="background-image: url('{{ asset('storage/' . $event->image) }}');">
 
@@ -139,12 +139,23 @@
                                                 $end = \Carbon\Carbon::parse($event->date . ' ' . $event->end_time, $timezone);
                                             @endphp
 
+                                            {{-- Event status --}}
+                                            @if ($event->status != \App\Enums\EventStatus::Postponed)
+                                                @if ($now->between($start, $end))
+                                                    <flux:badge color="amber" class="" variant="solid"><span class="text-black">
+                                                            Event In Progress</span></flux:badge>
+                                                @endif
+                                            @endif
+
+                                            @if ($event->status == \App\Enums\EventStatus::Finished)
+                                                <flux:badge color="green" class="" variant="solid"><span class="text-black">Event
+                                                        Ended</span>
+                                                </flux:badge>
+                                            @endif
+
                                             @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                                <flux:badge color="red" class="" size="sm" variant="solid"><span
-                                                        class="text-white">Event Postponed</span></flux:badge>
-                                            @elseif($now->between($start, $end))
-                                                <flux:badge color="amber" class="" size="sm" variant="solid">
-                                                    <span class="text-black">In Progress</span>
+                                                <flux:badge color="red" class="" variant="solid"><span class="text-white">Event
+                                                        Postponed</span>
                                                 </flux:badge>
                                             @endif
 
