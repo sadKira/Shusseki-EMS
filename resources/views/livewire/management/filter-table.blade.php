@@ -606,7 +606,7 @@
                                                             <div>
                                                                 <flux:heading size="lg">Mark Student as Inactive?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p>You're about to mark {{ $user->name }} as inactive.</p>
+                                                                    <p class="text-white">You're about to mark {{ $user->name }} as inactive.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -628,7 +628,7 @@
                                                             <div>
                                                                 <flux:heading size="lg">Mark Student as Active?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p>You're about to mark {{ $user->name }} as active.</p>
+                                                                    <p class="text-white">You're about to mark {{ $user->name }} as active.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -650,8 +650,8 @@
                                                             <div>
                                                                 <flux:heading size="lg">Remove Account?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p>You're about to remove {{ $user->name }}'s account.</p>
-                                                                    <p>This action cannot be undone.</p>
+                                                                    <p class="text-white">You're about to remove {{ $user->name }}'s account.</p>
+                                                                    <p class="text-white">This action cannot be undone.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -673,8 +673,8 @@
                                                             <div>
                                                                 <flux:heading size="lg">Tag Student as Tsuushin?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p>You're about to tag {{ $user->name }} as a Tsuushin member.</p>
-                                                                    <p>They will receive media coverage requests.</p>
+                                                                    <p class="text-white">You're about to tag {{ $user->name }} as a Tsuushin member.</p>
+                                                                    <p class="text-white">They will receive media coverage requests.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -696,8 +696,8 @@
                                                             <div>
                                                                 <flux:heading size="lg">Remove Tsuushin Tag?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p>You're about to remove {{ $user->name }}'s Tsuushin tag.</p>
-                                                                    <p>They will not receive media coverage requests.</p>
+                                                                    <p class="text-white">You're about to remove {{ $user->name }}'s Tsuushin tag.</p>
+                                                                    <p class="text-white">They will not receive media coverage requests.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -739,7 +739,7 @@
             <div>
                 <flux:heading size="lg">Mark All Students as Inactive?</flux:heading>
                 <flux:text class="mt-2">
-                    <p>You're about to mark all students as inactive.</p>
+                    <p class="text-white">You're about to mark all students as inactive.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -758,7 +758,7 @@
             <div>
                 <flux:heading size="lg">Mark All Students as Active?</flux:heading>
                 <flux:text class="mt-2">
-                    <p>You're about to mark all students as active.</p>
+                    <p class="text-white">You're about to mark all students as active.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -778,8 +778,8 @@
             <div>
                 <flux:heading size="lg">Remove All Students?</flux:heading>
                 <flux:text class="mt-2">
-                    <p>You're about to remove all students. This action</p>
-                    <p>cannot be undone.</p>
+                    <p class="text-white">You're about to remove all students. This action</p>
+                    <p class="text-white">cannot be undone.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -798,8 +798,8 @@
             <div>
                 <flux:heading size="lg">Remove Selected Students?</flux:heading>
                 <flux:text class="mt-2">
-                    <p>You're about to remove all selected students.</p>
-                    <p>This action cannot be undone.</p>
+                    <p class="text-white">You're about to remove all selected students.</p>
+                    <p class="text-white">This action cannot be undone.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -818,7 +818,7 @@
             <div>
                 <flux:heading size="lg">Mark Selected Students as Inactive?</flux:heading>
                 <flux:text class="mt-2">
-                    <p>You're about to mark all selected students as inactive.</p>
+                    <p class="text-white">You're about to mark all selected students as inactive.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -837,7 +837,7 @@
             <div>
                 <flux:heading size="lg">Mark Selected Students as Active?</flux:heading>
                 <flux:text class="mt-2">
-                    <p>You're about to mark all selected students as active.</p>
+                    <p class="text-white">You're about to mark all selected students as active.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">

@@ -91,8 +91,8 @@
                         <div>
                             <flux:heading size="lg">Close Attendance Bin?</flux:heading>
                             <flux:text class="mt-2">
-                                <p>You're about to close the attendance bin.</p>
-                                <p>Only the Moderator can re-open the bin.</p>
+                                <p class="text-white">You're about to close the attendance bin.</p>
+                                <p class="text-white">Only the Moderator can re-open the bin.</p>
                             </flux:text>
                         </div>
                         <div class="flex gap-2">
@@ -304,7 +304,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Scanned?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
                                                         Scanned.</p>
                                                 </flux:text>
                                             </div>
@@ -326,7 +326,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Late?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as Late.
+                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Late.
                                                     </p>
                                                 </flux:text>
                                             </div>
@@ -348,7 +348,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Present?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
                                                         Present.</p>
                                                 </flux:text>
                                             </div>
@@ -370,7 +370,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Absent?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as Absent.
+                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Absent.
                                                     </p>
                                                 </flux:text>
                                             </div>
@@ -392,7 +392,7 @@
                                             <div>
                                                 <flux:heading size="lg">Remove Attendance Record?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to remove {{ $user->user?->name ?? 'Student' }}'s
+                                                    <p class="text-white">You're about to remove {{ $user->user?->name ?? 'Student' }}'s
                                                         attendance record.</p>
                                                 </flux:text>
                                             </div>

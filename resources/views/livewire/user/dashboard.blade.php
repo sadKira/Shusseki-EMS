@@ -64,7 +64,7 @@
 
                                     <!-- Button -->
                                     <div class="flex items-center">
-                                        <flux:button wire:click="approveRequest('{{ $event->id }}')" variant="primary" color="blue">
+                                        <flux:button class="cursor-pointer" wire:click="approveRequest('{{ $event->id }}')" variant="primary" color="blue">
                                             Approve Coverage Request
                                         </flux:button>
                                     </div>
