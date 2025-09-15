@@ -40,8 +40,7 @@
         </div>
     </div>
     @fluxScripts
-    {{-- <script src="https://unpkg.com/@livewire/flux@^2/dist/flux.min.js"></script> --}}
-    @livewireScripts
+    
 </body>
 
 </html>
