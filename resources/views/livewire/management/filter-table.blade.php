@@ -531,6 +531,8 @@
                                                                             </flux:modal.trigger>
                                                                         @endif
 
+                                                                        <flux:menu.item icon="envelope" wire:click="sendEmail({{ $user->id }})">Email</flux:menu.item>
+
                                                                     </flux:menu>
                                                                 </flux:dropdown>
                                                             @else
