@@ -151,14 +151,14 @@
 
                             @if ($status != \App\Enums\AttendanceStatus::Absent)
                             
-                                <!-- Gradientt -->
+                                <!-- Gradient -->
                                 <div class="absolute inset-0 h-full w-full"
                                     style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);">
                                 </div>
 
                             @else
 
-                                <!-- Gradientt -->
+                                <!-- Gradient -->
                                 <div
                                     class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
                                 </div>
