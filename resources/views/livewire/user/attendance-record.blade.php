@@ -149,31 +149,25 @@
                                 $status = $log->attendance_status;
                             @endphp
 
-                            @if ($status != \App\Enums\AttendanceStatus::Absent)
+                            {{-- @if ($status != \App\Enums\AttendanceStatus::Absent) --}}
                             
                                 <!-- Gradient -->
                                 <div class="absolute inset-0 h-full w-full"
                                     style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);">
                                 </div>
 
-                            @else
+                            {{-- @else
 
                                 <!-- Gradient -->
                                 <div
                                     class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
                                 </div>
 
-                            @endif
+                            @endif --}}
 
                             {{-- GJ Logo --}}
                             @if ($log)
                                 
-                                {{-- Image and gradient conditionals --}}
-                                @php
-                                    $log = $attendanceLogs->get($event->id);
-                                    $status = $log->attendance_status;
-                                @endphp
-
                                 @if ($status != \App\Enums\AttendanceStatus::Absent)
                                     <!-- Oversized Logo on Dark Side -->
                                     <img src="{{ asset('images/gj_logo.png') }}"
