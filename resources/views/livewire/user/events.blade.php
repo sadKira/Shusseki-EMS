@@ -218,7 +218,7 @@
                                         <div class="relative w-full justify-start md:flex items-center gap-2 p-6 md:px-7">
 
                                             <h2
-                                                class=" text-md md:text-xl font-medium text-white group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                                class=" text-xl font-medium text-white group-hover:text-[var(--color-accent)] transition-colors duration-300">
                                                 {{ $event->title }}
                                             </h2>
                                             @php
