@@ -233,19 +233,19 @@
                                             {{-- Event status --}}
                                             @if ($event->status != \App\Enums\EventStatus::Postponed)
                                                 @if ($now->between($start, $end))
-                                                    <flux:badge color="amber" class="" variant="solid"><span class="text-black">
+                                                    <flux:badge size="sm" color="amber" class="" variant="solid"><span class="text-black">
                                                             Event In Progress</span></flux:badge>
                                                 @endif
                                             @endif
 
                                             @if ($event->status == \App\Enums\EventStatus::Finished)
-                                                <flux:badge color="green" class="" variant="solid"><span class="text-black">Event
+                                                <flux:badge size="sm" color="green" class="" variant="solid"><span class="text-black">Event
                                                         Ended</span>
                                                 </flux:badge>
                                             @endif
 
                                             @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                                <flux:badge color="red" class="" variant="solid"><span class="text-white">Event
+                                                <flux:badge size="sm" color="red" class="" variant="solid"><span class="text-white">Event
                                                         Postponed</span>
                                                 </flux:badge>
                                             @endif
@@ -377,15 +377,14 @@
                                                             </div>
 
                                                             {{-- Attendance Status --}}
-                                                            <div class="gap-3">
+                                                            <div class="gap-3 flex-col items-center justify-center">
                                                                 <div class="flex items-center justify-center gap-2">
                                                                     <flux:icon.user variant="solid" class="text-zinc-50 size-4" />
                                                                     <flux:heading size="lg">Your Attendance Status</flux:heading>
                                                                 </div>
 
                                                                 {{-- Badge Logic --}}
-                                                                <div class="flex items-center justify-center gap-2">
-                                                                    <flux:icon.calendar class="size-4 opacity-0" />
+                                                                <div class="flex items-center justify-center">
                                                                     @php
                                                                         $log = $attendanceLogs->get($event->id);
                                                                     @endphp

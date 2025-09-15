@@ -457,15 +457,14 @@
                                                 </div>
 
                                                 {{-- Attendance Status --}}
-                                                <div class="gap-3">
+                                                <div class="gap-3 flex-col items-center justify-center">
                                                     <div class="flex items-center justify-center gap-2">
                                                         <flux:icon.user variant="solid" class="text-zinc-50 size-4" />
                                                         <flux:heading size="lg">Your Attendance Status</flux:heading>
                                                     </div>
 
                                                     {{-- Badge Logic --}}
-                                                    <div class="flex items-center justify-center gap-2">
-                                                        <flux:icon.calendar class="size-4 opacity-0" />
+                                                    <div class="flex items-center justify-center">
                                                         @php
                                                             $log = $attendanceLogs->get($event->id);
                                                         @endphp

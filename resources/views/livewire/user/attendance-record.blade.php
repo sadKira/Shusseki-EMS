@@ -143,10 +143,21 @@
                         <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
                             style="background-image: url('{{ asset('storage/' . $event->image) }}');">
 
-                            <!-- Gradientt -->
-                            <div class="absolute inset-0 h-full w-full"
-                                style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);">
-                            </div>
+                            @if ($status != \App\Enums\AttendanceStatus::Absent)
+                            
+                                <!-- Gradientt -->
+                                <div class="absolute inset-0 h-full w-full"
+                                    style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);">
+                                </div>
+
+                            @else
+
+                                <!-- Gradientt -->
+                                <div
+                                    class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
+                                </div>
+
+                            @endif
 
                             {{-- GJ Logo --}}
                             @php
@@ -380,15 +391,14 @@
                                                 </div>
 
                                                 {{-- Attendance Status --}}
-                                                <div class="gap-3">
+                                                <div class="gap-3 flex-col items-center justify-center">
                                                     <div class="flex items-center justify-center gap-2">
                                                         <flux:icon.user variant="solid" class="text-zinc-50 size-4" />
                                                         <flux:heading size="lg">Your Attendance Status</flux:heading>
                                                     </div>
 
                                                     {{-- Badge Logic --}}
-                                                    <div class="flex items-center justify-center gap-2">
-                                                        <flux:icon.calendar class="size-4 opacity-0" />
+                                                    <div class="flex items-center justify-center">
                                                         @php
                                                             $log = $attendanceLogs->get($event->id);
                                                         @endphp
