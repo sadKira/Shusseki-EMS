@@ -149,33 +149,38 @@
                                 $status = $log->attendance_status;
                             @endphp
 
-                            {{-- @if ($status != \App\Enums\AttendanceStatus::Absent) --}}
-                            
-                                <!-- Gradient -->
-                                <div class="absolute inset-0 h-full w-full"
-                                    style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);">
-                                </div>
-
-                            {{-- @else
-
-                                <!-- Gradient -->
-                                <div
-                                    class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
-                                </div>
-
-                            @endif --}}
-
                             {{-- GJ Logo --}}
                             @if ($log)
                                 
                                 @if ($status != \App\Enums\AttendanceStatus::Absent)
+
+                                    <!-- Gradient -->
+                                    <div class="absolute inset-0 h-full w-full"
+                                        style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);">
+                                    </div>
+
                                     <!-- Oversized Logo on Dark Side -->
                                     <img src="{{ asset('images/gj_logo.png') }}"
                                         class="absolute left-50 md:left-110 lg:left-140 lg:top-[-7px]  w-[50%] md:w-[20%] opacity-20 object-cover pointer-events-none select-none" />
                                     {{-- class="absolute top-[-7px] opacity-20 object-cover pointer-events-none select-none"
                                     style="left: clamp(1rem, 10vw, 35rem); width: 20%;" --}}
 
+                                @else
+
+                                    <!-- Gradient -->
+                                    <div
+                                        class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
+                                    </div>
+
                                 @endif
+
+                            @else
+
+                                <!-- Gradient -->
+                                <div
+                                    class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
+                                </div>
+
                             @endif
 
                         </div>
