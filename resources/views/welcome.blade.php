@@ -31,7 +31,7 @@
     <flux:header container class="" >
 
         <div>
-            <img src="{{ asset('images/MKDSide_White.svg') }}" alt="MKD Logo" class="h-12 w-auto">
+            <img src="{{ asset('images/MKDSide_White.svg') }}" alt="MKD Logo" class="h-16 mt-1 w-auto md:h-20 md:mt-0">
         </div>
 
         <flux:spacer />
@@ -72,7 +72,7 @@
                     <span class="block text-zinc-50 mt-2">Join seamlessly</span>
                 </h1>
                 <p class="mt-6 mb-8 text-base sm:text-lg lg:text-xl sm:mb-12 text-zinc-50 max-w-2xl">
-                    Empowering organizers and students through modern, intuitive tools. With—SHUSSEKI
+                    Shusseki Events Management System — Simplifying event organization and engagement with modern, intuitive tools.
                 </p>
                 <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start gap-3 lg:gap-0">
                     {{-- <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-[var(--color-accent)] text-zinc-950 hover:bg-gold/90 transition-colors duration-200">
