@@ -20,13 +20,13 @@ class SecurityHeaders
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload', false);
         }
 
-        // Strict CSP assuming only same-origin assets. Adjust if you add CDNs.
+        // CSP allowing inline scripts/styles (needed by Livewire/Vite) and Google Fonts
         $csp = [
             "default-src 'self'",
             "img-src 'self' data:",
-            "style-src 'self'",
-            "script-src 'self'",
-            "font-src 'self' data:",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            "script-src 'self' 'unsafe-inline'",
+            "font-src 'self' data: https://fonts.gstatic.com",
             "connect-src 'self'",
             "frame-ancestors 'none'",
             "base-uri 'self'",
