@@ -8,7 +8,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
-    <form wire:submit="login" method="POST" class="flex flex-col gap-6">
+    <form wire:submit="login" class="flex flex-col gap-6">
         @csrf
         <!-- Email Address -->
         <flux:input wire:model="email" :label="__('Email address')" type="email" required autofocus autocomplete="email"
