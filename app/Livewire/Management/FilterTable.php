@@ -43,6 +43,23 @@ class FilterTable extends Component
     public $selectAll = false;
     public $selectPage = false;
 
+    protected function clearUserCaches(): void
+    {
+        Cache::forget('students:counts:approved');
+        Cache::forget('students:counts:active');
+        Cache::forget('students:counts:inactive');
+        Cache::forget('students:counts:tsuushin');
+        Cache::forget('students:counts:pending');
+
+        // Clear school-year related student records
+        $schoolYear = Setting::getSchoolYear();
+        Cache::forget("students:attendance:doughnut:{$schoolYear}");
+        Cache::forget("students:missing:count:{$schoolYear}");
+        Cache::forget("students:base:counts:{$schoolYear}");
+        Cache::forget("events:finished:{$schoolYear}");
+        Cache::forget("attendance:logs:{$schoolYear}");
+    }
+
     // Reset pagination when search changes
     public function updatingSearch()
     {
@@ -106,6 +123,9 @@ class FilterTable extends Component
         $this->cancelSelection();
         $this->toggleSelection();
 
+        // Clear cache manually
+        $this->clearUserCaches();
+
         // Close modal
         Flux::modals()->close();
       
@@ -119,7 +139,9 @@ class FilterTable extends Component
         ->whereNotIn('status', ['pending'])
         ->where('tsuushin', TsuushinRole::NotMember)
         ->update(['account_status' => 'inactive']);
-        session()->flash('message', 'All pending users rejected and deleted.');
+        
+        // Clear cache manually
+        $this->clearUserCaches();
 
         $this->toggleSelection();
         $this->cancelSelection();
@@ -148,6 +170,9 @@ class FilterTable extends Component
         $this->cancelSelection();
         $this->toggleSelection();
 
+        // Clear cache manually
+        $this->clearUserCaches();
+
         // Close modal
         Flux::modals()->close();
     }
@@ -161,6 +186,8 @@ class FilterTable extends Component
         ->delete();
 
         // dd(User::where('account_status', 'inactive')->toSql());
+        // Clear cache manually
+        $this->clearUserCaches();
 
         $this->toggleSelection();
         $this->cancelSelection();
@@ -189,6 +216,9 @@ class FilterTable extends Component
         User::whereIn('id', $this->selected)->update(['account_status' => 'active']);
         $this->cancelSelection();
         $this->toggleSelection();
+
+        // Clear cache manually
+        $this->clearUserCaches();
       
         // Close modal
         Flux::modals()->close();
@@ -201,7 +231,10 @@ class FilterTable extends Component
         ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
         ->whereNotIn('status', ['pending'])
         ->update(['account_status' => 'active']);
-        session()->flash('message', 'All users marked as active.');
+       
+
+        // Clear cache manually
+        $this->clearUserCaches();
 
         $this->toggleSelection();
         $this->cancelSelection();
