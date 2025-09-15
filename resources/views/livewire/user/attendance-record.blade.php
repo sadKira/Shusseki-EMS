@@ -167,6 +167,12 @@
 
                             {{-- GJ Logo --}}
                             @if ($log)
+                                
+                                {{-- Image and gradient conditionals --}}
+                                @php
+                                    $log = $attendanceLogs->get($event->id);
+                                    $status = $log->attendance_status;
+                                @endphp
 
                                 @if ($status != \App\Enums\AttendanceStatus::Absent)
                                     <!-- Oversized Logo on Dark Side -->
