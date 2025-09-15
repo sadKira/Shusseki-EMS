@@ -17,11 +17,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
-    {{--
-    <link rel="stylesheet" href="{{ asset('build/assets/app-2KYTgWL1.css') }}"> --}}
 
     @vite(['resources/js/app.js', 'resources/css/app.css'])
     {{-- @fluxAppearance() --}}
+    
 </head>
 
 <body class="min-h-screen bg-zinc-50 antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 font-display">
