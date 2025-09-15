@@ -25,7 +25,7 @@
                 @auth
                     <span class="flex h-20 w-auto mb-1 items-center justify-center rounded-md">
                     {{-- <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" /> --}}
-                        <img src="{{ asset('Images/Side_White.svg') }}" class="h-20 w-auto" alt="Shusseki Seal Approval">
+                        <img src="{{ asset('images/Side_White.svg') }}" class="h-20 w-auto" alt="Shusseki Seal Approval">
                     </span>
                 @else
                     <span class="flex h-15 w-15 mb-1 items-center justify-center rounded-md">
