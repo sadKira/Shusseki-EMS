@@ -199,30 +199,6 @@
     {{-- Main content --}}
     {{ $slot }}
 
-
-
-    {{-- Refresh Token --}}
-    <script>
-        function refreshCsrfToken() {
-            fetch("{{ route('refresh-csrf') }}")
-                .then(response => response.json())
-                .then(data => {
-                    const token = data.token;
-                    document.querySelector('meta[name="csrf-token"]').setAttribute('content', token);
-
-                    // Also update Axios if you're using it
-                    if (window.axios) {
-                        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
-                    }
-
-                    // Livewire also uses the CSRF token from the meta tag
-                });
-        }
-
-        // Refresh CSRF token every 10 minutes (600,000 ms)
-        setInterval(refreshCsrfToken, 10 * 60 * 1000);
-    </script>
-
     {{-- Reinitialization --}}
     <!-- Lodash -->
     {{-- <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>

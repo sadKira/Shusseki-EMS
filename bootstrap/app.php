@@ -7,6 +7,8 @@ use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\UserApprovalMiddleware;
 use App\Http\Middleware\AccountStatusMiddleware;
+use App\Http\Middleware\SecurityHeaders;
+use App\Http\Middleware\TrustProxies;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -30,6 +32,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'active' => AccountStatusMiddleware::class,
             'inactive' => AccountStatusMiddleware::class,
         ]);
+
+        if (env('APP_ENV') === 'production') {
+            $middleware->append(TrustProxies::class);
+            $middleware->append(SecurityHeaders::class);
+        }
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

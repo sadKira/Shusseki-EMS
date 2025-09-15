@@ -60,10 +60,7 @@ Route::get('/mailable', function () {
 });
 
 
-// Token refreshing
-Route::get('/refresh-csrf', function () {
-    return response()->json(['token' => csrf_token()]);
-})->name('refresh-csrf');
+// Token refreshing route removed (Livewire and Blade handle CSRF automatically)
 
 // User Approval
 Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
