@@ -19,10 +19,6 @@
 {{-- Arimo --}}
 <link href="https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
-
-
-{{-- <link rel="stylesheet" href="{{ asset('build/assets/app-2KYTgWL1.css') }}"> --}}
-
 {{-- <script src="https://unpkg.com/preline@latest/dist/preline.js"></script> --}}
 
 {{-- @fluxAppearance --}}
