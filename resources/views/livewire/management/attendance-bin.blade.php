@@ -304,7 +304,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Scanned?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
                                                         Scanned.</p>
                                                 </flux:text>
                                             </div>
@@ -326,7 +326,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Late?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as Late.
+                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Late.
                                                     </p>
                                                 </flux:text>
                                             </div>
@@ -348,7 +348,7 @@
                                             <div>
                                                 <flux:heading size="lg">Mark Student as Present?</flux:heading>
                                                 <flux:text class="mt-2">
-                                                    <p>You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
                                                         Present.</p>
                                                 </flux:text>
                                             </div>

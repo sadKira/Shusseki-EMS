@@ -43,9 +43,9 @@
                         <flux:heading size="lg">Add Academic Year?</flux:heading>
 
                         <flux:text class="mt-2">
-                            <p>You're about to append to the list of academic</p>
-                            <p>years. Deleting a year is not possible. Ensure</p>
-                            <p>that your input is correct.</p>
+                            <p class="text-white">You're about to append to the list of academic</p>
+                            <p class="text-white">years. Deleting a year is not possible. Ensure</p>
+                            <p class="text-white">that your input is correct.</p>
                         </flux:text>
                     </div>
 

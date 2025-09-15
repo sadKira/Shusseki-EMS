@@ -269,8 +269,8 @@
                                 <div>
                                     <flux:heading size="lg">Postpone Event?</flux:heading>
                                     <flux:text class="mt-2">
-                                        <p>You're about to postpone the event. Postponed events will</p>
-                                        <p>prevent access to the attendance bin.</p>
+                                        <p class="text-white">You're about to postpone the event. Postponed events will</p>
+                                        <p class="text-white">prevent access to the attendance bin.</p>
                                     </flux:text>
                                 </div>
                                 <div class="flex gap-2">
@@ -289,8 +289,8 @@
                                 <div>
                                     <flux:heading size="lg">Resume Event?</flux:heading>
                                     <flux:text class="mt-2">
-                                        <p>You're about to resume the event. Ensure that the</p>
-                                        <p>event details are up to date.</p>
+                                        <p class="text-white">You're about to resume the event. Ensure that the</p>
+                                        <p class="text-white">event details are up to date.</p>
                                     </flux:text>
                                 </div>
                                 <div class="flex gap-2">
@@ -309,8 +309,8 @@
                                 <div>
                                     <flux:heading size="lg">Reopen Attendance Bin?</flux:heading>
                                     <flux:text class="mt-2">
-                                        <p>You're about to reopen the attendance bin. The event will</p>
-                                        <p>marked as untracked as long as it is beyond the event date.</p>
+                                        <p class="text-white">You're about to reopen the attendance bin. The event will</p>
+                                        <p class="text-white">marked as untracked as long as it is beyond the event date.</p>
                                     </flux:text>
                                 </div>
                                 <div class="flex gap-2">
