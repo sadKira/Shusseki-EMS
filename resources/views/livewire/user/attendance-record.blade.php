@@ -143,6 +143,12 @@
                         <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
                             style="background-image: url('{{ asset('storage/' . $event->image) }}');">
 
+                            {{-- Image and gradient conditionals --}}
+                            @php
+                                $log = $attendanceLogs->get($event->id);
+                                $status = $log->attendance_status;
+                            @endphp
+
                             @if ($status != \App\Enums\AttendanceStatus::Absent)
                             
                                 <!-- Gradientt -->
@@ -160,15 +166,7 @@
                             @endif
 
                             {{-- GJ Logo --}}
-                            @php
-                                $log = $attendanceLogs->get($event->id);
-                            @endphp
-
                             @if ($log)
-
-                                @php
-                                    $status = $log->attendance_status;
-                                @endphp
 
                                 @if ($status != \App\Enums\AttendanceStatus::Absent)
                                     <!-- Oversized Logo on Dark Side -->
