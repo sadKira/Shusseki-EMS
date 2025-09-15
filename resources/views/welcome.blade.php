@@ -31,7 +31,7 @@
     <flux:header container class="" >
 
         <div>
-            <img src="{{ asset('images/MKDSide_White.svg') }}" alt="MKD Logo" class="h-12 w-auto sm:h-16 md:h-20">
+            <img src="{{ asset('images/MKDSide_White.svg') }}" alt="MKD Logo" class="h-12 w-auto">
         </div>
 
         <flux:spacer />
