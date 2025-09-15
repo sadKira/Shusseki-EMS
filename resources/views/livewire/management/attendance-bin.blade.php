@@ -91,8 +91,8 @@
                         <div>
                             <flux:heading size="lg">Close Attendance Bin?</flux:heading>
                             <flux:text class="mt-2">
-                                <p>You're about to close the attendance bin.</p>
-                                <p>Only the Moderator can re-open the bin.</p>
+                                <p class="text-white">You're about to close the attendance bin.</p>
+                                <p class="text-white">Only the Moderator can re-open the bin.</p>
                             </flux:text>
                         </div>
                         <div class="flex gap-2">
