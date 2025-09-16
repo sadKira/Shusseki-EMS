@@ -29,7 +29,7 @@
 
     .header img {
       max-width: 110px;
-      margin-bottom: 12px;
+      margin-bottom: 20px;
     }
 
     .header h2 {
@@ -84,8 +84,21 @@
 
     <!-- Header -->
     <div class="header">
-      <img src="https://shusseki-ems.site/images/Side_White.png" alt="Logo" style="display:block;margin:auto;">
+      {{-- <img src="https://shusseki-ems.site/images/Side_White.png" alt="Logo" style="display:block;margin:auto;"> --}}
+
+      <!-- White logo (default for dark background) -->
+      <img src="https://shusseki-ems.site/images/Side_White.png" 
+        alt="Logo White" 
+        class="logo-dark" 
+        style="display:none; margin:auto; margin-bottom:20px;">
+
+      <!-- Black logo (default for light background like Gmail) -->
+      <img src="https://shusseki-ems.site/images/Side.png" 
+        alt="Logo Black" 
+        class="logo-light" 
+        style="display:block;margin:auto;margin-bottom:20px;">
       <h2>Account Approved</h2>
+      
     </div>
 
     <!-- Content -->
