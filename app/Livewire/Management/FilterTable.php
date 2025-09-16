@@ -7,7 +7,9 @@ use App\Models\User;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\Setting;
+use App\Models\Event;
 use App\Enums\AccountStatus;
+use App\Enums\EventStatus;
 use App\Enums\TsuushinRole;
 use Flux\Flux;
 use Illuminate\Support\Facades\Cache;
@@ -109,8 +111,11 @@ class FilterTable extends Component
     {
         $user = User::find($userId);
 
+        // Account Approved
         // Mail::to($user->email)->queue(new AccountApprove($user));
-        Mail::to($user->email)->queue(new AccountRejected());
+
+        // Account Rejected
+        // Mail::to($user->email)->queue(new AccountRejected());
 
         $this->cancelSelection();
 
