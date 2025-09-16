@@ -4,21 +4,22 @@
   <meta charset="UTF-8">
   <title>Account Approved</title>
   <style>
+    /* Use system fonts as Gmail may block Google Fonts */
     body {
       margin: 0;
       padding: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background-color: #000000; /* black background */
-      color: #ffffff; /* white text */
+      background-color: #ffffff; /* white background (safe) */
+      color: #333333; /* darker text for readability */
     }
 
     .container {
       max-width: 600px;
       margin: 30px auto;
-      background-color: #000000; /* solid black */
+      background-color: #ffffff; /* solid white to ensure Gmail displays properly */
       border-radius: 8px;
       overflow: hidden;
-      border: 1px solid #333333;
+      border: 1px solid #e5e7eb;
     }
 
     .header {
@@ -29,13 +30,10 @@
     .header img {
       max-width: 110px;
       margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     .header h2 {
-      color: #ffffff;
+      color: #111111;
       font-weight: 600;
       margin: 0;
       font-size: 20px;
@@ -45,19 +43,19 @@
       padding: 30px 25px;
       line-height: 1.6;
       font-size: 15px;
-      color: #ffffff;
+      color: #444444;
     }
 
     .content h1 {
       font-size: 18px;
       margin-bottom: 12px;
       font-weight: 600;
-      color: #ffffff;
+      color: #111111;
     }
 
     .content p {
       margin: 0 0 20px;
-      color: #f1f1f1;
+      color: #444444;
     }
 
     .button {
@@ -75,9 +73,9 @@
       text-align: center;
       padding: 20px;
       font-size: 12px;
-      color: #aaaaaa;
-      border-top: 1px solid #333333;
-      background-color: #000000;
+      color: #888888;
+      border-top: 1px solid #e5e7eb;
+      background-color: #ffffff;
     }
   </style>
 </head>
