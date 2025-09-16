@@ -4,22 +4,21 @@
   <meta charset="UTF-8">
   <title>Account Approved</title>
   <style>
-    /* Use system fonts as Gmail may block Google Fonts */
     body {
       margin: 0;
       padding: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background-color: #ffffff; /* white background (safe) */
-      color: #333333; /* darker text for readability */
+      background-color: #000000; /* black background */
+      color: #ffffff; /* white text */
     }
 
     .container {
       max-width: 600px;
       margin: 30px auto;
-      background-color: #ffffff; /* solid white to ensure Gmail displays properly */
+      background-color: #000000; /* solid black */
       border-radius: 8px;
       overflow: hidden;
-      border: 1px solid #e5e7eb;
+      border: 1px solid #333333;
     }
 
     .header {
@@ -30,10 +29,13 @@
     .header img {
       max-width: 110px;
       margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .header h2 {
-      color: #111111;
+      color: #ffffff;
       font-weight: 600;
       margin: 0;
       font-size: 20px;
@@ -43,19 +45,19 @@
       padding: 30px 25px;
       line-height: 1.6;
       font-size: 15px;
-      color: #444444;
+      color: #ffffff;
     }
 
     .content h1 {
       font-size: 18px;
       margin-bottom: 12px;
       font-weight: 600;
-      color: #111111;
+      color: #ffffff;
     }
 
     .content p {
       margin: 0 0 20px;
-      color: #444444;
+      color: #f1f1f1;
     }
 
     .button {
@@ -73,9 +75,9 @@
       text-align: center;
       padding: 20px;
       font-size: 12px;
-      color: #888888;
-      border-top: 1px solid #e5e7eb;
-      background-color: #ffffff;
+      color: #aaaaaa;
+      border-top: 1px solid #333333;
+      background-color: #000000;
     }
   </style>
 </head>
@@ -84,21 +86,8 @@
 
     <!-- Header -->
     <div class="header">
-      {{-- <img src="https://shusseki-ems.site/images/Side_White.png" alt="Logo" style="display:block;margin:auto;"> --}}
-
-      <!-- White logo (default for dark background) -->
-      <img src="https://shusseki-ems.site/images/Side_White.png" 
-        alt="Logo White" 
-        class="logo-dark" 
-        style="display:none; margin:auto;">
-
-      <!-- Black logo (default for light background like Gmail) -->
-      <img src="https://shusseki-ems.site/images/Side.png" 
-        alt="Logo Black" 
-        class="logo-light" 
-        style="display:block;margin:auto">
+      <img src="https://shusseki-ems.site/images/Side_White.png" alt="Logo White">
       <h2>Account Approved</h2>
-      
     </div>
 
     <!-- Content -->
