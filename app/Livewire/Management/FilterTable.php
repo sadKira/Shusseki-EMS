@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Cache;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountApprove;
+use App\Mail\AccountRejected;
+use App\Mail\EventReminder;
 use App\Mail\Test;
 
 class FilterTable extends Component
@@ -107,7 +109,8 @@ class FilterTable extends Component
     {
         $user = User::find($userId);
 
-        Mail::to($user->email)->queue(new AccountApprove($user));
+        // Mail::to($user->email)->queue(new AccountApprove($user));
+        Mail::to($user->email)->queue(new AccountRejected());
 
         $this->cancelSelection();
 
