@@ -98,14 +98,9 @@
 <body>
     <div class="container">
 
-        <?php
-        // Use the public path instead of asset() to ensure images are accessible outside the app.
-        $imageUrl = public_path('images/Side_White.svg');
-        $message->embed($imageUrl, 'Shusseki Logo');
-        ?>
         <!-- Header -->
         <div class="header">
-            <img src="{{ $message->embed($imageUrl) }}" alt="Logo">
+            <img src="https://shusseki-ems.site/images/Side_White.svg" alt="Logo">
             <h2>Account Approved</h2>
         </div>
 
