@@ -90,13 +90,13 @@
       <img src="https://shusseki-ems.site/images/Side_White.png" 
         alt="Logo White" 
         class="logo-dark" 
-        style="display:none; margin:auto; margin-bottom:20px;">
+        style="display:none; margin:auto;">
 
       <!-- Black logo (default for light background like Gmail) -->
       <img src="https://shusseki-ems.site/images/Side.png" 
         alt="Logo Black" 
         class="logo-light" 
-        style="display:block;margin:auto;margin-bottom:20px;">
+        style="display:block;margin:auto">
       <h2>Account Approved</h2>
       
     </div>
