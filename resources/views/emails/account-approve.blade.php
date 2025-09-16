@@ -84,7 +84,7 @@
 
     <!-- Header -->
     <div class="header">
-      <img src="https://shusseki-ems.site/images/Side_White.svg" alt="Logo" style="display:block;margin:auto;">
+      <img src="https://shusseki-ems.site/images/Side_White.png" alt="Logo" style="display:block;margin:auto;">
       <h2>Account Approved</h2>
     </div>
 
