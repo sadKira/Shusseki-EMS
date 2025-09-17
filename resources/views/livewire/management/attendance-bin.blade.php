@@ -254,48 +254,50 @@
                                 {{-- Override --}}
                                 <td class="px-3 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
 
-                                    <flux:dropdown position="left" align="end">
+                                    @if ($user) 
+                                        <flux:dropdown position="left" align="end">
 
-                                        <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"
-                                            tooltip="Override Status"></flux:button>
+                                            <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"
+                                                tooltip="Override Status"></flux:button>
 
-                                        <flux:menu>
+                                            <flux:menu>
 
-                                            <flux:modal.trigger :name="'mark-scanned-'.$user->id">
-                                                <flux:menu.item>
-                                                    Scanned
-                                                </flux:menu.item>
-                                            </flux:modal.trigger>
+                                                <flux:modal.trigger :name="'mark-scanned-'.$user->id">
+                                                    <flux:menu.item>
+                                                        Scanned
+                                                    </flux:menu.item>
+                                                </flux:modal.trigger>
 
-                                            <flux:modal.trigger :name="'mark-late-'.$user->id">
-                                                <flux:menu.item>
-                                                    Late
-                                                </flux:menu.item>
-                                            </flux:modal.trigger>
+                                                <flux:modal.trigger :name="'mark-late-'.$user->id">
+                                                    <flux:menu.item>
+                                                        Late
+                                                    </flux:menu.item>
+                                                </flux:modal.trigger>
 
-                                            <flux:modal.trigger :name="'mark-present-'.$user->id">
-                                                <flux:menu.item>
-                                                    Present
-                                                </flux:menu.item>
-                                            </flux:modal.trigger>
+                                                <flux:modal.trigger :name="'mark-present-'.$user->id">
+                                                    <flux:menu.item>
+                                                        Present
+                                                    </flux:menu.item>
+                                                </flux:modal.trigger>
 
-                                            <flux:modal.trigger :name="'mark-absent-'.$user->id">
-                                                <flux:menu.item>
-                                                    Absent
-                                                </flux:menu.item>
-                                            </flux:modal.trigger>
+                                                <flux:modal.trigger :name="'mark-absent-'.$user->id">
+                                                    <flux:menu.item>
+                                                        Absent
+                                                    </flux:menu.item>
+                                                </flux:modal.trigger>
 
-                                            <flux:menu.separator />
+                                                <flux:menu.separator />
 
-                                            <flux:modal.trigger :name="'remove-record-'.$user->id">
-                                                <flux:menu.item variant="danger">
-                                                    Remove Record
-                                                </flux:menu.item>
-                                            </flux:modal.trigger>
+                                                <flux:modal.trigger :name="'remove-record-'.$user->id">
+                                                    <flux:menu.item variant="danger">
+                                                        Remove Record
+                                                    </flux:menu.item>
+                                                </flux:modal.trigger>
 
-                                        </flux:menu>
+                                            </flux:menu>
 
-                                    </flux:dropdown>
+                                        </flux:dropdown>
+                                    @endif
 
                                     {{-- Mark scanned modal --}}
                                     <flux:modal :name="'mark-scanned-'.$user->id" class="min-w-[22rem]"
