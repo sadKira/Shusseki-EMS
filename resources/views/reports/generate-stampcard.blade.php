@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
 
-    <title>{{ $userName }} Attendance Stamp Card</title>
+    <title>{{ $userName }} Attendance Record</title>
     <style>
         body {
             font-family: Hanken Grotesk, sans-serif;

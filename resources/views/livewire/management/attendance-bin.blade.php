@@ -254,7 +254,7 @@
                                 {{-- Override --}}
                                 <td class="px-3 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
 
-                                    @if ($user) 
+                                    @if ($user0>user) 
                                         <flux:dropdown position="left" align="end">
 
                                             <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"
