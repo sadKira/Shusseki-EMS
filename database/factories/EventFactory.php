@@ -68,12 +68,12 @@ class EventFactory extends Factory
                 ->format('H:i:s'),
             'school_year' => $schoolYear,
             'image' => fake()->randomElement([
-                'https://shusseki-ems.site/app/public/events/intrams.jfif',
-                'https://shusseki-ems.site/app/public/events/clubfair.jfif',
-                'https://shusseki-ems.site/app/public/events/galanight.jfif',
-                'https://shusseki-ems.site/app/public/events/nyuugakushiki.jfif',
-                'https://shusseki-ems.site/app/public/events/personnelsday.jfif',
-                'https://shusseki-ems.site/app/public/events/pjfest.jfif',
+                'https://shusseki-ems.site/storage/events/intrams.jfif',
+                'https://shusseki-ems.site/storage/events/clubfair.jfif',
+                'https://shusseki-ems.site/storage/events/galanight.jfif',
+                'https://shusseki-ems.site/storage/events/nyuugakushiki.jfif',
+                'https://shusseki-ems.site/storage/events/personnelsday.jfif',
+                'https://shusseki-ems.site/storage/events/pjfest.jfif',
             ]),
             'status' => fake()->randomElement([
                 'not_finished',
