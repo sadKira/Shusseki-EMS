@@ -26,7 +26,10 @@
         <div class="lg:col-span-3 px-10 py-6 content-center space-y-5">
 
             {{-- Event Image --}}
-            <img src="{{ asset('storage/' . $event->image) }}" alt="Event Image"
+            {{-- <img src="{{ asset('storage/' . $event->image) }}" alt="Event Image"
+                class="w-full h-70 object-cover shadow-md"> --}}
+
+            <img src="{{ Storage::url($event->image) }}" alt="Event Image"
                 class="w-full h-70 object-cover shadow-md">
 
 
