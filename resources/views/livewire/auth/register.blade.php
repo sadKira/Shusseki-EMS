@@ -11,7 +11,7 @@
     <form wire:submit="register" class="flex flex-col gap-6">
         <!-- Name -->
         <flux:input wire:model.defer="name" :label="__('Full Name')" badge="Last Name, First Name, M.I." type="text" required
-            autofocus autocomplete="name" :placeholder="__('Full name')" />
+            autofocus autocomplete="name" :placeholder="__('Full name')"  description="For 日本人, please use romaji." />
 
         <!-- Email Address -->
         <flux:input wire:model.defer="email" :label="__('Email address')" type="email" required autocomplete="email"
