@@ -85,7 +85,7 @@
             <img src="{{ public_path('images/MKDGJ.png') }}" alt="Logo" style="height: 70px;">
         </div>
         <div class="header-text">
-            <h1>Gakusei Jichikai Stamp Card</h1>
+            <h1>Gakusei Jichikai Attendance Record</h1>
             <h2>School Year {{ $selectedSchoolYear }}</h2>
         </div>
     </header>
