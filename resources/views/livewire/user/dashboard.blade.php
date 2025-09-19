@@ -36,12 +36,12 @@
                                 <div
                                     class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 p-10 md:px-12 h-full min-h-[120px] md:min-h-[176px] w-full">
                                     <!-- Left details -->
-                                    <div class="flex flex-col gap-3">
+                                    <div class="flex flex-col gap-3 max-w-[500px]">
                                         <flux:text class="font-medium text-zinc-300">
                                             {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                                         </flux:text>
                                         <h2
-                                            class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                            class="text-2xl font-medium truncate text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                                             {{ $event->title }}
                                         </h2>
 
@@ -271,12 +271,12 @@
                                 class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
                             </div>
                         </div>
-                        <div class="relative space-y-3 p-6 px-6 py-10 md:px-12">
+                        <div class="relative space-y-3 p-6 px-6 py-10 md:px-12 max-w-[300px]">
                             <flux:text class="font-medium text-zinc-300">
                                 {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                             </flux:text>
                             <h2
-                                class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                class="text-2xl font-medium truncate text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                                 {{ $event->title }}
                             </h2>
 

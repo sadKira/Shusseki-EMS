@@ -105,38 +105,17 @@
                                 style="background: linear-gradient(to right, rgba(0,0,0,0.5) 0%, rgba(0,0,0,1) 70%, rgba(0,0,0,1) 100%);">
                             </div>
 
-                            {{-- GJ Logo --}}
-                            @php
-                                $log = $attendanceLogs->get($event->id);
-                            @endphp
-
-                            @if ($log)
-
-                                @php
-                                    $status = $log->attendance_status;
-                                @endphp
-
-                                @if ($status != \App\Enums\AttendanceStatus::Absent)
-                                    <!-- Oversized Logo on Dark Side -->
-                                    <img src="{{ asset('images/gj_logo.png') }}"
-                                        class="absolute left-50 md:left-110 lg:left-140 lg:top-[-7px]  w-[50%] md:w-[20%] opacity-20 object-cover pointer-events-none select-none" />
-                                    {{-- class="absolute top-[-7px] opacity-20 object-cover pointer-events-none select-none"
-                                    style="left: clamp(1rem, 10vw, 35rem); width: 20%;" --}}
-
-                                @endif
-                            @endif
-
                         </div>
 
                         {{-- Content --}}
                         <div class="relative w-full space-y-1 p-6 px-6 py-5 md:px-7 sm:flex items-center justify-between">
 
-                            <div class="">
+                            <div class="max-w-[300px]">
                                 <flux:text class="font-semibold text-zinc-300">
                                     {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                                 </flux:text>
                                 <h2
-                                    class="text-xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                    class="text-xl truncate font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                                     {{ $event->title }}
                                 </h2>
                             </div>

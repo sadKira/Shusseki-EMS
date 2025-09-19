@@ -97,12 +97,12 @@
                                 </div>
                             </div>
 
-                            <div class="relative space-y-3 p-6 px-6 py-10 md:px-12">
+                            <div class="relative space-y-3 p-6 px-6 py-10 md:px-12 max-w-[400px]">
                                 <flux:text class="font-medium text-zinc-300">
                                     {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                                 </flux:text>
                                 <h2
-                                    class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                    class="text-2xl font-medium truncate text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                                     {{ $event->title }}
                                 </h2>
 

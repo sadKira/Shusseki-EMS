@@ -118,7 +118,7 @@
                                 {{-- color:seed="{{ auth()->user()->id }}" --}}
                                 />
 
-                            <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight">
+                            <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight max-w-[100px]">
                                 <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
                                 <span class="truncate text-xs">ID: {{ auth()->user()->student_id }}</span>
                             </div>

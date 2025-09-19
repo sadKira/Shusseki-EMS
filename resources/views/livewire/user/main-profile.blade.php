@@ -16,9 +16,9 @@
             </div>
 
             <div class="flex flex-col items-center justify-center mt-1">
-                {{-- <flux:heading size="xl">{{ auth()->user()->name }}</flux:heading> --}}
-                <flux:heading size="xl">Student ID: {{ auth()->user()->student_id }}</flux:heading>
-                {{-- <flux:heading size="lg" class="text-zinc-50 font-light">Student ID: {{ auth()->user()->student_id }}</flux:heading> --}}
+                <flux:heading size="xl">{{ auth()->user()->name }}</flux:heading>
+                {{-- <flux:heading size="xl">Student ID: {{ auth()->user()->student_id }}</flux:heading> --}}
+                <flux:heading size="lg" class="text-zinc-50 font-light">Student ID: {{ auth()->user()->student_id }}</flux:heading>
                 {{-- <flux:heading size="lg">{{ auth()->user()->email }}</flux:heading> --}}
             </div>
         </div>
@@ -32,7 +32,7 @@
 
             <div class="flex flex-col items-center justify-center mt-1">
                 {{-- <flux:heading size="xl">{{ auth()->user()->name }}</flux:heading> --}}
-                <flux:heading size="xl">Student ID: {{ auth()->user()->student_id }}</flux:heading>
+                <flux:heading size="xl" class="mt-2">Student ID: {{ auth()->user()->student_id }}</flux:heading>
                 {{-- <flux:heading size="lg" class="text-zinc-50 font-light">Student ID: {{ auth()->user()->student_id }}</flux:heading> --}}
                 {{-- <flux:heading size="lg">{{ auth()->user()->email }}</flux:heading> --}}
             </div>

@@ -191,12 +191,12 @@
                         {{-- Content --}}
                         <div class="relative w-full space-y-1 p-6 px-6 py-5 md:px-7 sm:flex items-center justify-between">
 
-                            <div class="">
+                            <div class="max-w-[250px] lg:max-w-[400px]">
                                 <flux:text class="font-semibold text-zinc-300">
                                     {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                                 </flux:text>
                                 <h2
-                                    class="text-xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                                    class="text-xl truncate font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                                     {{ $event->title }}
                                 </h2>
                             </div>

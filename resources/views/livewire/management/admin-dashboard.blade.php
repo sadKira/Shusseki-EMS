@@ -254,8 +254,8 @@
                                     class=" p-4 mr-4 flex items-center justify-between rounded-xl cursor-pointer hover:bg-neutral-700 transition"
                                     style="border: 2px solid rgba(255, 255, 255, 0.06);">
                                     <div class="flex items-center gap-3">
-                                        <div class="">
-                                            <flux:text variant="strong">{{ $event->title }}</flux:text>
+                                        <div class="max-w-[300px]">
+                                            <flux:text variant="strong" class="truncate">{{ $event->title }}</flux:text>
                                             <flux:text variant="subtle">
                                                 {{ \Carbon\Carbon::parse($event->date)->format('Y, F j') }} |
                                                 {{  \Carbon\Carbon::parse($event->start_time)->format('g:i A') }} -
