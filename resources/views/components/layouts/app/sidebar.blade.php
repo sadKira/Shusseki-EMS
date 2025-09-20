@@ -151,38 +151,6 @@
     {{-- Main content --}}
     {{ $slot }}
 
-
-    {{-- Prompts user to log in laptop --}}
-    <div class="block lg:hidden">
-
-        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-            <div class="flex w-full max-w-sm flex-col gap-2">
-                <div class="flex flex-col items-center gap-2 font-medium">
-                    
-                    <span class="flex h-20 w-auto mb-1 items-center justify-center rounded-md">
-                    {{-- <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" /> --}}
-                        <img src="{{ asset('images/Side_White.svg') }}" class="h-20 w-auto" alt="Shusseki Seal Approval">
-                    </span>
-                    
-                </div>
-                <div class="flex flex-col gap-6 mt-5">
-                    <div class="flex flex-col gap-6">
-                        <div class="flex w-full flex-col text-center">
-                            <flux:heading size="xl" class="md:text-2xl mb-2">You Cannot Access This Account</flux:heading>
-                            <flux:subheading class="md:text-base mb-6">Access to your account is restricted because it is currently marked as inactive. For further assistance, please reach out to any Gakusei Jichikai (GJ) officer</flux:subheading>
-                        </div>
-
-                        <form method="POST" action="{{ route('logout') }}" class="flex items-center justify-end md:w-auto">
-                        @csrf
-                        <flux:button variant="primary" type="submit" class="w-full">{{ __('Back to Home') }}</flux:button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
     {{-- Reinitialization --}}
     <!-- Lodash -->
     {{-- <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
