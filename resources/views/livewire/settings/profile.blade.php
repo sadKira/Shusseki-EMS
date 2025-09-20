@@ -63,7 +63,7 @@
                         class="flex gap-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
 
                         <flux:profile circle class="" 
-                        initials="AD1"
+                        initials="A1"
                         :chevron="false"
                         />
 
@@ -114,7 +114,7 @@
                         class="flex gap-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
 
                         <flux:profile circle class="" 
-                        initials="AD2"
+                        initials="A2"
                         :chevron="false"
                         />
 
@@ -153,7 +153,7 @@
                         class="flex mt-4 gap-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
 
                         <flux:profile circle class="" 
-                        initials="AD1"
+                        initials="A1"
                         :chevron="false"
                         />
 
@@ -207,7 +207,7 @@
                         class="flex mt-4 gap-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
 
                         <flux:profile circle class="" 
-                        initials="AD2"
+                        initials="A2"
                         :chevron="false"
                         />
 
