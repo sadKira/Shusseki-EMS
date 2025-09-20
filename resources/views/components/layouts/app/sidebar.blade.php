@@ -147,57 +147,41 @@
         </flux:dropdown>
     </flux:sidebar>
 
-    <!-- Mobile User Menu -->
-    <flux:header class="lg:hidden">
-        <flux:navbar class="lg:hidden w-full">
-            <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
-            <flux:spacer />
-        </flux:navbar>
-        <flux:navbar scrollable>
-            <flux:dropdown position="top" align="end">
-                <flux:profile :initials="auth()->user()->initials()" icon-trailing="chevron-down" />
-
-                <flux:menu>
-                    <flux:menu.radio.group>
-                        <div class="p-0 text-sm font-normal">
-                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                    <span
-                                        class="flex h-full w-full items-center justify-center rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                        {{ auth()->user()->initials() }}
-                                    </span>
-                                </span>
-
-                                <div class="grid flex-1 text-start text-zinc-50 text-sm leading-tight">
-                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <flux:menu.radio.group>
-                        <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}
-                        </flux:menu.item>
-                    </flux:menu.radio.group>
-
-                    <flux:menu.separator />
-
-                    <form method="POST" action="{{ route('logout') }}" class="w-full">
-                        @csrf
-                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                            {{ __('Log Out') }}
-                        </flux:menu.item>
-                    </form>
-                </flux:menu>
-            </flux:dropdown>
-        </flux:navbar>
-    </flux:header>
 
     {{-- Main content --}}
     {{ $slot }}
+
+
+    {{-- Prompts user to log in laptop --}}
+    <div class="block lg:hidden">
+
+        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+            <div class="flex w-full max-w-sm flex-col gap-2">
+                <div class="flex flex-col items-center gap-2 font-medium">
+                    
+                    <span class="flex h-20 w-auto mb-1 items-center justify-center rounded-md">
+                    {{-- <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" /> --}}
+                        <img src="{{ asset('images/Side_White.svg') }}" class="h-20 w-auto" alt="Shusseki Seal Approval">
+                    </span>
+                    
+                </div>
+                <div class="flex flex-col gap-6 mt-5">
+                    <div class="flex flex-col gap-6">
+                        <div class="flex w-full flex-col text-center">
+                            <flux:heading size="xl" class="md:text-2xl mb-2">You Cannot Access This Account</flux:heading>
+                            <flux:subheading class="md:text-base mb-6">Access to your account is restricted because it is currently marked as inactive. For further assistance, please reach out to any Gakusei Jichikai (GJ) officer</flux:subheading>
+                        </div>
+
+                        <form method="POST" action="{{ route('logout') }}" class="flex items-center justify-end md:w-auto">
+                        @csrf
+                        <flux:button variant="primary" type="submit" class="w-full">{{ __('Back to Home') }}</flux:button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     {{-- Reinitialization --}}
     <!-- Lodash -->
