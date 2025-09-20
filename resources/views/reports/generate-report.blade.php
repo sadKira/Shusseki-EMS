@@ -76,6 +76,25 @@
 
     <p><strong>Generated on:</strong> {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
 
+    {{-- Yearly Rates Summary --}}
+    <h3 style="margin-top: 30px;">Overall Attendance Rates (A.Y. {{ $selectedSchoolYear }})</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Present Rate</th>
+                <th>Late Rate</th>
+                <th>Absent Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ $presentPercent }}%</td>
+                <td>{{ $latePercent }}%</td>
+                <td>{{ $absentPercent }}%</td>
+            </tr>
+        </tbody>
+    </table>
+
     @if($hasEvents)
         <table>
             <thead>
@@ -89,35 +108,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($monthlySummary as $row)
+                @foreach($eventSummary as $row)
                     <tr>
-                        <td>{{ $row['month'] }}</td>
-                        <td>{{ $row['total_events'] }}</td>
+                        <td>{{ $row['event_title'] }}</td>
+                        <td>{{ \Carbon\Carbon::parse($row['date'])->format('F d, Y') }}</td>
                         <td>{{ $row['total_attendees'] }}</td>
                         <td>{{ $row['present'] }}</td>
                         <td>{{ $row['late'] }}</td>
                         <td>{{ $row['absent'] }}</td>
                     </tr>
                 @endforeach
-            </tbody>
-        </table>
-
-         {{-- Yearly Rates Summary --}}
-        <h3 style="margin-top: 30px;">Overall Attendance Rates (A.Y. {{ $selectedSchoolYear }})</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Present Rate</th>
-                    <th>Late Rate</th>
-                    <th>Absent Rate</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ $presentPercent }}%</td>
-                    <td>{{ $latePercent }}%</td>
-                    <td>{{ $absentPercent }}%</td>
-                </tr>
             </tbody>
         </table>
 

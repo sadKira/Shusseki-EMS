@@ -134,59 +134,59 @@ class AdminDashboard extends Component
     // Generate report
     public function generateYearlyReport()
     {
-        [$startYear, $endYear] = explode('-', $this->selectedSchoolYear);
-
-        // Dynamically detect earliest finished event month within the school year; fallback to July of start year
-        $firstDate = Event::where('school_year', $this->selectedSchoolYear)
-            ->where('status', EventStatus::Finished->value)
-            ->min('date');
-
-        if ($firstDate) {
-            $first = Carbon::parse($firstDate);
-            $startDate = $first->copy()->startOfMonth();
-        } else {
-            // Fallback to traditional school year window (July -> June)
-            $startDate = Carbon::create((int) $startYear, 7, 1)->startOfDay();
-        }
-
-        // Build a 12-month window from the detected start
-        $endDate = $startDate->copy()->addMonths(12)->subDay();
 
         // Fetch events within the school year
         $events = Event::with('attendanceLogs')
             ->where('school_year', $this->selectedSchoolYear)
-            ->whereBetween('date', [$startDate, $endDate])
             ->where('status', EventStatus::Finished->value) // Only finished events for accuracy
+            ->orderBy('date')
             ->get();
 
-        $monthlySummary = [];
+        // Aggregated Data
+        // $monthlySummary = [];
 
-        foreach (range(0, 11) as $i) {
-            $monthDate = $startDate->copy()->addMonths($i);
-            $monthName = $monthDate->format('F Y');
+        // foreach (range(0, 11) as $i) {
+        //     $monthDate = $startDate->copy()->addMonths($i);
+        //     $monthName = $monthDate->format('F Y');
 
-            // Events for the month
-            $monthEvents = $events->filter(function ($event) use ($monthDate) {
-                return Carbon::parse($event->date)->format('Y-m') === $monthDate->format('Y-m');
-            });
+        //     // Events for the month
+        //     $monthEvents = $events->filter(function ($event) use ($monthDate) {
+        //         return Carbon::parse($event->date)->format('Y-m') === $monthDate->format('Y-m');
+        //     });
 
-            // Attendance logs for all events in the month
-            $logs = $monthEvents->flatMap->attendanceLogs;
+        //     // Attendance logs for all events in the month
+        //     $logs = $monthEvents->flatMap->attendanceLogs;
 
-            $monthlySummary[] = [
-                'month' => $monthName,
-                'total_events' => $monthEvents->count(),
+        //     $monthlySummary[] = [
+        //         'month' => $monthName,
+        //         'total_events' => $monthEvents->count(),
+        //         'total_attendees' => $logs->where('attendance_status', '!=', 'absent')->count(),
+        //         'present' => $logs->where('attendance_status', 'present')->count(),
+        //         'late' => $logs->where('attendance_status', 'late')->count(),
+        //         'absent' => $logs->where('attendance_status', 'absent')->count(),
+        //     ];
+        // }
+
+        // All Events Data
+        $eventSummary = [];
+
+        foreach ($events as $event) {
+            $logs = $event->attendanceLogs;
+
+            $eventSummary[] = [
+                'event_title'     => $event->title,
+                'date'            => $event->date,
                 'total_attendees' => $logs->where('attendance_status', '!=', 'absent')->count(),
-                'present' => $logs->where('attendance_status', 'present')->count(),
-                'late' => $logs->where('attendance_status', 'late')->count(),
-                'absent' => $logs->where('attendance_status', 'absent')->count(),
+                'present'         => $logs->where('attendance_status', 'present')->count(),
+                'late'            => $logs->where('attendance_status', 'late')->count(),
+                'absent'          => $logs->where('attendance_status', 'absent')->count(),
             ];
         }
 
         // Yearly totals/rates based on monthlySummary (mirrors attendanceTrendData logic)
-        $presentTotal = array_sum(array_column($monthlySummary, 'present'));
-        $lateTotal    = array_sum(array_column($monthlySummary, 'late'));
-        $absentTotal  = array_sum(array_column($monthlySummary, 'absent'));
+        $presentTotal = array_sum(array_column($eventSummary, 'present'));
+        $lateTotal    = array_sum(array_column($eventSummary, 'late'));
+        $absentTotal  = array_sum(array_column($eventSummary, 'absent'));
         $grandTotal   = $presentTotal + $lateTotal + $absentTotal;
 
         // Attendance rate treats Present + Late as "attended"
@@ -201,7 +201,7 @@ class AdminDashboard extends Component
         // Generate PDF
         $pdf = Pdf::loadView('reports.generate-report', [
             'selectedSchoolYear' => $this->selectedSchoolYear,
-            'monthlySummary' => $monthlySummary,
+            'eventSummary'       => $eventSummary,
             'presentPercent' => $presentPercent,
             'latePercent' => $latePercent,
             'absentPercent' => $absentPercent,

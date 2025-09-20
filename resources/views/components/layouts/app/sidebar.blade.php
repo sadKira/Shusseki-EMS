@@ -17,7 +17,8 @@
 <body class="min-h-screen bg-zinc-950 font-display">
 
     {{-- Desktop view --}}
-    <div class="hidden lg:block">
+   
+    <div class="hidden lg:block h-full">
         {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
         {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
         {{-- <flux:sidebar sticky stashable class=" border-zinc-900 dark:bg-zinc-950 border-r" style=" background: linear-gradient(180deg, #0f0f0f, #18181b 70%);"> --}}
@@ -152,14 +153,12 @@
 
         {{-- Main content --}}
         {{ $slot }}
-
     </div>
 
-
     {{-- Prompts user to log in laptop --}}
-    <div class="block lg:hidden">
+    <div class="block lg:hidden h-full">
 
-        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+        <div class="bg-background min-h-screen flex flex-col items-center justify-center gap-6 p-6 md:p-10">
             <div class="flex w-full max-w-sm flex-col gap-2">
                 <div class="flex flex-col items-center gap-2 font-medium">
                     
