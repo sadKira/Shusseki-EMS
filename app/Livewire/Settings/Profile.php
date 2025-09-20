@@ -3,6 +3,9 @@
 namespace App\Livewire\Settings;
 
 use App\Models\User;
+
+use App\Enums\UserPrivilege;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
@@ -10,6 +13,10 @@ use Livewire\Component;
 
 class Profile extends Component
 {
+    public User $user;
+
+    public string $privilege;
+
     public string $name = '';
 
     public string $email = '';
@@ -22,6 +29,18 @@ class Profile extends Component
     {
         $this->name = Auth::user()->name;
         $this->email = Auth::user()->email;
+
+        // fetch user from DB
+        $this->user =  User::where('student_id', '0000002')->firstOrFail();
+        $this->privilege = $this->user->privilege->value; // convert enum -> string
+    }
+
+    public function updatedPrivilege($value): void
+    {
+        $this->user->privilege = UserPrivilege::from($value); 
+        $this->user->save();
+
+        // $this->dispatch('profile-updated');
     }
 
     /**

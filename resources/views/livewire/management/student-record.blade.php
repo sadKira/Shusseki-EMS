@@ -280,8 +280,8 @@
                                             avatar:color="auto" :chevron="false" {{-- color:seed="{{ auth()->user()->id }}"
                                             --}} />
 
-                                        <div class="">
-                                            <flux:text variant="strong">{{ $student->name }}</flux:text>
+                                        <div class="max-w-[200px]">
+                                            <flux:text variant="strong" class="truncate">{{ $student->name }}</flux:text>
                                             <flux:text>ID: {{ $student->student_id }}</flux:text>
                                         </div>
 
@@ -401,8 +401,8 @@
                                             avatar:color="auto" :chevron="false" {{-- color:seed="{{ auth()->user()->id }}"
                                             --}} />
 
-                                        <div class="">
-                                            <flux:text variant="strong">{{ $user->name }}</flux:text>
+                                        <div class="max-w-[200px]">
+                                            <flux:text variant="strong" class="truncate">{{ $user->name }}</flux:text>
                                             <flux:text>ID: {{ $user->student_id }}</flux:text>
                                         </div>
 
@@ -411,7 +411,9 @@
                                     <div class="flex items-end gap-2">
 
                                         @if ($user->late_count > 0 || $user->absent_count > 0)
-                                            <flux:badge variant="solid" size="sm" color="red">Sanctioned</flux:badge>
+                                            <flux:badge variant="solid" size="sm" color="red">
+                                                <flux:icon.exclamation-circle variant="solid" />
+                                            </flux:badge>
 
                                         @endif
                                       
@@ -479,7 +481,7 @@
                                 label: function (context) {
                                     let value = context.parsed;
                                     let label = context.label || '';
-                                    return `${label}: ${value}`;
+                                    return `${label}: ${value}%`;
                                 }
                             }
                         }

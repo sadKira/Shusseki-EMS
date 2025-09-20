@@ -133,7 +133,6 @@ class AttendanceRecord extends Component
             ->search($this->search)
             ->get();
 
-
         // Separate query: attendance logs for only finished events for current user
         $attendanceLogs = EventAttendanceLog::whereIn(
             'event_id',
@@ -146,6 +145,7 @@ class AttendanceRecord extends Component
         return view('livewire.user.attendance-record', [
             'events' => $events,
             'attendanceLogs' => $attendanceLogs,
+            'filteredEventCount' => $filteredEventCount, // count before applying search
         ]);
     }
 }

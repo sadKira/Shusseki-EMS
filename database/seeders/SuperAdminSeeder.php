@@ -16,16 +16,33 @@ class SuperAdminSeeder extends Seeder
      */
     public function run(): void
     {
+
+        // Super Admin
         User::create([
-            'student_id' => '0000001',
-            'name' => 'Super Admin',
-            'email' => 'superadmin@example.com',
+            'student_id' => '0000000',
+            'name' => 'Master Admin',
+            'email' => 'masteradmin@shusseki.com',
             'role' => UserRole::Super_Admin,
             'password' => Hash::make("password"),
             'status' => 'approved',
             'year_level' => 'null',
             'course' => 'null',
             'account_status' => 'active',
+            'privilege' => 'yes',
+        ]);
+
+        // Super Admin
+        User::create([
+            'student_id' => '0000001',
+            'name' => 'Super Admin',
+            'email' => 'superadmin@shusseki.com',
+            'role' => UserRole::Super_Admin,
+            'password' => Hash::make("password"),
+            'status' => 'approved',
+            'year_level' => 'null',
+            'course' => 'null',
+            'account_status' => 'active',
+            'privilege' => 'yes',
         ]);
     }
 }

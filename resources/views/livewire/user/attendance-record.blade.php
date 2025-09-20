@@ -5,15 +5,14 @@
         </flux:heading>
 
         <div class="flex items-center gap-2">
-            @if($events->count() > 0)
+            @if($filteredEventCount > 0)
                 <flux:button wire:click="generateStampCard" variant="primary" color="amber" icon="arrow-down-on-square">
                     Download</flux:button>
+            @endif
 
-                @if($events->count() > 1)
-                    <flux:input icon="magnifying-glass" placeholder="Search Record" wire:model.live.debounce.300ms="search"
-                        autocomplete="off" clearable class="" />
-                @endif
-
+            @if($filteredEventCount > 1 || !empty($search))
+                <flux:input icon="magnifying-glass" placeholder="Search Record" wire:model.live.debounce.300ms="search"
+                    autocomplete="off" clearable class="" />
             @endif
         </div>
     </div>
@@ -27,16 +26,14 @@
         {{-- Search bar --}}
         <div class="flex items-center gap-2">
 
-            @if($events->count() > 0)
+            @if($filteredEventCount > 1 || !empty($search))
+                <flux:input size="sm" icon="magnifying-glass" placeholder="Search Record"
+                    wire:model.live.debounce.300ms="search" autocomplete="off" clearable class="" />
+            @endif
 
-                @if($events->count() > 1)
-                    <flux:input size="sm" icon="magnifying-glass" placeholder="Search Record"
-                        wire:model.live.debounce.300ms="search" autocomplete="off" clearable class="" />
-                @endif
-
+            @if($filteredEventCount > 0)
                 <flux:button wire:click="generateStampCard" size="sm" variant="primary" color="amber"
                     icon="arrow-down-on-square">Download</flux:button>
-
             @endif
         </div>
     </div>
@@ -113,10 +110,10 @@
                 {{-- Content --}}
                 <div class="max-w-sm mx-auto">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        No Attendance Records
+                        No Attendance Record
                     </h3>
                     <p class="text-sm text-gray-600 dark:text-neutral-400">
-                        Your attendance records for <span class="font-medium text-gray-900 dark:text-white">{{ $selectedSchoolYear }}</span>
+                        Your attendance record for <span class="font-medium text-gray-900 dark:text-white">{{ $selectedSchoolYear }}</span>
                         will appear here. Stay tuned!
                     </p>
                 </div>

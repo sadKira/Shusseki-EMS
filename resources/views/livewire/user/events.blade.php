@@ -5,7 +5,7 @@
         <flux:heading size="xl" class="font-bold">Event Calendar <span class="text-[var(--color-accent)]">A.Y.
                 {{ $selectedSchoolYear }}</span></flux:heading>
         <div>
-            @if($groupedEvents->count() > 1)
+            @if($groupedEvents->count() > 1 || !empty($search))
                 <flux:input icon="magnifying-glass" placeholder="Search Event" wire:model.live.debounce.300ms="search"
                     autocomplete="off" clearable class="" />
             @endif
@@ -18,7 +18,7 @@
                 class="text-[var(--color-accent)]">{{ $selectedSchoolYear }}</span></flux:heading>
         {{-- Search --}}
         <div>
-            @if($groupedEvents->count() > 1)
+            @if($groupedEvents->count() > 1 || !empty($search))
                 <flux:input size="sm" icon="magnifying-glass" placeholder="Search Event"
                     wire:model.live.debounce.300ms="search" autocomplete="off" clearable class="" />
             @endif
@@ -202,7 +202,7 @@
                                     {{-- Card Content --}}
                                     <div @click="modalOpen=true" class="relative min-h-17 w-full overflow-hidden rounded-xl bg-zinc-950
                                                                     border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
-                                                                    cursor-pointer
+                                                                    cursor-pointer shadow-lg hover:shadow-2xl
                                                                     ">
                                         <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
                                             style="background-image: url('{{ asset('storage/' . $event->image) }}');">

@@ -6,7 +6,7 @@
 
 {{-- <link rel="icon" href="/favicon.ico" sizes="any"> --}}
 <link rel="icon" href="/Seal_White.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/Seal_White.svg">
 
 {{-- Fonts --}}
 <link rel="preconnect" href="https://fonts.googleapis.com">

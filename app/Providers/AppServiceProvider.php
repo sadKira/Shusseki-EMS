@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Enums\UserRole;
+use App\Enums\UserPrivilege;
 
 use App\Models\User;
 use App\Models\Event;
@@ -47,10 +48,18 @@ class AppServiceProvider extends ServiceProvider
 
         // Management Specific
         // Super admin capabilities
-        Gate::define('SA', fn(User $user) => $user->role == UserRole::Super_Admin);
+        Gate::define('SA', fn(User $user) => 
+
+            $user->role == UserRole::Super_Admin || $user->privilege == UserPrivilege::Yes
+        
+        );
 
         // Admin capabilities
-        Gate::define('A', fn(User $user) => $user->role == UserRole::Admin);
+        Gate::define('A', fn(User $user) => 
+
+            $user->role == UserRole::Admin && $user->privilege == UserPrivilege::No
+        
+        );
 
 
         // Tsuushin & User

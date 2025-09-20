@@ -15,8 +15,8 @@
                 <img src="https://quickchart.io/qr?text={{ auth()->user()->student_id }}&margin=2&size=640&format=svg" alt="My QR Code" class="w-full h-full object-cover">
             </div>
 
-            <div class="flex flex-col items-center justify-center mt-1">
-                <flux:heading size="xl">{{ auth()->user()->name }}</flux:heading>
+            <div class="flex flex-col items-center justify-center mt-1 text-center">
+                <flux:heading size="xl" class="max-w-[300px]">{{ auth()->user()->name }}</flux:heading>
                 {{-- <flux:heading size="xl">Student ID: {{ auth()->user()->student_id }}</flux:heading> --}}
                 <flux:heading size="lg" class="text-zinc-50 font-light">Student ID: {{ auth()->user()->student_id }}</flux:heading>
                 {{-- <flux:heading size="lg">{{ auth()->user()->email }}</flux:heading> --}}
@@ -24,14 +24,14 @@
         </div>
 
         {{-- Mobile --}}
-        <div class="lg:hidden">
+        <div class="lg:hidden flex flex-col items-center justify-center space-y-2">
             <!-- QR Image Placeholder -->
-            <div class="w-53 h-53 flex items-center justify-center rounded-lg overflow-hidden">
+            <div class="w-[212px] h-[212px] flex items-center justify-center rounded-lg overflow-hidden">
                 <img src="https://quickchart.io/qr?text={{ auth()->user()->student_id }}&margin=2&size=640&format=svg" alt="My QR Code" class="w-full h-full object-cover">
             </div>
 
-            <div class="flex flex-col items-center justify-center mt-1">
-                {{-- <flux:heading size="xl">{{ auth()->user()->name }}</flux:heading> --}}
+            <div class="flex flex-col items-center justify-center mt-1 text-center">
+                {{-- <flux:heading size="xl" class="text-balance max-w-[300px]">Noblefranca, Latrell Andre M.</flux:heading> --}}
                 <flux:heading size="xl" class="mt-2">Student ID: {{ auth()->user()->student_id }}</flux:heading>
                 {{-- <flux:heading size="lg" class="text-zinc-50 font-light">Student ID: {{ auth()->user()->student_id }}</flux:heading> --}}
                 {{-- <flux:heading size="lg">{{ auth()->user()->email }}</flux:heading> --}}
@@ -39,13 +39,6 @@
         </div>
 
         {{-- <flux:separator class="mt-3 mb-3" variant="subtle" /> --}}
-
-
-        <div class="grid grid-cols-2">
-            <div>
-
-            </div>
-        </div>
 
     </div>
     

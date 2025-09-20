@@ -22,8 +22,8 @@
                             {{-- Card Content --}}
                             <div
                                 class="relative flex flex-col min-h-30 md:min-h-44 w-full overflow-hidden rounded-xl bg-zinc-950
-                                                                                                                                    border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
-                                                                                                                                    ">
+                                    border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300 shadow-lg hover:shadow-2xl
+                                    ">
                                 <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
                                     style="background-image: url('{{ asset('storage/' . $event->image) }}');">
 
@@ -261,7 +261,7 @@
                     {{-- Card Content --}}
                     <div @click="modalOpen=true" class="relative grid min-h-50 md:min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
                                                                                 border border-transparent hover:border-[var(--color-accent)] group transition-colors duration-300
-                                                                                cursor-pointer
+                                                                                cursor-pointer shadow-lg hover:shadow-2xl
                                                                                 ">
                         <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
                             style="background-image: url('{{ asset('storage/' . $event->image) }}');" {{--
@@ -271,7 +271,7 @@
                                 class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
                             </div>
                         </div>
-                        <div class="relative space-y-3 p-6 px-6 py-10 md:px-12 max-w-[300px]">
+                        <div class="relative space-y-3 p-6 px-6 py-10 md:px-12 max-w-[300px] lg:max-w-[350px]">
                             <flux:text class="font-medium text-zinc-300">
                                 {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                             </flux:text>

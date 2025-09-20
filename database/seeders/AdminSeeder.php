@@ -15,16 +15,33 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        // Admin 1
         User::create([
             'student_id' => '0000002',
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
+            'name' => 'Admin 1',
+            'email' => 'admin1@shusseki.com',
             'role' => UserRole::Admin,
             'password' => Hash::make("password"),
             'status' => 'approved',
             'year_level' => 'null',
             'course' => 'null',
-            'account_status' => 'active'
+            'account_status' => 'active',
+            'privilege' => 'no',
+
+        ]);
+
+        // Admin 2
+        User::create([
+            'student_id' => '0000003',
+            'name' => 'Admin 1',
+            'email' => 'admin1@shusseki.com',
+            'role' => UserRole::Admin,
+            'password' => Hash::make("password"),
+            'status' => 'approved',
+            'year_level' => 'null',
+            'course' => 'null',
+            'account_status' => 'active',
+            'privilege' => 'no',
 
         ]);
     }
