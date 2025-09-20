@@ -25,14 +25,7 @@ class SuperAdminMiddleware
             return back();
         }
 
-        // Get the user agent string
-        $userAgent = $request->server('HTTP_USER_AGENT');
-
-        // Check if the user agent contains "Mobile" or "Android" or "iPhone" etc.
-        if (str_contains($userAgent, 'Mobile') || str_contains($userAgent, 'Android') || str_contains($userAgent, 'iPhone')) {
-            // If it's a mobile device, redirect to a restricted page or show an error
-            return Redirect::to('/'); // Or any other restricted URL
-        }
+    
         
         return $next($request);
     }

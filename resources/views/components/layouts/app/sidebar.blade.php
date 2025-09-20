@@ -16,140 +16,176 @@
 
 <body class="min-h-screen bg-zinc-950 font-display">
 
-    {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
-    {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
-    {{-- <flux:sidebar sticky stashable class=" border-zinc-900 dark:bg-zinc-950 border-r" style=" background: linear-gradient(180deg, #0f0f0f, #18181b 70%);"> --}}
-    <flux:sidebar sticky stashable class="border-r border-zinc-800 dark:bg-zinc-950">
-        {{-- style="background: linear-gradient(
-            135deg,
-            rgba(255, 240, 220, 0.05),
-            rgba(255, 255, 255, 0) 60%
-        ),
-        linear-gradient(
-            180deg,
-            #11100e 0%, 
-            #0c0a09 70%
-        );"> --}}
-        <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+    {{-- Desktop view --}}
+    <div class="hidden lg:block">
+        {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
+        {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
+        {{-- <flux:sidebar sticky stashable class=" border-zinc-900 dark:bg-zinc-950 border-r" style=" background: linear-gradient(180deg, #0f0f0f, #18181b 70%);"> --}}
+        <flux:sidebar sticky stashable class="border-r border-zinc-800 dark:bg-zinc-950">
+            {{-- style="background: linear-gradient(
+                135deg,
+                rgba(255, 240, 220, 0.05),
+                rgba(255, 255, 255, 0) 60%
+            ),
+            linear-gradient(
+                180deg,
+                #11100e 0%, 
+                #0c0a09 70%
+            );"> --}}
 
-        {{-- <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"
-            wire:navigate>
 
-        </a> --}}
-        <x-app-logo />
+            {{-- <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse"
+                wire:navigate>
 
-        <flux:navlist variant="outline">
+            </a> --}}
+            <x-app-logo />
 
-            {{-- Home navlist --}}
-            <flux:navlist.group :heading="__('Home')" class="grid">
+            <flux:navlist variant="outline">
 
-                {{-- Dashboard --}}
-                @can('manage')
-                    <flux:navlist.item icon="home" :href="route('admin_dashboard')"
-                        :current="request()->routeIs(['admin_dashboard'])" wire:navigate>{{ __('Dashboard') }}
-                    </flux:navlist.item>
-                @endcan
+                {{-- Home navlist --}}
+                <flux:navlist.group :heading="__('Home')" class="grid">
 
-            </flux:navlist.group>
-
-            {{-- Events navlist --}}
-            <flux:navlist.group :heading="__('Events')" class="grid">
-                @can('manage')
-                    <flux:navlist.item icon="list-bullet" :href="route('event_timeline')"
-                        :current="request()->routeIs(['event_timeline', 'view_event_timeline', 'create_event', 'edit_event_timeline'])" wire:navigate>
-                        {{ __('Event Timeline') }}
-                    </flux:navlist.item>
-                    <flux:navlist.item icon="calendar" :href="route('manage_events')"
-                        :current="request()->routeIs(['manage_events', 'view_event', 'edit_event'])" wire:navigate>
-                        {{ __('Events Bin') }}
-                    </flux:navlist.item>
-                @endcan
-            </flux:navlist.group>
-
-            {{-- Students navlist --}}
-            <flux:navlist.group :heading="__('Students')" class="grid">
-                @can('manage')
-                    
-                    @can('SA')
-                        <flux:navlist.item icon="user" :href="route('manage_students')"
-                            :current="request()->routeIs(['manage_students'])" wire:navigate>
-                            {{ __('Manage Students') }}
-                        </flux:navlist.item>
-
-                        <flux:navlist.item icon="newspaper" :href="route('attendance_records')"
-                            :current="request()->routeIs(['attendance_records', 'view_student_record'])" wire:navigate>
-                            {{ __('Attendance Records') }}
-                        </flux:navlist.item>
-
-                        {{-- Dynamic badge --}}
-                        @livewire('management.manage-approval-badge', ['currentRoute' => \Route::currentRouteName()])
-                    @endcan
-                    @can('A')
-                        <flux:navlist.item icon="user" :href="route('manage_students')"
-                            :current="request()->routeIs(['manage_students'])" wire:navigate>
-                            {{ __('Student List') }}
-                        </flux:navlist.item>
-
-                        <flux:navlist.item icon="newspaper" :href="route('attendance_records')"
-                            :current="request()->routeIs(['attendance_records', 'view_student_record'])" wire:navigate>
-                            {{ __('Attendance Records') }}
+                    {{-- Dashboard --}}
+                    @can('manage')
+                        <flux:navlist.item icon="home" :href="route('admin_dashboard')"
+                            :current="request()->routeIs(['admin_dashboard'])" wire:navigate>{{ __('Dashboard') }}
                         </flux:navlist.item>
                     @endcan
-                    
-                @endcan
-            </flux:navlist.group>
 
-        </flux:navlist>
+                </flux:navlist.group>
 
-        <flux:spacer />
+                {{-- Events navlist --}}
+                <flux:navlist.group :heading="__('Events')" class="grid">
+                    @can('manage')
+                        <flux:navlist.item icon="list-bullet" :href="route('event_timeline')"
+                            :current="request()->routeIs(['event_timeline', 'view_event_timeline', 'create_event', 'edit_event_timeline'])" wire:navigate>
+                            {{ __('Event Timeline') }}
+                        </flux:navlist.item>
+                        <flux:navlist.item icon="calendar" :href="route('manage_events')"
+                            :current="request()->routeIs(['manage_events', 'view_event', 'edit_event'])" wire:navigate>
+                            {{ __('Events Bin') }}
+                        </flux:navlist.item>
+                    @endcan
+                </flux:navlist.group>
 
-        <flux:navlist variant="outline">
-            {{-- <flux:navlist.item icon="code-bracket" :href="route('buffer_view')"
-                            :current="request()->routeIs(['buffer_view'])" wire:navigate>Buffer</flux:navlist.item> --}}
+                {{-- Students navlist --}}
+                <flux:navlist.group :heading="__('Students')" class="grid">
+                    @can('manage')
+                        
+                        @can('SA')
+                            <flux:navlist.item icon="user" :href="route('manage_students')"
+                                :current="request()->routeIs(['manage_students'])" wire:navigate>
+                                {{ __('Manage Students') }}
+                            </flux:navlist.item>
 
-            <flux:navlist.item icon="cog-6-tooth" :href="route('settings.profile')"
-                            :current="request()->routeIs(['settings.profile', 'settings.password', 'settings.schoolyear', 'settings.sakey'])" wire:navigate>Settings</flux:navlist.item>
-        </flux:navlist>
+                            <flux:navlist.item icon="newspaper" :href="route('attendance_records')"
+                                :current="request()->routeIs(['attendance_records', 'view_student_record'])" wire:navigate>
+                                {{ __('Attendance Records') }}
+                            </flux:navlist.item>
 
-        <!-- Desktop User Menu -->
-        <flux:dropdown class="hidden lg:block" position="bottom" align="start">
-            <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()"
-                icon:trailing="chevrons-up-down" />
+                            {{-- Dynamic badge --}}
+                            @livewire('management.manage-approval-badge', ['currentRoute' => \Route::currentRouteName()])
+                        @endcan
+                        @can('A')
+                            <flux:navlist.item icon="user" :href="route('manage_students')"
+                                :current="request()->routeIs(['manage_students'])" wire:navigate>
+                                {{ __('Student List') }}
+                            </flux:navlist.item>
 
-            <flux:menu class="w-[220px]">
-                <flux:menu.radio.group>
-                    <div class="p-0 text-sm font-normal">
-                        <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
-                            <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-                                <span class="flex h-full w-full items-center justify-center rounded-lg ">
-                                    {{-- {{ auth()->user()->initials() }} --}}
-                                    <flux:icon.user variant="solid" class="text-white" />
+                            <flux:navlist.item icon="newspaper" :href="route('attendance_records')"
+                                :current="request()->routeIs(['attendance_records', 'view_student_record'])" wire:navigate>
+                                {{ __('Attendance Records') }}
+                            </flux:navlist.item>
+                        @endcan
+                        
+                    @endcan
+                </flux:navlist.group>
+
+            </flux:navlist>
+
+            <flux:spacer />
+
+            <flux:navlist variant="outline">
+                {{-- <flux:navlist.item icon="code-bracket" :href="route('buffer_view')"
+                                :current="request()->routeIs(['buffer_view'])" wire:navigate>Buffer</flux:navlist.item> --}}
+
+                <flux:navlist.item icon="cog-6-tooth" :href="route('settings.profile')"
+                                :current="request()->routeIs(['settings.profile', 'settings.password', 'settings.schoolyear', 'settings.sakey'])" wire:navigate>Settings</flux:navlist.item>
+            </flux:navlist>
+
+            <!-- Desktop User Menu -->
+            <flux:dropdown class="hidden lg:block" position="bottom" align="start">
+                <flux:profile :name="auth()->user()->name" :initials="auth()->user()->initials()"
+                    icon:trailing="chevrons-up-down" />
+
+                <flux:menu class="w-[220px]">
+                    <flux:menu.radio.group>
+                        <div class="p-0 text-sm font-normal">
+                            <div class="flex items-center gap-2 px-1 py-1.5 text-start text-sm">
+                                <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+                                    <span class="flex h-full w-full items-center justify-center rounded-lg ">
+                                        {{-- {{ auth()->user()->initials() }} --}}
+                                        <flux:icon.user variant="solid" class="text-white" />
+                                    </span>
                                 </span>
-                            </span>
 
-                            <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight">
-                                <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
-                                <span class="truncate text-xs">{{ auth()->user()->email }}</span>
+                                <div class="grid flex-1 text-zinc-50 text-start text-sm leading-tight">
+                                    <span class="truncate font-semibold">{{ auth()->user()->name }}</span>
+                                    <span class="truncate text-xs">{{ auth()->user()->email }}</span>
+                                </div>
                             </div>
                         </div>
+                    </flux:menu.radio.group>
+
+                    <flux:menu.separator />
+
+                    <form method="POST" action="{{ route('logout') }}" class="w-full">
+                        @csrf
+                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
+                            {{ __('Log Out') }}
+                        </flux:menu.item>
+                    </form>
+                </flux:menu>
+            </flux:dropdown>
+
+        </flux:sidebar>
+
+        {{-- Main content --}}
+        {{ $slot }}
+
+    </div>
+
+
+    {{-- Prompts user to log in laptop --}}
+    <div class="block lg:hidden">
+
+        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
+            <div class="flex w-full max-w-sm flex-col gap-2">
+                <div class="flex flex-col items-center gap-2 font-medium">
+                    
+                    <span class="flex h-20 w-auto mb-1 items-center justify-center rounded-md">
+                    {{-- <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" /> --}}
+                        <img src="{{ asset('images/Side_White.svg') }}" class="h-20 w-auto" alt="Shusseki Seal Approval">
+                    </span>
+                    
+                </div>
+                <div class="flex flex-col gap-6 mt-5">
+                    <div class="flex flex-col gap-6">
+                        <div class="flex w-full flex-col text-center">
+                            <flux:heading size="xl" class="md:text-2xl mb-2">Laptop Required for Access</flux:heading>
+                            <flux:subheading class="md:text-base mb-6">For the best experience, please log in using a laptop or desktop computer. Mobile devices are not supported for this account.</flux:subheading>
+                        </div>
+
+                        <form method="POST" action="{{ route('logout') }}" class="w-full">
+                            @csrf
+                            <flux:button variant="primary" type="submit" class="w-full">{{ __('Log Out') }}</flux:button>
+                        </form>
                     </div>
-                </flux:menu.radio.group>
+                </div>
+            </div>
+        </div>
 
-                <flux:menu.separator />
-
-                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                    @csrf
-                    <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle" class="w-full">
-                        {{ __('Log Out') }}
-                    </flux:menu.item>
-                </form>
-            </flux:menu>
-        </flux:dropdown>
-    </flux:sidebar>
-
-
-    {{-- Main content --}}
-    {{ $slot }}
+    </div>
 
     {{-- Reinitialization --}}
     <!-- Lodash -->
