@@ -33,8 +33,8 @@ class AdminSeeder extends Seeder
         // Admin 2
         User::create([
             'student_id' => '0000003',
-            'name' => 'Admin 1',
-            'email' => 'admin1@shusseki.com',
+            'name' => 'Admin 2',
+            'email' => 'admin2@shusseki.com',
             'role' => UserRole::Admin,
             'password' => Hash::make("password"),
             'status' => 'approved',
