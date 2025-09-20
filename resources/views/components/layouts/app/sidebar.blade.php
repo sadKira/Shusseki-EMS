@@ -18,7 +18,7 @@
 
     {{-- Desktop view --}}
    
-    <div class="hidden lg:block h-full">
+    <div class="hidden lg:block">
         {{-- dark:border-zinc-700 dark:bg-zinc-900 --}}
         {{-- antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 --}}
         {{-- <flux:sidebar sticky stashable class=" border-zinc-900 dark:bg-zinc-950 border-r" style=" background: linear-gradient(180deg, #0f0f0f, #18181b 70%);"> --}}
