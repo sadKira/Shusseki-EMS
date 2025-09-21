@@ -117,6 +117,11 @@
                     {{-- <flux:button variant="filled">Login</flux:button> --}}
                 </div>
             </div>
+            
+        </div>
+
+        <div class="w-full flex items-center justify-center lg:justify-end">
+            <flux:button variant="subtle" >© Video From MKD Facebook Page</flux:button>
         </div>
 
     </flux:main>
