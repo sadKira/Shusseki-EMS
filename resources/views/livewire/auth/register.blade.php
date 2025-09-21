@@ -60,6 +60,6 @@
     </div>
 
     {{-- Back button --}}
-    <flux:button  :href="route('home')" variant="ghost" icon="arrow-turn-up-left" size="sm" wire:navigate >Back to Home</flux:button>
+    <flux:button  :href="route('home')" variant="ghost" icon="arrow-turn-up-left" size="sm">Back to Home</flux:button>
     
 </div>
