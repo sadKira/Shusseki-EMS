@@ -104,21 +104,24 @@
       <p>
         Unfortunately, your account registration has been <strong>rejected</strong>.
       </p>
-      <p>
-        Common reasons for rejection may include:
-      </p>
-      <ul>
-        <li>Incorrect or incomplete account details</li>
-        <li>Not being a currently enrolled student</li>
-      </ul>
-      <p>
-        <strong>
-            Specific Reason:
-        </strong>
-      </p>
-      <p>
-        "{{ !empty($reason) ? $reason : 'No reason provided' }}"
-      </p>
+      @if(!empty($reason))
+        <p>
+          <strong>
+              Reason for account rejection:
+          </strong>
+        </p>
+        <p>
+          "{{ !empty($reason) ? $reason : 'No reason provided' }}"
+        </p>
+      @else
+        <p>
+          Common reasons for rejection may include:
+        </p>
+        <ul>
+          <li>Incorrect or incomplete account details</li>
+          <li>Not being a currently enrolled student</li>
+        </ul>
+      @endif
       <p>
         If you believe this is a mistake or would like to know more, you may approach the <strong>SASO Director</strong> for clarification and assistance.
       </p>
