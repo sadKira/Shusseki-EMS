@@ -21,6 +21,7 @@ use App\Mail\AccountApprove;
 use App\Mail\AccountRejected;
 use App\Mail\EventReminder;
 use App\Mail\Test;
+use Illuminate\Support\Str;
 
 class FilterTable extends Component
 {
@@ -358,13 +359,26 @@ class FilterTable extends Component
     
         $validated = $this->validate([
 
-            'name' => ['string', 'min:5','max:255'],
+            'name' => ['string', 'min:5','max:255', 'regex:/^[A-Za-z ,.\-]+$/'],
             'student_id' => ['string', 'min:7', Rule::unique('users', 'student_id')->ignore($this->userId)],
             'email' => ['string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->userId)],
             'year_level' => ['string'],
             'course' => ['string'],
 
         ]);
+
+        $validated['name'] = Str::title(
+            Str::lower(
+                preg_replace(
+                    '/,\s*/', ', ', // normalize comma spacing
+                    preg_replace(
+                        ['/,{2,}/', '/\.{2,}/'], // remove consecutive commas and periods
+                        [',', '.'],
+                        trim($validated['name'])
+                    )
+                )
+            )
+        );
 
         User::where('id', $this->userId)->update($validated);
 
