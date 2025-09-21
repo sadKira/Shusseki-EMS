@@ -13,12 +13,14 @@ class AccountRejected extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public string $reason;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($reason)
     {
-        //
+        $this->reason = $reason;
     }
 
     /**

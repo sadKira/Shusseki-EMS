@@ -18,6 +18,8 @@ class ManageApproval extends Component
     use WithPagination;
 
     public $search = '';
+    public string $rejectionReason = '';
+    public string $bulkRejectionReason = '';
 
     // Multi select
     public $selected = [];
@@ -51,8 +53,9 @@ class ManageApproval extends Component
     public function reject($userId)
     {
         $user = User::findOrFail($userId);
+        $reason = $this->rejectionReason;
         
-        Mail::to($user->email)->queue(new AccountRejected());
+        Mail::to($user->email)->queue(new AccountRejected($reason));
 
         $user->delete();
         
@@ -60,6 +63,8 @@ class ManageApproval extends Component
         Cache::forget('students:counts:pending');
         
         $this->dispatch('refreshPendingCount');
+
+        $this->rejectionReason = ''; //reset
 
         // Close modal
         Flux::modals()->close();
@@ -130,12 +135,13 @@ class ManageApproval extends Component
     {
         // Fetch selected users
         $users = User::whereIn('id', $this->selected)->get();
+        $reason = $this->bulkRejectionReason;
 
         // Reject selected
         foreach ($users as $index => $user) {
             // Send email
             Mail::to($user->email)
-            ->later(now()->addSeconds($index * 10), new AccountRejected());
+            ->later(now()->addSeconds($index * 10), new AccountRejected($reason));
 
             $user->delete();
         }
@@ -143,6 +149,7 @@ class ManageApproval extends Component
         // Clear the pending count cache
         Cache::forget('students:counts:pending');
         
+        $this->bulkRejectionReason = '';
         $this->cancelSelection();
         $this->dispatch('refreshPendingCount');
 
@@ -184,12 +191,13 @@ class ManageApproval extends Component
         $users = User::where('status', 'pending')
         ->whereNotIn('role', ['admin', 'super_admin', 'tsuushin'])
         ->get();
+        $reason = $this->bulkRejectionReason;
 
         // Reject all users
         foreach ($users as $index => $user) {
             // Send email
             Mail::to($user->email)
-            ->later(now()->addSeconds($index * 10), new AccountRejected());
+            ->later(now()->addSeconds($index * 10), new AccountRejected($reason));
 
             $user->delete();
         }
@@ -198,6 +206,7 @@ class ManageApproval extends Component
         Cache::forget('students:counts:pending');
         
         $this->cancelSelection();
+        $this->bulkRejectionReason = '';
 
         $this->dispatch('refreshPendingCount');
 

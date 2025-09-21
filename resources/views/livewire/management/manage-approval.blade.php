@@ -225,7 +225,7 @@
                                                             <div>
                                                                 <flux:heading size="lg">Approve User?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p class="text-white">You're about to approve {{ $user->name }}.</p>
+                                                                    <p class="text-neutral-300">You're about to approve <span class="font-bold">{{ $user->name }}</span>.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -245,10 +245,21 @@
                                                         <div class="space-y-6">
                                                             <div>
                                                                 <flux:heading size="lg">Reject User?</flux:heading>
-                                                                <flux:text class="mt-2">
-                                                                    <p class="text-white">You're about to reject {{ $user->name }}.</p>
+                                                                <flux:text class="mt-2 mb-5">
+                                                                    <p class="text-neutral-300">You're about to reject <span class="font-bold">{{ $user->name }}</span>.</p>
                                                                 </flux:text>
+                                                                
                                                             </div>
+
+                                                            <flux:textarea
+                                                                class=""
+                                                                wire:model.defer="rejectionReason"
+                                                                label="Reason For Rejection"
+                                                                placeholder="Leave blank if no specific reason"
+                                                                resize="none"
+                                                                rows="3"
+                                                            />
+
                                                             <div class="flex gap-2">
                                                                 <flux:spacer />
                                                                 <flux:modal.close>
@@ -286,7 +297,7 @@
             <div>
                 <flux:heading size="lg">Approve All Pending Users?</flux:heading>
                 <flux:text class="mt-2">
-                    <p class="text-white">You're about to approve all pending users.</p>
+                    <p class="text-neutral-300">You're about to approve <span class="font-bold">ALL</span> pending users.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -304,10 +315,18 @@
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Reject All Pending Users?</flux:heading>
-                <flux:text class="mt-2">
-                    <p class="text-white">You're about to reject all pending users.</p>
+                <flux:text class="mt-2 mb-5">
+                    <p class="text-neutral-300">You're about to reject <span class="font-bold">ALL</span> pending users.</p>
                 </flux:text>
             </div>
+            <flux:textarea
+                class=""
+                wire:model.defer="bulkRejectionReason"
+                label="Reason For Rejection"
+                placeholder="Leave blank if no specific reason"
+                resize="none"
+                rows="3"
+            />
             <div class="flex gap-2">
                 <flux:spacer />
                 <flux:modal.close>
@@ -324,7 +343,7 @@
             <div>
                 <flux:heading size="lg">Approve Selected Pending Users?</flux:heading>
                 <flux:text class="mt-2">
-                    <p class="text-white">You're about to approve all selected pending users.</p>
+                    <p class="text-neutral-300">You're about to approve <span class="font-bold">ALL SELECTED</span> pending users.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -342,10 +361,18 @@
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Reject Selected Pending Users?</flux:heading>
-                <flux:text class="mt-2">
-                    <p class="text-white">You're about to reject all selected pending users.</p>
+                <flux:text class="mt-2 mb-5">
+                    <p class="text-white">You're about to reject <span class="font-bold">ALL SELECTED</span> pending users.</p>
                 </flux:text>
             </div>
+            <flux:textarea
+                class=""
+                wire:model.defer="bulkRejectionReason"
+                label="Reason For Rejection"
+                placeholder="Leave blank if no specific reason"
+                resize="none"
+                rows="3"
+            />
             <div class="flex gap-2">
                 <flux:spacer />
                 <flux:modal.close>

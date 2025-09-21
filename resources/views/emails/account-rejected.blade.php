@@ -112,6 +112,14 @@
         <li>Not being a currently enrolled student</li>
       </ul>
       <p>
+        <strong>
+            Specific Reason:
+        </strong>
+      </p>
+      <p>
+        "{{ !empty($reason) ? $reason : 'No reason provided' }}"
+      </p>
+      <p>
         If you believe this is a mistake or would like to know more, you may approach the <strong>SASO Director</strong> for clarification and assistance.
       </p>
       <!-- Optional button (currently commented out in original) -->
