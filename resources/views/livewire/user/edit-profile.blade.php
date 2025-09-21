@@ -5,14 +5,14 @@
     <div class="mt-5 w-full max-w-lg">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
 
-            <div class="grid grid-cols-2 gap-x-4 gap-y-6">
+            {{-- <div class="grid grid-cols-2 gap-x-4 gap-y-6"> --}}
                 {{-- Locked name --}}
                 <flux:input type="text" wire:model="name" icon:trailing="lock-closed" readonly :label="__('Name')" />
 
                 {{-- Locked student id --}}
                 <flux:input type="text" wire:model="student_id" icon:trailing="lock-closed" readonly
                     :label="__('Student ID')" />
-            </div>
+            {{-- </div> --}}
 
             {{-- Editable email --}}
             <flux:input wire:model.defer="email" :label="__('Email')" type="email" required autocomplete="email"

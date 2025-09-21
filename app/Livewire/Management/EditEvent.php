@@ -46,7 +46,7 @@ class EditEvent extends Component
             'time_in' => 'required|date_format:h:i A',
             'start_time' => 'required|date_format:h:i A',
             'end_time' => 'required|date_format:h:i A|after:start_time',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:5048',
         ];
     }
 

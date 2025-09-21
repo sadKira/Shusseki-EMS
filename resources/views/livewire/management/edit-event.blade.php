@@ -49,7 +49,7 @@
                                         <div class="col-span-3">
                                             <div class="flex items-start gap-1">
                                                 <flux:input id="tp_input_time_in" wire:model="time_in"
-                                                    placeholder="End of Time In" label="End of Time In Period"
+                                                    placeholder="Select Time" label="End of Attendance"
                                                     type="text" mask="99:99 aa" required autocomplete="off" readonly />
                                                 <x-time-picker-time-in />
                                             </div>
