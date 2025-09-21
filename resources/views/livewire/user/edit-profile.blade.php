@@ -1,6 +1,6 @@
 <div>
     <flux:heading>Edit Profile</flux:heading>
-    <flux:subheading>Only the email and year level can be updated</flux:subheading>
+    <flux:subheading>Only your email can be updated</flux:subheading>
 
     <div class="mt-5 w-full max-w-lg">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
@@ -18,17 +18,12 @@
             <flux:input wire:model.defer="email" :label="__('Email')" type="email" required autocomplete="email"
                 autofocus />
 
-            {{-- Locked course and editable year level --}}
+            {{-- Locked course and year level --}}
             <div class="grid md:grid-cols-2 gap-x-4 gap-y-6">
 
-                <flux:select wire:model.defer="year_level" :label="__('Year level')">
-                    <flux:select.option value="1st Year">1st Year</flux:select.option>
-                    <flux:select.option value="2nd Year">2nd Year</flux:select.option>
-                    <flux:select.option value="3rd Year">3rd Year</flux:select.option>
-                    <flux:select.option value="4th Year">4th Year</flux:select.option>
-                </flux:select>
+                <flux:input type="text" wire:model="year_level" icon:trailing="lock-closed" readonly
+                    :label="__('Year Level')" />
                 
-
                 <flux:input type="text" wire:model="course" icon:trailing="lock-closed" readonly
                     :label="__('Course')" />
             </div>

@@ -366,7 +366,7 @@
                                         
                                             @if ($selection)
                                                 <th scope="col"
-                                                    class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                    class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
                                                     Action</th>
                                             @else
                                             @endif
@@ -375,7 +375,7 @@
                                         @can('A')
                                             @if ($selectedStatus == 'Active Accounts')
                                                 <th scope="col"
-                                                    class="px-6 py-3 text-start text-sm font-medium text-gray-500 dark:text-neutral-400">
+                                                    class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-neutral-400">
                                                     Action</th>
                                             @endif
                                         @endcan
@@ -500,7 +500,7 @@
                                                     {{ $output }}
                                                     </span>
                                                 </td>
-                                                <td class="px-6 py-4 ">
+                                                <td class="px-6 py-4 flex items-center justify-center">
 
                                                     @can ('SA')
                                                         @if ($selection)
@@ -509,6 +509,10 @@
                                                                     <flux:button icon="ellipsis-horizontal" variant="filled" size="xs"
                                                                         class=""></flux:button>
                                                                     <flux:menu>
+
+                                                                        {{-- <flux:modal.trigger :name="'update-user-'.$user->id"> --}}
+                                                                            <flux:menu.item icon="adjustments-vertical" wire:click="editProfile({{ $user->id }})">Edit Details</flux:menu.item>
+                                                                        {{-- </flux:modal.trigger> --}}
 
                                                                         @if ($tsuushinCount < 1)
                                                                             <flux:modal.trigger :name="'tag-tsuushin-'.$user->id">
@@ -542,6 +546,9 @@
                                                                         class=""></flux:button>
                                                                     <flux:menu>
 
+                                                                        <flux:modal.trigger name="update-user">
+                                                                            <flux:menu.item icon="adjustments-vertical">Edit Details</flux:menu.item>
+                                                                        </flux:modal.trigger>
                                                                         <flux:modal.trigger :name="'active-solo-'.$user->id">
                                                                             <flux:menu.item icon="user-plus">Mark as Active</flux:menu.item>
                                                                         </flux:modal.trigger>
@@ -602,6 +609,8 @@
                                                         
                                                     @endcan
 
+                                                    
+
                                                     {{-- Mark inactive modal --}}
                                                     <flux:modal :name="'inactive-solo-'.$user->id" :dismissible="false"
                                                         class="min-w-[22rem]">
@@ -609,7 +618,7 @@
                                                             <div>
                                                                 <flux:heading size="lg">Mark Student as Inactive?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p class="text-white">You're about to mark {{ $user->name }} as inactive.</p>
+                                                                    <p class="text-neutral-300">You're about to mark <span class="font-bold">{{ $user->name }}</span> as inactive.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -631,7 +640,7 @@
                                                             <div>
                                                                 <flux:heading size="lg">Mark Student as Active?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p class="text-white">You're about to mark {{ $user->name }} as active.</p>
+                                                                    <p class="text-neutral-300">You're about to mark <span class="font-bold">{{ $user->name }}</span> as active.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -653,8 +662,8 @@
                                                             <div>
                                                                 <flux:heading size="lg">Remove Account?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p class="text-white">You're about to remove {{ $user->name }}'s account.</p>
-                                                                    <p class="text-white">This action cannot be undone.</p>
+                                                                    <p class="text-neutral-300">You're about to remove <span class="font-bold">{{ $user->name }}'s</span> account.</p>
+                                                                    <p class="text-neutral-300">This action cannot be undone.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -676,8 +685,8 @@
                                                             <div>
                                                                 <flux:heading size="lg">Tag Student as Tsuushin?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p class="text-white">You're about to tag {{ $user->name }} as a Tsuushin member.</p>
-                                                                    <p class="text-white">They will receive media coverage requests.</p>
+                                                                    <p class="text-neutral-300">You're about to tag <span class="font-bold">{{ $user->name }}</span> as a Tsuushin member.</p>
+                                                                    <p class="text-neutral-300">They will receive media coverage requests.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -699,8 +708,8 @@
                                                             <div>
                                                                 <flux:heading size="lg">Remove Tsuushin Tag?</flux:heading>
                                                                 <flux:text class="mt-2">
-                                                                    <p class="text-white">You're about to remove {{ $user->name }}'s Tsuushin tag.</p>
-                                                                    <p class="text-white">They will not receive media coverage requests.</p>
+                                                                    <p class="text-neutral-300">You're about to remove <span class="font-bold">{{ $user->name }}'s</span> Tsuushin tag.</p>
+                                                                    <p class="text-neutral-300">They will not receive media coverage requests.</p>
                                                                 </flux:text>
                                                             </div>
                                                             <div class="flex gap-2">
@@ -736,13 +745,58 @@
 
     </div>
 
+    {{-- Edit details modal --}}
+    <flux:modal name="update-user" :dismissible="false"
+        class="min-w-[22rem]">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Edit Student Details</flux:heading>
+            </div>
+
+            {{-- Name --}}
+            <flux:input type="text" wire:model.defer="name" label="Student Name" placeholder="Student Name" />
+
+            {{-- Student ID --}}
+            <flux:input type="text" wire:model.defer="student_id" label="Student ID" mask="9999999" placeholder="7-Digit ID" />
+
+            {{-- Email --}}
+            <flux:input type="email" wire:model.defer="email" label="Email" placeholder="Student Email" />
+
+            {{-- Year Level --}}
+            <flux:select wire:model.defer="year_level" label="Year level" placeholder="Year Level">
+                <flux:select.option value="1st Year">1st Year</flux:select.option>
+                <flux:select.option value="2nd Year">2nd Year</flux:select.option>
+                <flux:select.option value="3rd Year">3rd Year</flux:select.option>
+                <flux:select.option value="4th Year">4th Year</flux:select.option>
+            </flux:select>
+
+            {{-- Course --}}
+            <flux:select wire:model.defer="course" label="Course" placeholder="Course">
+                <flux:select.option value="Bachelor of Arts in International Studies">Bachelor of Arts in International Studies</flux:select.option>
+                <flux:select.option value="Bachelor of Science in Information Systems">Bachelor of Science in Information Systems</flux:select.option>
+                <flux:select.option value="Bachelor of Human Services">Bachelor of Human Services</flux:select.option>
+                <flux:select.option value="Bachelor of Secondary Education">Bachelor of Secondary Education</flux:select.option>
+            </flux:select>
+
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="primary" color="amber"
+                    wire:click="updateProfileInformation">Update
+                </flux:button>
+            </div>
+        </div>
+    </flux:modal>
+
     {{-- Bulk inactive modal --}}
     <flux:modal name="inactive-bulk" :dismissible="false" class="min-w-[22rem]">
         <div class="space-y-6">
             <div>
                 <flux:heading size="lg">Mark All Students as Inactive?</flux:heading>
                 <flux:text class="mt-2">
-                    <p class="text-white">You're about to mark all students as inactive.</p>
+                    <p class="text-neutral-300">You're about to mark <span class="font-bold">ALL</span> students as inactive.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -761,7 +815,7 @@
             <div>
                 <flux:heading size="lg">Mark All Students as Active?</flux:heading>
                 <flux:text class="mt-2">
-                    <p class="text-white">You're about to mark all students as active.</p>
+                    <p class="text-neutral-300">You're about to mark <span class="font-bold">ALL</span> students as active.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -781,8 +835,8 @@
             <div>
                 <flux:heading size="lg">Remove All Students?</flux:heading>
                 <flux:text class="mt-2">
-                    <p class="text-white">You're about to remove all students. This action</p>
-                    <p class="text-white">cannot be undone.</p>
+                    <p class="text-neutral-300">You're about to remove <span class="font-bold">ALL</span> students. This action</p>
+                    <p class="text-neutral-300">cannot be undone.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -801,8 +855,8 @@
             <div>
                 <flux:heading size="lg">Remove Selected Students?</flux:heading>
                 <flux:text class="mt-2">
-                    <p class="text-white">You're about to remove all selected students.</p>
-                    <p class="text-white">This action cannot be undone.</p>
+                    <p class="text-neutral-300">You're about to remove <span class="font-bold">ALL SELECTED</span> students.</p>
+                    <p class="text-neutral-300">This action cannot be undone.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -821,7 +875,7 @@
             <div>
                 <flux:heading size="lg">Mark Selected Students as Inactive?</flux:heading>
                 <flux:text class="mt-2">
-                    <p class="text-white">You're about to mark all selected students as inactive.</p>
+                    <p class="text-neutral-300">You're about to mark <span class="font-bold">ALL SELECTED</span> students as inactive.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">
@@ -840,7 +894,7 @@
             <div>
                 <flux:heading size="lg">Mark Selected Students as Active?</flux:heading>
                 <flux:text class="mt-2">
-                    <p class="text-white">You're about to mark all selected students as active.</p>
+                    <p class="text-neutral-300">You're about to mark <span class="font-bold">ALL SELECTED</span> students as active.</p>
                 </flux:text>
             </div>
             <div class="flex gap-2">

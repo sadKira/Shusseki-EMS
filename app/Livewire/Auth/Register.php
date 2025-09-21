@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Illuminate\Support\Str;
 
 #[Layout('components.layouts.auth')]
 class Register extends Component
@@ -28,12 +29,29 @@ class Register extends Component
     {
         $validated = $this->validate([
             'student_id' => ['required', 'string','unique:users,student_id', 'min:7'],
-            'name' => ['required', 'string', 'min:5','max:255'],
+            'name' => ['required', 'string', 'min:5','max:255', 'regex:/^[A-Za-z ,.\-]+$/'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
             'year_level' => ['required', 'string'],
             'course' => ['required', 'string'],
         ]);
+
+        $validated['name'] = Str::title(
+            Str::lower(
+                preg_replace(
+                    '/,\s*/', ', ', // normalize comma spacing
+                    preg_replace(
+                        ['/,{2,}/', '/\.{2,}/'], // remove consecutive commas and periods
+                        [',', '.'],
+                        trim($validated['name'])
+                    )
+                )
+            )
+        );
+
+        // Collapse multiple spaces into one (after normalization)
+        $validated['name'] = preg_replace('/\s+/', ' ', $validated['name']);
+
 
         $validated['password'] = Hash::make($validated['password']);
 

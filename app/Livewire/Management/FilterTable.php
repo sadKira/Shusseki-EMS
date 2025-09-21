@@ -13,6 +13,8 @@ use App\Enums\EventStatus;
 use App\Enums\TsuushinRole;
 use Flux\Flux;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountApprove;
@@ -23,6 +25,9 @@ use App\Mail\Test;
 class FilterTable extends Component
 {
     use WithPagination;
+
+    // User details
+    public $userId, $name, $email, $student_id, $year_level, $course;
 
     // Global schoolyear
     public $selectedSchoolYear;
@@ -331,6 +336,45 @@ class FilterTable extends Component
         $this->selected = [];
         $this->selectPage = false;
         $this->selectAll = false;
+    }
+
+    // Edit student details
+    public function editProfile($userId)
+    {
+        $user = User::find($userId);
+
+        $this->userId = $user->id;
+        $this->name = $user->name;
+        $this->student_id = $user->student_id;
+        $this->email = $user->email;
+        $this->year_level = $user->year_level;
+        $this->course = $user->course;
+
+        Flux::modal('update-user')->show();
+    }
+
+    public function updateProfileInformation(): void
+    {
+    
+        $validated = $this->validate([
+
+            'name' => ['string', 'min:5','max:255'],
+            'student_id' => ['string', 'min:7', Rule::unique('users', 'student_id')->ignore($this->userId)],
+            'email' => ['string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->userId)],
+            'year_level' => ['string'],
+            'course' => ['string'],
+
+        ]);
+
+        User::where('id', $this->userId)->update($validated);
+
+        // Clear cache manually
+        $this->clearUserCaches();
+        $this->cancelSelection();
+
+        // Close modal
+        Flux::modals()->close();      
+
     }
 
     public function render()
