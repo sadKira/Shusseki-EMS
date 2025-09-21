@@ -28,7 +28,7 @@ class SuperAdminSeeder extends Seeder
             'year_level' => 'null',
             'course' => 'null',
             'account_status' => 'active',
-            'privilege' => 'yes',
+            'privilege' => 'yes'
         ]);
 
         // Super Admin
@@ -42,7 +42,7 @@ class SuperAdminSeeder extends Seeder
             'year_level' => 'null',
             'course' => 'null',
             'account_status' => 'active',
-            'privilege' => 'yes',
+            'privilege' => 'yes'
         ]);
     }
 }
