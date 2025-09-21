@@ -18,7 +18,7 @@
 
     <flux:header container class="border-b border-zinc-800 dark:bg-zinc-950 max-lg:hidden">
 
-        <flux:brand href="#" name="" class="font-logo">
+        <flux:brand href="{{ route('dashboard') }}" name="" class="font-logo">
             <x-slot name="logo" class="size-25">
                 <img src="{{ asset('images/Side_White.svg') }}" alt="MKD Logo" class="">
             </x-slot>

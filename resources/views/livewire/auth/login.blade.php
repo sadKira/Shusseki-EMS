@@ -1,4 +1,5 @@
 <div class="flex flex-col gap-6">
+
     {{-- <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" /> --}}
     <div class="flex w-full flex-col text-center">
         <flux:heading size="xl">Log in to your account</flux:heading>
@@ -40,4 +41,8 @@
             <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
         </div>
     @endif
+
+    {{-- Back button --}}
+    <flux:button  :href="route('home')" variant="ghost" icon="arrow-turn-up-left" size="sm" wire:navigate >Back to Home</flux:button>
+
 </div>

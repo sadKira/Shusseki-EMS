@@ -58,4 +58,8 @@
         {{ __('Already have an account?') }}
         <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
     </div>
+
+    {{-- Back button --}}
+    <flux:button  :href="route('home')" variant="ghost" icon="arrow-turn-up-left" size="sm" wire:navigate >Back to Home</flux:button>
+    
 </div>
