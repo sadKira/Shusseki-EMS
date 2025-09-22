@@ -10,8 +10,8 @@
 
     <form wire:submit="register" class="flex flex-col gap-6">
         <!-- Name -->
-        <flux:input wire:model.defer="name" :label="__('Full Name')" badge="Last Name, First Name, M.I." type="text" required
-            autofocus autocomplete="name" :placeholder="__('Last Name, First Name, M.I.')"  description="For 日本人, please use ROMAJI." />
+        <flux:input wire:model.defer="name" :label="__('Full Name')" badge="Last Name, First Name M.I." type="text" required
+            autofocus autocomplete="name" :placeholder="__('Last Name, First Name M.I.')"  description="For 日本人, please use ROMAJI." />
 
         <!-- Email Address -->
         <flux:input wire:model.defer="email" :label="__('Email address')" type="email" required autocomplete="email"
