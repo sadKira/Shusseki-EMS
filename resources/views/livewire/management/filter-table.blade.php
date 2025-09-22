@@ -203,12 +203,22 @@
                                                 <flux:menu.radio checked value="All">All</flux:menu.radio>
                                                 <flux:menu.radio value="Bachelor of Arts in International Studies">
                                                     Bachelor of Arts in International Studies</flux:menu.radio>
+                                                    
                                                 <flux:menu.radio value="Bachelor of Science in Information Systems">
                                                     Bachelor of Science in Information Systems</flux:menu.radio>
+
                                                 <flux:menu.radio value="Bachelor of Human Services">
                                                     Bachelor of Human Services</flux:menu.radio>
+
                                                 <flux:menu.radio value="Bachelor of Secondary Education">
                                                     Bachelor of Secondary Education</flux:menu.radio>
+
+                                                <flux:menu.radio value="Bachelor of Elementary Education">
+                                                    Bachelor of Elementary Education</flux:menu.radio>
+
+                                                <flux:menu.radio value="Bachelor of Special Needs Education">
+                                                    Bachelor of Special Needs Education</flux:menu.radio>
+
                                             </flux:menu.radio.group>
                                         </flux:menu.submenu>
 
@@ -492,6 +502,8 @@
                                                             $course == 'Bachelor of Science in Information Systems' => 'BSIS',
                                                             $course == 'Bachelor of Human Services' => 'BHS',
                                                             $course == 'Bachelor of Secondary Education' => 'BSED',
+                                                            $course == 'Bachelor of Elementary Education' => 'ECED',
+                                                            $course == 'Bachelor of Special Needs Education' => 'SNED',
                                                             default => 'Course',
                                                         };
 
@@ -776,6 +788,8 @@
                 <flux:select.option value="Bachelor of Science in Information Systems">Bachelor of Science in Information Systems</flux:select.option>
                 <flux:select.option value="Bachelor of Human Services">Bachelor of Human Services</flux:select.option>
                 <flux:select.option value="Bachelor of Secondary Education">Bachelor of Secondary Education</flux:select.option>
+                <flux:select.option value="Bachelor of Elementary Education">Bachelor of Elementary Education</flux:select.option>
+                <flux:select.option value="Bachelor of Special Needs Education">Bachelor of Special Needs Education</flux:select.option>
             </flux:select>
 
             <div class="flex gap-2">

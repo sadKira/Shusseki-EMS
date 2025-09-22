@@ -191,6 +191,8 @@
                                                             $course == 'Bachelor of Science in Information Systems' => 'BSIS',
                                                             $course == 'Bachelor of Human Services' => 'BHS',
                                                             $course == 'Bachelor of Secondary Education' => 'BSED',
+                                                            $course == 'Bachelor of Elementary Education' => 'ECED',
+                                                            $course == 'Bachelor of Special Needs Education' => 'SNED',
                                                             default => 'Course',
                                                         };
 

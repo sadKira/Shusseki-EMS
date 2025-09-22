@@ -120,6 +120,8 @@ class User extends Authenticatable
             'bachelor of science in information systems' => 'bsis',
             'bachelor of human services' => 'bhs',
             'bachelor of secondary education' => 'bsed',
+            'bachelor of elementary education' => 'eced',
+            'bachelor of special needs education' => 'sned',
         ];
 
         return $query->where(function ($q) use ($value, $courseMap) {

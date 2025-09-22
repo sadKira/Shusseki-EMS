@@ -36,6 +36,8 @@
                 <flux:select.option value="Bachelor of Science in Information Systems">Bachelor of Science in Information Systems</flux:select.option>
                 <flux:select.option value="Bachelor of Human Services">Bachelor of Human Services</flux:select.option>
                 <flux:select.option value="Bachelor of Secondary Education">Bachelor of Secondary Education</flux:select.option>
+                <flux:select.option value="Bachelor of Elementary Education">Bachelor of Elementary Education</flux:select.option>
+                <flux:select.option value="Bachelor of Special Needs Education">Bachelor of Special Needs Education</flux:select.option>
             </flux:select>
         </div>
 
