@@ -385,7 +385,7 @@
                                             </button>
 
                                             <!-- Dark Overlay (allows clicks through) -->
-                                            <div class="absolute inset-0 bg-black/60 pointer-events-none"></div>
+                                            <div class="absolute inset-0 bg-black/80 pointer-events-none"></div>
 
                                             <!-- Centered Event Details -->
                                             <div
@@ -402,7 +402,7 @@
                                                         </div>
                                                         <div class="flex items-center justify-start gap-2">
                                                             <flux:icon.calendar class="size-4 opacity-0" />
-                                                            <flux:text class="text-zinc-300">
+                                                            <flux:text class="text-zinc-300 ">
                                                                 {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                                                             </flux:text>
                                                         </div>

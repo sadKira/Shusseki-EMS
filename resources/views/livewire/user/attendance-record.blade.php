@@ -322,7 +322,7 @@
                                             </button>
 
                                             <!-- Dark Overlay (allows clicks through) -->
-                                            <div class="absolute inset-0 bg-black/60 pointer-events-none"></div>
+                                            <div class="absolute inset-0 bg-black/80 pointer-events-none"></div>
 
                                             <!-- Centered Event Details -->
                                             <div
