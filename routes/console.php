@@ -88,4 +88,4 @@ Schedule::call(function () {
             ->later(now()->addSeconds($index * 10), new EventReminder($event, $user));
         }
     }
-})->dailyAt('08:00'); // Run once a day at 8 AM
+})->dailyAt('08:00')->timezone('Asia/Manila'); // Run once a day at 8 AM
