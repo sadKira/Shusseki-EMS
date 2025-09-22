@@ -169,7 +169,7 @@
                     
 
                     <flux:heading class="flex items-center gap-2 mt-4">
-                        End of Time In Period: <span class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
+                        End of Attendance: <span class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
 
                         <flux:tooltip position="bottom" toggleable>
                             <flux:button icon="information-circle" variant="ghost" />
