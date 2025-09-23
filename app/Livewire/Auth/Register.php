@@ -10,6 +10,8 @@ use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\Livewire;
+
 
 #[Layout('components.layouts.auth')]
 class Register extends Component
@@ -56,6 +58,9 @@ class Register extends Component
         $validated['password'] = Hash::make($validated['password']);
 
         event(new Registered(($user = User::create($validated))));
+
+        // Fire the Livewire event so badge updates
+        Livewire::dispatch('refreshPendingCount')->to(\App\Livewire\Management\ManageApprovalBadge::class);
 
         Auth::login($user);
 
