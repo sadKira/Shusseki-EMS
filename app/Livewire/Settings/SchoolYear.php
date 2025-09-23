@@ -10,6 +10,7 @@ use Livewire\Attributes\On;
 
 use Carbon\Carbon;
 use Flux\Flux;
+use Illuminate\Support\Facades\Cache;
 
 class SchoolYear extends Component
 {
@@ -55,6 +56,7 @@ class SchoolYear extends Component
         modelSchoolYear::create(['year' => $this->newSchoolYear]);
 
         $this->newSchoolYear = '';
+        Cache::forget('school_years:list');
         $this->schoolYears = Setting::getAvailableSchoolYears();
 
         // Closes all modals
