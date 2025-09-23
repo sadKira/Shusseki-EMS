@@ -59,9 +59,6 @@ class Register extends Component
 
         event(new Registered(($user = User::create($validated))));
 
-        // Fire the Livewire event so badge updates
-        Livewire::dispatch('refreshPendingCount')->to(\App\Livewire\Management\ManageApprovalBadge::class);
-
         Auth::login($user);
 
         $this->redirect(route('approval_pending', absolute: false), navigate: true);
