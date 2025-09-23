@@ -59,6 +59,8 @@ class Register extends Component
 
         event(new Registered(($user = User::create($validated))));
 
+        $this->dispatch('student-pending');
+
         Auth::login($user);
 
         $this->redirect(route('approval_pending', absolute: false), navigate: true);

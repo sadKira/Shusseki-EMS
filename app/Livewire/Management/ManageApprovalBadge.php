@@ -7,6 +7,7 @@ use App\Models\User;
 use Livewire\Attributes\Renderless;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\On;
 
 class ManageApprovalBadge extends Component
 {
@@ -19,7 +20,8 @@ class ManageApprovalBadge extends Component
         $this->count = $this->getPendingCount();
     }
 
-    #[\Livewire\Attributes\On('refreshPendingCount')]
+    #[On('refreshPendingCount')]
+    #[On('student-pending')]
     public function refreshPendingCount()
     {
         // Clear the cache and get fresh count

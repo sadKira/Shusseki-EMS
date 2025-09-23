@@ -26,6 +26,12 @@ class ManageApproval extends Component
     public $selectAll = false;
     public $selectPage = false;
 
+    public function refreshPendingUsers()
+    {
+        // Forces livewire to re-run computed properties
+        $this->dispatch('$refresh');
+    }
+
     // Reset pagination when search changes
     public function updatingSearch()
     {
