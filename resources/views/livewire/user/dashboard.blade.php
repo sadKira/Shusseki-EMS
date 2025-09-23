@@ -417,9 +417,9 @@
                                                         <div class="flex items-center justify-end gap-2">
                                                             <flux:icon.calendar class="size-4 opacity-0" />
                                                             <flux:text class="text-zinc-300">
-                                                                {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }}
+                                                                {{ \Carbon\Carbon::parse($event->start_time)->format('g:i a') }}
                                                                 -
-                                                                {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                                                                {{ \Carbon\Carbon::parse($event->end_time)->format('g:i a') }}
                                                             </flux:text>
                                                         </div>
                                                     </div>
