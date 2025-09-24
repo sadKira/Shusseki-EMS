@@ -115,7 +115,7 @@
                 <flux:input 
                     type="text"
                     wire:model.live="studentIdInput" 
-                    x-ref="qrInput"
+                    {{-- x-ref="qrInput" --}}
                     autofocus
                     
                     >
@@ -212,7 +212,7 @@
                     </thead>
 
                     <tbody>
-                        <div class=" h-100 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">"
+                        {{-- <div class=" h-100 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">" --}}
                             @forelse ($users as $user)
                                 <tr wire:key="attendance-log-{{ $user->id }}"
                                     class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition">
@@ -423,7 +423,7 @@
                                     </td>
                                 </tr>
                             @endforelse
-                        </div>
+                        {{-- </div> --}}
 
                     </tbody>
                 </table>
