@@ -243,7 +243,7 @@ class AttendanceBin extends Component
         if ($this->pendingAction === 'removeLogTimeOut' && $this->pendingUserId) {
             EventAttendanceLog::where('event_id', $this->event->id)
                 ->where('user_id', $this->pendingUserId)
-                ->update(['timeout' => null]);
+                ->update(['time_out' => null]);
         }
 
         if ($this->pendingAction === 'removeLogRecord' && $this->pendingUserId) {
