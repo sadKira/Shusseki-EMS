@@ -10,7 +10,7 @@
     </flux:header>
 
 
-    <div class="grid grid-cols-5" wire:scroll>
+    <div class="grid grid-cols-5">
 
         {{-- Left side --}}
         <div class="col-span-2 px-10 py-6 space-y-5">
@@ -187,7 +187,7 @@
             </div>
 
             {{-- Table --}}
-            <div class="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg"  wire:scroll>
                 <table class="w-full text-sm text-left rtl:text-right text-zinc-600 dark:text-zinc-50 ">
                     <thead class="text-xs text-zinc-700 uppercase dark:bg-zinc-950 dark:text-zinc-50">
                         <tr>
