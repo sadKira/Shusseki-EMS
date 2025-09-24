@@ -105,6 +105,8 @@ class FilterTable extends Component
         $user = User::find($userId);
         $user->update(['account_status' => 'inactive']);
 
+        // Clear cache manually
+        $this->clearUserCaches();
         $this->cancelSelection();
 
         // Close modal
@@ -172,6 +174,9 @@ class FilterTable extends Component
         $user = User::findOrFail($userId);
         $user->delete(); 
 
+        // Clear cache manually
+        $this->clearUserCaches();
+
         // Close modal
         Flux::modals()->close();
 
@@ -217,6 +222,8 @@ class FilterTable extends Component
         $user = User::find($userId);
         $user->update(['account_status' => 'active']);
 
+        // Clear cache manually
+        $this->clearUserCaches();
         $this->cancelSelection();   
 
         // Close modal
@@ -264,6 +271,8 @@ class FilterTable extends Component
         $user = User::find($userId);
         $user->update(['tsuushin' => 'member']);
 
+        // Clear cache manually
+        $this->clearUserCaches();
         $this->cancelSelection();
 
         // Close modal
@@ -277,6 +286,8 @@ class FilterTable extends Component
         $user = User::find($userId);
         $user->update(['tsuushin' => 'not_member']);
 
+        // Clear cache manually
+        $this->clearUserCaches();
         $this->cancelSelection();
 
         // Close modal

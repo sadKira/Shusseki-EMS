@@ -10,7 +10,7 @@
     </flux:header>
 
 
-    <div class="grid grid-cols-5">
+    <div class="grid grid-cols-5" wire:scroll>
 
         {{-- Left side --}}
         <div class="col-span-2 px-10 py-6 space-y-5">
