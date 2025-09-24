@@ -289,6 +289,12 @@
 
                                                     <flux:menu.separator />
 
+                                                    <flux:modal.trigger :name="'remove-timeout-'.$user->id">
+                                                        <flux:menu.item>
+                                                            Remove Time-Out
+                                                        </flux:menu.item>
+                                                    </flux:modal.trigger>
+
                                                     <flux:modal.trigger :name="'remove-record-'.$user->id">
                                                         <flux:menu.item variant="danger">
                                                             Remove Record
@@ -384,6 +390,29 @@
                                                     </flux:modal.close>
                                                     <flux:button variant="danger" wire:click="markAbsent({{ $user->user_id }})">
                                                         Mark Absent</flux:button>
+                                                </div>
+                                            </div>
+                                        </flux:modal>
+
+                                        {{-- Remove Time-out modal --}}
+                                        <flux:modal :name="'remove-timeout-'.$user->id" class="min-w-[22rem]" :dismissible="false">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <flux:heading size="lg">Remove Student Time-Out?</flux:heading>
+                                                    <flux:text class="mt-2">
+                                                        <p class="text-white">You're about to remove {{ $user->user?->name ?? 'Student' }}'s
+                                                        </p>
+                                                        <p class="text-white">time-out record
+                                                        </p>
+                                                    </flux:text>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                    <flux:spacer />
+                                                    <flux:modal.close>
+                                                        <flux:button variant="ghost">Cancel</flux:button>
+                                                    </flux:modal.close>
+                                                    <flux:button variant="danger" wire:click="removeTimeOut({{ $user->user_id }})">
+                                                        Remove Time-Out</flux:button>
                                                 </div>
                                             </div>
                                         </flux:modal>

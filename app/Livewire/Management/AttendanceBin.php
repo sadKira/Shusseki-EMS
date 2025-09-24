@@ -173,6 +173,18 @@ class AttendanceBin extends Component
 
     }
 
+    // Remove time-out
+    public function removeTimeOut($userId)
+    {
+        // Close initial modal
+        Flux::modals()->close();
+        $this->pendingAction = 'removeLogTimeOut';
+        $this->pendingUserId = $userId;
+        
+        Flux::modal('admin-key')->show();
+
+    }
+
     // Remove record
     public function removeLogRecord(int $userId): void
     {
@@ -226,6 +238,12 @@ class AttendanceBin extends Component
                 ->where('user_id', $this->pendingUserId)
                 ->first()
                 ?->update(['attendance_status' => 'absent']);
+        }
+
+        if ($this->pendingAction === 'removeLogTimeOut' && $this->pendingUserId) {
+            EventAttendanceLog::where('event_id', $this->event->id)
+                ->where('user_id', $this->pendingUserId)
+                ->update(['timeout' => null]);
         }
 
         if ($this->pendingAction === 'removeLogRecord' && $this->pendingUserId) {
