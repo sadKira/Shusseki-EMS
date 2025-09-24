@@ -12,6 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use App\Models\User;
 
 #[Layout('components.layouts.auth')]
 class Login extends Component
@@ -27,28 +28,45 @@ class Login extends Component
     /**
      * Handle an incoming authentication request.
      */
-    public function login()  
+    public function login()
     {
         $this->validate();
 
         $this->ensureIsNotRateLimited();
 
+        $user = User::where('email', $this->email)->first();
+
+        // if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        //     RateLimiter::hit($this->throttleKey());
+
+        //     throw ValidationException::withMessages([
+        //         'email' => __('auth.failed'),
+        //         'password' => __('auth.failed'),
+        //     ]);
+        // }
+
+        if (! $user) {
+            RateLimiter::hit($this->throttleKey());
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'), 
+            ]);
+        }
+
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             RateLimiter::hit($this->throttleKey());
-
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'password' => __('auth.password'), 
             ]);
         }
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
 
-        if(Auth::User()->role == UserRole::Super_Admin){
+        if (Auth::User()->role == UserRole::Super_Admin) {
             return redirect()->route("admin_dashboard")->with("success", "Logged in successfully!");
         }
 
-        if(Auth::User()->role == UserRole::Admin){
+        if (Auth::User()->role == UserRole::Admin) {
             return redirect()->route("admin_dashboard")->with("success", "Logged in successfully!");
         }
 
@@ -56,7 +74,7 @@ class Login extends Component
         //     return redirect()->route("dashboard")->with("success", "Logged in successfully!");
         // }
 
-        if(Auth::User()->role == UserRole::User){
+        if (Auth::User()->role == UserRole::User) {
             return redirect()->route("dashboard")->with("success", "Logged in successfully!");
         }
 
@@ -90,6 +108,6 @@ class Login extends Component
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 }
