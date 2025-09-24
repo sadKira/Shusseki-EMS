@@ -29,23 +29,23 @@
             </div> --}}
 
             {{-- Card Content --}}
-            <div 
-                class="relative grid min-h-50 md:min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
+            <div class="relative grid min-h-50 md:min-h-64 max-w-md sm:max-w-full flex-col items-center justify-between overflow-hidden rounded-xl bg-zinc-950
                     border border-transparent 
                     ">
                 <div class="absolute inset-0 m-0 h-full w-full overflow-hidden rounded-none bg-transparent bg-cover bg-center"
-                    style="background-image: url('{{ asset('storage/' . $event->image) }}');"
-                    {{-- style="background-image: url('https://picsum.photos/seed/{{ rand(0, 100000) }}/1080/566');" --}}
-                    >
-                    
-                    <div class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
+                    style="background-image: url('{{ asset('storage/' . $event->image) }}');" {{--
+                    style="background-image: url('https://picsum.photos/seed/{{ rand(0, 100000) }}/1080/566');" --}}>
+
+                    <div
+                        class="absolute inset-0 h-full w-full bg-gradient-to-r from-black/80 via-black/60 to-transparent">
                     </div>
                 </div>
                 <div class="relative space-y-3 p-6 px-6 py-10 md:px-12">
                     <flux:text class="font-medium text-zinc-300">
                         {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                     </flux:text>
-                    <h2 class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
+                    <h2
+                        class="text-2xl font-medium text-white leading-7 group-hover:text-[var(--color-accent)] transition-colors duration-300">
                         {{ $event->title }}
                     </h2>
 
@@ -112,15 +112,39 @@
 
             {{-- Value receiver --}}
             <div class="">
-                <flux:input 
-                    type="text"
-                    wire:model.live="studentIdInput" 
-                    {{-- x-ref="qrInput" --}}
-                    autofocus
-                    
-                    >
+                <flux:input type="text" wire:model.live="studentIdInput" {{-- x-ref="qrInput" --}} autofocus>
                 </flux:input>
             </div>
+
+            {{-- <div x-data="{ autoFocus: true }">
+                <flux:input type="text" wire:model.live="studentIdInput" x-ref="qrInput"
+                    x-bind:class="autoFocus ? 'ring-2 ring-blue-500' : ''" autofocus></flux:input>
+
+                <flux:button @click="autoFocus = !autoFocus" class="mt-2" variant="primary" color="amber">
+                    Toggle Auto Focus
+                </flux:button>
+
+                <script>
+                    document.addEventListener('livewire:init', () => {
+                        Livewire.hook('message.processed', () => {
+                            const qrInput = document.querySelector('[x-ref="qrInput"]');
+                            if (qrInput && qrInput.closest('[x-data]')?._x_dataStack[0].autoFocus) {
+                                qrInput.focus();
+                            }
+                        });
+                    });
+
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const qrInput = document.querySelector('[x-ref="qrInput"]');
+                        qrInput?.addEventListener('blur', () => {
+                            if (qrInput.closest('[x-data]')?._x_dataStack[0].autoFocus) {
+                                setTimeout(() => qrInput.focus(), 0);
+                            }
+                        });
+                    });
+                </script>
+            </div> --}}
+
 
         </div>
 
@@ -130,7 +154,7 @@
 
             {{-- Bin Stats --}}
             <div class="flex items-center justify-between gap-2">
-                
+
                 <flux:heading size="xl">Attendance Bin</flux:heading>
 
                 <div class="flex items-center">
@@ -151,7 +175,7 @@
                                 @endif
 
                             </flux:heading>
-                        
+
                         </div>
 
                     </div>
@@ -160,11 +184,11 @@
                     <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
                         <flux:text>Present Students</flux:text>
                         <div class="flex items-center gap-2">
-                            
+
                             <span class="w-3 h-3 bg-green-500 rounded-sm"></span>
                             <flux:heading size="xl" level="1">{{ $presentCount }}
                             </flux:heading>
-                        
+
                         </div>
 
                     </div>
@@ -173,21 +197,21 @@
                     <div class="px-7 py-6 whitespace-nowrap grid justify-items-center">
                         <flux:text>Late Students</flux:text>
                         <div class="flex items-center gap-2">
-                            
+
                             <span class="w-3 h-3 bg-[var(--color-accent)] rounded-sm"></span>
                             <flux:heading size="xl" level="1">{{ $lateCount }}
                             </flux:heading>
-                        
+
                         </div>
 
                     </div>
                 </div>
 
-                
+
             </div>
 
             {{-- Table --}}
-            <div class="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg"  wire:scroll>
+            <div class="mt-10 relative overflow-x-auto shadow-md sm:rounded-lg" wire:scroll>
                 <table class="w-full text-sm text-left rtl:text-right text-zinc-600 dark:text-zinc-50 ">
                     <thead class="text-xs text-zinc-700 uppercase dark:bg-zinc-950 dark:text-zinc-50">
                         <tr>
@@ -212,7 +236,9 @@
                     </thead>
 
                     <tbody>
-                        {{-- <div class=" h-100 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">" --}}
+                        {{-- <div
+                            class=" h-100 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">
+                            " --}}
                             @forelse ($users as $user)
                                 <tr wire:key="attendance-log-{{ $user->id }}"
                                     class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition">
@@ -255,7 +281,7 @@
                                     {{-- Override --}}
                                     <td class="px-3 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
 
-                                        @if ($user->user) 
+                                        @if ($user->user)
                                             <flux:dropdown position="left" align="end">
 
                                                 <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"
@@ -313,7 +339,8 @@
                                                 <div>
                                                     <flux:heading size="lg">Mark Student as Scanned?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                        <p class="text-white">You're about to mark
+                                                            {{ $user->user?->name ?? 'Student' }} as
                                                             Scanned.</p>
                                                     </flux:text>
                                                 </div>
@@ -330,12 +357,14 @@
                                         </flux:modal>
 
                                         {{-- Mark late modal --}}
-                                        <flux:modal :name="'mark-late-'.$user->id" class="min-w-[22rem]" :dismissible="false">
+                                        <flux:modal :name="'mark-late-'.$user->id" class="min-w-[22rem]"
+                                            :dismissible="false">
                                             <div class="space-y-6">
                                                 <div>
                                                     <flux:heading size="lg">Mark Student as Late?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Late.
+                                                        <p class="text-white">You're about to mark
+                                                            {{ $user->user?->name ?? 'Student' }} as Late.
                                                         </p>
                                                     </flux:text>
                                                 </div>
@@ -344,7 +373,8 @@
                                                     <flux:modal.close>
                                                         <flux:button variant="ghost">Cancel</flux:button>
                                                     </flux:modal.close>
-                                                    <flux:button variant="danger" wire:click="markLate({{ $user->user_id }})">
+                                                    <flux:button variant="danger"
+                                                        wire:click="markLate({{ $user->user_id }})">
                                                         Mark Late</flux:button>
                                                 </div>
                                             </div>
@@ -357,7 +387,8 @@
                                                 <div>
                                                     <flux:heading size="lg">Mark Student as Present?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                        <p class="text-white">You're about to mark
+                                                            {{ $user->user?->name ?? 'Student' }} as
                                                             Present.</p>
                                                     </flux:text>
                                                 </div>
@@ -374,12 +405,14 @@
                                         </flux:modal>
 
                                         {{-- Mark absent modal --}}
-                                        <flux:modal :name="'mark-absent-'.$user->id" class="min-w-[22rem]" :dismissible="false">
+                                        <flux:modal :name="'mark-absent-'.$user->id" class="min-w-[22rem]"
+                                            :dismissible="false">
                                             <div class="space-y-6">
                                                 <div>
                                                     <flux:heading size="lg">Mark Student as Absent?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Absent.
+                                                        <p class="text-white">You're about to mark
+                                                            {{ $user->user?->name ?? 'Student' }} as Absent.
                                                         </p>
                                                     </flux:text>
                                                 </div>
@@ -388,19 +421,22 @@
                                                     <flux:modal.close>
                                                         <flux:button variant="ghost">Cancel</flux:button>
                                                     </flux:modal.close>
-                                                    <flux:button variant="danger" wire:click="markAbsent({{ $user->user_id }})">
+                                                    <flux:button variant="danger"
+                                                        wire:click="markAbsent({{ $user->user_id }})">
                                                         Mark Absent</flux:button>
                                                 </div>
                                             </div>
                                         </flux:modal>
 
                                         {{-- Remove Time-out modal --}}
-                                        <flux:modal :name="'remove-timeout-'.$user->id" class="min-w-[22rem]" :dismissible="false">
+                                        <flux:modal :name="'remove-timeout-'.$user->id" class="min-w-[22rem]"
+                                            :dismissible="false">
                                             <div class="space-y-6">
                                                 <div>
                                                     <flux:heading size="lg">Remove Student Time-Out?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to remove {{ $user->user?->name ?? 'Student' }}'s
+                                                        <p class="text-white">You're about to remove
+                                                            {{ $user->user?->name ?? 'Student' }}'s
                                                         </p>
                                                         <p class="text-white">time-out record
                                                         </p>
@@ -411,7 +447,8 @@
                                                     <flux:modal.close>
                                                         <flux:button variant="ghost">Cancel</flux:button>
                                                     </flux:modal.close>
-                                                    <flux:button variant="danger" wire:click="removeTimeOut({{ $user->user_id }})">
+                                                    <flux:button variant="danger"
+                                                        wire:click="removeTimeOut({{ $user->user_id }})">
                                                         Remove Time-Out</flux:button>
                                                 </div>
                                             </div>
@@ -424,7 +461,8 @@
                                                 <div>
                                                     <flux:heading size="lg">Remove Attendance Record?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to remove {{ $user->user?->name ?? 'Student' }}'s
+                                                        <p class="text-white">You're about to remove
+                                                            {{ $user->user?->name ?? 'Student' }}'s
                                                             attendance record.</p>
                                                     </flux:text>
                                                 </div>
@@ -452,7 +490,8 @@
                                     </td>
                                 </tr>
                             @endforelse
-                        {{-- </div> --}}
+                            {{--
+                        </div> --}}
 
                     </tbody>
                 </table>
@@ -486,13 +525,14 @@
                         type="password" placeholder="○" data-hs-pin-input-item="">
 
                 </div>
-                
+
                 @error('current_admin_key')
                     <p class="mt-4 text-sm  text-red-600 flex justify-center">{{ $message }}</p>
                 @enderror
             </div>
             <div class="flex justify-center">
-                <div ="opacity-100" wire:target="verifyAdminKey" class="opacity-0 transition-opacity duration-300"wire:loading.class>
+                <div="opacity-100" wire:target="verifyAdminKey" class="opacity-0 transition-opacity duration-300"
+                    wire:loading.class>
                     <flux:icon.loading class="text-zinc-50" />
                 </div>
             </div>
@@ -502,7 +542,8 @@
     {{-- Attendance bin functionality --}}
 
     <!-- Instascan CDN -->
-    {{-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> --}}
+    {{--
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> --}}
 
 
     {{-- Attendance Logic --}}
@@ -629,7 +670,7 @@
         function initAdminPinInputs() {
             const bindings = [
                 { id: 'pin-current', model: 'current_admin_key' },
-               
+
             ];
 
             if (!window.HSPinInput || typeof window.HSPinInput.autoInit !== 'function') {
@@ -655,7 +696,7 @@
                         @this.call('verifyAdminKey');
                     });
 
-                    
+
                 });
             });
 
@@ -683,7 +724,8 @@
     </script>
 
     {{-- Instascan (Camera scannner) --}}
-    {{-- <script>
+    {{--
+    <script>
         function startQRScanner() {
             const videoElement = document.getElementById('preview');
             const select = document.getElementById('camera-select');

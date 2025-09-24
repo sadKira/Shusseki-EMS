@@ -14,7 +14,17 @@ class EventAttendanceLogObserver
         if (!$event || !$event->school_year) {
             return;
         }
-        Cache::forget("dashboard:trend:{$event->school_year}");
+        // Cache::forget("dashboard:trend:{$event->school_year}");
+
+        $schoolYear = $event->school_year;
+
+        // Forget everything that depends on attendance logs
+        Cache::forget("dashboard:trend:{$schoolYear}");
+        Cache::forget("students:attendance:doughnut:{$schoolYear}");
+        Cache::forget("students:missing:count:{$schoolYear}");
+        Cache::forget("students:base:counts:{$schoolYear}");
+        Cache::forget("events:finished:{$schoolYear}");
+        Cache::forget("attendance:logs:{$schoolYear}");
     }
 
     public function created(EventAttendanceLog $log): void
@@ -31,5 +41,4 @@ class EventAttendanceLogObserver
     {
         $this->forgetTrend($log);
     }
-    
 }
