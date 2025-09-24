@@ -111,7 +111,7 @@
             </div>
 
             {{-- Value receiver --}}
-            <div class="pointer-events-none">
+            <div class="">
                 <flux:input 
                     type="text"
                     wire:model.live="studentIdInput" 
