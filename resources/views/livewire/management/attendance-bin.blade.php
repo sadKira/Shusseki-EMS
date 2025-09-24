@@ -111,7 +111,7 @@
             </div>
 
             {{-- Value receiver --}}
-            <div class="pointer-events-none opacity-0">
+            <div class="pointer-events-none">
                 <flux:input 
                     type="text"
                     wire:model.live="studentIdInput" 
@@ -212,216 +212,218 @@
                     </thead>
 
                     <tbody>
-                        @forelse ($users as $user)
-                            <tr wire:key="attendance-log-{{ $user->id }}"
-                                class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition">
+                        <div class=" h-100 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-zinc-900 dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700">"
+                            @forelse ($users as $user)
+                                <tr wire:key="attendance-log-{{ $user->id }}"
+                                    class="bg-white border-b dark:bg-zinc-950 dark:border-zinc-700 border-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition">
 
-                                {{-- Name --}}
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->user?->name ?? 'Deleted User' }}
-                                </th>
+                                    {{-- Name --}}
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
+                                        {{ $user->user?->name ?? 'Deleted User' }}
+                                    </th>
 
-                                {{-- Year Level --}}
-                                <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->user?->year_level ?? '-' }}
-                                </td>
+                                    {{-- Year Level --}}
+                                    <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
+                                        {{ $user->user?->year_level ?? '-' }}
+                                    </td>
 
-                                {{-- Time In --}}
-                                <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->time_in ? \Carbon\Carbon::parse($user->time_in)->setTimezone('Asia/Manila')->format('h:i A') : '-' }}
-                                </td>
+                                    {{-- Time In --}}
+                                    <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
+                                        {{ $user->time_in ? \Carbon\Carbon::parse($user->time_in)->setTimezone('Asia/Manila')->format('h:i A') : '-' }}
+                                    </td>
 
-                                {{-- Time Out --}}
-                                <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
-                                    {{ $user->time_out ? \Carbon\Carbon::parse($user->time_out)->setTimezone('Asia/Manila')->format('h:i A') : '-' }}
-                                </td>
+                                    {{-- Time Out --}}
+                                    <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
+                                        {{ $user->time_out ? \Carbon\Carbon::parse($user->time_out)->setTimezone('Asia/Manila')->format('h:i A') : '-' }}
+                                    </td>
 
-                                {{-- Attendance Status --}}
-                                <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
-                                    @php
-                                        $status = $user->attendance_status?->label() ?? 'Unknown';
-                                        $color = match ($user->attendance_status) {
-                                            \App\Enums\AttendanceStatus::Scanned => 'zinc',
-                                            \App\Enums\AttendanceStatus::Late => 'amber',
-                                            \App\Enums\AttendanceStatus::Present => 'green',
-                                            default => 'red',
-                                        };
-                                    @endphp
-                                    <flux:badge variant="solid" color="{{ $color }}">{{ $status }}</flux:badge>
-                                </td>
+                                    {{-- Attendance Status --}}
+                                    <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
+                                        @php
+                                            $status = $user->attendance_status?->label() ?? 'Unknown';
+                                            $color = match ($user->attendance_status) {
+                                                \App\Enums\AttendanceStatus::Scanned => 'zinc',
+                                                \App\Enums\AttendanceStatus::Late => 'amber',
+                                                \App\Enums\AttendanceStatus::Present => 'green',
+                                                default => 'red',
+                                            };
+                                        @endphp
+                                        <flux:badge variant="solid" color="{{ $color }}">{{ $status }}</flux:badge>
+                                    </td>
 
-                                {{-- Override --}}
-                                <td class="px-3 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
+                                    {{-- Override --}}
+                                    <td class="px-3 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
 
-                                    @if ($user->user) 
-                                        <flux:dropdown position="left" align="end">
+                                        @if ($user->user) 
+                                            <flux:dropdown position="left" align="end">
 
-                                            <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"
-                                                tooltip="Override Status"></flux:button>
+                                                <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"
+                                                    tooltip="Override Status"></flux:button>
 
-                                            <flux:menu>
+                                                <flux:menu>
 
-                                                <flux:modal.trigger :name="'mark-scanned-'.$user->id">
-                                                    <flux:menu.item>
-                                                        Scanned
-                                                    </flux:menu.item>
-                                                </flux:modal.trigger>
+                                                    <flux:modal.trigger :name="'mark-scanned-'.$user->id">
+                                                        <flux:menu.item>
+                                                            Scanned
+                                                        </flux:menu.item>
+                                                    </flux:modal.trigger>
 
-                                                <flux:modal.trigger :name="'mark-late-'.$user->id">
-                                                    <flux:menu.item>
-                                                        Late
-                                                    </flux:menu.item>
-                                                </flux:modal.trigger>
+                                                    <flux:modal.trigger :name="'mark-late-'.$user->id">
+                                                        <flux:menu.item>
+                                                            Late
+                                                        </flux:menu.item>
+                                                    </flux:modal.trigger>
 
-                                                <flux:modal.trigger :name="'mark-present-'.$user->id">
-                                                    <flux:menu.item>
-                                                        Present
-                                                    </flux:menu.item>
-                                                </flux:modal.trigger>
+                                                    <flux:modal.trigger :name="'mark-present-'.$user->id">
+                                                        <flux:menu.item>
+                                                            Present
+                                                        </flux:menu.item>
+                                                    </flux:modal.trigger>
 
-                                                <flux:modal.trigger :name="'mark-absent-'.$user->id">
-                                                    <flux:menu.item>
-                                                        Absent
-                                                    </flux:menu.item>
-                                                </flux:modal.trigger>
+                                                    <flux:modal.trigger :name="'mark-absent-'.$user->id">
+                                                        <flux:menu.item>
+                                                            Absent
+                                                        </flux:menu.item>
+                                                    </flux:modal.trigger>
 
-                                                <flux:menu.separator />
+                                                    <flux:menu.separator />
 
-                                                <flux:modal.trigger :name="'remove-record-'.$user->id">
-                                                    <flux:menu.item variant="danger">
-                                                        Remove Record
-                                                    </flux:menu.item>
-                                                </flux:modal.trigger>
+                                                    <flux:modal.trigger :name="'remove-record-'.$user->id">
+                                                        <flux:menu.item variant="danger">
+                                                            Remove Record
+                                                        </flux:menu.item>
+                                                    </flux:modal.trigger>
 
-                                            </flux:menu>
+                                                </flux:menu>
 
-                                        </flux:dropdown>
-                                    @endif
+                                            </flux:dropdown>
+                                        @endif
 
-                                    {{-- Mark scanned modal --}}
-                                    <flux:modal :name="'mark-scanned-'.$user->id" class="min-w-[22rem]"
-                                        :dismissible="false">
-                                        <div class="space-y-6">
-                                            <div>
-                                                <flux:heading size="lg">Mark Student as Scanned?</flux:heading>
-                                                <flux:text class="mt-2">
-                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
-                                                        Scanned.</p>
-                                                </flux:text>
+                                        {{-- Mark scanned modal --}}
+                                        <flux:modal :name="'mark-scanned-'.$user->id" class="min-w-[22rem]"
+                                            :dismissible="false">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <flux:heading size="lg">Mark Student as Scanned?</flux:heading>
+                                                    <flux:text class="mt-2">
+                                                        <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                            Scanned.</p>
+                                                    </flux:text>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                    <flux:spacer />
+                                                    <flux:modal.close>
+                                                        <flux:button variant="ghost">Cancel</flux:button>
+                                                    </flux:modal.close>
+                                                    <flux:button variant="primary" color="amber"
+                                                        wire:click="markScanned({{ $user->user_id }})">Mark Scanned
+                                                    </flux:button>
+                                                </div>
                                             </div>
-                                            <div class="flex gap-2">
-                                                <flux:spacer />
-                                                <flux:modal.close>
-                                                    <flux:button variant="ghost">Cancel</flux:button>
-                                                </flux:modal.close>
-                                                <flux:button variant="primary" color="amber"
-                                                    wire:click="markScanned({{ $user->user_id }})">Mark Scanned
-                                                </flux:button>
+                                        </flux:modal>
+
+                                        {{-- Mark late modal --}}
+                                        <flux:modal :name="'mark-late-'.$user->id" class="min-w-[22rem]" :dismissible="false">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <flux:heading size="lg">Mark Student as Late?</flux:heading>
+                                                    <flux:text class="mt-2">
+                                                        <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Late.
+                                                        </p>
+                                                    </flux:text>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                    <flux:spacer />
+                                                    <flux:modal.close>
+                                                        <flux:button variant="ghost">Cancel</flux:button>
+                                                    </flux:modal.close>
+                                                    <flux:button variant="danger" wire:click="markLate({{ $user->user_id }})">
+                                                        Mark Late</flux:button>
+                                                </div>
                                             </div>
+                                        </flux:modal>
+
+                                        {{-- Mark present modal --}}
+                                        <flux:modal :name="'mark-present-'.$user->id" class="min-w-[22rem]"
+                                            :dismissible="false">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <flux:heading size="lg">Mark Student as Present?</flux:heading>
+                                                    <flux:text class="mt-2">
+                                                        <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
+                                                            Present.</p>
+                                                    </flux:text>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                    <flux:spacer />
+                                                    <flux:modal.close>
+                                                        <flux:button variant="ghost">Cancel</flux:button>
+                                                    </flux:modal.close>
+                                                    <flux:button variant="primary" color="green"
+                                                        wire:click="markPresent({{ $user->user_id }})">Mark Present
+                                                    </flux:button>
+                                                </div>
+                                            </div>
+                                        </flux:modal>
+
+                                        {{-- Mark absent modal --}}
+                                        <flux:modal :name="'mark-absent-'.$user->id" class="min-w-[22rem]" :dismissible="false">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <flux:heading size="lg">Mark Student as Absent?</flux:heading>
+                                                    <flux:text class="mt-2">
+                                                        <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Absent.
+                                                        </p>
+                                                    </flux:text>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                    <flux:spacer />
+                                                    <flux:modal.close>
+                                                        <flux:button variant="ghost">Cancel</flux:button>
+                                                    </flux:modal.close>
+                                                    <flux:button variant="danger" wire:click="markAbsent({{ $user->user_id }})">
+                                                        Mark Absent</flux:button>
+                                                </div>
+                                            </div>
+                                        </flux:modal>
+
+                                        {{-- Remove record modal --}}
+                                        <flux:modal :name="'remove-record-'.$user->id" class="min-w-[22rem]"
+                                            :dismissible="false">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <flux:heading size="lg">Remove Attendance Record?</flux:heading>
+                                                    <flux:text class="mt-2">
+                                                        <p class="text-white">You're about to remove {{ $user->user?->name ?? 'Student' }}'s
+                                                            attendance record.</p>
+                                                    </flux:text>
+                                                </div>
+                                                <div class="flex gap-2">
+                                                    <flux:spacer />
+                                                    <flux:modal.close>
+                                                        <flux:button variant="ghost">Cancel</flux:button>
+                                                    </flux:modal.close>
+                                                    <flux:button variant="danger" color="amber"
+                                                        wire:click="removeLogRecord({{ $user->user_id }})">Remove Record
+                                                    </flux:button>
+                                                </div>
+                                            </div>
+                                        </flux:modal>
+
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="py-8">
+                                        <div class="flex justify-center items-center gap-2 w-full">
+                                            <flux:icon.queue-list variant="solid" class="text-zinc-50" />
+                                            <flux:heading size="lg">No Attendance Logs</flux:heading>
                                         </div>
-                                    </flux:modal>
-
-                                    {{-- Mark late modal --}}
-                                    <flux:modal :name="'mark-late-'.$user->id" class="min-w-[22rem]" :dismissible="false">
-                                        <div class="space-y-6">
-                                            <div>
-                                                <flux:heading size="lg">Mark Student as Late?</flux:heading>
-                                                <flux:text class="mt-2">
-                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Late.
-                                                    </p>
-                                                </flux:text>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <flux:spacer />
-                                                <flux:modal.close>
-                                                    <flux:button variant="ghost">Cancel</flux:button>
-                                                </flux:modal.close>
-                                                <flux:button variant="danger" wire:click="markLate({{ $user->user_id }})">
-                                                    Mark Late</flux:button>
-                                            </div>
-                                        </div>
-                                    </flux:modal>
-
-                                    {{-- Mark present modal --}}
-                                    <flux:modal :name="'mark-present-'.$user->id" class="min-w-[22rem]"
-                                        :dismissible="false">
-                                        <div class="space-y-6">
-                                            <div>
-                                                <flux:heading size="lg">Mark Student as Present?</flux:heading>
-                                                <flux:text class="mt-2">
-                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as
-                                                        Present.</p>
-                                                </flux:text>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <flux:spacer />
-                                                <flux:modal.close>
-                                                    <flux:button variant="ghost">Cancel</flux:button>
-                                                </flux:modal.close>
-                                                <flux:button variant="primary" color="green"
-                                                    wire:click="markPresent({{ $user->user_id }})">Mark Present
-                                                </flux:button>
-                                            </div>
-                                        </div>
-                                    </flux:modal>
-
-                                    {{-- Mark absent modal --}}
-                                    <flux:modal :name="'mark-absent-'.$user->id" class="min-w-[22rem]" :dismissible="false">
-                                        <div class="space-y-6">
-                                            <div>
-                                                <flux:heading size="lg">Mark Student as Absent?</flux:heading>
-                                                <flux:text class="mt-2">
-                                                    <p class="text-white">You're about to mark {{ $user->user?->name ?? 'Student' }} as Absent.
-                                                    </p>
-                                                </flux:text>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <flux:spacer />
-                                                <flux:modal.close>
-                                                    <flux:button variant="ghost">Cancel</flux:button>
-                                                </flux:modal.close>
-                                                <flux:button variant="danger" wire:click="markAbsent({{ $user->user_id }})">
-                                                    Mark Absent</flux:button>
-                                            </div>
-                                        </div>
-                                    </flux:modal>
-
-                                    {{-- Remove record modal --}}
-                                    <flux:modal :name="'remove-record-'.$user->id" class="min-w-[22rem]"
-                                        :dismissible="false">
-                                        <div class="space-y-6">
-                                            <div>
-                                                <flux:heading size="lg">Remove Attendance Record?</flux:heading>
-                                                <flux:text class="mt-2">
-                                                    <p class="text-white">You're about to remove {{ $user->user?->name ?? 'Student' }}'s
-                                                        attendance record.</p>
-                                                </flux:text>
-                                            </div>
-                                            <div class="flex gap-2">
-                                                <flux:spacer />
-                                                <flux:modal.close>
-                                                    <flux:button variant="ghost">Cancel</flux:button>
-                                                </flux:modal.close>
-                                                <flux:button variant="danger" color="amber"
-                                                    wire:click="removeLogRecord({{ $user->user_id }})">Remove Record
-                                                </flux:button>
-                                            </div>
-                                        </div>
-                                    </flux:modal>
-
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="py-8">
-                                    <div class="flex justify-center items-center gap-2 w-full">
-                                        <flux:icon.queue-list variant="solid" class="text-zinc-50" />
-                                        <flux:heading size="lg">No Attendance Logs</flux:heading>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </div>
 
                     </tbody>
                 </table>
