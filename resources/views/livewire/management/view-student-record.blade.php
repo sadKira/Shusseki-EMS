@@ -20,7 +20,7 @@
                             class="text-[var(--color-accent)]">{{ $selectedSchoolYear }}</span></flux:text>
 
                     <div class="flex items-center gap-2">
-                        <flux:heading size="xl">{{ $user->name }}</flux:heading>
+                        <flux:heading size="xl" class="text-balance">{{ $user->name }}</flux:heading>
                         @if ($user->late_count > 0 || $user->absent_count > 0)
                             <flux:badge variant="solid" size="sm" color="red">Sanctioned</flux:badge>
                         @endif
