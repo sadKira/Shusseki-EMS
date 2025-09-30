@@ -82,7 +82,7 @@
                     <flux:button variant="primary" color="amber" icon:trailing="qr-code" class="mt-3">Close
                         Scan QR Code</flux:button>
                 </flux:modal.trigger>
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-2 mt-2">
                     <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)">
                         Leave Attendance Bin</flux:button>
                     <flux:modal.trigger name="close-AB">
@@ -97,8 +97,8 @@
                         <div>
                             <flux:heading size="lg">Scan QR Code</flux:heading>
                             {{-- Value receiver --}}
-                            <div class="mt-2">
-                                <flux:input type="text" wire:model.live="studentIdInput" x-ref="qrInput" autofocus mask="9999999">
+                            <div class="mt-5">
+                                <flux:input type="text" wire:model.live="studentIdInput" {{--x-ref="qrInput"--}} autofocus mask="9999999">
                                 </flux:input>
                             </div>
                         </div>
