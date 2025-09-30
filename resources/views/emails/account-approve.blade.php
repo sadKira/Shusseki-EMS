@@ -29,7 +29,7 @@
 
     .header img {
       max-width: 40px;
-      margin-bottom: 20px;
+      margin-bottom: 50px;
     }
 
     .header h2 {
@@ -89,13 +89,18 @@
           <td align="left">
             <img src="https://shusseki-ems.site/images/Seal_White.png" alt="Left Logo">
           </td>
+
+          <td colspan="2" align="center" style="margin-bottom: 60px;">
+            <h2>Account Approved</h2>
+          </td>
             
           <td align="right">
             <img src="https://shusseki-ems.site/images/Seal.png" alt="Right Logo">
           </td>
+
         </tr>
       </table>
-      <h2>Account Approved</h2>
+      {{-- <h2>Account Approved</h2> --}}
     </div>
 
     <!-- Content -->
