@@ -249,12 +249,12 @@
 
                                     {{-- Time In --}}
                                     <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
-                                        {{ $user->time_in ? \Carbon\Carbon::parse($user->time_in)->setTimezone('Asia/Manila')->format('h:i A') : '-' }}
+                                        {{ $user->time_in ? \Carbon\Carbon::parse($user->time_in)->format('h:i A') : '-' }}
                                     </td>
 
                                     {{-- Time Out --}}
                                     <td class="px-6 py-4 text-zinc-600 whitespace-nowrap dark:text-zinc-100">
-                                        {{ $user->time_out ? \Carbon\Carbon::parse($user->time_out)->setTimezone('Asia/Manila')->format('h:i A') : '-' }}
+                                        {{ $user->time_out ? \Carbon\Carbon::parse($user->time_out)->format('h:i A') : '-' }}
                                     </td>
 
                                     {{-- Attendance Status --}}
