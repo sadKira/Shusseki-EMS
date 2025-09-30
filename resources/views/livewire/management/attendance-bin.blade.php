@@ -78,12 +78,38 @@
 
             {{-- Close attendance bin --}}
             <div class="grid">
-                <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)">
-                    Leave Attendance Bin</flux:button>
-                <flux:modal.trigger name="close-AB">
-                    <flux:button variant="primary" color="amber" icon:trailing="shield-check" class="mt-3">Close
-                        Attendance Bin</flux:button>
+                <flux:modal.trigger name="scan-qr">
+                    <flux:button variant="primary" color="amber" icon:trailing="qr-code" class="mt-3">Close
+                        Scan QR Code</flux:button>
                 </flux:modal.trigger>
+                <div class="flex items-center justify-between">
+                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)">
+                        Leave Attendance Bin</flux:button>
+                    <flux:modal.trigger name="close-AB">
+                        <flux:button variant="primary" color="green" icon:trailing="shield-check" class="mt-3">Close
+                            Attendance Bin</flux:button>
+                    </flux:modal.trigger>
+                </div>
+
+                {{-- Scan QR modal --}}
+                <flux:modal name="scan-qr" class="min-w-[22rem]">
+                    <div class="space-y-6">
+                        <div>
+                            <flux:heading size="lg">Scan QR Code</flux:heading>
+                            {{-- Value receiver --}}
+                            <div class="mt-2">
+                                <flux:input type="text" wire:model.live="studentIdInput" x-ref="qrInput" autofocus mask="9999999">
+                                </flux:input>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <flux:spacer />
+                            <flux:modal.close>
+                                <flux:button variant="ghost">Close</flux:button>
+                            </flux:modal.close>
+                        </div>
+                    </div>
+                </flux:modal>
 
                 {{-- Close AB modal --}}
                 <flux:modal name="close-AB" class="min-w-[22rem]">
@@ -109,13 +135,6 @@
                     <flux:text class="text-xs">Closing the bin logs all absentees.</flux:text>
                 </div>
             </div>
-
-            {{-- Value receiver --}}
-            <div class="">
-                <flux:input type="text" wire:model.live="studentIdInput" {{-- x-ref="qrInput" --}} autofocus mask="9999999">
-                </flux:input>
-            </div>
-
 
         </div>
 
