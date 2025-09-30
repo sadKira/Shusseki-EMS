@@ -79,10 +79,10 @@
             {{-- Close attendance bin --}}
             <div class="grid">
                 <flux:modal.trigger name="scan-qr">
-                    <flux:button variant="primary" color="amber" icon:trailing="qr-code" class="mt-3">Close
+                    <flux:button variant="primary" color="amber" icon:trailing="qr-code" class="mt-3">
                         Scan QR Code</flux:button>
                 </flux:modal.trigger>
-                <div class="flex items-center justify-between mt-3">
+                <div class="flex items-center justify-between gap-2 mt-1">
                     <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)" class="w-full">
                         Leave Attendance Bin</flux:button>
                     <flux:modal.trigger name="close-AB">
@@ -95,7 +95,10 @@
                 <flux:modal name="scan-qr" class="min-w-[22rem]">
                     <div class="space-y-6">
                         <div>
-                            <flux:heading size="lg">Scan QR Code</flux:heading>
+                            <div class="flex items-center gap-2">
+                                <flux:icon.qr-code variant="mini" />
+                                <flux:heading size="lg">Scan QR Code</flux:heading>
+                            </div>
                             {{-- Value receiver --}}
                             <div class="mt-5">
                                 <flux:input type="text" wire:model.live="studentIdInput" {{--x-ref="qrInput"--}} autofocus mask="9999999">
@@ -117,8 +120,8 @@
                         <div>
                             <flux:heading size="lg">Close Attendance Bin?</flux:heading>
                             <flux:text class="mt-2">
-                                <p class="text-white">You're about to close the attendance bin.</p>
-                                <p class="text-white">Only the Moderator can re-open the bin.</p>
+                                <p class="text-neutral-300">You're about to close the attendance bin.</p>
+                                <p class="text-neutral-300">Only the Moderator can re-open the bin.</p>
                             </flux:text>
                         </div>
                         <div class="flex gap-2">
@@ -306,7 +309,7 @@
                                                     <flux:menu.separator />
 
                                                     <flux:modal.trigger :name="'remove-timeout-'.$user->id">
-                                                        <flux:menu.item>
+                                                        <flux:menu.item variant="danger">
                                                             Remove Time-Out
                                                         </flux:menu.item>
                                                     </flux:modal.trigger>
@@ -329,7 +332,7 @@
                                                 <div>
                                                     <flux:heading size="lg">Mark Student as Scanned?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to mark
+                                                        <p class="text-neutral-300">You're about to mark
                                                             {{ $user->user?->name ?? 'Student' }} as
                                                             Scanned.</p>
                                                     </flux:text>
@@ -353,7 +356,7 @@
                                                 <div>
                                                     <flux:heading size="lg">Mark Student as Late?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to mark
+                                                        <p class="text-neutral-300">You're about to mark
                                                             {{ $user->user?->name ?? 'Student' }} as Late.
                                                         </p>
                                                     </flux:text>
@@ -377,7 +380,7 @@
                                                 <div>
                                                     <flux:heading size="lg">Mark Student as Present?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to mark
+                                                        <p class="text-neutral-300">You're about to mark
                                                             {{ $user->user?->name ?? 'Student' }} as
                                                             Present.</p>
                                                     </flux:text>
@@ -401,7 +404,7 @@
                                                 <div>
                                                     <flux:heading size="lg">Mark Student as Absent?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to mark
+                                                        <p class="text-neutral-300">You're about to mark
                                                             {{ $user->user?->name ?? 'Student' }} as Absent.
                                                         </p>
                                                     </flux:text>
@@ -425,10 +428,10 @@
                                                 <div>
                                                     <flux:heading size="lg">Remove Student Time-Out?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to remove
+                                                        <p class="text-neutral-300">You're about to remove
                                                             {{ $user->user?->name ?? 'Student' }}'s
                                                         </p>
-                                                        <p class="text-white">time-out record
+                                                        <p class="text-neutral-300">time-out record
                                                         </p>
                                                     </flux:text>
                                                 </div>
@@ -451,7 +454,7 @@
                                                 <div>
                                                     <flux:heading size="lg">Remove Attendance Record?</flux:heading>
                                                     <flux:text class="mt-2">
-                                                        <p class="text-white">You're about to remove
+                                                        <p class="text-neutral-300">You're about to remove
                                                             {{ $user->user?->name ?? 'Student' }}'s
                                                             attendance record.</p>
                                                     </flux:text>
