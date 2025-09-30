@@ -294,10 +294,10 @@ class AttendanceBinTimeline extends Component
         $logs = EventAttendanceLog::where('event_id', $this->event->id)
             ->with('user:id,name,student_id')
             ->latest('time_in')
-            ->paginate(25);
+            // ->paginate(25);
             // ->with('user')
             // ->orderByDesc('time_in')
-            // ->get();
+            ->get();
 
          // Attendance stats
         $totalAttendees = $this->event->attendanceLogs()->where('attendance_status', '!=', 'absent')->count();
