@@ -90,7 +90,7 @@
             <img src="https://shusseki-ems.site/images/Seal_White.png" alt="Left Logo">
           </td>
 
-          <td colspan="2" align="center" style="margin-bottom: 60px;">
+          <td colspan="2" align="center" style="margin-top: 20px;">
             <h2>Account Approved</h2>
           </td>
             
