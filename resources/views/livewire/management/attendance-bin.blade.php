@@ -5,7 +5,7 @@
             <img src="{{ asset('images/MKDSide_White.svg') }}" alt="MKD Logo" class="h-12 w-auto sm:h-16 md:h-20">
         </div>
 
-        <flux:spacer />
+        
 
     </flux:header>
 
