@@ -310,7 +310,7 @@ class AttendanceBin extends Component
     {
         // Attendance Logs
         $logs = EventAttendanceLog::where('event_id', $this->event->id)
-            ->with('user:id,name,student_id')
+            ->with('user:id,name,student_id,year_level')
             ->latest('time_in')
             // ->paginate(25);
             // ->with('user')
