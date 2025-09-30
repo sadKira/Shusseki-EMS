@@ -84,8 +84,21 @@
 
     <!-- Header -->
     <div class="header">
-      <img src="https://shusseki-ems.site/images/Side_White.png" alt="Logo White">
-      <h2>Account Approved</h2>
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+        <tr>
+          <td align="left">
+            <img src="https://shusseki-ems.site/images/Seal_White.png" alt="Left Logo" style="max-width: 110px;">
+          </td>
+          <td align="center">
+            <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #111111;">
+              Account Approved
+            </h2>
+          </td>
+          <td align="right">
+            <img src="https://shusseki-ems.site/images/Seal.png" alt="Right Logo" style="max-width: 110px;">
+          </td>
+        </tr>
+      </table>
     </div>
 
     <!-- Content -->

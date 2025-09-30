@@ -7,6 +7,10 @@ use App\Models\Event;
 use App\Models\EventAttendanceLog;
 use App\Enums\EventStatus;
 use Flux\Flux;
+use App\Models\Setting;
+use App\Mail\EventReminder;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class ViewEventTimeline extends Component
 {
@@ -42,6 +46,23 @@ class ViewEventTimeline extends Component
 
         return redirect()->route('view_event_timeline', $this->event);
     }
+
+    public function sendEmailUpdate()
+    {
+        $event = $this->event;
+
+        User::where('role', 'user')
+            ->where('status', 'approved')
+            ->where('account_status', 'active')
+            ->chunk(100, function ($users) use ($event) {
+                foreach ($users as $user) {
+                    Mail::to($user->email)->queue(new EventReminder($event, $user));
+                }
+            });
+
+        Flux::modals()->close();
+    }
+
     public function render()
     {
         // Attendance stats

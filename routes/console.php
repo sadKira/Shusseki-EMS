@@ -64,28 +64,57 @@ Artisan::command('test:email-reminders {--days=3} {--limit=5}', function () {
 // Clearing expired password reset tokens in the db
 Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 
+// Schedule::call(function () {
+
+//     // Find events that will happen 3 days from now
+//     $upcomingEvents = Event::whereBetween('date', [
+//         now()->addDay()->startOfDay(),
+//         now()->addDays(3)->endOfDay(),
+//     ])
+//     ->where('status', '!=', EventStatus::Postponed)
+//     ->where('school_year', Setting::getSchoolYear())
+//     ->get();
+
+//     foreach ($upcomingEvents as $event) {
+
+//         // Send email to ALL users
+//         $users = User::where('role', 'user')
+//         ->where('status', 'approved')
+//         ->where('account_status', 'active')
+//         ->get();
+
+//         foreach ($users as $index => $user) {
+//             Mail::to($user->email)
+//             ->later(now()->addSeconds($index * 10), new EventReminder($event, $user));
+//         }
+//     }
+// })->dailyAt('08:00')->timezone('Asia/Manila'); // Run once a day at 8 AM
+
+
 Schedule::call(function () {
 
-    // Find events that will happen 3 days from now
     $upcomingEvents = Event::whereBetween('date', [
-        now()->addDay()->startOfDay(),
-        now()->addDays(3)->endOfDay(),
-    ])
-    ->where('status', '!=', EventStatus::Postponed)
-    ->where('school_year', Setting::getSchoolYear())
-    ->get();
-
-    foreach ($upcomingEvents as $event) {
-
-        // Send email to ALL users
-        $users = User::where('role', 'user')
-        ->where('status', 'approved')
-        ->where('account_status', 'active')
+            now()->addDay()->startOfDay(),
+            now()->addDays(3)->endOfDay(),
+        ])
+        ->where('status', '!=', EventStatus::Postponed)
+        ->where('school_year', Setting::getSchoolYear())
         ->get();
 
-        foreach ($users as $index => $user) {
-            Mail::to($user->email)
-            ->later(now()->addSeconds($index * 10), new EventReminder($event, $user));
+    if ($upcomingEvents->isEmpty()) {
+        return;
+    }
+
+    // Only query users once
+    $users = User::where('role', 'user')
+        ->where('status', 'approved')
+        ->where('account_status', 'active')
+        ->cursor(); // use cursor to avoid memory blowup
+
+    foreach ($upcomingEvents as $event) {
+        foreach ($users as $user) {
+            Mail::to($user->email)->queue(new EventReminder($event, $user));
         }
     }
-})->dailyAt('08:00')->timezone('Asia/Manila'); // Run once a day at 8 AM
+    
+})->dailyAt('08:00')->timezone('Asia/Manila');

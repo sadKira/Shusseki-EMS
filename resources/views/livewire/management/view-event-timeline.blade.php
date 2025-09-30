@@ -220,6 +220,11 @@
                             <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber" :href="route('attendance_bin_timeline', $event)">View Attendance Bin</flux:button>
 
                             @can('SA')
+
+                                <flux:modal.trigger name="send-em">
+                                    <flux:button variant="primary" icon:trailing="envelope" color="amber">Send Email Notification</flux:button>
+                                </flux:modal.trigger>
+
                                 <div class="flex items-center justify-between gap-2">    
                                     @if (request()->routeIs(['view_event_timeline']))
                                         <flux:button class="w-full" variant="filled" icon:trailing="pencil-square" :href="route('edit_event_timeline', $event)" wire:navigate>Edit Event</flux:button>
@@ -322,6 +327,27 @@
                                 </div>
                             </div>
                         </flux:modal>
+
+                        {{-- Reopen AB modal --}}
+                        <flux:modal name="send-em" class="min-w-[22rem]">
+                            <div class="space-y-6">
+                                <div>
+                                    <flux:heading size="lg">Send Email?</flux:heading>
+                                    <flux:text class="mt-2">
+                                        <p class="text-white">You're lknl</p>
+                                        <p class="text-white">marked as .</p>
+                                    </flux:text>
+                                </div>
+                                <div class="flex gap-2">
+                                    <flux:spacer />
+                                    <flux:modal.close>
+                                        <flux:button variant="ghost">Cancel</flux:button>
+                                    </flux:modal.close>
+                                    <flux:button variant="primary" color="amber" wire:click="sendEmailUpdate">Send Email</flux:button>
+                                </div>
+                            </div>
+                        </flux:modal>
+                        
                     </div>
 
 
