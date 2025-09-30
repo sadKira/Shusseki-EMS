@@ -490,7 +490,7 @@
                 </table>
             </div>
 
-            <div class="mt-4">
+            <div class="mt-4 text-white">
                 {{ $users->links('pagination::tailwind') }}
             </div>
 
