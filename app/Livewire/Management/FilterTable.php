@@ -120,7 +120,7 @@ class FilterTable extends Component
         $user = User::find($userId);
 
         // Account Approved
-        Mail::to($user->email)->queue(new AccountApprove($user));
+        // Mail::to($user->email)->queue(new AccountApprove($user));
 
         // Account Rejected
         // Mail::to($user->email)->queue(new AccountRejected());
