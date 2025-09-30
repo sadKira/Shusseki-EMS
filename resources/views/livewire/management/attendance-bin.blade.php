@@ -112,38 +112,9 @@
 
             {{-- Value receiver --}}
             <div class="">
-                <flux:input type="text" wire:model.live="studentIdInput" {{-- x-ref="qrInput" --}} autofocus>
+                <flux:input type="text" wire:model.live="studentIdInput" {{-- x-ref="qrInput" --}} autofocus mask="9999999">
                 </flux:input>
             </div>
-
-            {{-- <div x-data="{ autoFocus: true }">
-                <flux:input type="text" wire:model.live="studentIdInput" x-ref="qrInput"
-                    x-bind:class="autoFocus ? 'ring-2 ring-blue-500' : ''" autofocus></flux:input>
-
-                <flux:button @click="autoFocus = !autoFocus" class="mt-2" variant="primary" color="amber">
-                    Toggle Auto Focus
-                </flux:button>
-
-                <script>
-                    document.addEventListener('livewire:init', () => {
-                        Livewire.hook('message.processed', () => {
-                            const qrInput = document.querySelector('[x-ref="qrInput"]');
-                            if (qrInput && qrInput.closest('[x-data]')?._x_dataStack[0].autoFocus) {
-                                qrInput.focus();
-                            }
-                        });
-                    });
-
-                    document.addEventListener('DOMContentLoaded', () => {
-                        const qrInput = document.querySelector('[x-ref="qrInput"]');
-                        qrInput?.addEventListener('blur', () => {
-                            if (qrInput.closest('[x-data]')?._x_dataStack[0].autoFocus) {
-                                setTimeout(() => qrInput.focus(), 0);
-                            }
-                        });
-                    });
-                </script>
-            </div> --}}
 
 
         </div>
@@ -215,7 +186,7 @@
                 <table class="w-full text-sm text-left rtl:text-right text-zinc-600 dark:text-zinc-50 ">
                     <thead class="text-xs text-zinc-700 uppercase dark:bg-zinc-950 dark:text-zinc-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 whitespace-nowrap">
+                            <th scope="col" class="px-2 py-3 whitespace-nowrap">
                                 Student Name
                             </th>
                             <th scope="col" class="px-6 py-3 whitespace-nowrap">
@@ -245,7 +216,7 @@
 
                                     {{-- Name --}}
                                     <th scope="row"
-                                        class="px-6 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
+                                        class="px-2 py-4 font-medium text-zinc-900 whitespace-nowrap dark:text-zinc-100">
                                         {{ $user->user?->name ?? 'Deleted User' }}
                                     </th>
 
