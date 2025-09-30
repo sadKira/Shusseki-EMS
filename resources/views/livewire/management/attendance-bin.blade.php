@@ -82,11 +82,11 @@
                     <flux:button variant="primary" color="amber" icon:trailing="qr-code" class="mt-3">Close
                         Scan QR Code</flux:button>
                 </flux:modal.trigger>
-                <div class="flex items-center justify-between gap-2 mt-2">
-                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)">
+                <div class="flex items-center justify-between mt-3">
+                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)" class="w-full">
                         Leave Attendance Bin</flux:button>
                     <flux:modal.trigger name="close-AB">
-                        <flux:button variant="primary" color="green" icon:trailing="shield-check" class="mt-3">Close
+                        <flux:button variant="primary" color="green" icon:trailing="shield-check" class="w-full">Close
                             Attendance Bin</flux:button>
                     </flux:modal.trigger>
                 </div>
