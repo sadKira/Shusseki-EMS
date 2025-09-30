@@ -28,7 +28,7 @@
     }
 
     .header img {
-      max-width: 110px;
+      max-width: 40px;
       margin-bottom: 20px;
     }
 
@@ -87,18 +87,15 @@
       <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
         <tr>
           <td align="left">
-            <img src="https://shusseki-ems.site/images/Seal_White.png" alt="Left Logo" style="max-width: 110px;">
+            <img src="https://shusseki-ems.site/images/Seal_White.png" alt="Left Logo">
           </td>
-          <td align="center">
-            <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #111111;">
-              Account Approved
-            </h2>
-          </td>
+            
           <td align="right">
-            <img src="https://shusseki-ems.site/images/Seal.png" alt="Right Logo" style="max-width: 110px;">
+            <img src="https://shusseki-ems.site/images/Seal.png" alt="Right Logo">
           </td>
         </tr>
       </table>
+      <h2>Account Approved</h2>
     </div>
 
     <!-- Content -->
