@@ -96,7 +96,7 @@
                     <div class="space-y-6">
                         <div>
                             <div class="flex items-center gap-2">
-                                <flux:icon.qr-code variant="mini" />
+                                <flux:icon.qr-code class="text-white-500" variant="mini" />
                                 <flux:heading size="lg">Scan QR Code</flux:heading>
                             </div>
                             {{-- Value receiver --}}
