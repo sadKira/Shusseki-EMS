@@ -223,9 +223,9 @@
                             <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber" :href="route('attendance_bin', $event)">View Attendance Bin</flux:button>
 
                             @can('SA')
-                                <flux:modal.trigger name="send-em">
+                                {{-- <flux:modal.trigger name="send-em">
                                     <flux:button variant="primary" icon:trailing="envelope" color="amber">Send Email Notification</flux:button>
-                                </flux:modal.trigger>
+                                </flux:modal.trigger> --}}
 
                                 <div class="flex items-center justify-between gap-2">    
                                     @if (request()->routeIs(['view_event_timeline']))
