@@ -540,7 +540,7 @@
 
 
     {{-- Attendance Logic --}}
-    <script>
+    {{-- <script>
         document.addEventListener('livewire:init', () => {
             Livewire.hook('message.processed', () => {
                 document.querySelector('[x-ref="qrInput"]')?.focus();
@@ -562,7 +562,7 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 
 
     {{-- Toast notication --}}
