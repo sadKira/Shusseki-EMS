@@ -18,11 +18,14 @@ use Livewire\Attributes\On;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Setting;
+use Livewire\WithPagination;
 
 
 #[Layout('components.layouts.attendance_bin_app')]
 class AttendanceBin extends Component
 {
+    use WithPagination;
+
     public $event;
     public $student_id;
     public $name;
