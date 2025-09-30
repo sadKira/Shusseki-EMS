@@ -308,9 +308,12 @@ class AttendanceBin extends Component
     {
         // Attendance Logs
         $logs = EventAttendanceLog::where('event_id', $this->event->id)
-            ->with('user')
-            ->orderByDesc('time_in')
-            ->get();
+            ->with('user:id,name,student_id')
+            ->latest('time_in')
+            ->paginate(25);
+            // ->with('user')
+            // ->orderByDesc('time_in')
+            // ->get();
 
          // Attendance stats
         $totalAttendees = $this->event->attendanceLogs()->where('attendance_status', '!=', 'absent')->count();
