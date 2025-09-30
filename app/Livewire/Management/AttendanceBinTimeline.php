@@ -18,11 +18,13 @@ use Livewire\Attributes\On;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Setting;
+use Livewire\WithPagination;
 
 
 #[Layout('components.layouts.attendance_bin_app')]
 class AttendanceBinTimeline extends Component
 {
+    use WithPagination;
     public $event;
     public $student_id;
     public $name;
@@ -290,9 +292,12 @@ class AttendanceBinTimeline extends Component
     {
         // Attendance Logs
         $logs = EventAttendanceLog::where('event_id', $this->event->id)
-            ->with('user')
-            ->orderByDesc('time_in')
-            ->get();
+            ->with('user:id,name,student_id')
+            ->latest('time_in')
+            ->paginate(25);
+            // ->with('user')
+            // ->orderByDesc('time_in')
+            // ->get();
 
          // Attendance stats
         $totalAttendees = $this->event->attendanceLogs()->where('attendance_status', '!=', 'absent')->count();

@@ -491,7 +491,7 @@
             </div>
 
             <div class="mt-4">
-                {{ $users->links('pagination::tailwind') }}
+                {{ $logs->links('pagination::tailwind') }}
             </div>
 
         </div>

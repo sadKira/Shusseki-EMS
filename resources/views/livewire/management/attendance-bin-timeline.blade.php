@@ -490,6 +490,10 @@
                 </table>
             </div>
 
+            <div class="mt-4">
+                {{ $logs->links('pagination::tailwind') }}
+            </div>
+
         </div>
     </div>
 

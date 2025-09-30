@@ -25,7 +25,6 @@ use Livewire\WithPagination;
 class AttendanceBin extends Component
 {
     use WithPagination;
-
     public $event;
     public $student_id;
     public $name;
