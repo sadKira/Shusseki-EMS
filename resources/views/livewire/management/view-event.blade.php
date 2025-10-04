@@ -186,7 +186,7 @@
                         @endif
                         @if ($event->status == \App\Enums\EventStatus::NotFinished)
                             <flux:badge color="zinc" size="sm" variant="solid">
-                                    <span class="text-white">Event Upcoming</span>
+                                    <span class="text-white">Event Upcoming</span></flux:badge>
                         @endif
 
                         
