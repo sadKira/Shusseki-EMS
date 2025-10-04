@@ -29,9 +29,6 @@
             <img src="{{ asset('storage/' . $event->image) }}" alt="Event Image"
                 class="w-full h-70 object-cover shadow-md">
 
-            {{-- <img src="{{ Storage::url($event->image) }}" alt="Event Image"
-                class="w-full h-70 object-cover shadow-md"> --}}
-
 
             {{-- Event stats --}}
             <flux:heading size="lg">Event Statistics</flux:heading>
@@ -151,8 +148,8 @@
                         <flux:tooltip position="bottom" toggleable>
                             <flux:button icon="information-circle" variant="ghost" />
                             <flux:tooltip.content class="max-w-[20rem] space-y-2">
-                                <p>Students are expected to scan their</p>
-                                <p>QR codes before the end of the time in period.</p>
+                                <p class="text-white">Students are expected to scan their</p>
+                                <p class="text-white">QR codes before the end of the time in period.</p>
                             </flux:tooltip.content>
                         </flux:tooltip>
                     </flux:heading>
@@ -189,8 +186,6 @@
                                     class="text-white">Postponed</span></flux:badge>
                         @endif
                         
-                    </flux:badge>
-
                     </div>
 
                     <div class="flex items-center gap-2">
@@ -233,10 +228,11 @@
                             @endcan
                         
                         @elseif ($event->status == \App\Enums\EventStatus::NotFinished)
-
-                            <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber" :href="route('attendance_bin', $event)">View Attendance Bin</flux:button>
+                            
+                            <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber" :href="route('attendance_bin_timeline', $event)">View Attendance Bin</flux:button>
 
                             @can('SA')
+
                                 {{-- <flux:modal.trigger name="send-em">
                                     <flux:button variant="primary" icon:trailing="envelope" color="amber">Send Email Notification</flux:button>
                                 </flux:modal.trigger> --}}
@@ -363,6 +359,7 @@
                                 </div>
                             </div>
                         </flux:modal>
+                        
                     </div>
 
 
