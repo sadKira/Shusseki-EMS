@@ -172,6 +172,10 @@
                                     </flux:badge>
                                 @endif
                             @endif
+                            @if ($event->status == \App\Enums\EventStatus::NotFinished)
+                                <flux:badge color="zinc" size="sm" variant="solid">
+                                        <span class="text-white">Event Upcoming</span></flux:badge>
+                            @endif
                         @endif
                         @if ($event->status == \App\Enums\EventStatus::Finished)
                             <flux:badge color="green" class="" variant="solid"><span
@@ -180,10 +184,6 @@
                         @if ($event->status == \App\Enums\EventStatus::Postponed)
                             <flux:badge color="red" class="" variant="solid"><span
                                     class="text-white">Postponed</span></flux:badge>
-                        @endif
-                        @if ($event->status == \App\Enums\EventStatus::NotFinished)
-                            <flux:badge color="zinc" size="sm" variant="solid">
-                                    <span class="text-white">Event Upcoming</span></flux:badge>
                         @endif
                         
                     </div>
@@ -196,7 +196,8 @@
                         @if ($event->tsuushin_request == \App\Enums\TsuushinRequest::NotApproved)
                             <flux:badge color="zinc" class="text-white" variant="solid">None</flux:badge>
                         @else
-                            <flux:badge color="green" class="text-black" variant="solid">Available</flux:badge>
+                            <flux:badge color="green" class="" variant="solid">
+                                <span class="text-black">Available</span></flux:badge>
                         @endif
                     </div>
                     
