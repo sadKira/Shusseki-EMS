@@ -172,12 +172,12 @@
                                             <flux:badge color="zinc" class="" variant="solid">
                                                 <span class="text-white">Untracked</span>
                                             </flux:badge>
+                                        @else
+                                            <flux:badge color="zinc" variant="solid">
+                                                <span class="text-white">Upcoming</span></flux:badge>
                                         @endif
                                     @endif
-                                    @if ($event->status == \App\Enums\EventStatus::NotFinished)
-                                        <flux:badge color="zinc" variant="solid">
-                                                <span class="text-white">Upcoming</span></flux:badge>
-                                    @endif
+                                    
                                 @endif
                                 @if ($event->status == \App\Enums\EventStatus::Finished)
                                     <flux:badge color="green" class="" variant="solid"><span
