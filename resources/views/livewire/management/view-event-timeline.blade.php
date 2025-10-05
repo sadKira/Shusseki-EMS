@@ -152,22 +152,16 @@
                         </flux:heading>
                     </div>
 
-                    <div class="flex items-center gap-2 mt-4">
+                    <div class="space-y-2 mt-4 max-w-50">
                     
-                        <div class="flex flex-col space-y-2">
+                        <div class="flex items-center justify-between">
+
                             <flux:heading class="flex items-center">
                                 Event Status: 
                             </flux:heading>
 
-                            <flux:heading class="flex items-center">
-                                Media Coverage: 
-                            </flux:heading>
-                        </div>
-
-                        <div class="flex flex-col space-y-2">
-
                             {{-- Event status --}}
-                            <div class="flex items-center ml-2">
+                            <div class="flex items-center">
                                 @if ($event->status != \App\Enums\EventStatus::Postponed)
                                     @if ($now->between($start, $end))
                                         <flux:badge color="amber" class="" variant="solid"><span class="text-black">In
@@ -194,10 +188,16 @@
                                             class="text-white">Postponed</span></flux:badge>
                                 @endif
                             </div>
-                            
-                            
 
-                            <div class="flex items-center ml-2">
+                        </div>
+
+                        <div class="flex items-center justify-between">
+
+                            <flux:heading class="flex items-center">
+                                Media Coverage: 
+                            </flux:heading>
+
+                            <div class="flex items-center">
                                 @if ($event->tsuushin_request == \App\Enums\TsuushinRequest::NotApproved)
                                     <flux:badge color="zinc" class="text-white" variant="solid">None</flux:badge>
                                 @else
@@ -208,7 +208,6 @@
 
                         </div>
 
-                        
                     </div>
 
                     {{-- Admin tools --}}
