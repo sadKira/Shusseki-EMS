@@ -152,57 +152,65 @@
                         </flux:heading>
                     </div>
 
-                    <div class="grid grid-cols-2 mt-4 gap-y-2 gap-x-2">
+                    <div class="flex items-center gap-2 mt-4">
                     
-                        <flux:heading class="flex items-center">
-                            Event Status: 
-                        </flux:heading>
+                        <div class="flex flex-col space-y-2">
+                            <flux:heading class="flex items-center">
+                                Event Status: 
+                            </flux:heading>
 
-                        {{-- Event status --}}
-                        <div class="flex items-center">
-                            @if ($event->status != \App\Enums\EventStatus::Postponed)
-                                @if ($now->between($start, $end))
-                                    <flux:badge color="amber" class="" variant="solid"><span class="text-black">In
-                                            Progress</span></flux:badge>
-                                @endif
-                                @if ($event->status != \App\Enums\EventStatus::Finished)         
-                                    @if ($now->gt($end))
-                                        <flux:badge color="zinc" class="" variant="solid">
-                                            <span class="text-white">Untracked</span>
-                                        </flux:badge>
+                            <flux:heading class="flex items-center">
+                                Media Coverage: 
+                            </flux:heading>
+                        </div>
+
+                        <div class="flex flex-col space-y-2">
+
+                            {{-- Event status --}}
+                            <div class="flex items-center ml-2">
+                                @if ($event->status != \App\Enums\EventStatus::Postponed)
+                                    @if ($now->between($start, $end))
+                                        <flux:badge color="amber" class="" variant="solid"><span class="text-black">In
+                                                Progress</span></flux:badge>
+                                    @endif
+                                    @if ($event->status != \App\Enums\EventStatus::Finished)         
+                                        @if ($now->gt($end))
+                                            <flux:badge color="zinc" class="" variant="solid">
+                                                <span class="text-white">Untracked</span>
+                                            </flux:badge>
+                                        @endif
+                                    @endif
+                                    @if ($event->status == \App\Enums\EventStatus::NotFinished)
+                                        <flux:badge color="zinc" variant="solid">
+                                                <span class="text-white">Upcoming</span></flux:badge>
                                     @endif
                                 @endif
-                                @if ($event->status == \App\Enums\EventStatus::NotFinished)
-                                    <flux:badge color="zinc" variant="solid">
-                                            <span class="text-white">Upcoming</span></flux:badge>
+                                @if ($event->status == \App\Enums\EventStatus::Finished)
+                                    <flux:badge color="green" class="" variant="solid"><span
+                                            class="text-black">Ended</span></flux:badge>
                                 @endif
-                            @endif
-                            @if ($event->status == \App\Enums\EventStatus::Finished)
-                                <flux:badge color="green" class="" variant="solid"><span
-                                        class="text-black">Ended</span></flux:badge>
-                            @endif
-                            @if ($event->status == \App\Enums\EventStatus::Postponed)
-                                <flux:badge color="red" class="" variant="solid"><span
-                                        class="text-white">Postponed</span></flux:badge>
-                            @endif
+                                @if ($event->status == \App\Enums\EventStatus::Postponed)
+                                    <flux:badge color="red" class="" variant="solid"><span
+                                            class="text-white">Postponed</span></flux:badge>
+                                @endif
+                            </div>
+                            
+                            
+
+                            <div class="flex items-center ml-2">
+                                @if ($event->tsuushin_request == \App\Enums\TsuushinRequest::NotApproved)
+                                    <flux:badge color="zinc" class="text-white" variant="solid">None</flux:badge>
+                                @else
+                                    <flux:badge color="green" class="" variant="solid">
+                                        <span class="text-black">Available</span></flux:badge>
+                                @endif
+                            </div>
+
                         </div>
+
                         
-                        <flux:heading class="flex items-center">
-                            Media Coverage: 
-                        </flux:heading>
-
-                        <div class="flex items-center">
-                            @if ($event->tsuushin_request == \App\Enums\TsuushinRequest::NotApproved)
-                                <flux:badge color="zinc" class="text-white" variant="solid">None</flux:badge>
-                            @else
-                                <flux:badge color="green" class="" variant="solid">
-                                    <span class="text-black">Available</span></flux:badge>
-                            @endif
-                        </div>
-
                     </div>
-                    
-                    
+
                     {{-- Admin tools --}}
                     <div class="flex flex-col gap-2 mt-4">
 
