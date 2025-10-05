@@ -122,14 +122,14 @@
                     </div>
 
                     <div class="flex items-center gap-2 mt-4">
-                        <flux:icon.calendar class="text-zinc-50" />
+                        <flux:icon.calendar variant="mini" class="text-zinc-50" />
                         <flux:heading>
                             {{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }}
                         </flux:heading>
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <flux:icon.clock class="text-zinc-50" />
+                        <flux:icon.clock variant="mini" class="text-zinc-50" />
                         <flux:heading>
                             {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }} - 
                             {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
@@ -137,68 +137,69 @@
                     </div>
 
                     <div class="flex items-center gap-2">
-                        <flux:icon.map-pin class="text-zinc-50" />
+                        <flux:icon.map-pin variant="mini" class="text-zinc-50" />
                         <flux:heading>{{ $event->location }}</flux:heading>
                     </div>
-                    
-
-                    <flux:heading class="flex items-center gap-2 mt-4">
-                        End of Attendance: <span class="text-[var(--color-accent)]">{{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
-
-                        <flux:tooltip position="bottom" toggleable>
-                            <flux:button icon="information-circle" variant="ghost" />
-                            <flux:tooltip.content class="max-w-[20rem] space-y-2">
-                                <p class="text-white">Students are expected to scan their</p>
-                                <p class="text-white">QR codes before the end of the time in period.</p>
-                            </flux:tooltip.content>
-                        </flux:tooltip>
-                    </flux:heading>
 
                     <div class="flex items-center gap-2">
+                        
+                        <flux:icon.exclamation-triangle variant="mini" class="text-zinc-50" />
                         <flux:heading class="flex items-center gap-2">
+                            End of Attendace: 
+                            <span class="text-[var(--color-accent)]">
+                                {{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}
+                            </span>
+                        </flux:heading>
+                    </div>
+
+                    <div class="grid grid-cols-2 mt-4 gap-y-2 gap-x-2">
+                    
+                        <flux:heading class="flex items-center">
                             Event Status: 
                         </flux:heading>
 
                         {{-- Event status --}}
-                        @if ($event->status != \App\Enums\EventStatus::Postponed)
-                            @if ($now->between($start, $end))
-                                <flux:badge color="amber" class="" variant="solid"><span class="text-black">In
-                                        Progress</span></flux:badge>
-                            @endif
-                            @if ($event->status != \App\Enums\EventStatus::Finished)         
-                                @if ($now->gt($end))
-                                    <flux:badge color="zinc" class="" variant="solid">
-                                        <span class="text-white">Untracked</span>
-                                    </flux:badge>
+                        <div class="flex items-center">
+                            @if ($event->status != \App\Enums\EventStatus::Postponed)
+                                @if ($now->between($start, $end))
+                                    <flux:badge color="amber" class="" variant="solid"><span class="text-black">In
+                                            Progress</span></flux:badge>
+                                @endif
+                                @if ($event->status != \App\Enums\EventStatus::Finished)         
+                                    @if ($now->gt($end))
+                                        <flux:badge color="zinc" class="" variant="solid">
+                                            <span class="text-white">Untracked</span>
+                                        </flux:badge>
+                                    @endif
+                                @endif
+                                @if ($event->status == \App\Enums\EventStatus::NotFinished)
+                                    <flux:badge color="zinc" variant="solid">
+                                            <span class="text-white">Upcoming</span></flux:badge>
                                 @endif
                             @endif
-                            @if ($event->status == \App\Enums\EventStatus::NotFinished)
-                                <flux:badge color="zinc" size="sm" variant="solid">
-                                        <span class="text-white">Event Upcoming</span></flux:badge>
+                            @if ($event->status == \App\Enums\EventStatus::Finished)
+                                <flux:badge color="green" class="" variant="solid"><span
+                                        class="text-black">Ended</span></flux:badge>
                             @endif
-                        @endif
-                        @if ($event->status == \App\Enums\EventStatus::Finished)
-                            <flux:badge color="green" class="" variant="solid"><span
-                                    class="text-black">Ended</span></flux:badge>
-                        @endif
-                        @if ($event->status == \App\Enums\EventStatus::Postponed)
-                            <flux:badge color="red" class="" variant="solid"><span
-                                    class="text-white">Postponed</span></flux:badge>
-                        @endif
+                            @if ($event->status == \App\Enums\EventStatus::Postponed)
+                                <flux:badge color="red" class="" variant="solid"><span
+                                        class="text-white">Postponed</span></flux:badge>
+                            @endif
+                        </div>
                         
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                        <flux:heading class="flex items-center gap-2">
+                        <flux:heading class="flex items-center">
                             Media Coverage: 
                         </flux:heading>
 
-                        @if ($event->tsuushin_request == \App\Enums\TsuushinRequest::NotApproved)
-                            <flux:badge color="zinc" class="text-white" variant="solid">None</flux:badge>
-                        @else
-                            <flux:badge color="green" class="" variant="solid">
-                                <span class="text-black">Available</span></flux:badge>
-                        @endif
+                        <div class="flex items-center">
+                            @if ($event->tsuushin_request == \App\Enums\TsuushinRequest::NotApproved)
+                                <flux:badge color="zinc" class="text-white" variant="solid">None</flux:badge>
+                            @else
+                                <flux:badge color="green" class="" variant="solid">
+                                    <span class="text-black">Available</span></flux:badge>
+                            @endif
+                        </div>
+
                     </div>
                     
                     
