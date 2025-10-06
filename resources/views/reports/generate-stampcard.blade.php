@@ -27,7 +27,7 @@
         }
 
         header img {
-            height: 60px;
+            height: 70px;
         }
 
         header .header-text {
@@ -41,7 +41,7 @@
         }
 
         h2 {
-            font-size: 14px;
+            font-size: 16px;
             margin: 5px 0 0;
         }
 
@@ -55,7 +55,7 @@
         td {
             border: 1px solid #000;
             padding: 6px;
-            text-align: center;
+            text-align: left;
         }
 
         th {
@@ -82,11 +82,13 @@
 
     <header>
         <div style="text-align: center; margin-bottom: 10px;">
-            <img src="{{ public_path('images/MKDGJ.png') }}" alt="Logo" style="height: 70px;">
+            <img src="{{ public_path('images/MKDGJ.png') }}" alt="Logo">
         </div>
         <div class="header-text">
-            <h1>Gakusei Jichikai Attendance Record</h1>
-            <h2>School Year {{ $selectedSchoolYear }}</h2>
+            <h1>MINDANAO KOKUSAI DAIGAKU</h1>
+            {{-- <h1 style="font-size: 14px;">(Mindanao International College)</h1> --}}
+            <h1 style="margin-top:5px;">STUDENT AFFAIRS AND SERVICES OFFICE (SASO)</h1>
+            <h2 style="margin-top:20px;">STAMP CARD - SCHOOL YEAR {{ $selectedSchoolYear }}</h2>
         </div>
     </header>
 
@@ -96,13 +98,13 @@
             <td style="text-align: left; vertical-align: top; border: none;">
                 <strong>Name:</strong> 
                 <span style="border-bottom: 1px solid #000; min-width: 150px;">
-                    {{ Auth::user()->name }}
+                    {{ $user->name }}
                 </span>
             </td>
             <td style="text-align: right; vertical-align: top; border: none;">
                 <strong>Student ID:</strong> 
                 <span style="border-bottom: 1px solid #000; min-width: 150px;">
-                    {{ Auth::user()->student_id }}
+                    {{ $user->student_id }}
                 </span>
             </td>
         </tr>
@@ -110,13 +112,13 @@
             <td style="text-align: left; vertical-align: top; border: none;">
                 <strong>Year Level:</strong> 
                 <span style="border-bottom: 1px solid #000; min-width: 150px;">
-                    {{ Auth::user()->year_level }}
+                    {{ $user->year_level }}
                 </span>
             </td>
             <td style="text-align: right; vertical-align: top; border: none;">
                 <strong>Course:</strong>
                 <span style="border-bottom: 1px solid #000; min-width: 150px;"> 
-                    {{ Auth::user()->course }}
+                    {{ $user->course }}
                 </span>
             </td>
         </tr>
@@ -172,7 +174,7 @@
                 <tbody>
                     @foreach($events as $event)
                         @php
-                            $log = $event->attendanceLogs->where('user_id', Auth::id())->first();
+                            $log = $event->attendanceLogs->where('user_id', $user->id)->first();
                         @endphp
                         <tr>
                             
@@ -181,7 +183,7 @@
                             <td>{{ $log?->time_in ? \Carbon\Carbon::parse($log->time_in)->format('h:i A') : '-' }}</td>
                             <td>{{ $log?->time_out ? \Carbon\Carbon::parse($log->time_out)->format('h:i A') : '-' }}</td>
 
-                            <td style="position: relative; text-align: center; overflow: visible; whitespace: nowrap;">
+                            <td style="position: relative; text-align: left; overflow: visible; whitespace: nowrap;">
                                 {{ $log?->attendance_status->label() ?? 'Absent' }}
 
                                 @if($log && $log->attendance_status->value !== 'absent')

@@ -11,6 +11,7 @@ use App\Models\Setting;
 use App\Mail\EventReminder;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ViewEventTimeline extends Component
 {
@@ -18,14 +19,14 @@ class ViewEventTimeline extends Component
     public $event;
     public $attendanceStats = [];
     public $attendancePercentages = [];
-    
+
     // Mounting data
     public function mount(Event $event)
     {
         $this->event = $event;
     }
 
-    public function markEventAsPostponed() 
+    public function markEventAsPostponed()
     {
         // Mark event as postponed
         $this->event->status = EventStatus::Postponed;
@@ -36,7 +37,7 @@ class ViewEventTimeline extends Component
         return redirect()->route('view_event_timeline', $this->event);
     }
 
-    public function markEventAsResumed() 
+    public function markEventAsResumed()
     {
         // Mark event as unfinished
         $this->event->status = EventStatus::NotFinished;
@@ -63,6 +64,44 @@ class ViewEventTimeline extends Component
         Flux::modals()->close();
     }
 
+    public function exportAttendanceReport()
+    {
+        $event = $this->event;
+
+        // Fetch attendance logs with relationships (student, course, etc.)
+        $logs = EventAttendanceLog::with('user')
+            ->where('event_id', $event->id)
+            ->get();
+
+        // Counts
+        $presentCount = $logs->where('attendance_status', 'present')->count();
+        $lateCount    = $logs->where('attendance_status', 'late')->count();
+        $absentCount  = $logs->where('attendance_status', 'absent')->count();
+        $totalAttendees = $presentCount + $lateCount + $absentCount;
+
+        // Percentages
+        $presentPercent = $totalAttendees > 0 ? round(($presentCount / $totalAttendees) * 100, 1) : 0;
+        $latePercent    = $totalAttendees > 0 ? round(($lateCount / $totalAttendees) * 100, 1) : 0;
+        $absentPercent  = $totalAttendees > 0 ? round(($absentCount / $totalAttendees) * 100, 1) : 0;
+
+        // Generate PDF
+        $pdf = Pdf::loadView('reports.generate-event-report', [
+            'event'           => $event,
+            'logs'            => $logs,
+            'presentCount'    => $presentCount,
+            'lateCount'       => $lateCount,
+            'absentCount'     => $absentCount,
+            'totalAttendees'  => $totalAttendees,
+            'presentPercent'  => $presentPercent,
+            'latePercent'     => $latePercent,
+            'absentPercent'   => $absentPercent,
+        ]);
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, "Attendance_Report_{$event->title}.pdf");
+    }
+
     public function render()
     {
         // Attendance stats
@@ -84,7 +123,7 @@ class ViewEventTimeline extends Component
             'presentCount'     => $presentCount,
             'lateCount'        => $lateCount,
             'absentCount'      => $absentCount,
-            'presentPercentage'=> $presentPercentage,
+            'presentPercentage' => $presentPercentage,
             'latePercentage'   => $latePercentage,
             'absentPercentage' => $absentPercentage,
         ]);

@@ -6,12 +6,12 @@
     <style>
         body { font-family: Hanken Grotesk, sans-serif; font-size: 12px; margin: 40px; color: #000; }
         header { display: flex; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px; }
-        header img { height: 60px; }
+        header img { height: 70px; }
         header .header-text { flex: 1; text-align: center; }
         h1 { font-size: 18px; margin: 0; }
-        h2 { font-size: 14px; margin: 5px 0 0; }
+        h2 { font-size: 16px; margin: 5px 0 0; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #000; padding: 6px; text-align: center; }
+        th, td { border: 1px solid #000; padding: 6px; text-align: left; }
         th { background-color: #f2f2f2; font-weight: bold; }
         .footer { margin-top: 40px; font-size: 12px; text-align: center; border-top: 1px solid #000; padding-top: 10px; }
     </style>
@@ -23,16 +23,19 @@
         <img src="{{ public_path('images/MKDGJ.png') }}" alt="Logo">
     </div>
     <div class="header-text">
-        <h1>Mindanao Kokusai Daigaku</h1>
-        <h2>Attendance Report</h2>
-        <h2>{{ $event->title }} ({{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }})</h2>
+        <h1>MINDANAO KOKUSAI DAIGAKU</h1>
+        {{-- <h1 style="font-size: 14px;">(Mindanao International College)</h1> --}}
+        <h1 style="margin-top:5px;">STUDENT AFFAIRS AND SERVICES OFFICE (SASO)</h1>
+        <h2 style="margin-top:20px;">ATTENDANCE REPORT</h2>
     </div>
 </header>
 
 <p><strong>Generated on:</strong> {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
 
+<h3 style="margin-top:30px; font-size: 18px;">{{ $event->title }} ({{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }})</h3>
+
 {{-- Summary --}}
-<h3>Event Attendance Summary</h3>
+<h3 style="margin-top:30px;">Event Attendance Summary</h3>
 <table>
     <thead>
         <tr>
@@ -53,25 +56,23 @@
 </table>
 
 {{-- Detailed List --}}
-<h3 style="margin-top:30px;">Attendee List</h3>
+<h3 style="margin-top:20px;">Attendee List</h3>
 <table>
     <thead>
         <tr>
-            <th>#</th>
             <th>Student Name</th>
-            <th>School Year</th>
+            <th>Year Level</th>
             <th>Course</th>
             <th>Status</th>
         </tr>
     </thead>
     <tbody>
-        @foreach ($logs as $index => $log)
+        @foreach ($logs as $log)
             <tr>
-                <td>{{ $index + 1 }}</td>
                 <td>{{ $log->user->name }}</td>
                 <td>{{ $log->user->year_level ?? 'N/A' }}</td>
                 <td>{{ $log->user->course ?? 'N/A' }}</td>
-                <td>{{ ucfirst($log->attendance_status) }}</td>
+                <td>{{ ucfirst($log->attendance_status->value) }}</td>
             </tr>
         @endforeach
     </tbody>

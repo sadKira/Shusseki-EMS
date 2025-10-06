@@ -12,23 +12,13 @@
             </flux:breadcrumbs>
         </div>
         <flux:heading size="xl" level="1">View Event</flux:heading> --}}
-        <div class="flex items-center justify-between">
 
-            @if (request()->routeIs(['view_event_timeline']))
-                <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('event_timeline')" wire:navigate>Return</flux:button>
-            @else
-                <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('manage_events')" wire:navigate>Return</flux:button>
-            @endif
+        @if (request()->routeIs(['view_event_timeline']))
+            <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('event_timeline')" wire:navigate>Return</flux:button>
+        @else
+            <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('manage_events')" wire:navigate>Return</flux:button>
+        @endif
 
-            @if ($event->status == \App\Enums\EventStatus::Finished)
-                <flux:button wire:click="exportAttendanceReport" size="sm" icon="cloud-arrow-down" variant="primary"
-                        color="amber">Export Attendance Record</flux:button>
-            @else
-                <flux:button wire:click="exportAttendanceReport" size="sm" icon="cloud-arrow-down" variant="primary"
-                        color="amber" disabled>Export Attendance Record</flux:button>
-            @endif
-
-        </div>
     </div>
 
 
@@ -283,8 +273,12 @@
                         @elseif ($event->status == \App\Enums\EventStatus::Finished)
 
                             @can('SA')
+                                @if ($event->status == \App\Enums\EventStatus::Finished)
+                                    <flux:button wire:click="exportAttendanceReport" icon:trailing="folder-arrow-down" variant="primary"
+                                            color="amber">Download Record</flux:button>
+                                @endif
                                 <flux:modal.trigger name="reopen-ab">
-                                    <flux:button variant="primary" icon:trailing="lock-open" color="amber">Reopen Attendance Bin</flux:button>
+                                    <flux:button variant="filled" icon:trailing="lock-open">Reopen Attendance Bin</flux:button>
                                 </flux:modal.trigger>
                                 <div class="flex justify-center gap-1 mt-1">
                                     <flux:icon.information-circle class="text-zinc-400" variant="micro" />
@@ -292,6 +286,10 @@
                                 </div>
                             @endcan
                             @can('A')
+                                @if ($event->status == \App\Enums\EventStatus::Finished)
+                                    <flux:button wire:click="exportAttendanceReport" icon:trailing="folder-arrow-down" variant="primary"
+                                            color="amber">Download Record</flux:button>
+                                @endif
                                 <flux:button variant="filled" icon:trailing="lock-closed" color="amber">Attendance Bin Closed</flux:button>
                                 <div class="flex justify-center gap-1 mt-1">
                                     <flux:icon.information-circle class="text-zinc-400" variant="micro" />

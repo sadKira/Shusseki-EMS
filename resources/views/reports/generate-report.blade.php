@@ -25,7 +25,7 @@
             margin-bottom: 20px;
         }
         header img {
-            height: 60px;
+            height: 70px;
         }
         header .header-text {
             flex: 1;
@@ -36,7 +36,7 @@
             margin: 0;
         }
         h2 {
-            font-size: 14px;
+            font-size: 16px;
             margin: 5px 0 0;
         }
         table {
@@ -47,7 +47,7 @@
         th, td {
             border: 1px solid #000;
             padding: 6px;
-            text-align: center;
+            text-align: left;
         }
         th {
             background-color: #f2f2f2;
@@ -66,11 +66,13 @@
 
     <header>
         <div style="text-align: center; margin-bottom: 10px;">
-            <img src="{{ public_path('images/MKDGJ.png') }}" alt="Logo" style="height: 70px;">
+            <img src="{{ public_path('images/MKDGJ.png') }}" alt="Logo">
         </div>
         <div class="header-text">
-            <h1>Mindanao Kokusai Daigaku</h1>
-            <h2>Attendance Report - School Year {{ $selectedSchoolYear }}</h2>
+            <h1>MINDANAO KOKUSAI DAIGAKU</h1>
+            {{-- <h1 style="font-size: 14px;">(Mindanao International College)</h1> --}}
+            <h1 style="margin-top:5px;">STUDENT AFFAIRS AND SERVICES OFFICE (SASO)</h1>
+            <h2 style="margin-top:20px;">ATTENDANCE REPORT - SCHOOL YEAR {{ $selectedSchoolYear }}</h2>
         </div>
     </header>
 
