@@ -77,12 +77,7 @@ class ViewEventTimeline extends Component
         $presentCount = $logs->where('attendance_status', 'present')->count();
         $lateCount    = $logs->where('attendance_status', 'late')->count();
         $absentCount  = $logs->where('attendance_status', 'absent')->count();
-        $totalAttendees = $presentCount + $lateCount + $absentCount;
-
-        // Percentages
-        $presentPercent = $totalAttendees > 0 ? round(($presentCount / $totalAttendees) * 100, 1) : 0;
-        $latePercent    = $totalAttendees > 0 ? round(($lateCount / $totalAttendees) * 100, 1) : 0;
-        $absentPercent  = $totalAttendees > 0 ? round(($absentCount / $totalAttendees) * 100, 1) : 0;
+        $totalAttendees = $presentCount + $lateCount;
 
         // Generate PDF
         $pdf = Pdf::loadView('reports.generate-event-report', [
@@ -92,9 +87,6 @@ class ViewEventTimeline extends Component
             'lateCount'       => $lateCount,
             'absentCount'     => $absentCount,
             'totalAttendees'  => $totalAttendees,
-            'presentPercent'  => $presentPercent,
-            'latePercent'     => $latePercent,
-            'absentPercent'   => $absentPercent,
         ]);
 
         return response()->streamDownload(function () use ($pdf) {
