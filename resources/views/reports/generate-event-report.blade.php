@@ -32,7 +32,8 @@
 
 <p><strong>Generated on:</strong> {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
 
-<h3 style="margin-top:30px; font-size: 18px;">{{ $event->title }} ({{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }})</h3>
+<h3 style="margin-top:30px; font-size: 18px;">{{ $event->title }}</h3>
+<h3 style="font-size: 18px;">({{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }})</h3>
 
 {{-- Summary --}}
 <h3 style="margin-top:30px;">Event Attendance Summary</h3>
