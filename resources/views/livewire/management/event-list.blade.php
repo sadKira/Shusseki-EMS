@@ -154,11 +154,6 @@
                                                 @if ($now->between($start, $end))
                                                     <flux:badge color="amber" class="" variant="solid"><span class="text-black">
                                                             Event In Progress</span></flux:badge>
-                                                @elseif ($event->status == \App\Enums\EventStatus::NotFinished)
-                                                    <flux:heading size="sm" class="flex items-center gap-2">
-                                                        End of Attendance: <span
-                                                            class="text-[var(--color-accent)] underline">{{ \Carbon\Carbon::parse($event->time_in)->format('h:i A') }}</span>
-                                                    </flux:heading>
                                                 @endif
                                                 
                                             @endif

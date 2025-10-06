@@ -231,23 +231,21 @@
                                             @endphp
 
                                             {{-- Event status --}}
-                                            @if ($event->status != \App\Enums\EventStatus::Postponed)
-                                                @if ($now->between($start, $end))
-                                                    <flux:badge size="sm" color="amber" class="" variant="solid"><span class="text-black">
-                                                            Event In Progress</span></flux:badge>
-                                                @endif
-                                            @endif
-
                                             @if ($event->status == \App\Enums\EventStatus::Finished)
                                                 <flux:badge size="sm" color="green" class="" variant="solid"><span class="text-black">Event
                                                         Ended</span>
                                                 </flux:badge>
-                                            @endif
-
-                                            @if ($event->status == \App\Enums\EventStatus::Postponed)
+                                            @elseif ($event->status == \App\Enums\EventStatus::Postponed)
                                                 <flux:badge size="sm" color="red" class="" variant="solid"><span class="text-white">Event
                                                         Postponed</span>
                                                 </flux:badge>
+                                            @elseif ($event->status != \App\Enums\EventStatus::Postponed)
+
+                                                @if ($now->between($start, $end))
+                                                    <flux:badge size="sm" color="amber" class="" variant="solid"><span class="text-black">
+                                                            Event In Progress</span></flux:badge>
+                                                @endif
+                                                
                                             @endif
 
                                         </div>
