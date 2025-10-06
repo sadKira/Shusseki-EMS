@@ -12,11 +12,23 @@
             </flux:breadcrumbs>
         </div>
         <flux:heading size="xl" level="1">View Event</flux:heading> --}}
-        @if (request()->routeIs(['view_event_timeline']))
-            <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('event_timeline')" wire:navigate>Return</flux:button>
-        @else
-            <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('manage_events')" wire:navigate>Return</flux:button>
-        @endif
+        <div class="flex items-center justify-between">
+
+            @if (request()->routeIs(['view_event_timeline']))
+                <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('event_timeline')" wire:navigate>Return</flux:button>
+            @else
+                <flux:button variant="ghost" icon="arrow-uturn-left" :href="route('manage_events')" wire:navigate>Return</flux:button>
+            @endif
+
+            @if ($event->status == \App\Enums\EventStatus::Finished)
+                <flux:button wire:click="exportAttendanceReport" size="sm" icon="cloud-arrow-down" variant="primary"
+                        color="amber">
+            @else
+                <flux:button wire:click="exportAttendanceReport" size="sm" icon="cloud-arrow-down" variant="primary"
+                        color="amber" disabled >
+            @endif
+
+        </div>
     </div>
 
 
