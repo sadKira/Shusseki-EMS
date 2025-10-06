@@ -32,9 +32,9 @@
 
 <p><strong>Generated on:</strong> {{ \Carbon\Carbon::now()->format('F d, Y') }}</p>
 
-<div style="margin-top:30px; "">
-    <h3 style="font-size: 18px;">{{ $event->title }}</h3>
-    <h3 style="font-size: 18px;">({{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }})</h3>
+<div style="margin-top: 30px">
+    <h3 style="font-size: 18px; margin: 0;">{{ $event->title }}</h3>
+    <h3 style="font-size: 18px;  margin: 0;">({{ \Carbon\Carbon::parse($event->date)->format('F d, Y') }})</h3>
 </div>
 
 {{-- Summary --}}
