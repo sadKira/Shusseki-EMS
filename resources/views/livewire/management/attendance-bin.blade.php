@@ -441,7 +441,7 @@
                                                         <flux:button variant="ghost">Cancel</flux:button>
                                                     </flux:modal.close>
                                                     <flux:button variant="danger"
-                                                        wire:click="removeTimeOut({{ $user->user_id }})">
+                                                        wire:click="removeLogTimeOut({{ $user->user_id }})">
                                                         Remove Time-Out</flux:button>
                                                 </div>
                                             </div>

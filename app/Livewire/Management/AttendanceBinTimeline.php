@@ -175,6 +175,18 @@ class AttendanceBinTimeline extends Component
 
     }
 
+    // Remove time-out
+    public function removeTimeOut($userId)
+    {
+        // Close initial modal
+        Flux::modals()->close();
+        $this->pendingAction = 'removeLogTimeOut';
+        $this->pendingUserId = $userId;
+        
+        Flux::modal('admin-key')->show();
+
+    }
+
     // Remove record
     public function removeLogRecord(int $userId): void
     {
@@ -228,6 +240,12 @@ class AttendanceBinTimeline extends Component
                 ->where('user_id', $this->pendingUserId)
                 ->first()
                 ?->update(['attendance_status' => 'absent']);
+        }
+
+        if ($this->pendingAction === 'removeLogTimeOut' && $this->pendingUserId) {
+            EventAttendanceLog::where('event_id', $this->event->id)
+                ->where('user_id', $this->pendingUserId)
+                ->update(['time_out' => null]);
         }
 
         if ($this->pendingAction === 'removeLogRecord' && $this->pendingUserId) {
@@ -284,7 +302,7 @@ class AttendanceBinTimeline extends Component
         // Close all modals
         Flux::modals()->close();
 
-        return redirect()->route('view_event_timeline', $this->event);
+        return redirect()->route('view_event', $this->event);
   
     }
 
@@ -307,7 +325,7 @@ class AttendanceBinTimeline extends Component
         $lateCount    = $this->event->attendanceLogs()->where('attendance_status', 'late')->count();
         $absentCount  = $this->event->attendanceLogs()->where('attendance_status', 'absent')->count();
 
-        return view('livewire.management.attendance-bin-timeline', [
+        return view('livewire.management.attendance-bin', [
             'users' => $logs,
             'event' => $this->event,
             'totalAttendees'   => $totalAttendees,

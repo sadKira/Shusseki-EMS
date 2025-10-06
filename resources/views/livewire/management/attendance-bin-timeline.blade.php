@@ -83,7 +83,7 @@
                         Scan QR Code</flux:button>
                 </flux:modal.trigger>
                 <div class="flex items-center justify-between gap-2 mt-2">
-                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event_timeline', $event)" class="w-full">
+                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)" class="w-full">
                         Leave Attendance Bin</flux:button>
                     <flux:modal.trigger name="close-AB">
                         <flux:button variant="primary" color="green" icon:trailing="shield-check" class="w-full">Close
@@ -441,7 +441,7 @@
                                                         <flux:button variant="ghost">Cancel</flux:button>
                                                     </flux:modal.close>
                                                     <flux:button variant="danger"
-                                                        wire:click="removeTimeOut({{ $user->user_id }})">
+                                                        wire:click="removeLogTimeOut({{ $user->user_id }})">
                                                         Remove Time-Out</flux:button>
                                                 </div>
                                             </div>
