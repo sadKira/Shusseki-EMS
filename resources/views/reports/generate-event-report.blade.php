@@ -45,9 +45,9 @@
     <tbody>
         <tr>
             <td>{{ $totalAttendees }}</td>
-            <td>{{ $presentCount }} ({{ $presentPercent }}%)</td>
-            <td>{{ $lateCount }} ({{ $latePercent }}%)</td>
-            <td>{{ $absentCount }} ({{ $absentPercent }}%)</td>
+            <td>{{ $presentCount }}</td>
+            <td>{{ $lateCount }}</td>
+            <td>{{ $absentCount }}</td>
         </tr>
     </tbody>
 </table>

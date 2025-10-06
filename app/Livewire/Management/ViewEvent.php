@@ -64,8 +64,10 @@ class ViewEvent extends Component
         Flux::modals()->close();
     }
 
-    public function exportAttendanceReport(Event $event)
+    public function exportAttendanceReport()
     {
+        $event = $this->event;
+
         // Fetch attendance logs with relationships (student, course, etc.)
         $logs = EventAttendanceLog::with(['user.course', 'user.schoolYear'])
             ->where('event_id', $event->id)
@@ -99,6 +101,7 @@ class ViewEvent extends Component
             echo $pdf->stream();
         }, "Attendance_Report_{$event->title}.pdf");
     }
+
 
 
     public function render()
