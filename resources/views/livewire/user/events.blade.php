@@ -416,7 +416,7 @@
                                                                             </flux:badge>
                                                                         @elseif($event->status == \App\Enums\EventStatus::NotFinished)
                                                                             @if ($now->between($start, $end))
-                                                                                <flux:badge color="amber" class="mr-10" variant="solid">
+                                                                                <flux:badge color="amber" class="" variant="solid">
                                                                                     <span class="text-black">In Progress</span>
                                                                                 </flux:badge>
                                                                             @else
