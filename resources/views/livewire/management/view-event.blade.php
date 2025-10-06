@@ -22,10 +22,10 @@
 
             @if ($event->status == \App\Enums\EventStatus::Finished)
                 <flux:button wire:click="exportAttendanceReport" size="sm" icon="cloud-arrow-down" variant="primary"
-                        color="amber">
+                        color="amber">Export Attendance Record</flux:button>
             @else
                 <flux:button wire:click="exportAttendanceReport" size="sm" icon="cloud-arrow-down" variant="primary"
-                        color="amber" disabled >
+                        color="amber" disabled>Export Attendance Record</flux:button>
             @endif
 
         </div>
