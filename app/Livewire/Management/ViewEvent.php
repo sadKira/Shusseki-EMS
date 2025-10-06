@@ -69,7 +69,7 @@ class ViewEvent extends Component
         $event = $this->event;
 
         // Fetch attendance logs with relationships (student, course, etc.)
-        $logs = EventAttendanceLog::with(['user.course', 'user.schoolYear'])
+        $logs = EventAttendanceLog::with(['user.course', 'user.year_level', 'user.name'])
             ->where('event_id', $event->id)
             ->get();
 

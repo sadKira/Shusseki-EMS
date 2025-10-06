@@ -69,8 +69,8 @@
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $log->user->name }}</td>
-                <td>{{ $log->user->schoolYear->year ?? 'N/A' }}</td>
-                <td>{{ $log->user->course->name ?? 'N/A' }}</td>
+                <td>{{ $log->user->year_level ?? 'N/A' }}</td>
+                <td>{{ $log->user->course ?? 'N/A' }}</td>
                 <td>{{ ucfirst($log->attendance_status) }}</td>
             </tr>
         @endforeach
