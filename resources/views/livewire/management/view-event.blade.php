@@ -240,7 +240,7 @@
                         
                         @elseif ($event->status == \App\Enums\EventStatus::NotFinished)
                             
-                            <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber" :href="route('attendance_bin_timeline', $event)">View Attendance Bin</flux:button>
+                            <flux:button variant="primary" icon:trailing="arrow-up-right" color="amber" :href="route('attendance_bin', $event)">View Attendance Bin</flux:button>
 
                             @can('SA')
 

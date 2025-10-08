@@ -226,7 +226,7 @@
                             <th scope="col" class="px-3 py-3">
                                 <flux:dropdown position="left" align="end">
 
-                                    <flux:button variant="ghost" size="sm" icon="ellipsis-horizontal"
+                                    <flux:button variant="ghost" size="xs" icon="wrench-screwdriver"
                                         tooltip="Bulk Override"></flux:button>
 
                                     <flux:menu>
