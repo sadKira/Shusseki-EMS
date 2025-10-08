@@ -260,6 +260,28 @@ class AttendanceBin extends Component
         Flux::modals()->close();
     }
 
+    public function markAllPresent()
+    {
+
+        // Get all users with 'scanned' status and update
+        EventAttendanceLog::where('event_id', $this->event->id)
+        ->where('attendance_status', AttendanceStatus::Scanned)
+        ->whereNull('time_out')
+        ->update([
+            'attendance_status' => AttendanceStatus::Present,
+            'time_out' => now(),
+        ]);
+
+        // Get all users with 'late' status and update
+        EventAttendanceLog::where('event_id', $this->event->id)
+        ->where('attendance_status', AttendanceStatus::Late)
+        ->whereNull('time_out')
+        ->update([
+            'time_out' => now(),
+        ]);
+
+    }
+
     // Mark event finished
     public function markEventAsFinished()
     {
