@@ -83,7 +83,7 @@
                         Scan QR Code</flux:button>
                 </flux:modal.trigger>
                 <div class="flex items-center justify-between gap-2 mt-2">
-                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event_timeline', $event)" class="w-full">
+                    <flux:button variant="filled" icon:trailing="arrow-uturn-left" :href="route('view_event', $event)" class="w-full">
                         Leave Attendance Bin</flux:button>
                     <flux:modal.trigger name="close-AB">
                         <flux:button variant="primary" color="green" icon:trailing="shield-check" class="w-full">Close
@@ -224,7 +224,7 @@
                                 Status
                             </th>
                             <th scope="col" class="px-3 py-3">
-                                <flux:dropdown position="left" align="end">
+                                <flux:dropdown position="bottom" align="end">
 
                                     <flux:button variant="ghost" size="xs" icon="wrench-screwdriver"
                                         tooltip="Bulk Override"></flux:button>
