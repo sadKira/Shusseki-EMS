@@ -277,7 +277,7 @@ class AdminDashboard extends Component
         });
 
         // event count
-        $now = now();
+        $now = now('Asia/Manila');
 
         $untrackedEvents = Cache::remember("dashboard:lists:untracked:{$yearKey}:{$now->toDateString()}", 300, function () use ($yearKey, $now) {
             return Event::where('school_year', $yearKey)

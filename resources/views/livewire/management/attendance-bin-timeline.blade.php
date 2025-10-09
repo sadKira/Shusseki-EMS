@@ -224,6 +224,22 @@
                                 Status
                             </th>
                             <th scope="col" class="px-3 py-3">
+                                <flux:dropdown position="left" align="end">
+
+                                    <flux:button variant="ghost" size="xs" icon="wrench-screwdriver"
+                                        tooltip="Bulk Override"></flux:button>
+
+                                    <flux:menu>
+
+                                        <flux:modal.trigger name="bulk-present">
+                                            <flux:menu.item>
+                                                Mark All Present
+                                            </flux:menu.item>
+                                        </flux:modal.trigger>
+
+                                    </flux:menu>
+                                    
+                                </flux:dropdown>
                             </th>
                         </tr>
                     </thead>
@@ -496,6 +512,28 @@
 
         </div>
     </div>
+
+    {{-- Bulk present modal --}}
+    <flux:modal name="bulk-present" class="min-w-[22rem]" :dismissible="false">
+        <div class="space-y-6">
+            <div>
+                <flux:heading size="lg">Mark All as Present?</flux:heading>
+                <flux:text class="mt-2">
+                    <p class="text-neutral-300">You're about to mark ALL students as present.</p>
+                    <p class="text-neutral-300">This will fill in all empty time-out fields.</p>
+                </flux:text>
+            </div>
+            <div class="flex gap-2">
+                <flux:spacer />
+                <flux:modal.close>
+                    <flux:button variant="ghost">Cancel</flux:button>
+                </flux:modal.close>
+                <flux:button variant="primary" color="amber"
+                    wire:click="markAllPresent">Mark All Present
+                </flux:button>
+            </div>
+        </div>
+    </flux:modal>
 
     {{-- Admin key modal --}}
     <flux:modal name="admin-key" class="min-w-[22rem] min-h-[10rem]" :dismissible="false">
