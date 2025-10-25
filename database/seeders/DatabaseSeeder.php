@@ -24,52 +24,52 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             // TsuushinSeeder::class,
             // CLIP
-            SchoolYearSeeder::class,
+            // SchoolYearSeeder::class,
         ]);
 
         // CLIP
-        User::factory(20)->create();
+        // User::factory(20)->create();
 
         // CLIP
         // Create events for each school year - variable 1-5 events per month
-        $schoolYearMonths = [
-            '2022-2023' => [
-                ['year' => 2022, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2022
-                ['year' => 2023, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2023
-            ],
-            '2023-2024' => [
-                ['year' => 2023, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2023
-                ['year' => 2024, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2024
-            ],
-            '2024-2025' => [
-                ['year' => 2024, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2024
-                ['year' => 2025, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2025
-            ],
-            '2025-2026' => [
-                ['year' => 2025, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2025
-                ['year' => 2026, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2026
-            ],
-        ];
+        // $schoolYearMonths = [
+        //     '2022-2023' => [
+        //         ['year' => 2022, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2022
+        //         ['year' => 2023, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2023
+        //     ],
+        //     '2023-2024' => [
+        //         ['year' => 2023, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2023
+        //         ['year' => 2024, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2024
+        //     ],
+        //     '2024-2025' => [
+        //         ['year' => 2024, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2024
+        //         ['year' => 2025, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2025
+        //     ],
+        //     '2025-2026' => [
+        //         ['year' => 2025, 'months' => [7, 8, 9, 10, 11, 12]], // All months 2025
+        //         ['year' => 2026, 'months' => [1, 2, 3, 4, 5, 6]], // All months 2026
+        //     ],
+        // ];
 
         // CLIP
-        foreach ($schoolYearMonths as $schoolYear => $yearData) {
-            foreach ($yearData as $data) {
-                foreach ($data['months'] as $month) {
-                    // Create 1-5 events for each month (minimum 1, maximum 5)
-                    $eventCount = rand(1, 5);
-                    Event::factory($eventCount)->forMonth($schoolYear, $data['year'], $month)->create();
-                }
-            }
-        }
+        // foreach ($schoolYearMonths as $schoolYear => $yearData) {
+        //     foreach ($yearData as $data) {
+        //         foreach ($data['months'] as $month) {
+        //             // Create 1-5 events for each month (minimum 1, maximum 5)
+        //             $eventCount = rand(1, 5);
+        //             Event::factory($eventCount)->forMonth($schoolYear, $data['year'], $month)->create();
+        //         }
+        //     }
+        // }
 
         // CLIP
         // Get all events and users
-        $events = Event::all();
-        $users = User::all();
+        // $events = Event::all();
+        // $users = User::all();
         
         // CLIP
         // Create diverse attendance patterns for users
-        $this->createRealisticAttendancePatterns($events, $users);
+        // $this->createRealisticAttendancePatterns($events, $users);
 
         // Set the current school year
         Setting::updateOrCreate(
