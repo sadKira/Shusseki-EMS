@@ -45,6 +45,11 @@ class Event extends Model
             ->withPivot('time_in', 'time_out', 'attendance_status');
     }
 
+    public function schoolYear()
+    {
+        return $this->belongsTo(SchoolYear::class, 'school_year', 'year');
+    }
+
     // // Search function
     // public function scopeSearch($query, $value)
     // {

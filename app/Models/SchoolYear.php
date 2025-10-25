@@ -10,4 +10,10 @@ class SchoolYear extends Model
 
         'year'
     ];
+
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'school_year', 'year');
+    }
+    
 }
