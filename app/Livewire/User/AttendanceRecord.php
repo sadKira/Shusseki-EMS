@@ -96,6 +96,7 @@ class AttendanceRecord extends Component
         $userName = str_replace(' ', '_', Auth::user()->name);
 
         $pdf = Pdf::loadView('reports.generate-stampcard', [
+            'user' => Auth::user(),
             'selectedSchoolYear' => $this->selectedSchoolYear,
             'events'             => $events,
             'hasEvents'          => $hasEvents,
