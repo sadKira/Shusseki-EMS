@@ -74,9 +74,9 @@ class ViewEvent extends Component
             ->get();
 
         // Counts
-        $presentCount = $logs->where('attendance_status', 'present')->count();
-        $lateCount    = $logs->where('attendance_status', 'late')->count();
-        $absentCount  = $logs->where('attendance_status', 'absent')->count();
+        $presentCount = $logs->where('attendance_status', 'present')->whereNot('name', null)->count();
+        $lateCount    = $logs->where('attendance_status', 'late')->whereNot('name', null)->count();
+        $absentCount  = $logs->where('attendance_status', 'absent')->whereNot('name', null)->count();
         $totalAttendees = $presentCount + $lateCount;
 
         // Generate PDF
