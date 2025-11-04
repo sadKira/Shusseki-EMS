@@ -71,12 +71,14 @@
     </thead>
     <tbody>
         @foreach ($logs as $log)
-            <tr>
-                <td>{{ $log->user->name }}</td>
-                <td>{{ $log->user->year_level ?? 'N/A' }}</td>
-                <td>{{ $log->user->course ?? 'N/A' }}</td>
-                <td>{{ ucfirst($log->attendance_status->value) }}</td>
-            </tr>
+            @if($log->user)
+                <tr>
+                    <td>{{ $log->user->name }}</td>
+                    <td>{{ $log->user->year_level ?? 'N/A' }}</td>
+                    <td>{{ $log->user->course ?? 'N/A' }}</td>
+                    <td>{{ ucfirst($log->attendance_status->value) }}</td>
+                </tr>
+            @endif
         @endforeach
     </tbody>
 </table>

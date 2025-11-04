@@ -69,14 +69,19 @@ class ViewEventTimeline extends Component
         $event = $this->event;
 
         // Fetch attendance logs with relationships (student, course, etc.)
+        // Filter out logs where user is null (deleted users)
         $logs = EventAttendanceLog::with('user')
             ->where('event_id', $event->id)
-            ->get();
+            ->whereNotNull('user_id')
+            ->get()
+            ->filter(function ($log) {
+                return $log->user !== null;
+            });
 
-        // Counts
-        $presentCount = $logs->where('attendance_status', 'present')->whereNotNull('name')->count();
-        $lateCount    = $logs->where('attendance_status', 'late')->whereNotNull('name')->count();
-        $absentCount  = $logs->where('attendance_status', 'absent')->whereNotNull('name')->count();
+        // Counts - only count logs with valid users
+        $presentCount = $logs->where('attendance_status', 'present')->count();
+        $lateCount    = $logs->where('attendance_status', 'late')->count();
+        $absentCount  = $logs->where('attendance_status', 'absent')->count();
         $totalAttendees = $presentCount + $lateCount;
 
         // Generate PDF
