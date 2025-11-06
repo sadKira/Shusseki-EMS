@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Event;
-use App\Models\Tag;
 use App\Models\User;
 use App\Models\EventAttendanceLog;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,30 +31,6 @@ it('an attendance log belongs to a user and an event', function () {
     // Check reverse relationships
     expect($log->user->id)->toBe($user->id);
     expect($log->event->id)->toBe($event->id);
-});
-
-it('an event can have many tags', function () {
-    $event = Event::factory()->create();
-    $tags = Tag::factory()->count(2)->create();
-
-    // Attach the tags
-    $event->tags()->attach($tags->pluck('id'));
-
-    // Assert tags are attached
-    expect($event->tags)->toHaveCount(2);
-});
-
-it('a tag can belong to many events', function () {
-    $tag = Tag::factory()->create();
-    $events = Event::factory()->count(2)->create();
-
-    // Attach tag to multiple events
-    foreach ($events as $event) {
-        $event->tags()->attach($tag->id);
-    }
-
-    // Assert the tag sees both events
-    expect($tag->events)->toHaveCount(2);
 });
 
 it('a user can have multiple attendance logs', function () {

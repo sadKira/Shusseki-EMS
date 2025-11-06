@@ -31,7 +31,7 @@ class Profile extends Component
         $this->email = Auth::user()->email;
 
         // fetch user from DB
-        $this->user =  User::where('student_id', '0000002')->firstOrFail();
+        $this->user = Auth::user();
         $this->privilege = $this->user->privilege->value; // convert enum -> string
     }
 
