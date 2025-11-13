@@ -101,9 +101,9 @@
         <table>
             <thead>
                 <tr>
-                    <th>Month</th>
-                    <th>Total Events</th>
-                    <th>Total Attendees</th>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Attendees</th>
                     <th>Present</th>
                     <th>Late</th>
                     <th>Absent</th>
