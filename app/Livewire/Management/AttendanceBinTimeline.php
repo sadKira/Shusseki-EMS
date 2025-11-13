@@ -2,24 +2,23 @@
 
 namespace App\Livewire\Management;
 
-use Livewire\Component;
-use App\Models\Event;
-use Livewire\Attributes\Layout;
-use App\Models\EventAttendanceLog;
-use App\Models\User;
-use Carbon\Carbon;
+use App\Enums\AccountStatus;
 use App\Enums\AttendanceStatus;
 use App\Enums\EventStatus;
-use App\Enums\AccountStatus;
 use App\Enums\UserApproval;
-use Flux\Flux;
-use Illuminate\Support\Facades\Log;
-use Livewire\Attributes\On; 
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Event;
+use App\Models\EventAttendanceLog;
 use App\Models\Setting;
+use App\Models\User;
+use Carbon\Carbon;
+use Flux\Flux;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\On;
+use Livewire\Component;
 use Livewire\WithPagination;
-
 
 #[Layout('components.layouts.attendance_bin_app')]
 class AttendanceBinTimeline extends Component
@@ -28,10 +27,11 @@ class AttendanceBinTimeline extends Component
     public $event;
     public $student_id;
     public $name;
+    public $course;
+    public $year_level;
     public string $current_admin_key = '';
     public string $pendingAction = '';
     public int|null $pendingUserId = null;
-
     public $studentIdInput;
 
     public function mount(Event $event)
@@ -42,7 +42,7 @@ class AttendanceBinTimeline extends Component
     // Attendance Logic
     public function updatedStudentIdInput($value)
     {
-        if (!empty($value)) {
+        if (! empty($value)) {
             $this->scanStudent($value);
             $this->reset('studentIdInput'); // clear field for next scan
         }
@@ -55,58 +55,58 @@ class AttendanceBinTimeline extends Component
         $user = User::where('student_id', $studentId)->first();
 
         // Check if user exists
-        if (!$user) {
+        if (! $user) {
             // User not found
-            $this->dispatch('scanned-student', [
-                'error' => 'User Account not Found',
-                'errorType' => 'not_found',
-            ]);
+
+            // Dispatch browser event
+            $this->dispatch('scan-notFound');
+
             return;
         }
 
         // Check account status
         if ($user->account_status !== AccountStatus::Active) {
-            $this->dispatch('scanned-student', [
-                'error' => 'User is not Active',
-                'errorType' => 'inactive',
-            ]);
+
+            // Dispatch browser event
+            $this->dispatch('scan-notActive');
+
             return;
         }
 
         // Check approval status
         if ($user->status === UserApproval::Pending) {
-            $this->dispatch('scanned-student', [
-                'error' => 'User is not Approved',
-                'errorType' => 'pending',
-            ]);
+
+            // Dispatch browser event
+            $this->dispatch('scan-notApproved');
+
             return;
         }
 
-        // Dispatch browser event with student data
-        $this->dispatch('scanned-student', [
-            'student_id' => $user->student_id,
-            'name' => $user->name,
-        ]);
+        // Dispatch browser event
+        $this->dispatch('scan-label');
+        $this->dispatch('scan-success');
 
         // Set for dynamic label
         $this->student_id = $user->student_id;
         $this->name = $user->name;
+        $this->course = $user->course;
+        $this->year_level = $user->year_level;
 
+        // Logging
         Log::info('scanned-student', [
             'student_id' => $user->student_id,
             'name' => $user->name,
         ]);
-
 
         $log = EventAttendanceLog::where('event_id', $this->event->id)
             ->where('user_id', $user->id)
             ->first();
 
         // Always compare in UTC. $eventTimeIn is the event's time-in in Asia/Manila, converted to UTC.
-        $eventTimeIn = Carbon::parse($this->event->date . ' ' . $this->event->time_in, 'Asia/Manila')->setTimezone('UTC');
+        $eventTimeIn = Carbon::parse($this->event->date.' '.$this->event->time_in, 'Asia/Manila')->setTimezone('UTC');
         $now = Carbon::now('UTC');
 
-        if (!$log) {
+        if (! $log) {
             // Time-in scan
             $status = $now->lt($eventTimeIn)
                 ? AttendanceStatus::Scanned
@@ -117,7 +117,8 @@ class AttendanceBinTimeline extends Component
                 'time_in' => $now,
                 'attendance_status' => $status,
             ]);
-        } elseif ($log->time_in && !$log->time_out) {
+
+        } elseif ($log->time_in && ! $log->time_out) {
             // Time-out scan
             $newStatus = $log->attendance_status === AttendanceStatus::Scanned
                 ? AttendanceStatus::Present
@@ -126,9 +127,10 @@ class AttendanceBinTimeline extends Component
                 'time_out' => $now,
                 'attendance_status' => $newStatus,
             ]);
-        }
-    }
 
+        }
+
+    }
 
     // Update student status
     public function markScanned($userId)
@@ -148,7 +150,7 @@ class AttendanceBinTimeline extends Component
         Flux::modals()->close();
         $this->pendingAction = 'markLate';
         $this->pendingUserId = $userId;
-        
+
         Flux::modal('admin-key')->show();
 
     }
@@ -159,9 +161,9 @@ class AttendanceBinTimeline extends Component
         Flux::modals()->close();
         $this->pendingAction = 'markPresent';
         $this->pendingUserId = $userId;
-        
+
         Flux::modal('admin-key')->show();
-        
+
     }
 
     public function markAbsent($userId)
@@ -170,7 +172,7 @@ class AttendanceBinTimeline extends Component
         Flux::modals()->close();
         $this->pendingAction = 'markAbsent';
         $this->pendingUserId = $userId;
-        
+
         Flux::modal('admin-key')->show();
 
     }
@@ -182,7 +184,7 @@ class AttendanceBinTimeline extends Component
         Flux::modals()->close();
         $this->pendingAction = 'removeLogTimeOut';
         $this->pendingUserId = $userId;
-        
+
         Flux::modal('admin-key')->show();
 
     }
@@ -194,17 +196,17 @@ class AttendanceBinTimeline extends Component
         Flux::modals()->close();
         $this->pendingAction = 'removeLogRecord';
         $this->pendingUserId = $userId;
-        
+
         Flux::modal('admin-key')->show();
 
     }
 
-     public function markAllPresent()
+    public function markAllPresent()
     {
         // Close initial modal
         Flux::modals()->close();
         $this->pendingAction = 'bulkPresent';
-        
+
         Flux::modal('admin-key')->show();
 
     }
@@ -214,13 +216,13 @@ class AttendanceBinTimeline extends Component
     {
         $setting = Setting::where('key', 's_a_k')->first();
 
-        if (!$setting || !Hash::check($this->current_admin_key, $setting->value)) {
+        if (! $setting || ! Hash::check($this->current_admin_key, $setting->value)) {
             $this->reset(['current_admin_key']);
             $this->dispatch('admin-key-updated');
             throw ValidationException::withMessages([
                 'current_admin_key' => ['The admin key is incorrect'],
             ]);
-            
+
         }
 
         // Proceed with action
@@ -265,24 +267,24 @@ class AttendanceBinTimeline extends Component
         }
 
         if ($this->pendingAction === 'bulkPresent') {
-            
+
             // Get all users with 'scanned' status and update
             EventAttendanceLog::where('event_id', $this->event->id)
-            ->where('attendance_status', AttendanceStatus::Scanned)
-            ->whereNull('time_out')
-            ->update([
-                'attendance_status' => AttendanceStatus::Present,
-                'time_out' => now(),
-            ]);
+                ->where('attendance_status', AttendanceStatus::Scanned)
+                ->whereNull('time_out')
+                ->update([
+                    'attendance_status' => AttendanceStatus::Present,
+                    'time_out' => now(),
+                ]);
 
             // Get all users with 'late' status and update
             EventAttendanceLog::where('event_id', $this->event->id)
-            ->where('attendance_status', AttendanceStatus::Late)
-            ->whereNull('time_out')
-            ->update([
-                'time_out' => now(),
-            ]);
-            
+                ->where('attendance_status', AttendanceStatus::Late)
+                ->whereNull('time_out')
+                ->update([
+                    'time_out' => now(),
+                ]);
+
         }
 
         $this->reset(['current_admin_key', 'pendingAction', 'pendingUserId']);
@@ -295,20 +297,20 @@ class AttendanceBinTimeline extends Component
     public function markEventAsFinished()
     {
         //  Mark event as finished
-        $this->event->status = EventStatus::Finished; 
+        $this->event->status = EventStatus::Finished;
         $this->event->save();
 
         // Get all users with 'scanned' status
         EventAttendanceLog::where('event_id', $this->event->id)
-        ->where('attendance_status', AttendanceStatus::Scanned)
-        ->whereNull('time_out')
-        ->update(['attendance_status' => AttendanceStatus::Absent]);
+            ->where('attendance_status', AttendanceStatus::Scanned)
+            ->whereNull('time_out')
+            ->update(['attendance_status' => AttendanceStatus::Absent]);
 
         // Get all active users
         $activeUsers = User::where('role', 'user')
-        ->where('status', UserApproval::Approved) // or 'approved'
-        ->where('account_status', AccountStatus::Active) // or 'active'
-        ->get();
+            ->where('status', UserApproval::Approved) // or 'approved'
+            ->where('account_status', AccountStatus::Active) // or 'active'
+            ->get();
         // dd($activeUsers->pluck('id')->toArray());
 
         // Get IDs of users who already have an attendance log for this event
@@ -334,7 +336,7 @@ class AttendanceBinTimeline extends Component
         Flux::modals()->close();
 
         return redirect()->route('view_event', $this->event);
-  
+
     }
 
     public function render()
@@ -344,25 +346,25 @@ class AttendanceBinTimeline extends Component
             ->with('user:id,name,student_id,year_level')
             ->latest('time_in')
             ->paginate(25);
-            // ->with('user')
-            // ->orderByDesc('time_in')
-            // ->get();
+        // ->with('user')
+        // ->orderByDesc('time_in')
+        // ->get();
 
-         // Attendance stats
+        // Attendance stats
         $totalAttendees = $this->event->attendanceLogs()->where('attendance_status', '!=', 'absent')->count();
 
         // Status counts (without excused)
         $presentCount = $this->event->attendanceLogs()->where('attendance_status', 'present')->count();
-        $lateCount    = $this->event->attendanceLogs()->where('attendance_status', 'late')->count();
-        $absentCount  = $this->event->attendanceLogs()->where('attendance_status', 'absent')->count();
+        $lateCount = $this->event->attendanceLogs()->where('attendance_status', 'late')->count();
+        $absentCount = $this->event->attendanceLogs()->where('attendance_status', 'absent')->count();
 
         return view('livewire.management.attendance-bin', [
             'users' => $logs,
             'event' => $this->event,
-            'totalAttendees'   => $totalAttendees,
-            'presentCount'     => $presentCount,
-            'lateCount'        => $lateCount,
-            'absentCount'      => $absentCount,
+            'totalAttendees' => $totalAttendees,
+            'presentCount' => $presentCount,
+            'lateCount' => $lateCount,
+            'absentCount' => $absentCount,
         ]);
     }
 }

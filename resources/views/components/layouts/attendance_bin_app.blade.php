@@ -29,9 +29,6 @@
     <!-- Vue -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.17/vue.global.prod.min.js"></script>
 
-    <!-- Toastify CDN -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
     {{-- Date time converter --}}
     <script>
         // DateTime is globally accessible only once
@@ -94,9 +91,6 @@
     </script>
 
     
-
-
-
     @fluxScripts
     @livewireScripts
 

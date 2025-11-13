@@ -28,10 +28,11 @@ class AttendanceBin extends Component
     public $event;
     public $student_id;
     public $name;
+    public $course;
+    public $year_level;
     public string $current_admin_key = '';
     public string $pendingAction = '';
     public int|null $pendingUserId = null;
-
     public $studentIdInput;
 
     public function mount(Event $event)
@@ -57,41 +58,40 @@ class AttendanceBin extends Component
         // Check if user exists
         if (!$user) {
             // User not found
-            $this->dispatch('scanned-student', [
-                'error' => 'User Account not Found',
-                'errorType' => 'not_found',
-            ]);
+          
+            // Dispatch browser event
+            $this->dispatch('scan-notFound');
             return;
         }
 
         // Check account status
         if ($user->account_status !== AccountStatus::Active) {
-            $this->dispatch('scanned-student', [
-                'error' => 'User is not Active',
-                'errorType' => 'inactive',
-            ]);
+           
+            // Dispatch browser event
+            $this->dispatch('scan-notActive');
             return;
         }
 
         // Check approval status
         if ($user->status === UserApproval::Pending) {
-            $this->dispatch('scanned-student', [
-                'error' => 'User is not Approved',
-                'errorType' => 'pending',
-            ]);
+            
+            // Dispatch browser event
+            $this->dispatch('scan-notApproved');
             return;
         }
 
-        // Dispatch browser event with student data
-        $this->dispatch('scanned-student', [
-            'student_id' => $user->student_id,
-            'name' => $user->name,
-        ]);
+
+        // Dispatch browser event
+        $this->dispatch('scan-label');
+        $this->dispatch('scan-success');
 
         // Set for dynamic label
         $this->student_id = $user->student_id;
         $this->name = $user->name;
+        $this->course = $user->course;
+        $this->year_level = $user->year_level;
 
+        // Logging
         Log::info('scanned-student', [
             'student_id' => $user->student_id,
             'name' => $user->name,
@@ -117,6 +117,7 @@ class AttendanceBin extends Component
                 'time_in' => $now,
                 'attendance_status' => $status,
             ]);
+
         } elseif ($log->time_in && !$log->time_out) {
             // Time-out scan
             $newStatus = $log->attendance_status === AttendanceStatus::Scanned
@@ -126,7 +127,9 @@ class AttendanceBin extends Component
                 'time_out' => $now,
                 'attendance_status' => $newStatus,
             ]);
+
         }
+
     }
 
 
