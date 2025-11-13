@@ -170,9 +170,6 @@
     </div>
 
     {{-- Reinitialization --}}
-    <!-- Lodash -->
-    {{-- <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-    <script src="./assets/vendor/lodash/lodash.min.js"></script> --}}
 
     {{-- Luxon --}}
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.6.1/build/global/luxon.min.js"></script>
@@ -182,9 +179,6 @@
 
     <!-- Preline -->
     <script src="https://unpkg.com/preline@latest/dist/preline.js"></script>
-
-    <!-- WebRTC -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/9.0.3/adapter.min.js"></script>
 
     <!-- Vue -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.5.17/vue.global.prod.min.js"></script>
@@ -246,17 +240,6 @@
             if (typeof window.attachTimePickerTimeInListeners === 'function') {
                 window.attachTimePickerTimeInListeners();
             }
-
-            // File Upload
-            // if (window.HSFileUpload && typeof window.HSFileUpload.autoInit === 'function') {
-            //     window.HSFileUpload.autoInit();
-            // }
-
-            // Pin Input
-            // if (window.HSPinInput && typeof window.HSPinInput.autoInit === 'function') {
-            //     window.HSPinInput.autoInit();
-            // }
-
 
         });
     </script>
