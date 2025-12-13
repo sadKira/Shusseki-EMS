@@ -77,7 +77,7 @@
 
                                 {{-- Right Column --}}
                                 <div class="col-span-5 p-6 flex flex-col justify-center">
-                                    <flux:input type="file" wire:model="image" badge="Required"
+                                    <flux:input type="file" wire:model="image" badge="Default Image: MKD Logo"
                                         label="Upload Event Image" />
                                 </div>
                             </div>

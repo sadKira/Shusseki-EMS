@@ -8,6 +8,7 @@ use App\Models\Event;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 
 class CreateEvent extends Component
@@ -21,7 +22,6 @@ class CreateEvent extends Component
 
     protected function rules()
     {
-        // dd($this->tag);
         return [
             'title' => 'required|string|unique:events,title|max:155',
             'date' => 'required|string',
@@ -29,12 +29,13 @@ class CreateEvent extends Component
             'time_in' => 'required|date_format:h:i A',
             'start_time' => 'required|date_format:h:i A',
             'end_time' => 'required|date_format:h:i A|after:start_time',
-            'image' => 'required|image|max:5048',
+            'image' => 'nullable|image|max:5048',
         ];
     }
 
     public function mount()
     {
+        $this->image = 'images/MKD_Logo.png';
         $this->selectedSchoolYear = Setting::getSchoolYear(); // Get current school year from settings
     }
 
@@ -57,7 +58,16 @@ class CreateEvent extends Component
             $formattedStart = Carbon::createFromFormat('h:i A', $this->start_time)->format('H:i:s');
             $formattedEnd = Carbon::createFromFormat('h:i A', $this->end_time)->format('H:i:s');
 
-            $imagePath = $this->image ? $this->image->store('events', 'public') : null;
+            // $imagePath = $this->image ? $this->image->store('events', 'public') : null;
+            
+            $imagePath = null;
+
+            if ($this->image instanceof TemporaryUploadedFile) {
+                $imagePath = $this->image->store('events', 'public');
+            } else {
+                // Use default image
+                $imagePath = $this->image; // e.g., images/MKD_Logo.png
+            }
 
             $event = Event::create([
                 'title' => $this->title,

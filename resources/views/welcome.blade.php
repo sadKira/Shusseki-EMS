@@ -24,9 +24,6 @@
 </head>
 
 <body class="min-h-screen bg-zinc-50 antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900 font-display">
-    {{-- border-b border-zinc-200 dark:border-zinc-700 --}}
-    {{-- class="bg-zinc-50 dark:bg-zinc-800" --}}
-
     
     <flux:header container class="" >
 
@@ -69,14 +66,12 @@
             <div class="flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-none whitespace-nowrap">
                     <span class="block text-zinc-50">Manage smarter,</span>
-                    <span class="block text-zinc-50 mt-2">Join seamlessly</span>
+                    <span class="block text-zinc-50 mt-2">join seamlessly</span>
                 </h1>
                 <p class="mt-6 mb-8 text-base sm:text-lg lg:text-xl sm:mb-12 text-zinc-50 max-w-2xl">
                     Shusseki Events Management System — Simplifying event organization and engagement with modern, intuitive tools.
                 </p>
                 <div class="flex flex-col  sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start gap-3 lg:gap-0">
-                    {{-- <a href="{{ route('register') }}" class="px-8 py-3 text-lg font-semibold rounded bg-[var(--color-accent)] text-zinc-950 hover:bg-gold/90 transition-colors duration-200">
-                        Get Started</a> --}}
 
                     @php
                         $user = auth()->user();
@@ -92,13 +87,7 @@
                     @endphp
 
                     @auth
-                        {{-- <flux:button variant="ghost" size="sm"  href="{{ $dashboardRoute }}">
-                            <span class="text-[var(--color-accent)] flex items-center gap-2">
-                                Return to Dashboard
-                                <flux:icon.arrow-uturn-left variant="mini" class="text-[var(--color-accent)]" />
-                            </span>
-                        </flux:button> --}}
-
+                        
                         <a href="{{ $dashboardRoute }}" class="inline-flex items-center justify-center px-7 py-3 text-sm font-bold hover:font-medium tracking-wide text-amber-500 hover:text-black transition-colors duration-200 border border-amber-500 bg-black-10 rounded-md hover:bg-amber-500 focus:ring-2 focus:ring-offset-2 focus:ring-amber-600 focus:shadow-outline focus:outline-none">
                             Return to Home
                         </a>
@@ -112,10 +101,7 @@
                     @endauth
                    
                 </div>
-                <div class="flex items-center justify-left gap-3">   
-                    {{-- <flux:button variant="primary" color="amber">Get Started</flux:button> --}}
-                    {{-- <flux:button variant="filled">Login</flux:button> --}}
-                </div>
+                
             </div>
             
         </div>

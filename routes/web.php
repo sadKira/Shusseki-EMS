@@ -59,6 +59,9 @@ Route::get('/mailable', function () {
     return new EventReminder($event, $user);
 });
 
+// Logout
+Route::post('logout', Logout::class)->middleware('auth')->name('logout');
+
 
 // Token refreshing route removed (Livewire and Blade handle CSRF automatically)
 
@@ -66,7 +69,6 @@ Route::get('/mailable', function () {
 Route::middleware(['auth', 'verified', 'user', 'pending'])->group(function () {
     // Protected routes
     Route::get('user/approval-pending', Approval::class)->name('approval_pending'); 
-    Route::post('logout', Logout::class)->name('logout');  
 });
 
 // Management
