@@ -40,4 +40,4 @@ Capstone project for Academic Year 2024-2025, developed to automate and streamli
 
 ### License & Acknowledgements
 - License: To be defined by project owners.
-- Acknowledgements: Mindanao Kokusai Daigaku administration, faculty advisors, student publication (MKD Tsuushin), and contributors to the capstone effort.
+- Acknowledgements: Mindanao Kokusai Daigaku administration, Gakusei Jichikai (Student Government Council), MKD Tsuushin (official student publication) , faculty advisors, and contributors to the capstone effort.
