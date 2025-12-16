@@ -31,4 +31,4 @@ class EventAttendanceLog extends Model
     {
         return $this->belongsTo(Event::class);
     }
-}KW
+}
