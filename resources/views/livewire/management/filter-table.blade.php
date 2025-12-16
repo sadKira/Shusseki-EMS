@@ -558,9 +558,9 @@
                                                                         class=""></flux:button>
                                                                     <flux:menu>
 
-                                                                        <flux:modal.trigger name="update-user">
+                                                                        {{-- <flux:modal.trigger name="update-user">
                                                                             <flux:menu.item icon="adjustments-vertical">Edit Details</flux:menu.item>
-                                                                        </flux:modal.trigger>
+                                                                        </flux:modal.trigger> --}}
                                                                         <flux:modal.trigger :name="'active-solo-'.$user->id">
                                                                             <flux:menu.item icon="user-plus">Mark as Active</flux:menu.item>
                                                                         </flux:modal.trigger>
