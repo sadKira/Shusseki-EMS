@@ -22,15 +22,23 @@ class CreateEvent extends Component
 
     protected function rules()
     {
-        return [
-            'title' => 'required|string|unique:events,title|max:155',
-            'date' => 'required|string',
-            'location' => 'required|string|max:255',
-            'time_in' => 'required|date_format:h:i A',
+        $rules = [
+            'title'      => 'required|string|unique:events,title|max:155',
+            'date'       => 'required|string',
+            'location'   => 'required|string|max:255',
+            'time_in'    => 'required|date_format:h:i A',
             'start_time' => 'required|date_format:h:i A',
-            'end_time' => 'required|date_format:h:i A|after:start_time',
-            'image' => 'nullable|image|max:5048',
+            'end_time'   => 'required|date_format:h:i A|after:start_time',
         ];
+
+        // Only validate `image` as a file when an actual upload has been made.
+        // When holding the default string path, the `image` rule would fail
+        // because a plain string is not a valid UploadedFile instance.
+        if ($this->image instanceof TemporaryUploadedFile) {
+            $rules['image'] = 'image|max:5048';
+        }
+
+        return $rules;
     }
 
     public function mount()

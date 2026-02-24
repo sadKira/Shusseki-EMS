@@ -345,9 +345,6 @@ class FilterTable extends Component
     public function toggleSelection()
     {
         $this->selection = !$this->selection;
-        $this->selected = [];
-        $this->selectPage = false;
-        $this->selectAll = false;
     }
 
     // Edit student details

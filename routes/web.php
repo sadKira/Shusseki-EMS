@@ -60,7 +60,7 @@ Route::get('/mailable', function () {
 });
 
 // Logout
-Route::post('logout', Logout::class)->middleware('auth')->name('logout');
+// Route::post('logout', Logout::class)->middleware('auth')->name('logout');
 
 
 // Token refreshing route removed (Livewire and Blade handle CSRF automatically)
