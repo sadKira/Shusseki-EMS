@@ -35,10 +35,10 @@ class EditEvent extends Component
     {
         return [
             'title' => [
-            'required',
-            'string',
-            'max:155',
-            // Rule::unique('events', 'title')->ignore($this->event->id)
+                'required',
+                'string',
+                'max:155',
+                // Rule::unique('events', 'title')->ignore($this->event->id)
             ],
 
             'date' => 'required|string',
@@ -75,11 +75,11 @@ class EditEvent extends Component
             'time_in' => $formattedIn,
             'start_time' => $formattedStart,
             'end_time' => $formattedEnd,
+            'image' => $this->event->image,
         ]);
 
-            
+
         return redirect()->route('view_event', $this->event);
-        
     }
 
 

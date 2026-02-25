@@ -43,52 +43,55 @@ class CreateEvent extends Component
 
     public function mount()
     {
-        $this->image = 'images/MKD_Logo.png';
-        $this->selectedSchoolYear = Setting::getSchoolYear(); // Get current school year from settings
+        $this->image = null; // No default file; preview handled in Blade
+        $this->selectedSchoolYear = Setting::getSchoolYear();
     }
 
     public function createEvent()
     {
         // try {
-            $this->validate();
+        $this->validate();
 
-            // Debug: see what value is coming in
-            // dd($this->date);
+        // Debug: see what value is coming in
+        // dd($this->date);
 
-            $formattedDate = Carbon::createFromFormat('F d, Y', $this->date);
-            if (!$formattedDate) {
-                throw new \Exception("Date format is invalid: " . $this->date);
-            }
-            $formattedDate = $formattedDate->format('Y-m-d');
-            
+        $formattedDate = Carbon::createFromFormat('F d, Y', $this->date);
+        if (!$formattedDate) {
+            throw new \Exception("Date format is invalid: " . $this->date);
+        }
+        $formattedDate = $formattedDate->format('Y-m-d');
 
-            $formattedIn =  Carbon::createFromFormat('h:i A', $this->time_in)->format('H:i:s');
-            $formattedStart = Carbon::createFromFormat('h:i A', $this->start_time)->format('H:i:s');
-            $formattedEnd = Carbon::createFromFormat('h:i A', $this->end_time)->format('H:i:s');
 
-            // $imagePath = $this->image ? $this->image->store('events', 'public') : null;
-            
-            $imagePath = null;
+        $formattedIn =  Carbon::createFromFormat('h:i A', $this->time_in)->format('H:i:s');
+        $formattedStart = Carbon::createFromFormat('h:i A', $this->start_time)->format('H:i:s');
+        $formattedEnd = Carbon::createFromFormat('h:i A', $this->end_time)->format('H:i:s');
 
-            if ($this->image instanceof TemporaryUploadedFile) {
-                $imagePath = $this->image->store('events', 'public');
-            } else {
-                // Use default image
-                $imagePath = $this->image; // e.g., images/MKD_Logo.png
-            }
+        // $imagePath = $this->image ? $this->image->store('events', 'public') : null;
 
-            $event = Event::create([
-                'title' => $this->title,
-                'date' => $formattedDate,
-                'location' => $this->location,
-                'time_in' => $formattedIn,
-                'start_time' => $formattedStart,
-                'end_time' => $formattedEnd,
-                'school_year' => $this->selectedSchoolYear,
-                'image' => $imagePath,
-            ]);
+        $imagePath = null;
 
-            return redirect()->route('event_timeline');
+        if ($this->image instanceof TemporaryUploadedFile) {
+            $imagePath = $this->image->store('events', 'public');
+        } else {
+            // Copy default logo into storage so asset('storage/...') resolves correctly
+            $defaultImage = public_path('images/MKD_Logo.png');
+            $filename = 'events/MKD_Logo_' . uniqid() . '.png';
+            Storage::disk('public')->put($filename, file_get_contents($defaultImage));
+            $imagePath = $filename;
+        }
+
+        $event = Event::create([
+            'title' => $this->title,
+            'date' => $formattedDate,
+            'location' => $this->location,
+            'time_in' => $formattedIn,
+            'start_time' => $formattedStart,
+            'end_time' => $formattedEnd,
+            'school_year' => $this->selectedSchoolYear,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->route('event_timeline');
         // } catch (\Exception $e) {
         //     dd($e->getMessage());
         // }

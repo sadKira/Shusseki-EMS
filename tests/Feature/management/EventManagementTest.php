@@ -62,7 +62,7 @@ test('event creation requires all fields', function () {
     $response = Livewire::test(CreateEvent::class)
         ->call('createEvent');
 
-    $response->assertHasErrors(['title', 'date', 'location', 'time_in', 'start_time', 'end_time', 'image']);
+    $response->assertHasErrors(['title', 'date', 'location', 'time_in', 'start_time', 'end_time']);
 });
 
 test('event title must be unique', function () {
@@ -144,7 +144,7 @@ test('admin can update an event', function () {
     $event->refresh();
     // Check that redirect happened - the route uses title as key
     $response->assertRedirect();
-    
+
     expect($event->title)->toBe('Updated Title');
     expect($event->location)->toBe('Updated Location');
 });
@@ -213,4 +213,3 @@ test('admin can export attendance report', function () {
 
     $response->assertFileDownloaded("Attendance_Report_{$event->title}.pdf");
 });
-

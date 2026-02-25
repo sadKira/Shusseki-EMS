@@ -49,8 +49,8 @@
                                         <div class="col-span-3">
                                             <div class="flex items-start gap-1">
                                                 <flux:input id="tp_input_time_in" wire:model="time_in"
-                                                    placeholder="Select Time" label="End of Attendance"
-                                                    type="text" mask="99:99 aa" required autocomplete="off" readonly />
+                                                    placeholder="Select Time" label="End of Attendance" type="text"
+                                                    mask="99:99 aa" required autocomplete="off" readonly />
                                                 <x-time-picker-time-in />
                                             </div>
                                         </div>
@@ -77,8 +77,28 @@
 
                                 {{-- Right Column --}}
                                 <div class="col-span-5 p-6 flex flex-col justify-center">
-                                    <flux:input type="file" wire:model="image" badge="Default Image: MKD Logo"
-                                        label="Upload Event Image" />
+                                    <div>
+                                        <flux:heading class="mb-2">Upload Event Image</flux:heading>
+                                        <input type="file" wire:model="image" class="block w-full text-sm text-zinc-400
+                                                   file:mr-4 file:py-2 file:px-4
+                                                   file:rounded-lg file:border-0
+                                                   file:text-sm file:font-semibold
+                                                   file:bg-zinc-800 file:text-zinc-300
+                                                   hover:file:bg-zinc-700
+                                                   cursor-pointer" />
+                                        <flux:text class="text-xs mt-1 text-zinc-500">Default: MKD Logo</flux:text>
+                                    </div>
+
+                                    {{-- Image Preview --}}
+                                    <div class="mt-4">
+                                        @if ($image && $image instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile)
+                                            <img src="{{ $image->temporaryUrl() }}" alt="Preview"
+                                                class="w-full h-48 object-cover rounded-lg shadow" />
+                                        @else
+                                            <img src="{{ asset('images/MKD_Logo.png') }}" alt="Default Image"
+                                                class="w-full h-48 object-contain rounded-lg shadow opacity-60" />
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
 
