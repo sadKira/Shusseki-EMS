@@ -69,7 +69,7 @@
             "@php artisan test"
         ],
         "vercel": [
-            "composer install --no-dev --optimize-autoloader",
+            "composer install",
             "npm install",
             "npm run build",
             "php artisan migrate:fresh --seed"
