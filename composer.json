@@ -69,9 +69,9 @@
             "@php artisan test"
         ],
         "vercel": [
+            "composer install --no-dev --optimize-autoloader",
+            "npm install",
             "npm run build",
-            "mkdir -p /vercel/output/static",
-            "cp -r public/build /vercel/output/static/",
             "php artisan migrate:fresh --seed"
         ]
     },
