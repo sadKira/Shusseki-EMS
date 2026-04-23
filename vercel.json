@@ -5,13 +5,9 @@
         "api/index.php": { "runtime": "vercel-php@0.6.0" }
     },
     "outputDirectory": "public",
-    "routes": [
+    "rewrites": [
         {
-            "src": "/build/(.*)",
-            "dest": "/build/$1"
-        },
-        {
-            "src": "/(.*)",
+            "source": "/(.*)",
             "dest": "/api/index.php"
         }
     ],
