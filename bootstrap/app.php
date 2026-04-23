@@ -7,6 +7,7 @@ use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Middleware\UserApprovalMiddleware;
 use App\Http\Middleware\AccountStatusMiddleware;
+use Illuminate\Http\Request;
  
 
 use Illuminate\Foundation\Application;
@@ -31,6 +32,15 @@ return Application::configure(basePath: dirname(__DIR__))
             'active' => AccountStatusMiddleware::class,
             'inactive' => AccountStatusMiddleware::class,
         ]);
+
+        $middleware->trustProxies(
+            '*',
+            Request::HEADER_X_FORWARDED_FOR |
+            Request::HEADER_X_FORWARDED_HOST |
+            Request::HEADER_X_FORWARDED_PORT |
+            Request::HEADER_X_FORWARDED_PROTO |
+            Request::HEADER_X_FORWARDED_AWS_ELB
+        );
 
         
     })
