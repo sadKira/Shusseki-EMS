@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        // DB
+        // DB Vercel Deployment
         Schema::defaultStringLength(191);
         
         /**
