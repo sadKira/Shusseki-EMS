@@ -8,7 +8,7 @@
     "rewrites": [
         {
             "source": "/(.*)",
-            "dest": "/api/index.php"
+            "destination": "/api/index.php"
         }
     ],
     "buildCommand": "echo skip..."
