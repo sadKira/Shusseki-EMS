@@ -69,7 +69,6 @@
             "@php artisan test"
         ],
         "vercel": [
-            "composer update --no-scripts",
             "npm install",
             "npm run build",
             "php artisan migrate:fresh --seed"
