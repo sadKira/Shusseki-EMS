@@ -67,12 +67,6 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
-        ],
-        "vercel": [
-            "npm install",
-            "npm run build",
-            "php artisan storage:link",
-            "php artisan migrate:fresh --seed"
         ]
     },
     "extra": {
